@@ -9,6 +9,7 @@ use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class ProductsController extends Controller
 {
@@ -35,6 +36,7 @@ class ProductsController extends Controller
 
         if ($request->hasFile('images'))
         {
+            $product_images = [];
             $thumbnail = null;
             foreach ($request->images as $image)
             {
@@ -44,6 +46,7 @@ class ProductsController extends Controller
                     'type' => $image->getMimeType(),
                 ]);
                 $product_image->save();
+                $product_images[] = $product_image->id;
                 $thumbnail = $product_image;
             }
 
@@ -68,7 +71,10 @@ class ProductsController extends Controller
 
             $product->save();
 
-            return redirect()->route('products.show', ['product' => $product->id]);
+            $product->images()->attach($product_images);
+
+            if (!$request->expectsJson())
+                return redirect()->route('products.show', ['product' => $product->id]);
         }
     }
 
@@ -77,6 +83,23 @@ class ProductsController extends Controller
         return view('product-edit', [
             'categories' => ProductCategory::all(),
         ]);
+    }
+
+    public function edit()
+    {
+        return view('product-edit', [
+            'categories' => ProductCategory::all(),
+        ]);
+    }
+
+    public function destroy(Product $product)
+    {
+        foreach ($product->images as $image)
+        {
+            Storage::delete(ProductImage::find($image->id)->path);
+            $image->delete();
+        }
+        $product->delete();
     }
 
     public function productTypeToUnit($product_type)

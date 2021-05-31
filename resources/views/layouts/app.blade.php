@@ -29,6 +29,7 @@
     @yield('content')
 
     <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" defer></script>
     <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}" defer></script>
     <script src="{{ asset('js/script.min.js') }}" defer></script>
 
