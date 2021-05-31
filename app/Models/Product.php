@@ -46,7 +46,7 @@ class Product extends Model
 
     public function images()
     {
-        return $this->hasMany('App\\Models\\ProductImage');
+        return $this->belongsToMany('App\\Models\\ProductImage');
     }
 
     public function category()

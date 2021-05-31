@@ -14,6 +14,9 @@
                         @if (Route::has('shopping-cart'))
                             <li class="nav-item d-flex flex-wrap align-items-md-center"><a class="nav-link d-flex flex-wrap" href="{{ route('shopping-cart') }}">{{ __('Warenkorb') }}&nbsp;<i class="fa fa-shopping-cart d-flex flex-wrap justify-content-lg-center align-items-lg-center"></i></a></li>
                         @endif
+                        @if (Route::has('products.create'))
+                            <li class="nav-item d-flex flex-wrap align-items-md-center"><a class="nav-link d-flex flex-wrap" href="{{ route('products.create') }}">{{ __('Produkte erstellen') }}&nbsp;<i class="fa fa-plus-circle d-flex flex-wrap justify-content-lg-center align-items-lg-center"></i></a></li>
+                        @endif
                         @if (Route::has('profile'))
                             <li class="nav-item d-flex flex-wrap align-items-md-center"><a class="nav-link d-flex flex-wrap" href="{{ route('profile') }}">{{ Auth::user()->name }}&nbsp;<i class="fa fa-user-circle-o d-flex flex-wrap justify-content-lg-center align-items-lg-center"></i></a></li>
                         @endif

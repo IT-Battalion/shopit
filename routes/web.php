@@ -16,11 +16,9 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', 'HomeController@index')->name('home');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::permanentRedirect('/home', url('/'));
 
 /*Auth::routes([
     'register' => false,
