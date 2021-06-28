@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Traits\UuidKey;
 use Illuminate\Database\Eloquent\Model;
 
-class CuponCode extends Model
+class CouponCode extends Model
 {
     use UuidKey;
 

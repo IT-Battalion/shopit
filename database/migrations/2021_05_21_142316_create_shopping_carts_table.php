@@ -11,7 +11,7 @@ class CreateShoppingCartsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('shopping_cart', function (Blueprint $table) {
             $table->foreignUuid('user_id')->constrained();
@@ -27,7 +27,7 @@ class CreateShoppingCartsTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         if (Schema::hasTable('shopping_cart'))
         {

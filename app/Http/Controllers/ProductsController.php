@@ -6,10 +6,12 @@ use App\Category;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductImage;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class ProductsController extends Controller
 {
@@ -27,7 +29,10 @@ class ProductsController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    /**
+     * @throws ValidationException
+     */
+    public function store(Request $request): RedirectResponse
     {
         $this->validate($request, [
             'images' => 'required',
@@ -60,7 +65,7 @@ class ProductsController extends Controller
             ]);
 
             $product->attribute_type = $request->size_type;
-            if ($product->attribute_type == 'clothing')
+            if ($product->attribute_type === 'clothing')
             {
                 $product->attribute_value = join(', ', $request->size);
             } else {
@@ -92,7 +97,10 @@ class ProductsController extends Controller
         ]);
     }
 
-    public function destroy(Product $product)
+    /**
+     * @throws \Exception
+     */
+    public function destroy(Product $product): void
     {
         foreach ($product->images as $image)
         {
@@ -102,7 +110,7 @@ class ProductsController extends Controller
         $product->delete();
     }
 
-    public function productTypeToUnit($product_type)
+    public function productTypeToUnit($product_type): string
     {
         return $this->size_units[$product_type];
     }

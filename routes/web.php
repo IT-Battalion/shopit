@@ -39,6 +39,10 @@ Route::get('/profile', function () {
     return view('profile');
 })->name('profile');
 
+Route::get('/admin', function () {
+    return view('admin');
+})->name('admin');
+
 Route::prefix('/shopping-cart')->group(function () {
     Route::get('/', 'ShoppingCartController@index')->name('shopping-cart');
     Route::post('/add/{product_id}', 'ShoppingCartController@add')->name('shopping-cart.add');

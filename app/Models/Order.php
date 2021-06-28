@@ -4,6 +4,11 @@ namespace App\Models;
 
 use App\Traits\UuidKey;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\CouponCode;
+use App\Models\User;
+use App\Models\Product;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Order extends Model
 {
@@ -12,48 +17,48 @@ class Order extends Model
     protected $fillable = [
         'price',
         'authorizing_admin',
-        'recieved_at',
-        'recieved_by',
+        'recieved_at', //TODO received not recieved
+        'recieved_by', //TODO received not recieved
         'payed_at',
         'transaction_confirmed_by',
         'handed_over_at',
         'handed_over_by',
     ];
 
-    public function cupon_code()
+    public function cupon_code(): HasOne //TODO: coupon not cupon
     {
-        return $this->hasOne('App\\Models\\CuponCode', 'id', 'cupon_code_id');
+        return $this->hasOne(CouponCode::class, 'id', 'cupon_code_id'); //TODO: coupon not cupon
     }
 
-    public function owner()
+    public function owner(): HasOne
     {
-        return $this->hasOne('App\\Models\\User', 'id', 'owner');
+        return $this->hasOne(User::class, 'id', 'owner');
     }
 
-    public function authorizing_admin()
+    public function authorizing_admin(): HasOne
     {
-        return $this->hasOne('App\\Models\\User', 'id', 'authorizing_admin');
+        return $this->hasOne(User::class, 'id', 'authorizing_admin');
     }
 
-    public function recieved_by()
+    public function recieved_by(): HasOne //TODO received not recieved
     {
-        return $this->hasOne('App\\Models\\User', 'id', 'recieved_by');
+        return $this->hasOne(User::class, 'id', 'recieved_by'); //TODO received not recieved
     }
 
-    public function transaction_confirmed_by()
+    public function transaction_confirmed_by(): HasOne
     {
-        return $this->hasOne('App\\Models\\User', 'id', 'transaction_confirmed_by');
+        return $this->hasOne(User::class, 'id', 'transaction_confirmed_by');
     }
 
-    public function handed_over_by()
+    public function handed_over_by(): HasOne
     {
-        return $this->hasOne('App\\Models\\User', 'id', 'handed_over_by');
+        return $this->hasOne(User::class, 'id', 'handed_over_by');
     }
 
-    public function products()
+    public function products(): BelongsToMany
     {
         return $this
-            ->belongsToMany('App\\Models\\Product')
+            ->belongsToMany(Product::class)
             ->withPivot(['count', 'discount'])
             ->withTimestamps();
     }
