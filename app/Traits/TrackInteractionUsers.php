@@ -11,7 +11,7 @@ trait TrackInteractionUsers {
      * respective events get fired
      */
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
         static::creating(function ($model) {

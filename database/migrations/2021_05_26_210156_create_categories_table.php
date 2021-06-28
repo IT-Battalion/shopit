@@ -11,7 +11,7 @@ class CreateCategoriesTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('product_categories', function (Blueprint $table) {
             $table->uuid('id')->primary();
@@ -29,7 +29,7 @@ class CreateCategoriesTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('products', function (Blueprint $table) {
             $table->dropForeign('products_product_category_id_foreign');

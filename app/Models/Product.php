@@ -4,6 +4,9 @@ namespace App\Models;
 
 use App\Traits\UuidKeyAndTrackInteractionUsers;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ProductImage;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Product extends Model
 {
@@ -29,19 +32,19 @@ class Product extends Model
         'volume' => 'Volumen',
     ];
 
-    public function thumbnail()
+    public function thumbnail(): HasOne
     {
-        return $this->hasOne('App\\Models\\ProductImage', 'id', 'thumbnail');
+        return $this->hasOne(ProductImage::class, 'id', 'thumbnail');
     }
 
-    public function created_by()
+    public function created_by(): HasOne
     {
-        return $this->hasOne('App\\Models\\User', 'id', 'created_by');
+        return $this->hasOne(User::class, 'id', 'created_by');
     }
 
-    public function updated_by()
+    public function updated_by(): HasOne
     {
-        return $this->hasOne('App\\Models\\User', 'id', 'updated_by');
+        return $this->hasOne(User::class, 'id', 'updated_by');
     }
 
     public function images()

@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use LdapRecord\Laravel\Auth\LdapAuthenticatable;
 use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
 use LdapRecord\Laravel\Auth\HasLdapUser;
+use App\Models\Product;
 
 class User extends Authenticatable implements LdapAuthenticatable
 {
@@ -43,10 +44,10 @@ class User extends Authenticatable implements LdapAuthenticatable
      * Gets the users shopping cart
      */
 
-    public function shopping_cart()
+    public function shopping_cart(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this
-            ->belongsToMany('App\\Models\\Product', 'shopping_cart')
+            ->belongsToMany(Product::class, 'shopping_cart')
             ->withPivot(['count'])
             ->withTimestamps();
     }

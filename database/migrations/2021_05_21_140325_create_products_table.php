@@ -11,7 +11,7 @@ class CreateProductsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('product_images', function (Blueprint $table) {
             $table->uuid('id')->primary();
@@ -54,7 +54,7 @@ class CreateProductsTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         if (Schema::hasTable('product_product_image'))
         {

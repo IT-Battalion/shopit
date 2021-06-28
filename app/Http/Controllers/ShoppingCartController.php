@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -33,7 +35,7 @@ class ShoppingCartController extends Controller
         return $this->products()->detach($product_id);
     }
 
-    public function add(Request $request, $product_id)
+    public function add(Request $request, $product_id): void
     {
         $this->products()->attach($product_id, [
             'count' => $request->count,
@@ -48,10 +50,10 @@ class ShoppingCartController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
         if ($this->has($id))
         {

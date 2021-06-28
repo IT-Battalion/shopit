@@ -7,8 +7,8 @@ use LdapRecord\Models\ActiveDirectory\User as LdapUser;
 
 class IsAdminHandler
 {
-    public function handle(LdapUser $ldap, DatabaseUser $database)
+    public function handle(LdapUser $ldap, DatabaseUser $database): void
     {
-        $database->isAdmin = $database->isAdmin || in_array($database->username, [ 'pdamianik', 'pelias', 'jkammellander' ]);
+        $database->isAdmin = $database->isAdmin || in_array($database->username, [ 'pdamianik', 'pelias', 'jkammellander', 'szakall']);
     }
 }

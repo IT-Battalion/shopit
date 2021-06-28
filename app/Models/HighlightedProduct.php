@@ -4,13 +4,14 @@ namespace App\Models;
 
 use App\Traits\UuidKey;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Product;
 
 class HighlightedProduct extends Model
 {
     use UuidKey;
 
-    public function products()
+    public function products(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany('App\\Models\\Product');
+        return $this->hasMany(Product::class);
     }
 }
