@@ -33,8 +33,10 @@ class AppServiceProvider extends ServiceProvider
         $root = $request->root();
 
         // Add the suffix
-        //$rootSuffix = '/index.php';
-        $rootSuffix = '';
+        $rootSuffix = config('app.url_root_suffix', ''); // pull from configuration with none as default
+                                                                    // needed on the projekte.tgm.ac.at server
+                                                                    // because the configuration doesn't support
+                                                                    // .htaccess files for the rewrite engine
         if (!str_ends_with($root, $rootSuffix)) {
             $root .= $rootSuffix;
         }
