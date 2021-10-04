@@ -33,7 +33,8 @@ class AppServiceProvider extends ServiceProvider
         $root = $request->root();
 
         // Add the suffix
-        $rootSuffix = '/index.php';
+        //$rootSuffix = '/index.php';
+        $rootSuffix = '';
         if (!str_ends_with($root, $rootSuffix)) {
             $root .= $rootSuffix;
         }
