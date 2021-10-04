@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\UuidKey;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use LdapRecord\Laravel\Auth\LdapAuthenticatable;
@@ -13,7 +14,7 @@ use App\Models\Product;
 
 class User extends Authenticatable implements LdapAuthenticatable
 {
-    use Notifiable, AuthenticatesWithLdap, UuidKey, HasLdapUser;
+    use Notifiable, AuthenticatesWithLdap, UuidKey, HasLdapUser, HasFactory;
 
     /**
      * The attributes that are mass assignable.
