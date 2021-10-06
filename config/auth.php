@@ -66,40 +66,45 @@ return [
     */
 
     'providers' => [
-        // 'users' => [
-        //     'driver' => 'eloquent',
-        //     'model' => App\User::class,
-        // ],
+         'users' => [
+             'driver' => 'test',
+             'model' => App\Models\User::class,
+         ],
+
+//        'users' => [
+//            'driver' => 'eloquent',
+//            'model' => App\Models\User::class,
+//        ],
 
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
 
-	    'users' => [
-            'driver' => 'ldap',
-            'model' => LdapRecord\Models\ActiveDirectory\User::class,
-            'rules' => [
-                App\Ldap\Rules\OnlyHitDepartmentMembers::class,
-                App\Ldap\Rules\IsEnabled::class,
-            ],
-            'database' => [
-                'model' => App\Models\User::class,
-                'sync_passwords' => false,
-                'password_column' => false,
-                'sync_attributes' => [
-                    'username' => 'sAMAccountName',
-                    'name' => 'cn',
-                    'firstname' => 'givenName',
-                    'lastname' => 'sn',
-                    'class' => 'department',
-                    'email' => 'mail',
-                    'employeeType' => 'employeeType',
-                    'lang' => 'msExchUserCulture',
-                    App\Ldap\AttributeHandlers\IsAdminHandler::class,
-                ],
-            ],
-        ],
+//	    'users' => [
+//            'driver' => 'ldap',
+//            'model' => LdapRecord\Models\ActiveDirectory\User::class,
+//            'rules' => [
+//                App\Ldap\Rules\OnlyHitDepartmentMembers::class,
+//                App\Ldap\Rules\IsEnabled::class,
+//            ],
+//            'database' => [
+//                'model' => App\Models\User::class,
+//                'sync_passwords' => false,
+//                'password_column' => false,
+//                'sync_attributes' => [
+//                    'username' => 'sAMAccountName',
+//                    'name' => 'cn',
+//                    'firstname' => 'givenName',
+//                    'lastname' => 'sn',
+//                    'class' => 'department',
+//                    'email' => 'mail',
+//                    'employeeType' => 'employeeType',
+//                    'lang' => 'msExchUserCulture',
+//                    App\Ldap\AttributeHandlers\IsAdminHandler::class,
+//                ],
+//            ],
+//        ],
     ],
 
     /*
