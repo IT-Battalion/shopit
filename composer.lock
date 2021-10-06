@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5eba7cef91d2d412fa5912007b54be8b",
+    "content-hash": "01fdd7e70083007d81d965f720dcfd50",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1099,16 +1099,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v8.63.0",
+            "version": "v8.62.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "8f3d280f36a427730c8c8fa34316c79eed38781e"
+                "reference": "60a7e00488167ce2babf3a2aeb3677e48aaf39be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/8f3d280f36a427730c8c8fa34316c79eed38781e",
-                "reference": "8f3d280f36a427730c8c8fa34316c79eed38781e",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/60a7e00488167ce2babf3a2aeb3677e48aaf39be",
+                "reference": "60a7e00488167ce2babf3a2aeb3677e48aaf39be",
                 "shasum": ""
             },
             "require": {
@@ -1266,7 +1266,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2021-10-05T14:04:25+00:00"
+            "time": "2021-09-28T13:30:25+00:00"
         },
         {
             "name": "laravel/sanctum",
@@ -8029,7 +8029,8 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.3|^8.0"
+        "php": "^7.3|^8.0",
+        "ext-pdo": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.1.0"
