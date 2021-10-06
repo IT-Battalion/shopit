@@ -32,7 +32,7 @@ Route::permanentRedirect('/home', url('/'));
 Route::namespace('Auth')->group(function () {
     Route::get('/login', 'LoginController@showLoginForm')->withoutMiddleware('auth')->name('login');
     Route::post('/login', 'LoginController@login')->withoutMiddleware('auth');
-    Route::post('logout', 'LoginController@logout')->name('logout');
+    Route::post('/logout', 'LoginController@logout')->name('logout');
 });
 
 Route::get('/profile', function () {

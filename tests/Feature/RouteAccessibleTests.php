@@ -20,4 +20,19 @@ class RouteAccessibleTests extends TestCase
         $response = $this->get('/admin');
         $response->assertStatus(200);
     }
+
+    public function logoutPageAccessibleTest() {
+        $response = $this->get('/logout');
+        $response->assertStatus(200);
+    }
+
+    public function profilePageAccessibleTest() {
+        $response = $this->get('/profile');
+        $response->assertStatus(200);
+    }
+
+    public function shoppingCartPageAccessibleTest() {
+        $response = $this->get('/shopping-cart');
+        $response->assertStatus(200);
+    }
 }
