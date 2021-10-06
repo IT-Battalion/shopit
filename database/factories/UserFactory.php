@@ -48,7 +48,7 @@ class UserFactory extends Factory
     {
         $firstname = $this->faker->unique()->firstName();
         $lastname = $this->faker->unique()->lastName();
-        $username = $firstname[0] . $lastname . ".test";
+        $username = strtolower($firstname[0]) . strtolower($lastname) . ".test";
         $employeeType = Arr::random(self::employeeTypes);
 
         switch ($employeeType) {
@@ -71,6 +71,7 @@ class UserFactory extends Factory
             'employeeType' => $employeeType,
             'class' => $this->generateClass(),
             'lang' => 'de-AT',
+            'isAdmin' => $this->faker->boolean(),
             'guid' => $this->faker->unique()->uuid(),
         ];
     }
