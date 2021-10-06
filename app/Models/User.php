@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\UuidKey;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use LdapRecord\Laravel\Auth\LdapAuthenticatable;
@@ -45,7 +46,7 @@ class User extends Authenticatable implements LdapAuthenticatable
      * Gets the users shopping cart
      */
 
-    public function shopping_cart(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function shopping_cart(): BelongsToMany
     {
         return $this
             ->belongsToMany(Product::class, 'shopping_cart')
