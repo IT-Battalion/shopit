@@ -10,6 +10,43 @@ use App\Models\Product;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * App\Models\Order
+ *
+ * @property string $id
+ * @property User|null $owner
+ * @property float $price
+ * @property string $cupon_code_id
+ * @property User|null $authorizing_admin
+ * @property string|null $recieved_at
+ * @property User|null $recieved_by
+ * @property string|null $payed_at
+ * @property User|null $transaction_confirmed_by
+ * @property string|null $handed_over_at
+ * @property User|null $handed_over_by
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read CouponCode|null $cupon_code
+ * @property-read \Illuminate\Database\Eloquent\Collection|Product[] $products
+ * @property-read int|null $products_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Order newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Order newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Order query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereAuthorizingAdmin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereCuponCodeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereHandedOverAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereHandedOverBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereOwner($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order wherePayedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereRecievedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereRecievedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereTransactionConfirmedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Order extends Model
 {
     use UuidKey;
