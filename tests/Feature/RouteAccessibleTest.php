@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -24,15 +25,6 @@ class RouteAccessibleTest extends TestCase
         $response->assertStatus(302);
     }
 
-    /**
-     * @test
-     */
-    public function loginPostWithArgsPageAccessibleTest() : void {
-        $response = $this->post('/login');
-        $response->assertStatus(302);
-        //TODO: add data
-    }
-
     public function homePageAccessibleTest() : void {
         $response = $this->get('/home');
         $response->assertStatus(200);
@@ -50,18 +42,18 @@ class RouteAccessibleTest extends TestCase
      * @test
      */
     public function adminPageAsAdminAccessibleTest() : void {
-        $response = $this->get('/admin');
-        $response->assertStatus(302);
-        //TODO: add admin user data
+        $user = User::factory(['isAdmin' => true])->create();
+        $response = $this->actingAs($user)->get('/admin');
+        $response->assertLocation('/admin');
     }
 
     /**
      * @test
      */
     public function adminUserPageAccessibleTest() : void {
-        $response = $this->get('/admin');
-        $response->assertStatus(302);
-        //TODO add user user data
+        $user = User::factory(['isAdmin' => false])->create();
+        $response = $this->actingAs($user)->get('/admin');
+        $response->assertLocation('');
     }
 
     /**
@@ -113,32 +105,5 @@ class RouteAccessibleTest extends TestCase
         $response = $this->get('/shopping-cart');
         $response->assertStatus(302);
         //TODO add logged in user
-    }
-
-    /**
-     * @test
-     */
-    public function addShoppingCartPageAccessibleTest() {
-        $response = $this->post('/shopping-cart/add/{product_id}');
-        $response->assertStatus(302);
-        //TODO: add id
-    }
-
-    /**
-     * @test
-     */
-    public function removeShoppingCartPageAccessibleTest() {
-        $response = $this->post('/shopping-cart/remove/{product_id}');
-        $response->assertStatus(302);
-        //TODO: add id
-    }
-
-    /**
-     * @test
-     */
-    public function showUserPageAccessibleTest() {
-        $response = $this->get('/user/{id}');
-        $response->assertStatus(302);
-        //TODO: Add user ID
     }
 }
