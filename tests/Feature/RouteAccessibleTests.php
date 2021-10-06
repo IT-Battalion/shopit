@@ -11,6 +11,11 @@ class RouteAccessibleTests extends TestCase
         $response->assertStatus(200);
     }
 
+    public function loginPostPageAccessibleTest() : void {
+        $response = $this->post('/login');
+        $response->assertStatus(200);
+    }
+
     public function homePageAccessibleTest() : void {
         $response = $this->get('/home');
         $response->assertStatus(200);
@@ -33,6 +38,21 @@ class RouteAccessibleTests extends TestCase
 
     public function shoppingCartPageAccessibleTest() {
         $response = $this->get('/shopping-cart');
+        $response->assertStatus(200);
+    }
+
+    public function addShoppingCartPageAccessibleTest() {
+        $response = $this->post('/shopping-cart/add/{product_id}');
+        $response->assertStatus(200);
+    }
+
+    public function removeShoppingCartPageAccessibleTest() {
+        $response = $this->post('/shopping-cart/remove/{product_id}');
+        $response->assertStatus(200);
+    }
+
+    public function showUserPageAccessibleTest() {
+        $response = $this->get('/user/{id}');
         $response->assertStatus(200);
     }
 }
