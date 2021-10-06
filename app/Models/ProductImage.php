@@ -5,13 +5,14 @@ namespace App\Models;
 use App\Traits\TrackInteractionUsers;
 use App\Traits\UuidKey;
 use App\Traits\UuidKeyAndTrackInteractionUsers;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ProductImage extends Model
 {
-    use UuidKeyAndTrackInteractionUsers;
+    use UuidKeyAndTrackInteractionUsers, HasFactory;
 
     /**
      * The attributes that are mass assignable.
