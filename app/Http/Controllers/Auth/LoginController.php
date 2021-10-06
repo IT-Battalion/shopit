@@ -48,7 +48,8 @@ class LoginController extends Controller
     public function credentials(Request $request): array
     {
         return [
-            'sAMAccountName'    => $request->username,
+            //'sAMAccountName'    => $request->username,
+            'username'          => $request->username,
             'password'          => $request->password,
         ];
     }
