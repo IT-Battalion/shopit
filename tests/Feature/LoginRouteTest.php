@@ -12,8 +12,17 @@ class LoginRouteTest extends TestCase
      */
     public function loginPostWithArgsPageAccessibleTest() : void {
         $user = User::factory()->create();
-        $response = $this->post('/login', ['username' => $user['username'], 'password' => 'test']);
-        $response->assertStatus(200);
+        $this->post('/login', ['username' => $user->getAttribute('username'), 'password' => 'test']);
+        $this->assertAuthenticatedAs($user);
+    }
+
+    /**
+     * @test
+     */
+    public function loginPostWithFalseArgsPageAccessibleTest() : void {
+        $user = User::factory()->create();
+        $response = $this->post('/login', ['username' => $user->getAttribute('username'), 'password' => 'falsePW']);
+        $response->assertStatus(302);
     }
 
     //TODO: test remember me
