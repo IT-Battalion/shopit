@@ -46,7 +46,7 @@ Route::get('/admin', function () {
 Route::prefix('/shopping-cart')->group(function () {
     Route::get('/', 'ShoppingCartController@index')->name('shopping-cart');
     Route::post('/add/{product_id}', 'ShoppingCartController@add')->name('shopping-cart.add');
-    Route::post('/remove/{product_id}', 'ShoppingCartController@remove')->name('shopping-cart.remove');
+    Route::delete('/remove/{product_id}', 'ShoppingCartController@remove')->name('shopping-cart.remove');
 });
 
 Route::resource('products', 'ProductsController');
@@ -54,6 +54,28 @@ Route::resource('products.images', 'ProductImagesController')->except([
     'index', 'create', 'edit',
 ]);
 
-Route::get('/user/{id}', function ($id) {
-    return QrCode::generate(User::find($id)->name);
-})->middleware('admin');
+Route::prefix('user')->group(function () {
+    Route::get('/{id}', function ($id) {
+        return QrCode::generate(User::find($id)->name);
+    })->middleware('admin');
+
+    Route::put('/ban/{id}', function ($id) {
+        //TODO: add logic
+    })->middleware('admin');
+
+    Route::put('/unban/{id}', function ($id) {
+        //TODO: add logic
+    })->middleware('admin');
+});
+
+Route::prefix('purchase')->group(function () {
+    Route::get('/{id}', function ($id) {
+        //TODO: add logic
+    })->middleware('admin');
+});
+
+Route::prefix('bill')->group(function () {
+    Route::get('/{id}', function ($id) {
+        //TODO: add logic
+    })->middleware('admin');
+});
