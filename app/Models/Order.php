@@ -46,6 +46,15 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereTransactionConfirmedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string $customer
+ * @property string $coupon_code_id
+ * @property string|null $received_at
+ * @property User|null $received_by
+ * @property-read CouponCode|null $coupon_code
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereCouponCodeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereCustomer($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereReceivedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereReceivedBy($value)
  */
 class Order extends Model
 {
@@ -67,9 +76,9 @@ class Order extends Model
         return $this->hasOne(CouponCode::class, 'id', 'coupon_code_id');
     }
 
-    public function owner(): HasOne
+    public function customer(): HasOne
     {
-        return $this->hasOne(User::class, 'id', 'owner');
+        return $this->hasOne(User::class, 'id', 'customer');
     }
 
     public function authorizing_admin(): HasOne
