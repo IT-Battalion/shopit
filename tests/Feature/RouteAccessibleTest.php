@@ -44,7 +44,7 @@ class RouteAccessibleTest extends TestCase
     public function adminPageAsAdminAccessibleTest() : void {
         $user = User::factory(['isAdmin' => true])->create();
         $response = $this->actingAs($user)->get('/admin');
-        $response->assertLocation('/admin');
+        $response->assertStatus(200);
     }
 
     /**
@@ -53,7 +53,7 @@ class RouteAccessibleTest extends TestCase
     public function adminUserPageAccessibleTest() : void {
         $user = User::factory(['isAdmin' => false])->create();
         $response = $this->actingAs($user)->get('/admin');
-        $response->assertLocation('');
+        $response->assertStatus(500);
     }
 
     /**

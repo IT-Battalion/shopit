@@ -41,7 +41,7 @@ Route::get('/profile', function () {
 
 Route::get('/admin', function () {
     return view('admin');
-})->name('admin');
+})->middleware('admin')->name('admin');
 
 Route::prefix('/shopping-cart')->group(function () {
     Route::get('/', 'ShoppingCartController@index')->name('shopping-cart');
