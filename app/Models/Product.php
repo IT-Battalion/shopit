@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use App\Traits\UuidKeyAndTrackInteractionUsers;
+use App\Models\User;
+use App\Traits\UuidKey;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\ProductImage;
-use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
@@ -50,10 +51,11 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereUpdatedBy($value)
  * @mixin \Eloquent
+ * @method static \Database\Factories\ProductFactory factory(...$parameters)
  */
 class Product extends Model
 {
-    use UuidKeyAndTrackInteractionUsers, HasFactory;
+    use UuidKey, HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -85,29 +87,42 @@ class Product extends Model
         return $this->hasOne(User::class, 'id', 'created_by');
     }
 
+    public function createWith(User $user): Product
+    {
+        $this->created_by = $user;
+        $this->updated_by = $user;
+        return $this;
+    }
+
     public function updated_by(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'updated_by');
     }
 
-    public function images()
+    public function updateWith(User $user): Product
+    {
+        $this->updated_by = $user;
+        return $this;
+    }
+
+    public function images(): BelongsToMany
     {
         return $this->belongsToMany('App\\Models\\ProductImage');
     }
 
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo('App\\Models\\ProductCategory', 'product_category_id', 'id');
     }
 
-    public function getProductAttribute()
+    public function getProductAttribute(): string
     {
         return $this->attribute_value .
         (( $this->attribute_type && !in_array( $this->attribute_type, [ __('clothing') ] )) ?
         $this->attribute_unit : '');
     }
 
-    public function getProductAttributeType()
+    public function getProductAttributeType(): string
     {
         return $this->attributeTypeNames[$this->attribute_type];
     }

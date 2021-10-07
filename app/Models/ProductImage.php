@@ -2,12 +2,9 @@
 
 namespace App\Models;
 
-use App\Traits\TrackInteractionUsers;
 use App\Traits\UuidKey;
-use App\Traits\UuidKeyAndTrackInteractionUsers;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
@@ -31,10 +28,13 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static \Illuminate\Database\Eloquent\Builder|ProductImage whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductImage whereUpdatedBy($value)
  * @mixin \Eloquent
+ * @property string $product_id
+ * @method static \Database\Factories\ProductImageFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductImage whereProductId($value)
  */
 class ProductImage extends Model
 {
-    use UuidKeyAndTrackInteractionUsers, HasFactory;
+    use UuidKey, HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -52,8 +52,21 @@ class ProductImage extends Model
         return $this->hasOne(User::class, 'id', 'created_by');
     }
 
+    public function createWith(User $user): ProductImage
+    {
+        $this->created_by = $user;
+        $this->updated_by = $user;
+        return $this;
+    }
+
     public function updated_by(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'updated_by');
+    }
+
+    public function updateWith(User $user): ProductImage
+    {
+        $this->updated_by = $user;
+        return $this;
     }
 }
