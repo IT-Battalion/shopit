@@ -54,17 +54,17 @@ class Order extends Model
     protected $fillable = [
         'price',
         'authorizing_admin',
-        'recieved_at', //TODO received not recieved
-        'recieved_by', //TODO received not recieved
+        'received_at',
+        'received_by',
         'payed_at',
         'transaction_confirmed_by',
         'handed_over_at',
         'handed_over_by',
     ];
 
-    public function cupon_code(): HasOne //TODO: coupon not cupon
+    public function coupon_code(): HasOne
     {
-        return $this->hasOne(CouponCode::class, 'id', 'cupon_code_id'); //TODO: coupon not cupon
+        return $this->hasOne(CouponCode::class, 'id', 'coupon_code_id');
     }
 
     public function owner(): HasOne
@@ -77,9 +77,9 @@ class Order extends Model
         return $this->hasOne(User::class, 'id', 'authorizing_admin');
     }
 
-    public function recieved_by(): HasOne //TODO received not recieved
+    public function received_by(): HasOne
     {
-        return $this->hasOne(User::class, 'id', 'recieved_by'); //TODO received not recieved
+        return $this->hasOne(User::class, 'id', 'received_by');
     }
 
     public function transaction_confirmed_by(): HasOne
