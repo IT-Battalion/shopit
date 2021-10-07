@@ -13,11 +13,12 @@ class CreateOrdersTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('cupon_codes', function (Blueprint $table) { //TODO coupon not cupon
+        Schema::create('coupon_codes', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->integer('discount');
             $table->boolean('enabled');
             $table->timestamp('enabled_until');
+            $table->char('code', 32)->unique();
             $table->timestamps();
         });
 
@@ -25,10 +26,10 @@ class CreateOrdersTable extends Migration
             $table->uuid('id')->primary();
             $table->uuid('owner');
             $table->float('price', 22, 2);
-            $table->foreignUuid('cupon_code_id')->constrained(); //TODO coupon not cupon
+            $table->foreignUuid('coupon_code_id')->constrained();
             $table->uuid('authorizing_admin');
-            $table->timestamp('recieved_at')->nullable(); //TODO received not revieved
-            $table->uuid('recieved_by')->nullable(); //TODO received not revieved
+            $table->timestamp('received_at')->nullable();
+            $table->uuid('received_by')->nullable();
             $table->timestamp('payed_at')->nullable();
             $table->uuid('transaction_confirmed_by')->nullable();
             $table->timestamp('handed_over_at')->nullable();
@@ -36,7 +37,7 @@ class CreateOrdersTable extends Migration
             $table->timestamps();
             $table->foreign('owner')->references('id')->on('users');
             $table->foreign('authorizing_admin')->references('id')->on('users');
-            $table->foreign('recieved_by')->references('id')->on('users'); //TODO received not revieved
+            $table->foreign('received_by')->references('id')->on('users');
             $table->foreign('transaction_confirmed_by')->references('id')->on('users');
             $table->foreign('handed_over_by')->references('id')->on('users');
         });
@@ -71,15 +72,15 @@ class CreateOrdersTable extends Migration
         {
             Schema::table('orders', function (Blueprint $table) {
                 $table->dropForeign('orders_owner_foreign');
-                $table->dropForeign('orders_cupon_code_id_foreign'); //TODO coupon not cupon
+                $table->dropForeign('orders_coupon_code_id_foreign');
                 $table->dropForeign('orders_authorizing_admin_foreign');
-                $table->dropForeign('orders_recieved_by_foreign'); //TODO received not revieved
+                $table->dropForeign('orders_received_by_foreign');
                 $table->dropForeign('orders_transaction_confirmed_by_foreign');
                 $table->dropForeign('orders_handed_over_by_foreign');
                 $table->drop();
             });
         }
 
-        Schema::dropIfExists('cupon_codes'); //TODO coupon not cupon
+        Schema::dropIfExists('coupon_codes');
     }
 }

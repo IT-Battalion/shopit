@@ -40,12 +40,8 @@ class CreateProductsTable extends Migration
             $table->foreign('updated_by')->references('id')->on('users');
         });
 
-        Schema::create('product_product_image', function (Blueprint $table) {
-            $table->uuid('product_id');
-            $table->uuid('product_image_id');
-            $table->foreign('product_id')->references('id')->on('products');
-            $table->foreign('product_image_id')->references('id')->on('product_images');
-            $table->primary(['product_id', 'product_image_id']);
+        Schema::table('product_images', function (Blueprint $table) {
+            $table->foreignUuid('product_id')->constrained('products');
         });
     }
 
@@ -56,23 +52,13 @@ class CreateProductsTable extends Migration
      */
     public function down(): void
     {
-        if (Schema::hasTable('product_product_image'))
-        {
-            Schema::table('product_product_image', function (Blueprint $table) {
-                $table->dropForeign('product_product_image_product_id_foreign');
-                $table->dropForeign('product_product_image_product_image_id_foreign');
-                $table->drop();
+        if (Schema::hasColumn('product_images', 'product_id')) {
+            Schema::table('product_images', function (Blueprint $table) {
+                $table->dropForeign('product_images_product_id_foreign');
             });
         }
 
-        if (Schema::hasTable('products'))
-        {
-            Schema::table('products', function (Blueprint $table) {
-                $table->dropForeign('products_thumbnail_foreign');
-                $table->drop();
-            });
-        }
-
+        Schema::dropIfExists('products');
         Schema::dropIfExists('product_images');
     }
 }
