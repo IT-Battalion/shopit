@@ -35,14 +35,6 @@ Route::namespace('Auth')->group(function () {
     Route::post('/logout', 'LoginController@logout')->name('logout');
 });
 
-Route::get('/profile', function () {
-    return view('profile');
-})->name('profile');
-
-Route::get('/admin', function () {
-    return view('admin');
-})->middleware('admin')->name('admin');
-
 Route::prefix('/shopping-cart')->group(function () {
     Route::get('/', 'ShoppingCartController@index')->name('shopping-cart');
     Route::post('/add/{product_id}', 'ShoppingCartController@add')->name('shopping-cart.add');
@@ -53,29 +45,20 @@ Route::resource('products', 'ProductsController');
 Route::resource('products.images', 'ProductImagesController')->except([
     'index', 'create', 'edit',
 ]);
+Route::resource('admin', 'AdminController')->middleware('admin');
+Route::resource('profile', 'ProfileController');
 
 Route::prefix('user')->group(function () {
-    Route::get('/{id}', function ($id) {
-        return QrCode::generate(User::find($id)->name);
-    })->middleware('admin');
-
-    Route::put('/ban/{id}', function ($id) {
-        //TODO: add logic
-    })->middleware('admin');
-
-    Route::put('/unban/{id}', function ($id) {
-        //TODO: add logic
-    })->middleware('admin');
+    Route::get('/{id}', 'UserController@show')->middleware('admin');
+    Route::put('/ban/{id}', 'UserController@ban')->middleware('admin');
+    Route::put('/unban/{id}', 'UserController@unban')->middleware('admin');
 });
 
-Route::prefix('purchase')->group(function () {
-    Route::get('/{id}', function ($id) {
-        //TODO: add logic
-    })->middleware('admin');
+Route::prefix('invoice')->group(function () {
+    Route::get('/{invoice_id}', 'InvoiceController@show')->middleware('admin');
+    Route::get('/download/{invoice_id}', 'InvoiceController@download')->middleware('admin');
 });
 
-Route::prefix('bill')->group(function () {
-    Route::get('/{id}', function ($id) {
-        //TODO: add logic
-    })->middleware('admin');
+Route::prefix('order')->group(function () {
+    Route::get('/{order_id}', 'OrderController@show')->middleware('admin');
 });

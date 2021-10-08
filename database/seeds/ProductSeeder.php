@@ -17,8 +17,8 @@ class ProductSeeder extends Seeder
     public function run()
     {
         Product::factory()
-            ->has(User::factory()->count(200), ['isAdmin' => true])
-            ->has(ProductImage::factory()->count(200))
+            ->has(User::factory(), ['isAdmin' => true])
+            ->has(ProductImage::factory())
             ->count(200)->create();
     }
 }
