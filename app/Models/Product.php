@@ -3,11 +3,16 @@
 namespace App\Models;
 
 use App\Traits\UuidKey;
+use Database\Factories\ProductFactory;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Product
@@ -21,36 +26,38 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property int $available
  * @property User|null $created_by
  * @property User|null $updated_by
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property string $product_category_id
  * @property string $attribute_value
  * @property string $attribute_type
  * @property string $attribute_unit
- * @property-read \App\Models\ProductCategory $category
+ * @property-read ProductCategory $category
  * @property-read mixed $product
- * @property-read \Illuminate\Database\Eloquent\Collection|ProductImage[] $images
+ * @property-read Collection|ProductImage[] $images
  * @property-read int|null $images_count
- * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Product query()
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereAttributeType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereAttributeUnit($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereAttributeValue($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereAvailable($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereCreatedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product wherePrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereProductCategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereSale($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereThumbnail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereUpdatedBy($value)
- * @mixin \Eloquent
- * @method static \Database\Factories\ProductFactory factory(...$parameters)
+ * @method static Builder|Product newModelQuery()
+ * @method static Builder|Product newQuery()
+ * @method static Builder|Product query()
+ * @method static Builder|Product whereAttributeType($value)
+ * @method static Builder|Product whereAttributeUnit($value)
+ * @method static Builder|Product whereAttributeValue($value)
+ * @method static Builder|Product whereAvailable($value)
+ * @method static Builder|Product whereCreatedAt($value)
+ * @method static Builder|Product whereCreatedBy($value)
+ * @method static Builder|Product whereDescription($value)
+ * @method static Builder|Product whereId($value)
+ * @method static Builder|Product whereName($value)
+ * @method static Builder|Product wherePrice($value)
+ * @method static Builder|Product whereProductCategoryId($value)
+ * @method static Builder|Product whereSale($value)
+ * @method static Builder|Product whereThumbnail($value)
+ * @method static Builder|Product whereUpdatedAt($value)
+ * @method static Builder|Product whereUpdatedBy($value)
+ * @mixin Eloquent
+ * @method static ProductFactory factory(...$parameters)
+ * @property-read Collection|ProductAttribute[] $attributes
+ * @property-read int|null $attributes_count
  */
 class Product extends Model
 {
@@ -67,12 +74,6 @@ class Product extends Model
         'thumbnail',
         'price',
         'available',
-    ];
-
-    protected $attributeTypeNames = [
-        'clothing' => 'Kleidungsgröße',
-        'weight' => 'Gewicht',
-        'volume' => 'Volumen',
     ];
 
     public function thumbnail(): HasOne
@@ -105,23 +106,16 @@ class Product extends Model
 
     public function images(): HasMany
     {
-        return $this->hasMany('App\\Models\\ProductImage');
+        return $this->hasMany(ProductImage::class);
+    }
+
+    public function attributes(): HasMany
+    {
+        return $this->hasMany(ProductAttribute::class);
     }
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo('App\\Models\\ProductCategory', 'product_category_id', 'id');
-    }
-
-    public function getProductAttribute(): string
-    {
-        return $this->attribute_value .
-        (( $this->attribute_type && !in_array( $this->attribute_type, [ __('clothing') ] )) ?
-        $this->attribute_unit : '');
-    }
-
-    public function getProductAttributeType(): string
-    {
-        return $this->attributeTypeNames[$this->attribute_type];
+        return $this->belongsTo(ProductCategory::class);
     }
 }

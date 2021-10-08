@@ -27,7 +27,7 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('customer')->constrained('users');
-            $table->float('price', 22, 2);
+            $table->float('price', 22);
             $table->foreignUuid('coupon_code_id')->constrained();
             $table->foreignUuid('authorizing_admin')->nullable()->constrained('users');
             $table->timestamp('received_at')->nullable();
@@ -39,13 +39,38 @@ class CreateOrdersTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('order_product', function (Blueprint $table) {
-            $table->foreignUuid('order_id')->constrained();
-            $table->foreignUuid('product_id')->constrained();
-            $table->integer('count');
-            $table->integer('discount');
+        Schema::create('order_product_images', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('path');
+            $table->string('type');
+            $table->foreignUuid('created_by')->constrained('users');
+            $table->foreignUuid('updated_by')->constrained('users');
             $table->timestamps();
-            $table->primary(['order_id', 'product_id']);
+        });
+
+        Schema::create('order_products', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->foreignUuid('order_id')->constrained();
+            $table->integer('count');
+            $table->string('name');
+            $table->string('description');
+            $table->foreignUuid('thumbnail')->constrained('order_product_images');
+            $table->float('price', 12);
+            $table->float('tax', 12);
+            $table->integer('available');
+            $table->foreignUuid('created_by')->constrained('users');
+            $table->foreignUuid('updated_by')->constrained('users');
+            $table->timestamps();
+        });
+
+        Schema::create('order_product_attributes', function (Blueprint $table) {
+            $table->foreignUuid('order_product_id')->primary()->constrained();
+            $table->integer('type');
+            $table->text('values_chosen');
+        });
+
+        Schema::table('order_product_images', function (Blueprint $table) {
+            $table->foreignUuid('order_product_id')->constrained();
         });
     }
 
@@ -56,7 +81,14 @@ class CreateOrdersTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('order_product');
+        if (Schema::hasTable('order_product_images') && Schema::hasColumn('order_product_images', 'order_product_id')) {
+            Schema::table('order_product_images', function (Blueprint $table) {
+                $table->dropForeign('order_product_images_order_product_id_foreign');
+            });
+        }
+        Schema::dropIfExists('order_product_attributes');
+        Schema::dropIfExists('order_products');
+        Schema::dropIfExists('order_product_images');
         Schema::dropIfExists('orders');
         Schema::dropIfExists('coupon_codes');
     }
