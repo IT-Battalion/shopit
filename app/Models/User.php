@@ -3,14 +3,20 @@
 namespace App\Models;
 
 use App\Traits\UuidKey;
+use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use LdapRecord\Laravel\Auth\LdapAuthenticatable;
 use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
 use LdapRecord\Laravel\Auth\HasLdapUser;
+use LdapRecord\Models\Model;
 
 /**
  * App\Models\User
@@ -28,16 +34,16 @@ use LdapRecord\Laravel\Auth\HasLdapUser;
  * @property int $isAdmin
  * @property int $enabled
  * @property string|null $remember_token
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property string|null $guid
  * @property string|null $domain
- * @property-read \App\Models\Model|null $ldap
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read Model|null $ldap
+ * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $shopping_cart
+ * @property-read Collection|Product[] $shopping_cart
  * @property-read int|null $shopping_cart_count
- * @method static \Database\Factories\UserFactory factory(...$parameters)
+ * @method static UserFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
@@ -57,6 +63,10 @@ use LdapRecord\Laravel\Auth\HasLdapUser;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
+ * @property int $deleted
+ * @property string|null $deleted_since
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereDeleted($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereDeletedSince($value)
  */
 
 class User extends Authenticatable implements LdapAuthenticatable
