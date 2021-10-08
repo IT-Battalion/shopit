@@ -27,8 +27,8 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('description');
             $table->foreignUuid('thumbnail')->constrained('product_images');
-            $table->float('price', 12, 2);
-            $table->integer('sale');
+            $table->float('price', 12);
+            $table->float('tax', 12);
             $table->integer('available');
             $table->foreignUuid('created_by')->constrained('users');
             $table->foreignUuid('updated_by')->constrained('users');
@@ -36,7 +36,13 @@ class CreateProductsTable extends Migration
         });
 
         Schema::table('product_images', function (Blueprint $table) {
-            $table->foreignUuid('product_id')->constrained('products');
+            $table->foreignUuid('product_id')->constrained();
+        });
+
+        Schema::create('product_attributes', function (Blueprint $table) {
+            $table->foreignUuid('product_id')->primary()->constrained();
+            $table->integer('type');
+            $table->text('values_available');
         });
     }
 
@@ -52,6 +58,7 @@ class CreateProductsTable extends Migration
                 $table->dropForeign('product_images_product_id_foreign');
             });
         }
+        Schema::dropIfExists('product_attributes');
         Schema::dropIfExists('products');
         Schema::dropIfExists('product_images');
     }

@@ -3,32 +3,37 @@
 namespace App\Models;
 
 use App\Traits\UuidKey;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\CouponCode
  *
- * @method static \Illuminate\Database\Eloquent\Builder|CouponCode newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|CouponCode newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|CouponCode query()
- * @mixin \Eloquent
+ * @method static Builder|CouponCode newModelQuery()
+ * @method static Builder|CouponCode newQuery()
+ * @method static Builder|CouponCode query()
+ * @mixin Eloquent
  * @property string $id
  * @property int $discount
  * @property int $enabled
  * @property string $enabled_until
  * @property string $code
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|CouponCode whereCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CouponCode whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CouponCode whereDiscount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CouponCode whereEnabled($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CouponCode whereEnabledUntil($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CouponCode whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CouponCode whereUpdatedAt($value)
- * @property-read \App\Models\User|null $created_by
- * @property-read \App\Models\User|null $updated_by
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|CouponCode whereCode($value)
+ * @method static Builder|CouponCode whereCreatedAt($value)
+ * @method static Builder|CouponCode whereDiscount($value)
+ * @method static Builder|CouponCode whereEnabled($value)
+ * @method static Builder|CouponCode whereEnabledUntil($value)
+ * @method static Builder|CouponCode whereId($value)
+ * @method static Builder|CouponCode whereUpdatedAt($value)
+ * @property-read User|null $created_by
+ * @property-read User|null $updated_by
+ * @method static Builder|CouponCode whereCreatedBy($value)
+ * @method static Builder|CouponCode whereUpdatedBy($value)
  */
 class CouponCode extends Model
 {
