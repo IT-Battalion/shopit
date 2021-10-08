@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use App\Traits\UuidKey;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
@@ -67,7 +66,6 @@ class Product extends Model
         'description',
         'thumbnail',
         'price',
-        'sale',
         'available',
     ];
 
@@ -105,9 +103,9 @@ class Product extends Model
         return $this;
     }
 
-    public function images(): BelongsToMany
+    public function images(): HasMany
     {
-        return $this->belongsToMany('App\\Models\\ProductImage');
+        return $this->hasMany('App\\Models\\ProductImage');
     }
 
     public function category(): BelongsTo
