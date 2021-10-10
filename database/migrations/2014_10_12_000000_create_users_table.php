@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('lang')->default('de');
             $table->boolean('isAdmin')->default(false);
             $table->boolean('enabled')->default(true);
+            $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
         });
