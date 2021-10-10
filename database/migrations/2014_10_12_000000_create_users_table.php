@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('employeeType');
             $table->string('class')->nullable();
-            $table->string('lang')->default('de');
+            $table->string('lang')->default('de-AT');
             $table->boolean('isAdmin')->default(false);
             $table->boolean('enabled')->default(true);
             $table->softDeletes();

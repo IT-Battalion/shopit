@@ -28,7 +28,7 @@ class CreateOrdersTable extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('customer')->constrained('users');
             $table->float('price', 22);
-            $table->foreignUuid('coupon_code_id')->constrained();
+            $table->foreignUuid('coupon_code_id')->nullable()->constrained();
             $table->foreignUuid('authorizing_admin')->nullable()->constrained('users');
             $table->timestamp('received_at')->nullable();
             $table->foreignUuid('received_by')->nullable()->constrained('users');
