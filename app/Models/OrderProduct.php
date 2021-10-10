@@ -52,6 +52,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OrderProduct whereUpdatedAt($value)
  * @method static Builder|OrderProduct whereUpdatedBy($value)
  * @mixin Eloquent
+ * @property float $tax
+ * @method static Builder|OrderProduct whereTax($value)
  */
 class OrderProduct extends Model
 {
