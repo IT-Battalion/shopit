@@ -6,7 +6,9 @@ use App\Traits\UuidKey;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
@@ -67,11 +69,16 @@ use LdapRecord\Models\Model;
  * @property string|null $deleted_since
  * @method static \Illuminate\Database\Eloquent\Builder|User whereDeleted($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereDeletedSince($value)
+ * @property Carbon|null $deleted_at
+ * @method static Builder|User onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereDeletedAt($value)
+ * @method static Builder|User withTrashed()
+ * @method static Builder|User withoutTrashed()
  */
 
 class User extends Authenticatable implements LdapAuthenticatable
 {
-    use Notifiable, AuthenticatesWithLdap, UuidKey, HasLdapUser, HasFactory;
+    use Notifiable, AuthenticatesWithLdap, UuidKey, HasLdapUser, HasFactory, SoftDeletes, Prunable;
 
     /**
      * The attributes that are mass assignable.
@@ -108,5 +115,16 @@ class User extends Authenticatable implements LdapAuthenticatable
             ->belongsToMany(Product::class, 'shopping_cart')
             ->withPivot(['count'])
             ->withTimestamps();
+    }
+
+    public function prunable()
+    {
+        return static::whereNotNull('deleted_at')
+            ->whereRaw('(SELECT customer FROM orders
+        WHERE users.id = orders.customer
+        GROUP BY customer) IS NULL'); // An diese Query wird ein ORDER BY `id` angehängt was JOINS unmöglich macht,
+                                      // da dies nicht zwischen der orders.id und der users.id unterscheiden könnte
+                                      // deswegen die Subquery. Die Subquery ist in raw SQL, da der Query Builder für
+                                      // Subqueries keine Möglichkeit bietet mit IS NULL zu vergleichen
     }
 }
