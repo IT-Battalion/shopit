@@ -58,6 +58,8 @@ use Illuminate\Support\Carbon;
  * @method static ProductFactory factory(...$parameters)
  * @property-read Collection|ProductAttribute[] $attributes
  * @property-read int|null $attributes_count
+ * @property float $tax
+ * @method static Builder|Product whereTax($value)
  */
 class Product extends Model
 {
