@@ -53,7 +53,26 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application URL SUFFIX
+    |--------------------------------------------------------------------------
+    |
+    | This suffix is used when the application can't use any form of rewrite to
+    | to remove the index.php file from the url. In that case set this
+    | configuration value to 'index.php'.
+    */
+
     'url_root_suffix' => env('APP_URL_ROOT_SUFFIX', ''),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Asset URL
+    |--------------------------------------------------------------------------
+    |
+    | This url is used when accessing assets.
+    */
 
     'asset_url' => env('ASSET_URL', null),
 
