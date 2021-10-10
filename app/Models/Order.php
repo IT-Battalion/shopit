@@ -3,10 +3,9 @@
 namespace App\Models;
 
 use App\Traits\UuidKey;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\CouponCode;
-use App\Models\User;
-use App\Models\Product;
+use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -29,36 +28,36 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read CouponCode|null $cupon_code
  * @property-read \Illuminate\Database\Eloquent\Collection|Product[] $products
  * @property-read int|null $products_count
- * @method static \Illuminate\Database\Eloquent\Builder|Order newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Order newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Order query()
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereAuthorizingAdmin($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereCuponCodeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereHandedOverAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereHandedOverBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereOwner($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order wherePayedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order wherePrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereRecievedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereRecievedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereTransactionConfirmedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereUpdatedAt($value)
+ * @method static Builder|Order newModelQuery()
+ * @method static Builder|Order newQuery()
+ * @method static Builder|Order query()
+ * @method static Builder|Order whereAuthorizingAdmin($value)
+ * @method static Builder|Order whereCreatedAt($value)
+ * @method static Builder|Order whereCuponCodeId($value)
+ * @method static Builder|Order whereHandedOverAt($value)
+ * @method static Builder|Order whereHandedOverBy($value)
+ * @method static Builder|Order whereId($value)
+ * @method static Builder|Order whereOwner($value)
+ * @method static Builder|Order wherePayedAt($value)
+ * @method static Builder|Order wherePrice($value)
+ * @method static Builder|Order whereRecievedAt($value)
+ * @method static Builder|Order whereRecievedBy($value)
+ * @method static Builder|Order whereTransactionConfirmedBy($value)
+ * @method static Builder|Order whereUpdatedAt($value)
  * @mixin \Eloquent
  * @property string $customer
  * @property string $coupon_code_id
  * @property string|null $received_at
  * @property User|null $received_by
  * @property-read CouponCode|null $coupon_code
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereCouponCodeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereCustomer($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereReceivedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereReceivedBy($value)
+ * @method static Builder|Order whereCouponCodeId($value)
+ * @method static Builder|Order whereCustomer($value)
+ * @method static Builder|Order whereReceivedAt($value)
+ * @method static Builder|Order whereReceivedBy($value)
  */
 class Order extends Model
 {
-    use UuidKey;
+    use UuidKey, Prunable;
 
     protected $fillable = [
         'price',
@@ -107,5 +106,16 @@ class Order extends Model
             ->belongsToMany(Product::class)
             ->withPivot(['count', 'discount'])
             ->withTimestamps();
+    }
+
+    public function prunable()
+    {
+        if (config('shop.delete_after_invoice_retention_period')) {
+            return static::whereTime(
+                'handed_over_at',
+                '<=',
+                now()->subYears(config('shop.invoice_retention_period')));
+        }
+        return static::whereRaw('1=0');
     }
 }
