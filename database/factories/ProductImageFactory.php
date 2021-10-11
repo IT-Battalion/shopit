@@ -2,9 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Product;
 use App\Models\ProductImage;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductImageFactory extends Factory
@@ -23,12 +21,12 @@ class ProductImageFactory extends Factory
      */
     public function definition(): array
     {
-        $user = User::factory();
         return [
             'path' => $this->faker->filePath(),
             'type' => 'IMG_JPG',
-            'created_by' => $user,
-            'updated_by' => $user,
+            /*'product_id' => Product::factory(),
+            'created_by' => User::factory(),
+            'updated_by' => User::factory()*/
         ];
     }
 }
