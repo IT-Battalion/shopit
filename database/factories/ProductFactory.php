@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductFactory extends Factory
@@ -27,9 +28,11 @@ class ProductFactory extends Factory
             'price' => $this->faker->numberBetween(1, 300),
             'tax' => $this->faker->numberBetween(0, 100),
             'available' => $this->faker->numberBetween(0, 1000),
-            /*'thumbnail' => ProductImage::factory(),
-            'created_by' => User::factory(),
-            'updated_by' => User::factory()*/
+//            'thumbnail' => ProductImage::factory(),
+            'created_by' => User::factory()->state(['isAdmin' => true]),
+            'updated_by' => function ($attributes) {
+                return $attributes['created_by'];
+            }
         ];
     }
 }
