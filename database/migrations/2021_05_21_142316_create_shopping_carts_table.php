@@ -14,8 +14,8 @@ class CreateShoppingCartsTable extends Migration
     public function up(): void
     {
         Schema::create('shopping_cart', function (Blueprint $table) {
-            $table->foreignUuid('user_id')->constrained();
-            $table->foreignUuid('product_id')->constrained();
+            $table->foreignId('user_id')->constrained();
+            $table->foreignid('product_id')->constrained();
             $table->integer('count');
             $table->timestamps();
             $table->index('user_id');
@@ -29,13 +29,6 @@ class CreateShoppingCartsTable extends Migration
      */
     public function down(): void
     {
-        if (Schema::hasTable('shopping_cart'))
-        {
-            Schema::table('shopping_cart', function (Blueprint $table) {
-                $table->dropForeign('shopping_cart_product_id_foreign');
-                $table->dropForeign('shopping_cart_user_id_foreign');
-                $table->drop();
-            });
-        }
+        Schema::dropIfExists('shopping_cart');
     }
 }

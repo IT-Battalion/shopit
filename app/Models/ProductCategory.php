@@ -30,8 +30,6 @@ use Illuminate\Support\Carbon;
  */
 class ProductCategory extends Model
 {
-    use UuidKey;
-
     protected $fillable = [
         'name'
     ];

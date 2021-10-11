@@ -63,7 +63,7 @@ use Illuminate\Support\Carbon;
  */
 class Product extends Model
 {
-    use UuidKey, HasFactory;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.

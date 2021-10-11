@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\UuidKey;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,7 +23,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class OrderProductAttribute extends Model
 {
-    use HasFactory, UuidKey;
+    use HasFactory;
+
+    protected $primaryKey = 'order_product_id';
 
     protected $fillable = [
         'type',

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\UuidKey;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -37,8 +36,6 @@ use Illuminate\Support\Carbon;
  */
 class CouponCode extends Model
 {
-    use UuidKey;
-
     protected $fillable = [
         'discount',
         'enabled',

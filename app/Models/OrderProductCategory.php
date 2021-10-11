@@ -31,7 +31,7 @@ use Illuminate\Support\Carbon;
  */
 class OrderProductCategory extends Model
 {
-    use UuidKey, HasFactory;
+    use HasFactory;
 
     protected $fillable = [
         'name'

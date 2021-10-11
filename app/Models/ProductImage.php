@@ -34,7 +34,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class ProductImage extends Model
 {
-    use UuidKey, HasFactory;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
