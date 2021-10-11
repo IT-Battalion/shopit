@@ -14,23 +14,23 @@ class CreateCategoriesTable extends Migration
     public function up(): void
     {
         Schema::create('product_categories', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->id();
             $table->string('name')->index();
             $table->timestamps();
         });
 
         Schema::create('order_product_categories', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->id();
             $table->string('name')->index();
             $table->timestamps();
         });
 
         Schema::table('products', function (Blueprint $table) {
-            $table->foreignUuid('product_category_id')->constrained();
+            $table->foreignId('product_category_id')->constrained();
         });
 
         Schema::table('order_products', function (Blueprint $table) {
-            $table->foreignUuid('order_product_category_id')->constrained();
+            $table->foreignId('order_product_category_id')->constrained();
         });
     }
 

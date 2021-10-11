@@ -14,8 +14,8 @@ class CreateHighlightedProductsTable extends Migration
     public function up(): void
     {
         Schema::create('highlighted_products', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->foreignUuid('product_id')->constrained();
+            $table->id();
+            $table->foreignId('product_id')->constrained();
         });
     }
 

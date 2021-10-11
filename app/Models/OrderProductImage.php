@@ -36,7 +36,7 @@ use Illuminate\Support\Carbon;
  */
 class OrderProductImage extends Model
 {
-    use HasFactory, UuidKey;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.

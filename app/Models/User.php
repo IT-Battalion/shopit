@@ -78,7 +78,7 @@ use LdapRecord\Models\Model;
 
 class User extends Authenticatable implements LdapAuthenticatable
 {
-    use Notifiable, AuthenticatesWithLdap, UuidKey, HasLdapUser, HasFactory, SoftDeletes, Prunable;
+    use Notifiable, AuthenticatesWithLdap, HasLdapUser, HasFactory, SoftDeletes, Prunable;
 
     /**
      * The attributes that are mass assignable.

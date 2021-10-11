@@ -24,7 +24,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ProductAttribute extends Model
 {
-    use HasFactory, UuidKey;
+    use UuidKey;
+
+    protected $primaryKey = 'product_id';
 
     protected $fillable = [
         'type',
