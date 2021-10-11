@@ -3,8 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Product;
-use App\Models\ProductImage;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductFactory extends Factory
@@ -23,16 +21,15 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-        $user = User::factory();
         return [
-            'name' => $this->faker->name,
+            'name' => $this->faker->word,
             'description' => $this->faker->text,
-            'thumbnail' => ProductImage::factory(),
             'price' => $this->faker->numberBetween(1, 300),
-            'sale' => $this->faker->numberBetween(0, 100),
+            'tax' => $this->faker->numberBetween(0, 100),
             'available' => $this->faker->numberBetween(0, 1000),
-            'created_by' => $user,
-            'updated_by' => $user
+            /*'thumbnail' => ProductImage::factory(),
+            'created_by' => User::factory(),
+            'updated_by' => User::factory()*/
         ];
     }
 }
