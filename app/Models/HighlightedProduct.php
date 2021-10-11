@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\UuidKey;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -25,8 +24,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class HighlightedProduct extends Model
 {
-    use UuidKey;
-
     public function products(): HasOne
     {
         return $this->hasOne(Product::class);

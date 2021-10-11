@@ -14,33 +14,33 @@ class CreateProductsTable extends Migration
     public function up(): void
     {
         Schema::create('product_images', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->id();
             $table->string('path');
             $table->string('type');
-            $table->foreignUuid('created_by')->constrained('users');
-            $table->foreignUuid('updated_by')->constrained('users');
+            $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('updated_by')->constrained('users');
             $table->timestamps();
         });
 
         Schema::create('products', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->id();
             $table->string('name');
             $table->string('description');
-            $table->foreignUuid('thumbnail')->constrained('product_images');
+            $table->foreignId('thumbnail')->constrained('product_images');
             $table->float('price', 12);
             $table->float('tax', 12);
             $table->integer('available');
-            $table->foreignUuid('created_by')->constrained('users');
-            $table->foreignUuid('updated_by')->constrained('users');
+            $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('updated_by')->constrained('users');
             $table->timestamps();
         });
 
         Schema::table('product_images', function (Blueprint $table) {
-            $table->foreignUuid('product_id')->constrained();
+            $table->foreignId('product_id')->constrained();
         });
 
         Schema::create('product_attributes', function (Blueprint $table) {
-            $table->foreignUuid('product_id')->primary()->constrained();
+            $table->foreignId('product_id')->primary()->constrained();
             $table->integer('type');
             $table->text('values_available');
         });

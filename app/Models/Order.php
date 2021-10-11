@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\UuidKey;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
@@ -57,7 +56,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class Order extends Model
 {
-    use UuidKey, Prunable;
+    use Prunable;
 
     protected $fillable = [
         'price',
