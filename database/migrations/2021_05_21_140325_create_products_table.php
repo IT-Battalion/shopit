@@ -26,7 +26,7 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->foreignId('thumbnail')->nullable()->default(null)->constrained('product_images');
+            $table->foreignId('thumbnail')->nullable()->constrained('product_images');
             $table->float('price', 12);
             $table->float('tax', 12);
             $table->integer('available');

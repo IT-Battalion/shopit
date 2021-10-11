@@ -53,7 +53,7 @@ class CreateOrdersTable extends Migration
             $table->integer('count');
             $table->string('name');
             $table->string('description');
-            $table->foreignId('thumbnail')->constrained('order_product_images');
+            $table->foreignId('thumbnail')->nullable()->constrained('order_product_images');
             $table->float('price', 12);
             $table->float('tax', 12);
             $table->integer('available');
