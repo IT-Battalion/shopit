@@ -127,4 +127,24 @@ class User extends Authenticatable implements LdapAuthenticatable
                                       // deswegen die Subquery. Die Subquery ist in raw SQL, da der Query Builder für
                                       // Subqueries keine Möglichkeit bietet mit IS NULL zu vergleichen
     }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled === 1;
+    }
+
+    public function enable()
+    {
+        $this->enabled = 1;
+    }
+
+    public function disable()
+    {
+        $this->enabled = 0;
+    }
+
+    public function setEnabled(bool $enabled)
+    {
+        $this->enabled = $enabled ? 1 : 0;
+    }
 }
