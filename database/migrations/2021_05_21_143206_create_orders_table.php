@@ -20,6 +20,7 @@ class CreateOrdersTable extends Migration
             $table->timestamp('enabled_until');
             $table->char('code', 32)->unique();
             $table->foreignId('updated_by')->constrained('users');
+            $table->foreignId('created_by')->constrained('users');
             $table->timestamps();
         });
 
