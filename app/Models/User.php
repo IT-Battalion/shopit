@@ -73,6 +73,8 @@ use LdapRecord\Models\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereDeletedAt($value)
  * @method static Builder|User withTrashed()
  * @method static Builder|User withoutTrashed()
+ * @property string|null $reason_for_disabling
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereReasonForDisabling($value)
  */
 
 class User extends Authenticatable implements LdapAuthenticatable
