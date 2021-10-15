@@ -29,11 +29,13 @@ class CreateOrdersTable extends Migration
             $table->foreignId('customer')->constrained('users');
             $table->float('price', 22);
             $table->foreignId('coupon_code_id')->nullable()->constrained();
-            $table->foreignId('authorizing_admin')->nullable()->constrained('users');
-            $table->timestamp('received_at')->nullable();
-            $table->foreignId('received_by')->nullable()->constrained('users');
             $table->timestamp('payed_at')->nullable();
             $table->foreignId('transaction_confirmed_by')->nullable()->constrained('users');
+            $table->timestamp('products_ordered_at')->nullable(); // user order timestamp is the "created_at" column added by
+                                                             // the default timestamps with `$table->timestamps()`
+            $table->foreignId('products_ordered_by')->nullable()->constrained('users');
+            $table->timestamp('received_at')->nullable();
+            $table->foreignId('received_by')->nullable()->constrained('users');
             $table->timestamp('handed_over_at')->nullable();
             $table->foreignId('handed_over_by')->nullable()->constrained('users');
             $table->timestamps();
