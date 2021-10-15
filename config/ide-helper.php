@@ -1,4 +1,3 @@
-        User::whereClass();
 <?php
 
 return [
