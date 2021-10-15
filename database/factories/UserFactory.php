@@ -71,9 +71,12 @@ class UserFactory extends Factory
             'employeeType' => $employeeType,
             'class' => $this->generateClass(),
             'lang' => 'de-AT',
-            'isAdmin' => $this->faker->boolean(),
             'guid' => $this->faker->unique()->uuid(),
         ];
+    }
+
+    public function disabled() {
+        return $this->state(["disabled" => true]);
     }
 
     /**
