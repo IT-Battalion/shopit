@@ -1,0 +1,44 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateIcons extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('icons', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('artist');
+            $table->string('provider');
+            $table->string('license');
+            $table->string('mimetype');
+            $table->timestamps();
+        });
+
+        Schema::table('product_categories', function (Blueprint $table) {
+           $table->foreignId('icon_id')->after('name')->constrained();
+        });
+
+        Schema::table('order_product_categories', function (Blueprint $table) {
+            $table->foreignId('icon_id')->after('name')->constrained();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('icons');
+    }
+}
