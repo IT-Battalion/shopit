@@ -56,6 +56,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property int|null $products_ordered_by
  * @method static Builder|Order whereProductsOrderedAt($value)
  * @method static Builder|Order whereProductsOrderedBy($value)
+ * @property float $price
+ * @method static Builder|Order whereId($value)
  */
 class Order extends Model
 {
