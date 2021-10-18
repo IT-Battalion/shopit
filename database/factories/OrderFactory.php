@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Date;
 class OrderFactory extends Factory
 {
     /**
+     * The number of coupon codes
+     */
+    public const COUPON_CODE_CHANCE = 25;
+
+    /**
      * The name of the factory's corresponding model.
      *
      * @var string
@@ -30,10 +35,9 @@ class OrderFactory extends Factory
         $admin_ordered = Admin::all()->random()->id;
         $admin_transaction = Admin::all()->random()->id;
 
-        $hasCoupon = $this->faker->boolean(25);
+        $hasCoupon = $this->faker->boolean(self::COUPON_CODE_CHANCE);
         $coupon = $hasCoupon ? function() {
-            $dbCoupon = CouponCode::whereEnabled(true)->inRandomOrder()->first();
-            $dbCoupon->update(['enabled' => false]);
+            $dbCoupon = CouponCode::whereEnabled(true)->get()->random();
             return $dbCoupon->id;
         } : null;
 
