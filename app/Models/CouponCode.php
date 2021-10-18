@@ -45,6 +45,10 @@ class CouponCode extends Model
         'enabled_until',
     ];
 
+    protected $casts = [
+        'enabled' => 'boolean',
+    ];
+
     public function created_by(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'created_by');

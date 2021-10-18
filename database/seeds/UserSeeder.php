@@ -7,6 +7,17 @@ use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
 {
+
+    /**
+     * @var int Amount of admin users that get seeded
+     */
+    public const adminCount = 5;
+
+    /**
+     * @var int Amount of normal users that get seeded
+     */
+    public const normalUserCount = 20;
+
     /**
      * Run the database seeds.
      *
@@ -16,11 +27,11 @@ class UserSeeder extends Seeder
     {
         User::factory()
             ->state(["isAdmin" => true])
-            ->count(7)
+            ->count(self::adminCount)
             ->create();
         User::factory()
             ->state(["isAdmin" => false])
-            ->count(20)
-            ->create(20);
+            ->count(self::normalUserCount)
+            ->create();
     }
 }

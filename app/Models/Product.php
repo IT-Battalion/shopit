@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\UuidKey;
 use Database\Factories\ProductFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;

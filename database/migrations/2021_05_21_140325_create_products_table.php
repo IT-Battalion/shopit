@@ -40,9 +40,11 @@ class CreateProductsTable extends Migration
         });
 
         Schema::create('product_attributes', function (Blueprint $table) {
-            $table->foreignId('product_id')->primary()->constrained();
+            $table->id();
+            $table->foreignId('product_id')->constrained();
             $table->integer('type');
             $table->text('values_available');
+            $table->timestamps();
         });
     }
 
