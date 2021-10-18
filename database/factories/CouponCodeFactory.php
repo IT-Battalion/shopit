@@ -7,7 +7,7 @@ use App\Models\CouponCode;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-class CouponFactory extends Factory
+class CouponCodeFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
