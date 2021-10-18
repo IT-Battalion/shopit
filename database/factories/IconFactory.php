@@ -21,12 +21,15 @@ class IconFactory extends Factory
      */
     public function definition(): array
     {
+        $icon_image = $this->faker->image(null, 24, 24);
+
         return [
             'name' => 'Portrait deiner Mutter',
             'artist' => 'Deine Mutter',
             'provider' => 'The Noun Project',
             'license' => 'CC BY 3.0',
             'mimetype' => 'image/png',
+            'path' => $icon_image,
         ];
     }
 }
