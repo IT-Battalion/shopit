@@ -1,9 +1,6 @@
 <?php
 
-use App\Models\User;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,20 +42,21 @@ Route::resource('products', 'ProductsController');
 Route::resource('products.images', 'ProductImagesController')->except([
     'index', 'create', 'edit',
 ]);
-Route::resource('admin', 'AdminController')->middleware('admin');
 Route::resource('profile', 'ProfileController');
 
-Route::prefix('user')->group(function () {
-    Route::get('/{id}', 'UserController@show')->middleware('admin');
-    Route::put('/ban/{id}', 'UserController@ban')->middleware('admin');
-    Route::put('/unban/{id}', 'UserController@unban')->middleware('admin');
-});
+Route::prefix('admin')->group(function () {
+    Route::prefix('user')->group(function () {
+        Route::get('/{id}', 'UserController@show')->middleware('admin');
+        Route::put('/ban/{id}', 'UserController@ban')->middleware('admin');
+        Route::put('/unban/{id}', 'UserController@unban')->middleware('admin');
+    });
 
-Route::prefix('invoice')->group(function () {
-    Route::get('/{invoice_id}', 'InvoiceController@show')->middleware('admin');
-    Route::get('/download/{invoice_id}', 'InvoiceController@download')->middleware('admin');
-});
+    Route::prefix('invoice')->group(function () {
+        Route::get('/{invoice_id}', 'InvoiceController@show')->middleware('admin');
+        Route::get('/download/{invoice_id}', 'InvoiceController@download')->middleware('admin');
+    });
 
-Route::prefix('order')->group(function () {
-    Route::get('/{order_id}', 'OrderController@show')->middleware('admin');
+    Route::prefix('order')->group(function () {
+        Route::get('/{order_id}', 'OrderController@show')->middleware('admin');
+    });
 });
