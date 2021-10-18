@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Admin;
+use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -21,12 +23,22 @@ class ProductImageFactory extends Factory
      */
     public function definition(): array
     {
+        $product = Product::all()
+            ->random()
+            ->id;
+
+        $admin = Admin::all()
+            ->random()
+            ->id;
+
+        $image = $this->faker->image();
+
         return [
-            'path' => $this->faker->filePath(),
-            'type' => 'IMG_JPG',
-            /*'product_id' => Product::factory(),
-            'created_by' => User::factory(),
-            'updated_by' => User::factory()*/
+            'path' => $image,
+            'type' => 'image/png',
+            'product_id' => $product,
+            'created_by' => $admin,
+            'updated_by' => $admin,
         ];
     }
 }

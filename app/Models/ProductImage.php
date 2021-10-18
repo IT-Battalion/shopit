@@ -2,9 +2,13 @@
 
 namespace App\Models;
 
+use Database\Factories\ProductImageFactory;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\ProductImage
@@ -14,22 +18,22 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string $type
  * @property User|null $created_by
  * @property User|null $updated_by
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|ProductImage newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductImage newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductImage query()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductImage whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductImage whereCreatedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductImage whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductImage wherePath($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductImage whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductImage whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductImage whereUpdatedBy($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|ProductImage newModelQuery()
+ * @method static Builder|ProductImage newQuery()
+ * @method static Builder|ProductImage query()
+ * @method static Builder|ProductImage whereCreatedAt($value)
+ * @method static Builder|ProductImage whereCreatedBy($value)
+ * @method static Builder|ProductImage whereId($value)
+ * @method static Builder|ProductImage wherePath($value)
+ * @method static Builder|ProductImage whereType($value)
+ * @method static Builder|ProductImage whereUpdatedAt($value)
+ * @method static Builder|ProductImage whereUpdatedBy($value)
+ * @mixin Eloquent
  * @property string $product_id
- * @method static \Database\Factories\ProductImageFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductImage whereProductId($value)
+ * @method static ProductImageFactory factory(...$parameters)
+ * @method static Builder|ProductImage whereProductId($value)
  */
 class ProductImage extends Model
 {
