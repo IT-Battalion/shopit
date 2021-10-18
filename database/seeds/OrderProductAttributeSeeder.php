@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\ProductImage;
+use App\Models\OrderProductAttribute;
 use Illuminate\Database\Seeder;
 
-class ProductImageSeeder extends Seeder
+class OrderProductAttributeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,8 +14,8 @@ class ProductImageSeeder extends Seeder
      */
     public function run()
     {
-        ProductImage::factory()
-            ->count(ProductSeeder::PRODUCT_COUNT * 3)
+        OrderProductAttribute::factory()
+            ->count(ProductSeeder::PRODUCT_COUNT * 4)
             ->create();
     }
 }
