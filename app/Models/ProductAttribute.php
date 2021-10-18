@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use App\Traits\UuidKey;
+use Database\Factories\ProductAttributeFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\ProductAttribute
@@ -21,12 +22,17 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|ProductAttribute whereType($value)
  * @method static Builder|ProductAttribute whereValuesAvailable($value)
  * @mixin Eloquent
+ * @property int $id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static ProductAttributeFactory factory(...$parameters)
+ * @method static Builder|ProductAttribute whereCreatedAt($value)
+ * @method static Builder|ProductAttribute whereId($value)
+ * @method static Builder|ProductAttribute whereUpdatedAt($value)
  */
 class ProductAttribute extends Model
 {
-    use UuidKey;
-
-    protected $primaryKey = 'product_id';
+    use HasFactory;
 
     protected $fillable = [
         'type',

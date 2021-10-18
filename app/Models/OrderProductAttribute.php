@@ -4,8 +4,7 @@ namespace App\Models;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\OrderProductAttribute
@@ -20,13 +19,15 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|OrderProductAttribute whereType($value)
  * @method static Builder|OrderProductAttribute whereValuesChosen($value)
  * @mixin Eloquent
+ * @property int $id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|OrderProductAttribute whereCreatedAt($value)
+ * @method static Builder|OrderProductAttribute whereId($value)
+ * @method static Builder|OrderProductAttribute whereUpdatedAt($value)
  */
-class OrderProductAttribute extends Model
+class OrderProductAttribute extends ProductAttribute
 {
-    use HasFactory;
-
-    protected $primaryKey = 'order_product_id';
-
     protected $fillable = [
         'type',
         'values_chosen',

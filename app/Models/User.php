@@ -105,7 +105,8 @@ class User extends Authenticatable implements LdapAuthenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'isAdmin' => 'boolean',
+        'enabled' => 'boolean',
     ];
 
     /**
