@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\CouponCodeFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -34,6 +35,7 @@ use Illuminate\Support\Carbon;
  * @property-read User|null $updated_by
  * @method static Builder|CouponCode whereCreatedBy($value)
  * @method static Builder|CouponCode whereUpdatedBy($value)
+ * @method static CouponCodeFactory factory(...$parameters)
  */
 class CouponCode extends Model
 {

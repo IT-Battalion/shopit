@@ -17,19 +17,11 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        $admin = rand(0, UserSeeder::adminCount);
-        $category = rand(0, count(ProductCategoryFactory::categories));
-
         $this->call([
             ProductCategorySeeder::class,
             ]);
 
         Product::factory()
-            ->state([
-                "created_by" => $admin,
-                "updated_by" => $admin,
-                "product_category_id" => $category,
-            ])
             ->count(self::PRODUCT_COUNT)->create();
 
         $this->call([

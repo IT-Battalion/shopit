@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\IconFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -31,6 +32,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Icon whereProvider($value)
  * @method static Builder|Icon whereUpdatedAt($value)
  * @mixin Eloquent
+ * @method static IconFactory factory(...$parameters)
  */
 class Icon extends Model
 {
