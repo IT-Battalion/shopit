@@ -39,6 +39,16 @@ class CreateIcons extends Migration
      */
     public function down()
     {
+        Schema::table('product_categories', function (Blueprint $table) {
+            $table->dropForeign('product_categories_icon_id_foreign');
+            $table->dropColumn('icon_id');
+        });
+
+        Schema::table('order_product_categories', function (Blueprint $table) {
+            $table->dropForeign('order_product_categories_icon_id_foreign');
+            $table->dropColumn('icon_id');
+        });
+
         Schema::dropIfExists('icons');
     }
 }
