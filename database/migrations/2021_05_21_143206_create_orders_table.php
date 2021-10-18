@@ -27,7 +27,6 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer')->constrained('users');
-            $table->float('price', 22);
             $table->foreignId('coupon_code_id')->nullable()->constrained();
             $table->timestamp('payed_at')->nullable();
             $table->foreignId('transaction_confirmed_by')->nullable()->constrained('users');

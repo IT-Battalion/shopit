@@ -32,13 +32,12 @@ class ProductCategoryFactory extends Factory
 
     public function exampleCategories(): ProductCategoryFactory
     {
-        return $this
-            ->sequence(fn (Sequence $sequence) =>
+        return $this->sequence(fn (Sequence $sequence) =>
                 ["name" => self::categories[$sequence->index % count(self::categories)]]
             );
     }
 
     public function allExampleCategories(): ProductCategoryFactory {
-        return $this->exampleCategories()->count(count(self::categories));
+        return self::exampleCategories()->count(count(self::categories));
     }
 }
