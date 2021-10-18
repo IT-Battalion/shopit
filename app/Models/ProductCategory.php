@@ -30,6 +30,9 @@ use Illuminate\Support\Carbon;
  * @method static Builder|ProductCategory whereUpdatedAt($value)
  * @mixin Eloquent
  * @method static ProductCategoryFactory factory(...$parameters)
+ * @property int $icon_id
+ * @property-read Icon|null $icon
+ * @method static Builder|ProductCategory whereIconId($value)
  */
 class ProductCategory extends Model
 {

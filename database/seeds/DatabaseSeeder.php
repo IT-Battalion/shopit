@@ -1,6 +1,7 @@
 <?php
 
 use Database\Seeders\CouponCodeSeeder;
+use Database\Seeders\IconSeeder;
 use Database\Seeders\ProductSeeder;
 use Database\Seeders\ShoppingCartSeeder;
 use Database\Seeders\UserSeeder;
@@ -17,6 +18,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
+            IconSeeder::class,
             ProductSeeder::class,
             CouponCodeSeeder::class,
             ShoppingCartSeeder::class
