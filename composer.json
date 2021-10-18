@@ -18,7 +18,8 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.3",
         "simplesoftwareio/simple-qrcode": "^4.2",
-        "maglr/noun-project-php-client": "^1.0"
+        "maglr/noun-project-php-client": "^1.0",
+        "ext-json": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.10",
