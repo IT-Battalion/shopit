@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\ShoppingCartFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,6 +26,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|ShoppingCart whereUpdatedAt($value)
  * @method static Builder|ShoppingCart whereUserId($value)
  * @mixin Eloquent
+ * @method static ShoppingCartFactory factory(...$parameters)
  */
 class ShoppingCart extends Model
 {
