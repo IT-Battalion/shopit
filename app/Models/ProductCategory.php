@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use App\Traits\UuidKey;
+use Database\Factories\ProductCategoryFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
@@ -27,9 +28,12 @@ use Illuminate\Support\Carbon;
  * @method static Builder|ProductCategory whereName($value)
  * @method static Builder|ProductCategory whereUpdatedAt($value)
  * @mixin Eloquent
+ * @method static ProductCategoryFactory factory(...$parameters)
  */
 class ProductCategory extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'name'
     ];

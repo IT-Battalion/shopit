@@ -66,9 +66,11 @@ class CreateOrdersTable extends Migration
         });
 
         Schema::create('order_product_attributes', function (Blueprint $table) {
-            $table->foreignid('order_product_id')->primary()->constrained();
+            $table->id();
+            $table->foreignid('order_product_id')->constrained();
             $table->integer('type');
             $table->text('values_chosen');
+            $table->timestamps();
         });
 
         Schema::table('order_product_images', function (Blueprint $table) {
