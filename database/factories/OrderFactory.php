@@ -31,7 +31,11 @@ class OrderFactory extends Factory
         $admin_transaction = Admin::all()->random()->id;
 
         $hasCoupon = $this->faker->boolean(25);
-        $coupon = $hasCoupon ? CouponCode::all()->random()->id : null; //TODO: make disabled and check if enabled
+        $coupon = $hasCoupon ? function() {
+            $dbCoupon = CouponCode::whereEnabled(true)->inRandomOrder()->first();
+            $dbCoupon->update(['enabled' => false]);
+            return $dbCoupon->id;
+        } : null;
 
         $hasPayed = $this->faker->boolean(90);
         $hasOrdered = $hasPayed && $this->faker->boolean(80);
