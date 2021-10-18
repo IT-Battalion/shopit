@@ -1,6 +1,7 @@
 <?php
 
 use Database\Seeders\CouponCodeSeeder;
+use Database\Seeders\HighlightedProductSeeder;
 use Database\Seeders\IconSeeder;
 use Database\Seeders\OrderSeeder;
 use Database\Seeders\ProductSeeder;
@@ -23,7 +24,8 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             CouponCodeSeeder::class,
             OrderSeeder::class,
-            ShoppingCartSeeder::class
+            ShoppingCartSeeder::class,
+            HighlightedProductSeeder::class
             ]);
     }
 }

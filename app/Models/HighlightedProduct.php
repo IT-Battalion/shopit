@@ -5,6 +5,7 @@ namespace App\Models;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -24,6 +25,18 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class HighlightedProduct extends Model
 {
+    use HasFactory;
+
+    protected $table = 'highlighted_products';
+
+    protected $fillable = [
+        'product_id'
+    ];
+
+    protected $casts = [
+        'product_id' => 'integer'
+    ];
+
     public function products(): HasOne
     {
         return $this->hasOne(Product::class);
