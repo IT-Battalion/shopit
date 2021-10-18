@@ -25,7 +25,9 @@ class ProductCategoryFactory extends Factory
      */
     public function definition(): array
     {
-        return [];
+        return [
+            'icon_id' => $this->faker->numberBetween(1, count(self::categories)),
+        ];
     }
 
     public function exampleCategories(): ProductCategoryFactory

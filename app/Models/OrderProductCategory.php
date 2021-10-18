@@ -25,6 +25,9 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OrderProductCategory whereName($value)
  * @method static Builder|OrderProductCategory whereUpdatedAt($value)
  * @mixin Eloquent
+ * @property int $icon_id
+ * @property-read Icon|null $icon
+ * @method static Builder|OrderProductCategory whereIconId($value)
  */
 class OrderProductCategory extends ProductCategory
 {
