@@ -20,6 +20,7 @@ class CreateIcons extends Migration
             $table->string('provider');
             $table->string('license');
             $table->string('mimetype');
+            $table->string('path');
             $table->timestamps();
         });
 
