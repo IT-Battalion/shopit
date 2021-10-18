@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\CouponCode;
 use Illuminate\Database\Seeder;
 
-class CouponSeeder extends Seeder
+class CouponCodeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
