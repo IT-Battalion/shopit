@@ -2,9 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Admin;
 use App\Models\CouponCode;
-use App\Models\Model;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -24,15 +23,17 @@ class CouponFactory extends Factory
      */
     public function definition(): array
     {
+        $admin = Admin::all()
+            ->random()
+            ->id;
+
         return [
             'discount' => $this->faker->numberBetween(0, 99),
             'enabled' => true,
             'enabled_until' => $this->faker->dateTimeThisMonth,
             'code' => Str::random(32),
-            'created_by' => User::factory()->state(['isAdmin' => true]),
-            'updated_by' => function ($attributes) {
-                return $attributes['created_by'];
-            }
+            'created_by' => $admin,
+            'updated_by' => $admin,
         ];
     }
 }

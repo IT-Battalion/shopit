@@ -53,6 +53,10 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static Builder|Order whereCustomer($value)
  * @method static Builder|Order whereReceivedAt($value)
  * @method static Builder|Order whereReceivedBy($value)
+ * @property string|null $products_ordered_at
+ * @property int|null $products_ordered_by
+ * @method static Builder|Order whereProductsOrderedAt($value)
+ * @method static Builder|Order whereProductsOrderedBy($value)
  */
 class Order extends Model
 {
@@ -107,14 +111,22 @@ class Order extends Model
             ->withTimestamps();
     }
 
+    private static function olderThan($column, $years)
+    {
+        return static::whereTime(
+            $column,
+            '<=',
+            now()->subYears($years)
+        );
+    }
+
     public function prunable()
     {
-        if (config('shop.delete_after_invoice_retention_period')) {
-            return static::whereTime(
+        if (config('shop.invoice.delete_after_invoice_retention_period')) {
+            return static::olderThan(
                 'handed_over_at',
-                '<=',
-                now()->subYears(config('shop.invoice_retention_period')));
+                config('shop.invoice.invoice_retention_period'));
         }
-        return static::whereRaw('1=0');
+        return static::whereRaw('1=0'); // Don't delete anything
     }
 }
