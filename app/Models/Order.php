@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -13,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  *
  * @property string $id
  * @property User|null $owner
- * @property float $price
  * @property string $cupon_code_id
  * @property User|null $authorizing_admin
  * @property string|null $recieved_at
@@ -35,7 +35,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static Builder|Order whereCuponCodeId($value)
  * @method static Builder|Order whereHandedOverAt($value)
  * @method static Builder|Order whereHandedOverBy($value)
- * @method static Builder|Order whereId($value)
  * @method static Builder|Order whereOwner($value)
  * @method static Builder|Order wherePayedAt($value)
  * @method static Builder|Order wherePrice($value)
@@ -60,7 +59,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class Order extends Model
 {
-    use Prunable;
+    use Prunable, HasFactory;
 
     protected $fillable = [
         'price',

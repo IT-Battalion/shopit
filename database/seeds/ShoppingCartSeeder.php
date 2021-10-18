@@ -14,6 +14,6 @@ class ShoppingCartSeeder extends Seeder
      */
     public function run()
     {
-        ShoppingCart::factory()->count(75)->create();
+        ShoppingCart::factory()->count(ProductSeeder::PRODUCT_COUNT * 3)->create();
     }
 }
