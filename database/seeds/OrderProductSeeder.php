@@ -20,7 +20,7 @@ class OrderProductSeeder extends Seeder
         ]);
 
         OrderProduct::factory()
-            ->count(rand(0, 3))->create();
+            ->count(rand(1, 3))->create();
 
         $this->call([
             OrderProductImageSeeder::class,
