@@ -2080,6 +2080,95 @@
             "time": "2021-09-25T08:23:19+00:00"
         },
         {
+            "name": "maglr/noun-project-php-client",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/maglr/noun-project-php-client.git",
+                "reference": "304a309cc8fe6634f3c0c4674278e8e36ba397b7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/maglr/noun-project-php-client/zipball/304a309cc8fe6634f3c0c4674278e8e36ba397b7",
+                "reference": "304a309cc8fe6634f3c0c4674278e8e36ba397b7",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "*",
+                "guzzlehttp/oauth-subscriber": "*",
+                "mattyrad/support": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MattyRad\\NounProject\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matthew Radford",
+                    "email": "mradford@protonmail.com",
+                    "homepage": "http://mradford.com"
+                }
+            ],
+            "description": "A PHP client to interface with The Noun Project",
+            "homepage": "https://github.com/MattyRad/noun-project-php-client",
+            "support": {
+                "source": "https://github.com/maglr/noun-project-php-client/tree/1.0.4"
+            },
+            "time": "2021-08-23T14:15:01+00:00"
+        },
+        {
+            "name": "mattyrad/support",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/MattyRad/support.git",
+                "reference": "24734fb3d92a01ada8ba0571b9663bb907c1dbd4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/MattyRad/support/zipball/24734fb3d92a01ada8ba0571b9663bb907c1dbd4",
+                "reference": "24734fb3d92a01ada8ba0571b9663bb907c1dbd4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MattyRad\\Support\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matthew Radford",
+                    "email": "mradford@protonmail.com"
+                }
+            ],
+            "description": "A collection of PHP support classes and traits",
+            "support": {
+                "issues": "https://github.com/MattyRad/support/issues",
+                "source": "https://github.com/MattyRad/support/tree/1.3.0"
+            },
+            "time": "2019-06-10T21:19:35+00:00"
+        },
+        {
             "name": "monolog/monolog",
             "version": "2.3.5",
             "source": {
