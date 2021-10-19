@@ -7,7 +7,28 @@ use function Pest\Laravel\get;
  * without session or token
  */
 it('has authentication page', function () {
-    get('/login')->assertStatus(200);
+    get(route('login'))->assertStatus(200);
+});
+
+/**
+ * Check if Benutzername Text is found
+ */
+it('has username field', function () {
+    get(route('login'))->assertSee('Benutzername');
+});
+
+/**
+ * Check if Passwort Text is found
+ */
+it('has password field', function () {
+    get(route('login'))->assertSee('Passwort');
+});
+
+/**
+ * Check if Angemeldet bleiben Text is found
+ */
+it('has remember me field', function () {
+    get(route('login'))->assertSee('Angemeldet bleiben');
 });
 
 /**
