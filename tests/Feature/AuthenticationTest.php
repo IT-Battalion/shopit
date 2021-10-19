@@ -14,21 +14,21 @@ it('has authentication page', function () {
  * Check if Benutzername Text is found
  */
 it('has username field', function () {
-    get(route('login'))->assertSee('Benutzername');
+    get(route('login'))->assertSee('Username');
 });
 
 /**
  * Check if Passwort Text is found
  */
 it('has password field', function () {
-    get(route('login'))->assertSee('Passwort');
+    get(route('login'))->assertSee('Password');
 });
 
 /**
  * Check if Angemeldet bleiben Text is found
  */
 it('has remember me field', function () {
-    get(route('login'))->assertSee('Angemeldet bleiben');
+    get(route('login'))->assertSee('Remember Me');
 });
 
 /**
