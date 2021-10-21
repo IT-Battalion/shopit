@@ -36,12 +36,6 @@ interface UserServiceInterface {
     function getOrders(User $user) : Collection;
 
     /**
-     * @param User $user the specific User Model
-     * @return Collection the Collection containing the Users Coupon Codes
-     */
-    function getCouponCodes(User $user) : Collection;
-
-    /**
      * Returns the Shopping Cart of a specific User
      * @param User $user the specific User Model
      * @return ShoppingCart the Shopping Cart Model

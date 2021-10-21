@@ -134,7 +134,7 @@ class User extends Authenticatable implements LdapAuthenticatable
 
     public function isEnabled(): bool
     {
-        return $this->enabled === 1;
+        return $this->enabled;
     }
 
     public function enable()
