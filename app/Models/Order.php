@@ -61,6 +61,8 @@ class Order extends Model
 {
     use Prunable, HasFactory;
 
+    protected $table = 'orders';
+
     protected $fillable = [
         'price',
         'authorizing_admin',
