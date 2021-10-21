@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->boolean('isAdmin')->default(false);
             $table->boolean('enabled')->default(true);
             $table->string('reason_for_disabling')->nullable();
+            $table->timestamp('disabled_at');
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
