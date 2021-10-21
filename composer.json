@@ -9,17 +9,17 @@
     "license": "MIT",
     "require": {
         "php": "^8.0",
+        "ext-json": "*",
         "directorytree/ldaprecord-laravel": "^2.3",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/oauth-subscriber": "^0.6.0",
         "laravel/framework": "^8.54",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.3",
-        "simplesoftwareio/simple-qrcode": "^4.2",
-        "maglr/noun-project-php-client": "^1.0",
-        "ext-json": "*"
+        "simplesoftwareio/simple-qrcode": "^4.2"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.10",

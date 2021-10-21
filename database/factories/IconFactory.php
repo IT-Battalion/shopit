@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Icon;
+use App\Services\Icons\Api\ApiIcon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class IconFactory extends Factory
@@ -24,10 +25,11 @@ class IconFactory extends Factory
         $icon_image = $this->faker->image(null, 24, 24);
 
         return [
+            'original_id' => $this->faker->unique()->randomNumber(5, false),
             'name' => 'Portrait deiner Mutter',
             'artist' => 'Deine Mutter',
-            'provider' => 'The Noun Project',
-            'license' => 'CC BY 3.0',
+            'provider' => 'the Noun Project',
+            'license' => ApiIcon::LICENSE_CC_BY_3_0,
             'mimetype' => 'image/png',
             'path' => $icon_image,
         ];

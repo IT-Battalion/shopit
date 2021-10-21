@@ -15,10 +15,11 @@ class CreateIcons extends Migration
     {
         Schema::create('icons', function (Blueprint $table) {
             $table->id();
+            $table->string('original_id')->unique();
             $table->string('name');
             $table->string('artist');
             $table->string('provider');
-            $table->string('license');
+            $table->integer('license');
             $table->string('mimetype');
             $table->string('path');
             $table->timestamps();
