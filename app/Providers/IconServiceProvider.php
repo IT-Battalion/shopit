@@ -6,7 +6,7 @@ use App\Services\Icons\IconServiceInterface;
 use App\Services\Icons\TheNounProjectService;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
-use App\Services\Icons\Api\ApiClient;
+use App\Services\Icons\NounProjectApi\ApiClient;
 
 class IconServiceProvider extends ServiceProvider implements DeferrableProvider
 {

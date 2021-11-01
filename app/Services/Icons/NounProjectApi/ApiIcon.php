@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Icons\Api;
+namespace App\Services\Icons\NounProjectApi;
 
 /**
  * A class representing an Icon in an API response from https://api.thenounproject.com/icons
