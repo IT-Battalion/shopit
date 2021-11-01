@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Icon;
-use App\Services\Icons\Api\ApiIcon;
+use App\Services\Icons\NounProjectApi\ApiIcon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class IconFactory extends Factory
