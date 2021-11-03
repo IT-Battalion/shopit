@@ -18,7 +18,6 @@
         "laravel/framework": "^8.54",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "laravel/ui": "^3.3",
         "simplesoftwareio/simple-qrcode": "^4.2"
     },
     "require-dev": {
@@ -29,6 +28,7 @@
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
+        "pestphp/pest-plugin-faker": "^1.0",
         "pestphp/pest-plugin-laravel": "^1.1",
         "phpunit/phpunit": "^9.3.3"
     },

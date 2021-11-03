@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "57d6fad34568af3d90c375ff61620330",
+    "content-hash": "2fcf101fd4dec578da89b308f1003f53",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -299,16 +299,16 @@
         },
         {
             "name": "directorytree/ldaprecord",
-            "version": "v2.7.1",
+            "version": "v2.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DirectoryTree/LdapRecord.git",
-                "reference": "facd1f590d49636fddee64b866246d1650197830"
+                "reference": "afa60843892afb099b8dda2ab73982d407a2916c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DirectoryTree/LdapRecord/zipball/facd1f590d49636fddee64b866246d1650197830",
-                "reference": "facd1f590d49636fddee64b866246d1650197830",
+                "url": "https://api.github.com/repos/DirectoryTree/LdapRecord/zipball/afa60843892afb099b8dda2ab73982d407a2916c",
+                "reference": "afa60843892afb099b8dda2ab73982d407a2916c",
                 "shasum": ""
             },
             "require": {
@@ -368,7 +368,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-10-11T13:39:30+00:00"
+            "time": "2021-10-13T20:28:53+00:00"
         },
         {
             "name": "directorytree/ldaprecord-laravel",
@@ -1318,16 +1318,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v8.65.0",
+            "version": "v8.66.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "6db59afadca28dfdb2f719e7d79f93885ede17e4"
+                "reference": "b757fe143a3ab802a08a191032fc7046b582f107"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/6db59afadca28dfdb2f719e7d79f93885ede17e4",
-                "reference": "6db59afadca28dfdb2f719e7d79f93885ede17e4",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/b757fe143a3ab802a08a191032fc7046b582f107",
+                "reference": "b757fe143a3ab802a08a191032fc7046b582f107",
                 "shasum": ""
             },
             "require": {
@@ -1485,7 +1485,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2021-10-19T13:59:41+00:00"
+            "time": "2021-10-21T14:20:46+00:00"
         },
         {
             "name": "laravel/sanctum",
@@ -6205,12 +6205,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "995bf5a932cee736227804b97a133ee3ffa33abf"
+                "reference": "b99e21259c09a6da2614f286b7ad548fec8036a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/995bf5a932cee736227804b97a133ee3ffa33abf",
-                "reference": "995bf5a932cee736227804b97a133ee3ffa33abf",
+                "url": "https://api.github.com/repos/composer/composer/zipball/b99e21259c09a6da2614f286b7ad548fec8036a0",
+                "reference": "b99e21259c09a6da2614f286b7ad548fec8036a0",
                 "shasum": ""
             },
             "require": {
@@ -6296,7 +6296,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-10-19T12:35:37+00:00"
+            "time": "2021-10-20T20:20:33+00:00"
         },
         {
             "name": "composer/metadata-minifier",
@@ -7532,16 +7532,16 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v6.19.1",
+            "version": "v6.19.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "9689f78bfdcef35a8ffd67950a398528454d99ce"
+                "reference": "c042f8d389b8fdcd9543032d1ef8dbe47c8a245f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/9689f78bfdcef35a8ffd67950a398528454d99ce",
-                "reference": "9689f78bfdcef35a8ffd67950a398528454d99ce",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/c042f8d389b8fdcd9543032d1ef8dbe47c8a245f",
+                "reference": "c042f8d389b8fdcd9543032d1ef8dbe47c8a245f",
                 "shasum": ""
             },
             "require": {
@@ -7599,9 +7599,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/dusk/issues",
-                "source": "https://github.com/laravel/dusk/tree/v6.19.1"
+                "source": "https://github.com/laravel/dusk/tree/v6.19.2"
             },
-            "time": "2021-10-19T15:05:44+00:00"
+            "time": "2021-10-20T10:10:26+00:00"
         },
         {
             "name": "laravel/sail",
@@ -8062,6 +8062,76 @@
             "time": "2021-01-03T15:53:42+00:00"
         },
         {
+            "name": "pestphp/pest-plugin-faker",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pestphp/pest-plugin-faker.git",
+                "reference": "9d93419f1f47ffd856ee544317b2f9144a129044"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pestphp/pest-plugin-faker/zipball/9d93419f1f47ffd856ee544317b2f9144a129044",
+                "reference": "9d93419f1f47ffd856ee544317b2f9144a129044",
+                "shasum": ""
+            },
+            "require": {
+                "fakerphp/faker": "^1.9.1",
+                "pestphp/pest": "^1.0",
+                "php": "^7.3 || ^8.0"
+            },
+            "require-dev": {
+                "pestphp/pest-dev-tools": "dev-master"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Pest\\Faker\\": "src/"
+                },
+                "files": [
+                    "src/Faker.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "The Pest Faker Plugin",
+            "keywords": [
+                "faker",
+                "framework",
+                "pest",
+                "php",
+                "plugin",
+                "test",
+                "testing",
+                "unit"
+            ],
+            "support": {
+                "source": "https://github.com/pestphp/pest-plugin-faker/tree/v1.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=66BYDWAT92N6L",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/nunomaduro",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/nunomaduro",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2021-01-03T15:42:35+00:00"
+        },
+        {
             "name": "pestphp/pest-plugin-laravel",
             "version": "v1.1.0",
             "source": {
@@ -8362,16 +8432,16 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "5.2.2",
+            "version": "5.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "069a785b2141f5bcf49f3e353548dc1cce6df556"
+                "reference": "622548b623e81ca6d78b721c5e029f4ce664f170"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/069a785b2141f5bcf49f3e353548dc1cce6df556",
-                "reference": "069a785b2141f5bcf49f3e353548dc1cce6df556",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/622548b623e81ca6d78b721c5e029f4ce664f170",
+                "reference": "622548b623e81ca6d78b721c5e029f4ce664f170",
                 "shasum": ""
             },
             "require": {
@@ -8382,7 +8452,8 @@
                 "webmozart/assert": "^1.9.1"
             },
             "require-dev": {
-                "mockery/mockery": "~1.3.2"
+                "mockery/mockery": "~1.3.2",
+                "psalm/phar": "^4.8"
             },
             "type": "library",
             "extra": {
@@ -8412,9 +8483,9 @@
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
             "support": {
                 "issues": "https://github.com/phpDocumentor/ReflectionDocBlock/issues",
-                "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/master"
+                "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/5.3.0"
             },
-            "time": "2020-09-03T19:13:55+00:00"
+            "time": "2021-10-19T17:43:47+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
