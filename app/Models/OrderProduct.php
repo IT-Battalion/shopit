@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Barryvdh\LaravelIdeHelper\Eloquent;
+use Database\Factories\OrderProductFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -54,6 +55,7 @@ use Illuminate\Support\Carbon;
  * @mixin Eloquent
  * @property float $tax
  * @method static Builder|OrderProduct whereTax($value)
+ * @method static OrderProductFactory factory(...$parameters)
  */
 class OrderProduct extends Model
 {
