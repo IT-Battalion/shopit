@@ -2,62 +2,60 @@
 
 namespace App\Models;
 
+use Database\Factories\OrderFactory;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Order
  *
  * @property string $id
  * @property User|null $owner
- * @property string $cupon_code_id
+ * @property string $coupon_code_id
  * @property User|null $authorizing_admin
- * @property string|null $recieved_at
- * @property User|null $recieved_by
+ * @property string|null $received_at
+ * @property User|null $received_by
  * @property string|null $payed_at
  * @property User|null $transaction_confirmed_by
  * @property string|null $handed_over_at
  * @property User|null $handed_over_by
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read CouponCode|null $cupon_code
- * @property-read \Illuminate\Database\Eloquent\Collection|Product[] $products
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read CouponCode|null $coupon_code
+ * @property-read Collection|Product[] $products
  * @property-read int|null $products_count
  * @method static Builder|Order newModelQuery()
  * @method static Builder|Order newQuery()
  * @method static Builder|Order query()
  * @method static Builder|Order whereAuthorizingAdmin($value)
  * @method static Builder|Order whereCreatedAt($value)
- * @method static Builder|Order whereCuponCodeId($value)
+ * @method static Builder|Order whereCouponCodeId($value)
  * @method static Builder|Order whereHandedOverAt($value)
  * @method static Builder|Order whereHandedOverBy($value)
  * @method static Builder|Order whereOwner($value)
  * @method static Builder|Order wherePayedAt($value)
  * @method static Builder|Order wherePrice($value)
- * @method static Builder|Order whereRecievedAt($value)
- * @method static Builder|Order whereRecievedBy($value)
- * @method static Builder|Order whereTransactionConfirmedBy($value)
- * @method static Builder|Order whereUpdatedAt($value)
- * @mixin \Eloquent
- * @property string $customer
- * @property string $coupon_code_id
- * @property string|null $received_at
- * @property User|null $received_by
- * @property-read CouponCode|null $coupon_code
- * @method static Builder|Order whereCouponCodeId($value)
- * @method static Builder|Order whereCustomer($value)
  * @method static Builder|Order whereReceivedAt($value)
  * @method static Builder|Order whereReceivedBy($value)
+ * @method static Builder|Order whereTransactionConfirmedBy($value)
+ * @method static Builder|Order whereUpdatedAt($value)
+ * @mixin Eloquent
+ * @property string $customer
+ * @method static Builder|Order whereCustomer($value)
  * @property string|null $products_ordered_at
  * @property int|null $products_ordered_by
  * @method static Builder|Order whereProductsOrderedAt($value)
  * @method static Builder|Order whereProductsOrderedBy($value)
  * @property float $price
  * @method static Builder|Order whereId($value)
+ * @method static OrderFactory factory(...$parameters)
  */
 class Order extends Model
 {
