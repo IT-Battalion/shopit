@@ -72,6 +72,17 @@ return [
         */
 
         'api_secret' => env('NOUN_PROJECT_API_SECRET'),
+
+        /*
+        |--------------------------------------------------------------------------
+        | Only public domain icons
+        |--------------------------------------------------------------------------
+        |
+        | Only search for icons that are in the public domain
+        */
+
+        'only_public_domain' => boolval(env('NOUN_PROJECT_ONLY_PUBLIC_DOMAIN', true)),
+
     ],
 
 ];
