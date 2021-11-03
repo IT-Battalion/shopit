@@ -2,6 +2,8 @@
 
 namespace App\Services\Icons;
 
+use App\Exceptions\IconNotFoundException;
+use App\Exceptions\IconSaveException;
 use App\Exceptions\MalformedIconDataException;
 use App\Models\Icon;
 use App\Services\Icons\NounProjectApi\ApiClient;
@@ -73,12 +75,15 @@ class TheNounProjectService implements IconServiceInterface
         $response = $this->apiClient->fetch('icons/' . $iconName, $parameters);
 
         if ($response->failed()) {
-            $response->throw();
+            switch ($response->status()) {
+                case 404:
+                    return [];
+                default:
+                    $response->throw();
+            }
         }
 
         $data = $response->json('icons');
-
-        var_dump($data);
 
         return self::parseIcons($data);
     }
@@ -87,8 +92,8 @@ class TheNounProjectService implements IconServiceInterface
      * Searches for a single icon
      * @param string $id the icon name or id to search for
      * @return ApiIcon the icon data fetched from the API
-     * @throws MalformedIconDataException
-     * @throws RequestException
+     * @throws IconNotFoundException
+     * @throws MalformedIconDataException|RequestException
      */
 
     public function findById(string $id): ApiIcon
@@ -96,7 +101,13 @@ class TheNounProjectService implements IconServiceInterface
         $response = $this->apiClient->fetch('icon/' . $id, []);
 
         if ($response->failed()) {
-            $response->throw();
+            switch ($response->status()) {
+                case 404:
+                    $exception = $response->toException();
+                    throw new IconNotFoundException("We couldn't find any icons with the name or id \"$id\"", 0, $exception);
+                default:
+                    $response->throw();
+            }
         }
 
         $data = $response->json();
@@ -158,6 +169,9 @@ class TheNounProjectService implements IconServiceInterface
         );
     }
 
+    /**
+     * @throws IconSaveException
+     */
     public function add(ApiIcon $apiIcon): Icon
     {
         $tmpResource = tmpfile();
@@ -179,6 +193,7 @@ class TheNounProjectService implements IconServiceInterface
 
         if (!$icon->save()) {
             Storage::delete($savePath);
+            throw new IconSaveException("Couldn't save icon to the database", 0);
         }
 
         return $icon;
