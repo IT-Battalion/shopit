@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Coupons\CouponService;
+use App\Services\Coupons\CouponServiceInterface;
 use App\Services\Users\UserService;
 use App\Services\Users\UserServiceInterface;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
@@ -11,6 +13,7 @@ class AppServiceProvider extends ServiceProvider
 {
     public array $singletons = [
         UserServiceInterface::class => UserService::class,
+        CouponServiceInterface::class => CouponService::class,
     ];
 
     /**
