@@ -171,12 +171,23 @@ class TheNounProjectService implements IconServiceInterface
 
     /**
      * @throws IconSaveException
+     * @throws IconNotFoundException
+     * @throws RequestException
      */
     public function add(ApiIcon $apiIcon): Icon
     {
         $tmpResource = tmpfile();
 
-        $this->apiClient->downloadIcon($apiIcon, $tmpResource);
+        $response = $this->apiClient->downloadIcon($apiIcon, $tmpResource);
+
+        if ($response->failed()) {
+            switch ($response->status()) {
+                case 404:
+                    throw new IconNotFoundException('Couldn\'t download icon');
+                default:
+                    $response->throw();
+            }
+        }
 
         $savePath = 'icons/' . $apiIcon->id;
         Storage::put($savePath, $tmpResource);
