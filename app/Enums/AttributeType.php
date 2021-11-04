@@ -1,10 +1,16 @@
 <?php
 
-namespace App\Models;
+namespace App\Enums;
 
-use App\Util\BasicEnum;
+use BenSampo\Enum\Enum;
 
-class AttributeType extends BasicEnum
+/**
+ * @method static CLOTHING_SIZE()
+ * @method static DIMENSIONS()
+ * @method static VOLUME()
+ * @method static COLOR()
+ */
+final class AttributeType extends Enum
 {
     /*
      * Clothing size
