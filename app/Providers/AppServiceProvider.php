@@ -2,17 +2,23 @@
 
 namespace App\Providers;
 
+use App\Services\Users\UserService;
+use App\Services\Users\UserServiceInterface;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+    public array $singletons = [
+        UserServiceInterface::class => UserService::class,
+    ];
+
     /**
      * Register any application services.
      *
      * @return void
      */
-    public function register() : void
+    public function register(): void
     {
         if ($this->app->isLocal()) {
             $this->app->register(IdeHelperServiceProvider::class);
@@ -37,9 +43,9 @@ class AppServiceProvider extends ServiceProvider
 
         // Add the suffix
         $rootSuffix = config('app.url_root_suffix', ''); // pull from configuration with none as default
-                                                                    // needed on the projekte.tgm.ac.at server
-                                                                    // because the configuration doesn't support
-                                                                    // .htaccess files for the rewrite engine
+        // needed on the projekte.tgm.ac.at server
+        // because the configuration doesn't support
+        // .htaccess files for the rewrite engine
         if (!str_ends_with($root, $rootSuffix)) {
             $root .= $rootSuffix;
         }
