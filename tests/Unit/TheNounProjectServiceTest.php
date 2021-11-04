@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\IconNotFoundException;
 use App\Services\Icons\NounProjectApi\ApiClient;
 use App\Services\Icons\NounProjectApi\ApiIcon;
 use App\Services\Icons\TheNounProjectService;
@@ -7,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery\MockInterface;
 use Illuminate\Http\Client\Response;
 use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertIsArray;
 use function PHPUnit\Framework\assertStringStartsWith;
 
 uses(RefreshDatabase::class);
@@ -332,9 +334,29 @@ test('search for valid icons', function () {
     assertEquals($testResult, $service->findByName('test'), 'Couldn\'t find related icons');
 });
 
+test('search for non-existent icons', function () {
+    $response = $this->partialMock(Response::class, function (MockInterface $mock) {
+        $mock->shouldReceive('failed')->once()->andReturnTrue();
+        $mock->shouldReceive('status')->once()->andReturn(404);
+    });
 
+    $this->instance(
+        ApiClient::class,
+        $this->mock(ApiClient::class, function (MockInterface $mock) use ($response) {
+            $mock->shouldReceive('fetch')->once()->andReturn($response);
+        })
+    );
 
-test('search for invalid icons', function () {
+    $service = $this->app->make(TheNounProjectService::class);
+    $icons = $service->findByName('surely no icons are called this way not found');
+
+    assertIsArray($icons, 'Icon API Service didn\'t return an array');
+    assert(function () use ($icons) {
+        return sizeof($icons) === 0;
+    }, 'The resulting list of icons isn\'t empty');
+});
+
+test('search for invalidly structured icons', function () {
     $testData = '{
     "generated_at": "Fri, 22 Oct 2021 07:16:54 GMT",
     "icons": [
@@ -748,6 +770,26 @@ test('search for icon', function () {
     assertEquals($testDataResult, $service->findById($testDataResult->id), 'Couldn\'t find searched icon');
 });
 
+test('search for non existent icon', function () {
+    $exception = new Exception();
+
+    $response = $this->mock(Response::class, function (MockInterface $mock) use ($exception) {
+        $mock->shouldReceive('failed')->once()->andReturnTrue();
+        $mock->shouldReceive('status')->once()->andReturn(404);
+        $mock->shouldReceive('toException')->once()->andReturn($exception);
+    });
+
+    $this->instance(
+        ApiClient::class,
+        $this->mock(ApiClient::class, function (MockInterface $mock) use ($response) {
+            $mock->shouldReceive('fetch')->once()->andReturn($response);
+        })
+    );
+
+    $service = $this->app->make(TheNounProjectService::class);
+    $service->findById('abc123');
+})->throws(IconNotFoundException::class);
+
 test('add icon', function () {
     $testData = new ApiIcon(
         '18161',
@@ -782,5 +824,7 @@ test('add icon', function () {
     assertEquals('the Noun Project', $createdIcon->provider, 'got wrong provider');
     assertEquals(strval(ApiIcon::LICENSE_PUBLIC_DOMAIN), $createdIcon->license, 'got wrong license');
     assertEquals('image/svg+xml', $createdIcon->mimetype, 'got wrong mimetype');
-    assertStringStartsWith('icons/', $createdIcon->path, 'got wrong path');
+    assertEquals('icons/' . $createdIcon->original_id, $createdIcon->path, 'got wrong path');
+
+    Storage::delete($createdIcon->path);
 });
