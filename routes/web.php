@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-/*
+
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::permanentRedirect('/home', url('/'));
@@ -26,7 +26,7 @@ Route::permanentRedirect('/home', url('/'));
 
 // custom login/logout Routes because we have the auth middleware installed on the whole 'web' route domain
 // therefore we needed the withoutMiddle() function to disable the auth middleware for the login routes
-/*Route::namespace('Auth')->group(function () {
+Route::namespace('Auth')->group(function () {
     Route::get('/login', 'LoginController@showLoginForm')->withoutMiddleware('auth')->name('login');
     Route::post('/login', 'LoginController@login')->withoutMiddleware('auth');
     Route::post('/logout', 'LoginController@logout')->name('logout');
@@ -60,4 +60,3 @@ Route::prefix('admin')->group(function () {
         Route::get('/{order_id}', 'OrderController@show')->middleware('admin');
     });
 });
-*/

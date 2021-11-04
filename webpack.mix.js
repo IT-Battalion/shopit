@@ -11,17 +11,12 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
+mix
     .postCss('resources/css/app.css', 'public/css', [
         require('tailwindcss'),
-    ]);
-
-mix.js('resources/js/app.js', 'public/js')
-    .vue();
-
-mix.js('resources/js/app.js', 'public/js')
+    ])
+    .js('resources/js/app.js', 'public/js')
+    .vue()
     .extract(['vue'])
-
-mix.sass('resources/sass/app.scss', 'public/css');
-
-mix.browserSync('laravel.test');
+    .sass('resources/sass/app.scss', 'public/css')
+    .browserSync('laravel.test');
