@@ -6,9 +6,9 @@
 export default {
     data() {
         return {
-            message: 'I am an alert.'
+            message: "I am an alert.",
         };
-    }
+    },
 };
 </script>
 
