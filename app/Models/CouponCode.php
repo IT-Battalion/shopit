@@ -42,6 +42,7 @@ class CouponCode extends Model
     use HasFactory;
 
     protected $fillable = [
+        'code',
         'discount',
         'enabled',
         'enabled_until',
