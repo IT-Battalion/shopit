@@ -4,14 +4,11 @@ use App\Exceptions\IconNotFoundException;
 use App\Services\Icons\NounProjectApi\ApiClient;
 use App\Services\Icons\NounProjectApi\ApiIcon;
 use App\Services\Icons\TheNounProjectService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery\MockInterface;
 use Illuminate\Http\Client\Response;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertIsArray;
 use function PHPUnit\Framework\assertStringStartsWith;
-
-uses(RefreshDatabase::class);
 
 test('search for valid icons', function () {
     $testData = '{
@@ -827,4 +824,5 @@ test('add icon', function () {
     assertEquals('icons/' . $createdIcon->original_id, $createdIcon->path, 'got wrong path');
 
     Storage::delete($createdIcon->path);
+    $createdIcon->delete();
 });
