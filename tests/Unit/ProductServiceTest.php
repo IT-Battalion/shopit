@@ -1,16 +1,16 @@
 <?php
 
 use App\Enums\AttributeType;
-use App\Models\Admin;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Services\Products\ProductService;
 
 test('create product', function () {
     $service = $this->app->make(ProductService::class);
+    //wie haben ein problem. Man kann bei unit tests nicht acting as machen :( das geht bei artian commands und requests aber man kann keine methoden callen
     $product = $service->create('test', 33.33, 'The test product should be deleted soonTM', 20.00, ProductCategory::all()->random());
     expect(Product::whereName('test')->exists())->toBeTrue()->and(is_null($product))->toBeFalse();
-})->actingAs(Admin::all()->random());
+});
 
 test('create product images', function () {
     $service = $this->app->make(ProductService::class);
@@ -19,7 +19,7 @@ test('create product images', function () {
     $service->addImage('/path/', 'IMG/png', $product->id);
     $service->addImage('/testpath/', 'IMG/png', $product->id);
     expect($product->images_count)->toBeGreaterThan(0);
-})->actingAs(Admin::all()->random());
+});
 
 test('set thumbnail image', function () {
     $service = $this->app->make(ProductService::class);
@@ -39,7 +39,7 @@ test('create product attributes', function () {
     $attributeType = $service->hasAttributeType(AttributeType::COLOR, 'test');
     $attribute = $service->hasAttribute('Rot:#ff0000', 'test');
     expect($attribute)->toBeTrue()->and($attributeType)->toBeTrue();
-})->actingAs(Admin::all()->random());
+});
 
 test('delete product', function () {
     $service = $this->app->make(ProductService::class);
