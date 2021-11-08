@@ -77,6 +77,12 @@ class Product extends Model
         'available',
     ];
 
+    protected $casts = [
+      'thumbnail' => 'integer',
+      'price' => 'float',
+      'available' => 'boolean',
+    ];
+
     public function thumbnail(): HasOne
     {
         return $this->hasOne(ProductImage::class, 'id', 'thumbnail');
