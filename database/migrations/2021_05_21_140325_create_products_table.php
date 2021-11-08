@@ -24,12 +24,12 @@ class CreateProductsTable extends Migration
 
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('description');
             $table->foreignId('thumbnail')->nullable()->constrained('product_images');
             $table->float('price', 12);
             $table->float('tax', 12);
-            $table->integer('available');
+            $table->integer('available')->default(true);
             $table->foreignId('created_by')->constrained('users');
             $table->foreignId('updated_by')->constrained('users');
             $table->timestamps();
