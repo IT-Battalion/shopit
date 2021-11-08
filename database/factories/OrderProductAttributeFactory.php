@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\AttributeType;
+use App\Enums\AttributeType;
 use App\Models\OrderProduct;
 use App\Models\OrderProductAttribute;
 use Illuminate\Database\Eloquent\Factories\Factory;

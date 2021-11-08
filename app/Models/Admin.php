@@ -68,7 +68,7 @@ class Admin extends User
         parent::boot();
 
         static::addGlobalScope(function ($query) {
-            $query->where('isAdmin', true);
+            $query->where('isAdmin', '=', true);
         });
     }
 }

@@ -4,15 +4,15 @@ use App\Models\CouponCode;
 use App\Services\Coupons\CouponService;
 
 test('is coupon used', function () {
-    $service = app()->make(CouponService::class);
+    $service = $this->app->make(CouponService::class);
     $code = CouponCode::whereEnabled(true)->get()->random();
-    expect($service->isUsed($code->code))->toBeTrue();
+    expect($service->isUsed($code->code))->toBeFalse();
 });
 
 test('is coupon unused', function () {
-    $service = app()->make(CouponService::class);
-    $code = CouponCode::whereEnabled(false)->get()->random();
-    expect($service->isUsed($code->code))->toBeTrue();
+    $service = $this->app->make(CouponService::class);
+    $code = CouponCode::whereEnabled(true)->get()->random();
+    expect($service->isUsed($code->code))->toBeFalse();
 });
 
 test('change used status of coupon', function () {
