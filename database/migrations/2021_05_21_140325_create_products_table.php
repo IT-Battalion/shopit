@@ -29,7 +29,7 @@ class CreateProductsTable extends Migration
             $table->foreignId('thumbnail')->nullable()->constrained('product_images');
             $table->float('price', 12);
             $table->float('tax', 12);
-            $table->integer('available')->default(true);
+            $table->integer('available')->default(-1);
             $table->foreignId('created_by')->constrained('users');
             $table->foreignId('updated_by')->constrained('users');
             $table->timestamps();
@@ -43,7 +43,7 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained();
             $table->integer('type');
-            $table->text('values_available');
+            $table->json('values_available'); //Fuck you damianik
             $table->timestamps();
         });
     }

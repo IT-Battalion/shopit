@@ -72,15 +72,15 @@ class Product extends Model
     protected $fillable = [
         'name',
         'description',
-        'thumbnail',
         'price',
         'available',
+        'tax',
     ];
 
     protected $casts = [
-      'thumbnail' => 'integer',
-      'price' => 'float',
-      'available' => 'boolean',
+        'price' => 'float',
+        'available' => 'boolean',
+        'tax' => 'float',
     ];
 
     public function thumbnail(): HasOne
