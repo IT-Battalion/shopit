@@ -1,11 +1,10 @@
 <?php
 
-use App\Exceptions\IconNotFoundException;
 use App\Services\Icons\NounProjectApi\ApiClient;
 use App\Services\Icons\NounProjectApi\ApiIcon;
 use App\Services\Icons\TheNounProjectService;
-use Mockery\MockInterface;
 use Illuminate\Http\Client\Response;
+use Mockery\MockInterface;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertIsArray;
 use function PHPUnit\Framework\assertStringStartsWith;
