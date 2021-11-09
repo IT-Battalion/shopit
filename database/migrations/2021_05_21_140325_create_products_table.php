@@ -26,7 +26,7 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('description');
-            $table->foreignId('thumbnail')->nullable()->constrained('product_images');
+            $table->foreignId('thumbnail')->nullable()->constrained('product_images')->onDelete('set null');
             $table->float('price', 12);
             $table->float('tax', 12);
             $table->integer('available')->default(-1);
@@ -36,12 +36,12 @@ class CreateProductsTable extends Migration
         });
 
         Schema::table('product_images', function (Blueprint $table) {
-            $table->foreignId('product_id')->constrained();
+            $table->foreignId('product_id')->constrained('products');
         });
 
         Schema::create('product_attributes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained();
+            $table->foreignId('product_id')->constrained('products');
             $table->integer('type');
             $table->json('values_available'); //Fuck you damianik
             $table->timestamps();
