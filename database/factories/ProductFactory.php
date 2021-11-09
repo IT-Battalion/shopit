@@ -31,7 +31,7 @@ class ProductFactory extends Factory
             ->id;
 
         return [
-            'name' => $this->faker->word,
+            'name' => $this->faker->unique->word,
             'description' => $this->faker->text,
             'price' => $this->faker->numberBetween(1, 300),
             'tax' => $this->faker->numberBetween(0, 100),
