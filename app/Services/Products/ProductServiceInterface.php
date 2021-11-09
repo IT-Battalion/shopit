@@ -60,7 +60,7 @@ interface ProductServiceInterface
      * @return ProductImage the created Image.
      * @throws ProductNotFoundException if the Product you want to add an Image to isn't found.
      */
-    function addImage(string $path, string $type, int $id = null, string $name = null) : ProductImage;
+    function addImage(string $path, string $type, int $id = null, string $name = null): ProductImage;
 
     /**
      * Set a Thumbnail to a Product.
@@ -101,11 +101,34 @@ interface ProductServiceInterface
     function hasAttributeType(int $type, int $id = null, string $name = null): bool;
 
     /**
-     * @param int|null $id The ID of the Product you want to search for. Null if Name is used.
-     * @param string|null $name The Name of the Product you want to search for. Null if ID is used.
-     * @param string $value Only one value you want to search for.
-     * @return bool true if the Attribute exists.
-     * @throws ProductNotFoundException
+     * Removes a Product Image.
+     * @param ProductImage $image The Image which should be deleted.
+     * @return void
      */
-    function hasAttribute(string $value, int $id = null, string $name = null): bool;
+    function removeImage(ProductImage $image): void;
+
+    /**
+     * Removes a Product Attribute.
+     * @param ProductAttribute $attribute The Attribute which should be deleted.
+     * @return void
+     */
+    function removeAttribute(ProductAttribute $attribute): void;
+
+    /**
+     * Edits an existing ProductImage and returns the new one.
+     * @param ProductImage $old The old ProductImage which should be edited.
+     * @param string|null $path The Path of the Image.
+     * @param string|null $type The Type of the Image.
+     * @return ProductImage The edited ProductImage.
+     */
+    function editImage(ProductImage $old, string $path = null, string $type = null): ProductImage;
+
+    /**
+     * Edits an existing ProductAttribute and returns the new one.
+     * @param ProductAttribute $old The old ProductAttribute which should be edited.
+     * @param int|null $type The Type of the Attribute
+     * @param string|null $values_available The Available Values as JSON string.
+     * @return ProductAttribute The edited ProductAttribute.
+     */
+    function editAttribute(ProductAttribute $old, int $type = null, string $values_available = null): ProductAttribute;
 }

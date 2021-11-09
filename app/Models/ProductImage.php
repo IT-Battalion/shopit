@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Auth;
 use Database\Factories\ProductImageFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -47,7 +48,13 @@ class ProductImage extends Model
     protected $fillable = [
         'path',
         'type',
-        'thumbnail',
+        'product_id',
+    ];
+
+    protected $casts = [
+        'product_id' => 'integer',
+        'created_by' => 'integer',
+        'updated_by' => 'integer',
     ];
 
     public function created_by(): HasOne
@@ -57,8 +64,8 @@ class ProductImage extends Model
 
     public function createWith(User $user): ProductImage
     {
-        $this->created_by = $user;
-        $this->updated_by = $user;
+        $this->created_by = $user->id;
+        $this->updated_by = $user->id;
         return $this;
     }
 
@@ -69,7 +76,18 @@ class ProductImage extends Model
 
     public function updateWith(User $user): ProductImage
     {
-        $this->updated_by = $user;
+        $this->updated_by = $user->id;
         return $this;
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function (ProductImage $model) {
+            if (!isset($model->created_by)) $model->createWith(Auth::user());
+        });
+        static::updating(function (ProductImage $model) {
+            if (!isset($model->updated_by)) $model->updateWith(Auth::user());
+        });
     }
 }
