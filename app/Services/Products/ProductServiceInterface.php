@@ -35,9 +35,9 @@ interface ProductServiceInterface
      * Receives a Product from the Shop or null.
      * @param string|null $name The Name of the Product you want to receive. Can only be one. Or empty if searched by ID.
      * @param int|null $id The ID of the Product you want to receive. Can only be one. Or empty if searched by Name.
-     * @return Product|null The Product searched for. Can also be null if none was found.
+     * @return Product The Product searched for.
      */
-    function get(string $name = null, int $id = null): Product|null;
+    function get(string $name = null, int $id = null): Product;
 
     /**
      * Edits a Product with the Attributes given.
@@ -47,7 +47,7 @@ interface ProductServiceInterface
      * @param float|null $price The New Price of the Product if it should be changed or null if it should stay the same.
      * @param string|null $description The New Description of the Product if it should be changed or null if it should stay the same.
      * @param ProductImage|null $thumbnail The New Thumbnail of the Product if it should be changed or null if it should stay the same.
-     * @return Product|null The edited Product or Null if nothing was found.
+     * @return Product The edited Product.
      */
     function edit(int $id = null, string $name = null, string $newName = null, float $price = null, string $description = null, ProductImage $thumbnail = null): Product|null;
 
@@ -58,7 +58,6 @@ interface ProductServiceInterface
      * @param string $path The Path of the Image.
      * @param string $type The Type of the Image.
      * @return ProductImage the created Image.
-     * @throws ProductNotFoundException if the Product you want to add an Image to isn't found.
      */
     function addImage(string $path, string $type, int $id = null, string $name = null): ProductImage;
 
@@ -68,7 +67,6 @@ interface ProductServiceInterface
      * @param string|null $name The Name of the Product you want to search for. Null if ID is used.
      * @param ProductImage $image The Image for the Products new thumbnail
      * @return Product The updated Product.
-     * @throws ProductNotFoundException if the Product you want to set the Thumbnail for isn't found.
      */
     function setThumbnail(ProductImage $image, int $id = null, string $name = null): Product;
 
@@ -79,7 +77,6 @@ interface ProductServiceInterface
      * @param int $type The Type of the Attribute
      * @param string $values_available The Available Values as JSON string.
      * @return ProductAttribute The Product Attribute created.
-     * @throws ProductNotFoundException if the Product you want to add Attributes to isn't found.
      */
     function addAttribute(int $type, string $values_available, int $id = null, string $name = null): ProductAttribute;
 
@@ -89,16 +86,6 @@ interface ProductServiceInterface
      * @return ProductImage The Product image you searched for.
      */
     function getImage(int $id): ProductImage;
-
-    /**
-     * Checks if the given Product has the given Attribute Type.
-     * @param int|null $id The ID of the Product you want to search for. Null if Name is used.
-     * @param string|null $name The Name of the Product you want to search for. Null if ID is used.
-     * @param int $type The AttributeType you want to search for.
-     * @return bool true if the Attribute exists.
-     * @throws ProductNotFoundException
-     */
-    function hasAttributeType(int $type, int $id = null, string $name = null): bool;
 
     /**
      * Removes a Product Image.
