@@ -1,5 +1,8 @@
 <?php
 
+use App\Exceptions\CouponCodeDiscounOutOfBoundsException;
+use App\Exceptions\CouponCodeNotFoundException;
+use App\Models\Admin;
 use App\Models\CouponCode;
 use App\Services\Coupons\CouponService;
 
@@ -16,22 +19,40 @@ test('is coupon unused', function () {
 });
 
 test('change used status of coupon', function () {
-    $service = app()->make(CouponService::class);
-    $code = CouponCode::whereEnabled(false)->get()->random();
+    $service = $this->app->make(CouponService::class);
+    $code = CouponCode::whereEnabled(true)->get()->random();
     $service->markAsUsed($code->code);
     expect($service->isUsed($code->code))->toBeTrue();
 });
 
 test('get coupon by code', function () {
-    $service = app()->make(CouponService::class);
+    $service = $this->app->make(CouponService::class);
     $code = CouponCode::all()->random();
     $code2 = $service->get($code->code);
     expect(isset($code2))->toBeTrue();
 });
 
 test('create coupon code', function () {
-    $service = app()->make(CouponService::class);
-    $service->create('test', 20, now());
-    $code = CouponCode::whereCode('test')->get()->first();
+    $this->actingAs(Admin::all()->random());
+    $service = $this->app->make(CouponService::class);
+    $code = $service->create(20, now(), 'test');
     expect(isset($code))->toBeTrue();
 });
+
+test('create coupon code with to high discount', function () {
+    $this->actingAs(Admin::all()->random());
+    $service = $this->app->make(CouponService::class);
+    $service->create(120, now(), 'test');
+})->throws(CouponCodeDiscounOutOfBoundsException::class);
+
+test('create coupon code with to low discount', function () {
+    $this->actingAs(Admin::all()->random());
+    $service = $this->app->make(CouponService::class);
+    $service->create(-120, now(), 'test');
+})->throws(CouponCodeDiscounOutOfBoundsException::class);
+
+test('delete coupon code', function () {
+    $service = $this->app->make(CouponService::class);
+    $service->delete('test');
+    $service->get('test');
+})->throws(CouponCodeNotFoundException::class);
