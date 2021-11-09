@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Auth;
 use Database\Factories\ProductFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -75,12 +76,18 @@ class Product extends Model
         'price',
         'available',
         'tax',
+        'product_category_id',
+        'thumbnail',
     ];
 
     protected $casts = [
         'price' => 'float',
-        'available' => 'boolean',
+        'available' => 'integer',
         'tax' => 'float',
+        'product_category_id' => 'integer',
+        'created_by' => 'integer',
+        'updated_by' => 'integer',
+        'thumbnail' => 'integer',
     ];
 
     public function thumbnail(): HasOne
@@ -95,8 +102,8 @@ class Product extends Model
 
     public function createWith(User $user): Product
     {
-        $this->created_by = $user;
-        $this->updated_by = $user;
+        $this->created_by = $user->id;
+        $this->updated_by = $user->id;
         return $this;
     }
 
@@ -107,7 +114,7 @@ class Product extends Model
 
     public function updateWith(User $user): Product
     {
-        $this->updated_by = $user;
+        $this->updated_by = $user->id;
         return $this;
     }
 
@@ -124,5 +131,20 @@ class Product extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(ProductCategory::class);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function (Product $model) {
+            if (!isset($model->created_by)) $model->createWith(Auth::user());
+        });
+        static::updating(function (Product $model) {
+            if (!isset($model->updated_by)) $model->updateWith(Auth::user());
+        });
+        static::deleting(function (Product $model) {
+            $model->images()->delete();
+            $model->attributes()->delete();
+        });
     }
 }

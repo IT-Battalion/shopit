@@ -37,5 +37,11 @@ class ProductAttribute extends Model
     protected $fillable = [
         'type',
         'values_available',
+        'product_id',
+    ];
+
+    protected $casts = [
+        'type' => 'integer',
+        'product_id' => 'integer',
     ];
 }
