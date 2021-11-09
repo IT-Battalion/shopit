@@ -2,37 +2,61 @@
 
 namespace App\Services\Coupons;
 
+use App\Exceptions\CouponCodeDiscounOutOfBoundsException;
+use App\Exceptions\CouponCodeNotFoundException;
 use App\Models\CouponCode;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
+use Str;
 
 class CouponService implements CouponServiceInterface
 {
 
-    function isUsed($coupon_code): bool
+    /**
+     * @throws CouponCodeDiscounOutOfBoundsException
+     */
+    function isUsed(string $coupon_code): bool
     {
-       return !$this->get($coupon_code)->enabled;
+        return !$this->get($coupon_code)->enabled;
     }
 
-    function markAsUsed($coupon_code)
+    /**
+     * @throws CouponCodeNotFoundException
+     */
+    function get(string $coupon_code): CouponCode
     {
-        $coupon = $this->get($coupon_code);
-        $coupon->enabled = true;
-        $coupon->updateWith(Auth::user());
-        $coupon->save();
+        $coupon = CouponCode::whereCode($coupon_code)->get();
+        if ($coupon->count() === 0) throw new CouponCodeNotFoundException(__('exceptionMessages.coupon_code_not_found_exception'));
+        return $coupon->first();
     }
 
-    function get($coupon_code): CouponCode
+    /**
+     * @throws CouponCodeDiscounOutOfBoundsException
+     */
+    function create(int $discount, Carbon $enabled_until, string $coupon_code = null): CouponCode
     {
-        return CouponCode::whereCode($coupon_code)->firstOrFail();
-    }
-
-    function create($coupon_code, $discount, $enabled_until)
-    {
-        CouponCode::create([
-            'code' => $coupon_code,
+        if ($discount < 1 || $discount > 100) throw new CouponCodeDiscounOutOfBoundsException(__('exceptionMessages.coupon_code_discount_out_of_bounds'));
+        return CouponCode::create([
+            'code' => $coupon_code ?? Str::random(32),
             'discount' => $discount,
             'enabled_until' => $enabled_until,
-            'created_by' => Auth::user()->id,
         ]);
+    }
+
+    /**
+     * @throws CouponCodeDiscounOutOfBoundsException
+     */
+    function delete(string $coupon_code): void
+    {
+        $this->get($coupon_code)->delete();
+    }
+
+    /**
+     * @throws CouponCodeDiscounOutOfBoundsException
+     */
+    function markAsUsed(string $coupon_code): void
+    {
+        $coupon = $this->get($coupon_code);
+        $coupon->enabled = false;
+        $coupon->save();
     }
 }
