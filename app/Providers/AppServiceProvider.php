@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Categories\CategoryService;
+use App\Services\Categories\CategoryServiceInterface;
 use App\Services\Coupons\CouponService;
 use App\Services\Coupons\CouponServiceInterface;
 use App\Services\Products\ProductService;
@@ -16,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
     public array $singletons = [
         UserServiceInterface::class => UserService::class,
         CouponServiceInterface::class => CouponService::class,
+        CategoryServiceInterface::class => CategoryService::class,
         ProductServiceInterface::class => ProductService::class,
     ];
 
