@@ -26,48 +26,51 @@ class ProductService implements ProductServiceInterface
     function addImage(string $path, string $type, int $id = null, string $name = null): ProductImage
     {
         $product = $this->get($name, $id);
-        if (isset($product)) {
-            return ProductImage::create([
-                'path' => $path,
-                'type' => $type,
-                'product_id' => $product->id,
-            ]);
-        } else {
-            throw new ProductNotFoundException(__('exceptionMessages.product_not_found_for_image'));
-        }
+        return ProductImage::create([
+            'path' => $path,
+            'type' => $type,
+            'product_id' => $product->id,
+        ]);
     }
 
+    /**
+     * @throws ProductNotFoundException
+     */
     function setThumbnail(ProductImage $image, int $id = null, string $name = null): Product
     {
         $product = $this->get($name, $id);
-        if (isset($product)) {
-            $product->thumbnail = $image->id;
-            $product->save();
-            return $product;
-        } else {
-            throw new ProductNotFoundException(__('exceptionMessages.product_not_found_for_image'));
-        }
+        $product->thumbnail = $image->id;
+        $product->save();
+        return $product;
     }
 
+    /**
+     * @throws ProductNotFoundException
+     */
     function addAttribute(int $type, string $values_available, int $id = null, string $name = null): ProductAttribute
     {
         $product = $this->get($name, $id);
-        if (isset($product)) {
-            return ProductAttribute::create([
-                'type' => $type,
-                'values_available' => $values_available,
-                'product_id' => $product->id,
-            ]);
-        } else {
-            throw new ProductNotFoundException(__('exceptionMessages.product_not_found_for_attribute'));
-        }
+        return ProductAttribute::create([
+            'type' => $type,
+            'values_available' => $values_available,
+            'product_id' => $product->id,
+        ]);
     }
 
-    function get(string $name = null, int $id = null): Product|null
+    /**
+     * @throws ProductNotFoundException
+     */
+    function get(string $name = null, int $id = null): Product
     {
-        if (isset($name)) return Product::whereName($name)->get()->first();
-        if (isset($id)) return Product::whereId($id)->get()->first();
-        return null;
+        $product = null;
+        if (isset($name)) {
+            $product = Product::whereName($name)->get();
+        }
+        if (isset($id)) {
+            $product = Product::whereId($id)->get();
+        }
+        if ($product->count() === 0) throw new ProductNotFoundException(__('exceptionMessages.product_not_found'));
+        return $product->first();
     }
 
     function getImage(int $id): ProductImage
@@ -75,27 +78,12 @@ class ProductService implements ProductServiceInterface
         return ProductImage::whereId($id)->get()->first();
     }
 
-    function hasAttributeType(int $type, int $id = null, string $name = null): bool
-    {
-        $product = $this->get($name, $id);
-        if (isset($product)) {
-            $attributes = $product->attributes();
-            foreach ($attributes as $attribute) {
-                if ($attribute->type === $type) return true;
-            }
-            return false;
-        } else {
-            throw new ProductNotFoundException(__('exceptionMessages.product_not_found_for_attribute'));
-        }
-    }
-
     /**
      * @throws ProductNotFoundException
      */
-    function edit(int $id = null, string $name = null, string $newName = null, float $price = null, string $description = null, ProductImage $thumbnail = null): Product|null
+    function edit(int $id = null, string $name = null, string $newName = null, float $price = null, string $description = null, ProductImage $thumbnail = null): Product
     {
         $product = $this->get($name, $id);
-        if (!isset($product)) throw new ProductNotFoundException(__('exceptionMessages.product_not_found_for_edit'));
 
         if (isset($newName)) $product->name = $newName;
         if (isset($price)) $product->price = $price;
@@ -134,10 +122,6 @@ class ProductService implements ProductServiceInterface
     function delete(string $name = null, int $id = null): void
     {
         $product = $this->get($name, $id);
-        if (isset($product)) {
-            $product->delete();
-        } else {
-            throw new ProductNotFoundException(__('exceptionMessages.product_not_found_for_deletion'));
-        }
+        $product->delete();
     }
 }
