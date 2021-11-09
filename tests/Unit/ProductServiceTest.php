@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\AttributeType;
+use App\Exceptions\ProductNotFoundException;
 use App\Models\Admin;
 use App\Models\Product;
 use App\Models\ProductCategory;
@@ -34,10 +35,7 @@ test('create product attributes', function () {
     $service->addAttribute(AttributeType::COLOR, json_encode([
         'White:#ffffff',
     ]), null, 'test');
-    $attributeType = $service->hasAttributeType(AttributeType::COLOR, null, 'test');
-    $attribute = $service->hasAttribute('Rot:#ff0000', null, 'test');
-    expect($attributeType)->toBeTrue()
-        ->and($attribute)->toBeTrue();
+    expect($service->get('test')->attributes()->count())->toBe(2);
 });
 
 test('set thumbnail image', function () {
@@ -91,5 +89,4 @@ test('delete product', function () {
     $service = $this->app->make(ProductService::class);
     $service->delete('test');
     $product = $service->get('test');
-    expect($product)->toBeNull();
-});
+})->throws(ProductNotFoundException::class);
