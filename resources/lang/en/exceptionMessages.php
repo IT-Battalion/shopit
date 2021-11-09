@@ -9,5 +9,7 @@ return [
     'product_not_found_for_edit' => 'Product cannot be edited. Not found.',
     'product_not_found_for_image' => 'Image cannot be added to not existing Product.',
     'product_not_found_for_attribute' => 'Attribute cannot be added to not existing Product',
-    'product_image_not_found_for_thumbnail' => 'Not existing image cannot be set as Thumbnail for a Product.'
+    'product_image_not_found_for_thumbnail' => 'Not existing image cannot be set as Thumbnail for a Product.',
+    'coupon_code_discount_out_of_bounds' => 'The Discount of the Coupon must be between 1 and 100',
+    'coupon_code_not_found_exception' => 'The Coupon for this code could not be found.',
 ];
