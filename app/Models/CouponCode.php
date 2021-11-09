@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * App\Models\CouponCode
@@ -41,27 +42,23 @@ class CouponCode extends Model
 {
     use HasFactory;
 
+    protected $table = 'coupon_codes';
+
     protected $fillable = [
         'code',
         'discount',
-        'enabled',
         'enabled_until',
     ];
 
     protected $casts = [
         'enabled' => 'boolean',
+        'created_by' => 'integer',
+        'updated_by' => 'integer',
     ];
 
     public function created_by(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'created_by');
-    }
-
-    public function createWith(User $user): CouponCode
-    {
-        $this->created_by = $user;
-        $this->updated_by = $user;
-        return $this;
     }
 
     public function updated_by(): HasOne
@@ -71,7 +68,25 @@ class CouponCode extends Model
 
     public function updateWith(User $user): CouponCode
     {
-        $this->updated_by = $user;
+        $this->updated_by = $user->id;
         return $this;
+    }
+
+    public function createWith(User $user): CouponCode
+    {
+        $this->created_by = $user->id;
+        $this->updated_by = $user->id;
+        return $this;
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function (CouponCode $model) {
+            if (!isset($model->created_by)) $model->createWith(Auth::user());
+        });
+        static::updating(function (CouponCode $model) {
+            if (!isset($model->updated_by)) $model->updateWith(Auth::user());
+        });
     }
 }
