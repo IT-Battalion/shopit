@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Support\Carbon;
-use LdapRecord\Models\Model;
 
 /**
  * App\Models\Admin
@@ -33,14 +32,40 @@ use LdapRecord\Models\Model;
  * @property Carbon|null $updated_at
  * @property string|null $guid
  * @property string|null $domain
- * @property-read Model|null $ldap
+ * @property-read Collection|\App\Models\CouponCode[] $coupons_created
+ * @property-read int|null $coupons_created_count
+ * @property-read Collection|\App\Models\CouponCode[] $coupons_updated
+ * @property-read int|null $coupons_updated_count
+ * @property-read \LdapRecord\Models\Model|null $ldap
  * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read Collection|Product[] $shopping_cart
+ * @property-read Collection|\App\Models\Order[] $order_handed_over
+ * @property-read int|null $order_handed_over_count
+ * @property-read Collection|\App\Models\Order[] $order_products_ordered
+ * @property-read int|null $order_products_ordered_count
+ * @property-read Collection|\App\Models\Order[] $order_received
+ * @property-read int|null $order_received_count
+ * @property-read Collection|\App\Models\Order[] $order_transactions_approved
+ * @property-read int|null $order_transactions_approved_count
+ * @property-read Collection|\App\Models\Order[] $orders
+ * @property-read int|null $orders_count
+ * @property-read Collection|\App\Models\ProductImage[] $product_images_created
+ * @property-read int|null $product_images_created_count
+ * @property-read Collection|\App\Models\ProductImage[] $product_images_updated
+ * @property-read int|null $product_images_updated_count
+ * @property-read Collection|\App\Models\Product[] $products_created
+ * @property-read int|null $products_created_count
+ * @property-read Collection|\App\Models\Product[] $products_updated
+ * @property-read int|null $products_updated_count
+ * @property-read Collection|\App\Models\ShoppingCart[] $shopping_cart
  * @property-read int|null $shopping_cart_count
+ * @method static \Illuminate\Database\Eloquent\Builder|User banned()
  * @method static Builder|Admin newModelQuery()
  * @method static Builder|Admin newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|User notBanned()
  * @method static Builder|Admin query()
+ * @method static \Illuminate\Database\Eloquent\Builder|User student()
+ * @method static \Illuminate\Database\Eloquent\Builder|User teacher()
  * @method static Builder|Admin whereClass($value)
  * @method static Builder|Admin whereCreatedAt($value)
  * @method static Builder|Admin whereDeletedAt($value)

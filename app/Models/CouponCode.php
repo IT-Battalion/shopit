@@ -19,10 +19,14 @@ use Illuminate\Support\Facades\Auth;
  * @property bool $enabled
  * @property string $enabled_until
  * @property string $code
- * @property \App\Models\User|null $created_by
- * @property \App\Models\User|null $updated_by
+ * @property \App\Models\User $created_by
+ * @property \App\Models\User $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $orders_used
+ * @property-read int|null $orders_used_count
+ * @method static Builder|CouponCode disabled()
+ * @method static Builder|CouponCode enabled()
  * @method static \Database\Factories\CouponCodeFactory factory(...$parameters)
  * @method static Builder|CouponCode newModelQuery()
  * @method static Builder|CouponCode newQuery()
