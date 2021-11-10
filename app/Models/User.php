@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use Database\Factories\UserFactory;
+use Eloquent;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Prunable;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -22,8 +23,7 @@ use LdapRecord\Models\Model;
 /**
  * App\Models\User
  *
- * @mixin Builder
- * @property string $id
+ * @property int $id
  * @property string $username
  * @property string $email
  * @property string $firstname
@@ -32,8 +32,11 @@ use LdapRecord\Models\Model;
  * @property string $employeeType
  * @property string|null $class
  * @property string $lang
- * @property int $isAdmin
- * @property int $enabled
+ * @property bool $isAdmin
+ * @property bool $enabled
+ * @property string|null $reason_for_disabling
+ * @property string|null $disabled_at
+ * @property Carbon|null $deleted_at
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -47,9 +50,12 @@ use LdapRecord\Models\Model;
  * @method static UserFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
+ * @method static Builder|User onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
  * @method static \Illuminate\Database\Eloquent\Builder|User whereClass($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereDisabledAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereDomain($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmployeeType($value)
@@ -61,22 +67,14 @@ use LdapRecord\Models\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLang($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLastname($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereReasonForDisabling($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
- * @property int $deleted
- * @property string|null $deleted_since
- * @method static \Illuminate\Database\Eloquent\Builder|User whereDeleted($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereDeletedSince($value)
- * @property Carbon|null $deleted_at
- * @method static Builder|User onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|User whereDeletedAt($value)
  * @method static Builder|User withTrashed()
  * @method static Builder|User withoutTrashed()
- * @property string|null $reason_for_disabling
- * @method static \Illuminate\Database\Eloquent\Builder|User whereReasonForDisabling($value)
+ * @mixin Eloquent
  */
-
 class User extends Authenticatable implements LdapAuthenticatable
 {
     use Notifiable, AuthenticatesWithLdap, HasLdapUser, HasFactory, SoftDeletes, Prunable;
@@ -126,45 +124,62 @@ class User extends Authenticatable implements LdapAuthenticatable
     ];
 
     /**
-     * Gets the users shopping cart
+     * Das is hässlich wie sau no joke
+     * @return User
      */
-
-    public function shopping_cart(): BelongsToMany
-    {
-        return $this
-            ->belongsToMany(Product::class, 'shopping_cart')
-            ->withPivot(['count'])
-            ->withTimestamps();
-    }
-
     public function prunable(): User
     {
         return static::whereNotNull('deleted_at')
             ->whereRaw('(SELECT customer FROM orders
         WHERE users.id = orders.customer
         GROUP BY customer) IS NULL'); // An diese Query wird ein ORDER BY `id` angehängt was JOINS unmöglich macht,
-                                      // da dies nicht zwischen der orders.id und der users.id unterscheiden könnte
-                                      // deswegen die Subquery. Die Subquery ist in raw SQL, da der Query Builder für
-                                      // Subqueries keine Möglichkeit bietet mit IS NULL zu vergleichen
+        // da dies nicht zwischen der orders.id und der users.id unterscheiden könnte
+        // deswegen die Subquery. Die Subquery ist in raw SQL, da der Query Builder für
+        // Subqueries keine Möglichkeit bietet mit IS NULL zu vergleichen
     }
 
-    public function isEnabled(): bool
+    public function product_images_updated(): HasOneOrMany
     {
-        return $this->enabled;
+        return $this->hasMany(ProductImage::class, 'id', 'updated_by');
     }
 
-    public function enable()
+    public function products_updated(): HasOneOrMany
     {
-        $this->enabled = 1;
+        return $this->hasMany(Product::class, 'id', 'updated_by');
     }
 
-    public function disable()
+    public function coupons_updated(): HasOneOrMany
     {
-        $this->enabled = 0;
+        return $this->hasMany(CouponCode::class, 'id', 'updated_by');
     }
 
-    public function setEnabled(bool $enabled)
+    public function shopping_cart(): HasOneOrMany
     {
-        $this->enabled = $enabled ? 1 : 0;
+        return $this->hasMany(ShoppingCart::class, null, 'user_id');
+    }
+
+    public function orders(): HasOneOrMany
+    {
+        return $this->hasMany(Order::class, null, 'customer');
+    }
+
+    public function scopeTeacher(Builder $query): Builder
+    {
+        return $query->where('employeeType', '=', 'lehrer');
+    }
+
+    public function scopeStudent(Builder $query): Builder
+    {
+        return $query->where('employeeType', '=', 'schueler');
+    }
+
+    public function scopeBanned(Builder $query): Builder
+    {
+        return $query->where('enabled', '=', false);
+    }
+
+    public function scopeNotBanned(Builder $query): Builder
+    {
+        return $query->where('enabled', '=', true);
     }
 }
