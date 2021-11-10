@@ -8,6 +8,8 @@ use App\Services\Coupons\CouponService;
 use App\Services\Coupons\CouponServiceInterface;
 use App\Services\Products\ProductService;
 use App\Services\Products\ProductServiceInterface;
+use App\Services\ShoppingCart\ShoppingCartService;
+use App\Services\ShoppingCart\ShoppingCartServiceInterface;
 use App\Services\Users\UserService;
 use App\Services\Users\UserServiceInterface;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
@@ -20,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
         CouponServiceInterface::class => CouponService::class,
         CategoryServiceInterface::class => CategoryService::class,
         ProductServiceInterface::class => ProductService::class,
+        ShoppingCartServiceInterface::class => ShoppingCartService::class,
     ];
 
     /**
