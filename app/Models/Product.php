@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Auth;
-use Database\Factories\ProductFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -20,24 +19,26 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property string $name
  * @property string $description
- * @property ProductImage|null $thumbnail
+ * @property \App\Models\ProductImage|null $thumbnail
  * @property float $price
  * @property float $tax
  * @property int $available
- * @property User|null $created_by
- * @property User|null $updated_by
+ * @property \App\Models\User $created_by
+ * @property \App\Models\User $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property int $product_category_id
- * @property-read Collection|ProductAttribute[] $attributes
+ * @property-read Collection|\App\Models\ProductAttribute[] $attributes
  * @property-read int|null $attributes_count
- * @property-read ProductCategory $category
- * @property-read Collection|ProductImage[] $images
+ * @property-read \App\Models\ProductCategory $category
+ * @property-read Collection|\App\Models\ProductImage[] $images
  * @property-read int|null $images_count
- * @method static ProductFactory factory(...$parameters)
+ * @method static Builder|Product available()
+ * @method static \Database\Factories\ProductFactory factory(...$parameters)
  * @method static Builder|Product newModelQuery()
  * @method static Builder|Product newQuery()
  * @method static Builder|Product query()
+ * @method static Builder|Product unavailable()
  * @method static Builder|Product whereAvailable($value)
  * @method static Builder|Product whereCreatedAt($value)
  * @method static Builder|Product whereCreatedBy($value)

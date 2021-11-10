@@ -18,6 +18,8 @@ use Illuminate\Support\Carbon;
  * @property string $values_chosen
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read \App\Models\Product $product
+ * @method static \Database\Factories\OrderProductAttributeFactory factory(...$parameters)
  * @method static Builder|OrderProductAttribute newModelQuery()
  * @method static Builder|OrderProductAttribute newQuery()
  * @method static Builder|OrderProductAttribute query()

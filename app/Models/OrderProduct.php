@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use Barryvdh\LaravelIdeHelper\Eloquent;
-use Database\Factories\OrderProductFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,21 +19,21 @@ use Illuminate\Support\Carbon;
  * @property int $count
  * @property string $name
  * @property string $description
- * @property ProductImage|null $thumbnail
+ * @property \App\Models\OrderProductImage|null $thumbnail
  * @property float $price
  * @property float $tax
  * @property int $available
- * @property User|null $created_by
- * @property User|null $updated_by
+ * @property \App\Models\User $created_by
+ * @property \App\Models\User $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property int $order_product_category_id
- * @property-read Collection|OrderProductAttribute[] $attributes
+ * @property-read Collection|\App\Models\OrderProductAttribute[] $attributes
  * @property-read int|null $attributes_count
- * @property-read OrderProductCategory $category
- * @property-read Collection|OrderProductImage[] $images
+ * @property-read \App\Models\OrderProductCategory $category
+ * @property-read Collection|\App\Models\OrderProductImage[] $images
  * @property-read int|null $images_count
- * @method static OrderProductFactory factory(...$parameters)
+ * @method static \Database\Factories\OrderProductFactory factory(...$parameters)
  * @method static Builder|OrderProduct newModelQuery()
  * @method static Builder|OrderProduct newQuery()
  * @method static Builder|OrderProduct query()
@@ -53,7 +51,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OrderProduct whereThumbnail($value)
  * @method static Builder|OrderProduct whereUpdatedAt($value)
  * @method static Builder|OrderProduct whereUpdatedBy($value)
- * @mixin Eloquent
+ * @mixin \Eloquent
  */
 class OrderProduct extends Model
 {

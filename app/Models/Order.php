@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Database\Factories\OrderFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -17,26 +16,30 @@ use Illuminate\Support\Carbon;
  * App\Models\Order
  *
  * @property int $id
- * @property User|null $customer
+ * @property \App\Models\User $customer
  * @property int|null $coupon_code_id
  * @property string|null $payed_at
- * @property User|null $transaction_confirmed_by
+ * @property \App\Models\User $transaction_confirmed_by
  * @property string|null $products_ordered_at
  * @property int|null $products_ordered_by
  * @property string|null $received_at
- * @property User|null $received_by
+ * @property \App\Models\User $received_by
  * @property string|null $handed_over_at
- * @property User|null $handed_over_by
+ * @property \App\Models\User $handed_over_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read User|null $authorizing_admin
- * @property-read CouponCode|null $coupon_code
- * @property-read Collection|Product[] $products
+ * @property-read \App\Models\CouponCode $coupon_code
+ * @property-read \App\Models\User $ordered_by
+ * @property-read Collection|\App\Models\Product[] $products
  * @property-read int|null $products_count
- * @method static OrderFactory factory(...$parameters)
+ * @method static \Database\Factories\OrderFactory factory(...$parameters)
+ * @method static Builder|Order handedOver()
  * @method static Builder|Order newModelQuery()
  * @method static Builder|Order newQuery()
+ * @method static Builder|Order ordered()
  * @method static Builder|Order query()
+ * @method static Builder|Order received()
+ * @method static Builder|Order transactionConfirmed()
  * @method static Builder|Order whereCouponCodeId($value)
  * @method static Builder|Order whereCreatedAt($value)
  * @method static Builder|Order whereCustomer($value)
