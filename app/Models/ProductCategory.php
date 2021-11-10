@@ -40,6 +40,11 @@ class ProductCategory extends Model
 
     protected $fillable = [
         'name',
+        'icon_id',
+    ];
+
+    protected $casts = [
+      'icon_id' => 'integer',
     ];
 
     public function products(): HasMany
