@@ -15,11 +15,13 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property string $path
  * @property string $type
- * @property User|null $created_by
- * @property User|null $updated_by
+ * @property \App\Models\User $created_by
+ * @property \App\Models\User $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property int $order_product_id
+ * @property-read \App\Models\OrderProduct $product
+ * @method static \Database\Factories\OrderProductImageFactory factory(...$parameters)
  * @method static Builder|OrderProductImage newModelQuery()
  * @method static Builder|OrderProductImage newQuery()
  * @method static Builder|OrderProductImage query()
