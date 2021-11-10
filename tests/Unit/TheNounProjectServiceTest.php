@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\IconNotFoundException;
 use App\Services\Icons\NounProjectApi\ApiClient;
 use App\Services\Icons\NounProjectApi\ApiIcon;
 use App\Services\Icons\TheNounProjectService;
@@ -784,7 +785,7 @@ test('search for non existent icon', function () {
 
     $service = $this->app->make(TheNounProjectService::class);
     $service->findById('abc123');
-})->throws(IconNotFoundException::class);
+})->throws(IconNotFoundException::class, "We couldn't find any icons with the name or id \"abc123\"");
 
 test('add icon', function () {
     $testData = new ApiIcon(
