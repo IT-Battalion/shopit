@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Database\Factories\ProductAttributeFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,7 +18,8 @@ use Illuminate\Support\Carbon;
  * @property mixed $values_available
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @method static ProductAttributeFactory factory(...$parameters)
+ * @property-read \App\Models\Product $product
+ * @method static \Database\Factories\ProductAttributeFactory factory(...$parameters)
  * @method static Builder|ProductAttribute newModelQuery()
  * @method static Builder|ProductAttribute newQuery()
  * @method static Builder|ProductAttribute query()

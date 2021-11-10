@@ -19,9 +19,10 @@ use Illuminate\Support\Carbon;
  * @property int $icon_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Icon|null $icon
- * @property-read Collection|OrderProduct[] $products
+ * @property-read \App\Models\Icon|null $icon
+ * @property-read Collection|\App\Models\OrderProduct[] $products
  * @property-read int|null $products_count
+ * @method static \Database\Factories\OrderProductCategoryFactory factory(...$parameters)
  * @method static Builder|OrderProductCategory newModelQuery()
  * @method static Builder|OrderProductCategory newQuery()
  * @method static Builder|OrderProductCategory query()

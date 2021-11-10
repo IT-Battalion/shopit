@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Database\Factories\HighlightedProductFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,8 +16,8 @@ use Illuminate\Support\Carbon;
  * @property int $product_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Product|null $products
- * @method static HighlightedProductFactory factory(...$parameters)
+ * @property-read \App\Models\Product|null $products
+ * @method static \Database\Factories\HighlightedProductFactory factory(...$parameters)
  * @method static Builder|HighlightedProduct newModelQuery()
  * @method static Builder|HighlightedProduct newQuery()
  * @method static Builder|HighlightedProduct query()
