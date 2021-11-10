@@ -5,9 +5,9 @@ namespace App\Models;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
-use LdapRecord\Models\Model;
 
 /**
  * App\Models\OrderProductImage
@@ -42,18 +42,18 @@ class OrderProductImage extends Model
     protected $fillable = [
         'path',
         'type',
-        'product_id',
+        'order_product_id',
     ];
 
     protected $casts = [
-        'product_id' => 'integer',
         'created_by' => 'integer',
         'updated_by' => 'integer',
+        'order_product_id' => 'integer',
     ];
 
     public function product(): BelongsTo
     {
-        return $this->belongsTo(Product::class, 'product_id', 'id');
+        return $this->belongsTo(OrderProduct::class, 'order_product_id', 'id');
     }
 
     public function updated_by(): BelongsTo
