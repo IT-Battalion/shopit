@@ -17,31 +17,27 @@ use Illuminate\Support\Carbon;
 /**
  * App\Models\Product
  *
- * @property string $id
+ * @property int $id
  * @property string $name
  * @property string $description
  * @property ProductImage|null $thumbnail
  * @property float $price
- * @property int $sale
+ * @property float $tax
  * @property int $available
  * @property User|null $created_by
  * @property User|null $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property string $product_category_id
- * @property string $attribute_value
- * @property string $attribute_type
- * @property string $attribute_unit
+ * @property int $product_category_id
+ * @property-read Collection|ProductAttribute[] $attributes
+ * @property-read int|null $attributes_count
  * @property-read ProductCategory $category
- * @property-read mixed $product
  * @property-read Collection|ProductImage[] $images
  * @property-read int|null $images_count
+ * @method static ProductFactory factory(...$parameters)
  * @method static Builder|Product newModelQuery()
  * @method static Builder|Product newQuery()
  * @method static Builder|Product query()
- * @method static Builder|Product whereAttributeType($value)
- * @method static Builder|Product whereAttributeUnit($value)
- * @method static Builder|Product whereAttributeValue($value)
  * @method static Builder|Product whereAvailable($value)
  * @method static Builder|Product whereCreatedAt($value)
  * @method static Builder|Product whereCreatedBy($value)
@@ -50,16 +46,11 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Product whereName($value)
  * @method static Builder|Product wherePrice($value)
  * @method static Builder|Product whereProductCategoryId($value)
- * @method static Builder|Product whereSale($value)
+ * @method static Builder|Product whereTax($value)
  * @method static Builder|Product whereThumbnail($value)
  * @method static Builder|Product whereUpdatedAt($value)
  * @method static Builder|Product whereUpdatedBy($value)
  * @mixin Eloquent
- * @method static ProductFactory factory(...$parameters)
- * @property-read Collection|ProductAttribute[] $attributes
- * @property-read int|null $attributes_count
- * @property float $tax
- * @method static Builder|Product whereTax($value)
  */
 class Product extends Model
 {
@@ -95,9 +86,9 @@ class Product extends Model
         return $this->hasOne(ProductImage::class, 'id', 'thumbnail');
     }
 
-    public function created_by(): HasOne
+    public function created_by(): BelongsTo
     {
-        return $this->hasOne(User::class, 'id', 'created_by');
+        return $this->belongsTo(User::class, 'id', 'created_by');
     }
 
     public function createWith(User $user): Product
@@ -107,9 +98,9 @@ class Product extends Model
         return $this;
     }
 
-    public function updated_by(): HasOne
+    public function updated_by(): BelongsTo
     {
-        return $this->hasOne(User::class, 'id', 'updated_by');
+        return $this->belongsTo(User::class, 'id', 'updated_by');
     }
 
     public function updateWith(User $user): Product
@@ -146,5 +137,15 @@ class Product extends Model
             $model->images()->delete();
             $model->attributes()->delete();
         });
+    }
+
+    public function scopeAvailable(Builder $query): Builder
+    {
+        return $query->where('available', '>', '0')->orWhere('available', '=', '-1');
+    }
+
+    public function scopeUnavailable(Builder $query): Builder
+    {
+        return $query->where('available', '=', '0');
     }
 }
