@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Auth;
-use Database\Factories\ProductImageFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,12 +16,13 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property string $path
  * @property string $type
- * @property User|null $created_by
- * @property User|null $updated_by
+ * @property \App\Models\User $created_by
+ * @property \App\Models\User $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property int $product_id
- * @method static ProductImageFactory factory(...$parameters)
+ * @property-read \App\Models\Product $product
+ * @method static \Database\Factories\ProductImageFactory factory(...$parameters)
  * @method static Builder|ProductImage newModelQuery()
  * @method static Builder|ProductImage newQuery()
  * @method static Builder|ProductImage query()

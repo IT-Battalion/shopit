@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Database\Factories\UserFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,7 +17,6 @@ use Illuminate\Support\Carbon;
 use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
 use LdapRecord\Laravel\Auth\HasLdapUser;
 use LdapRecord\Laravel\Auth\LdapAuthenticatable;
-use LdapRecord\Models\Model;
 
 /**
  * App\Models\User
@@ -42,16 +40,28 @@ use LdapRecord\Models\Model;
  * @property Carbon|null $updated_at
  * @property string|null $guid
  * @property string|null $domain
- * @property-read Model|null $ldap
+ * @property-read Collection|\App\Models\CouponCode[] $coupons_updated
+ * @property-read int|null $coupons_updated_count
+ * @property-read \LdapRecord\Models\Model|null $ldap
  * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read Collection|Product[] $shopping_cart
+ * @property-read Collection|\App\Models\Order[] $orders
+ * @property-read int|null $orders_count
+ * @property-read Collection|\App\Models\ProductImage[] $product_images_updated
+ * @property-read int|null $product_images_updated_count
+ * @property-read Collection|\App\Models\Product[] $products_updated
+ * @property-read int|null $products_updated_count
+ * @property-read Collection|\App\Models\ShoppingCart[] $shopping_cart
  * @property-read int|null $shopping_cart_count
- * @method static UserFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|User banned()
+ * @method static \Database\Factories\UserFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|User notBanned()
  * @method static Builder|User onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
+ * @method static \Illuminate\Database\Eloquent\Builder|User student()
+ * @method static \Illuminate\Database\Eloquent\Builder|User teacher()
  * @method static \Illuminate\Database\Eloquent\Builder|User whereClass($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereDeletedAt($value)
