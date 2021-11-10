@@ -15,28 +15,30 @@ use Illuminate\Support\Carbon;
 /**
  * App\Models\ProductCategory
  *
- * @property string $id
+ * @property int $id
  * @property string $name
+ * @property int $icon_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Collection|Product[] $products
+ * @property-read Icon|null $icon
+ * @property-read Collection|\App\Models\Product[] $products
  * @property-read int|null $products_count
+ * @method static ProductCategoryFactory factory(...$parameters)
  * @method static Builder|ProductCategory newModelQuery()
  * @method static Builder|ProductCategory newQuery()
  * @method static Builder|ProductCategory query()
  * @method static Builder|ProductCategory whereCreatedAt($value)
+ * @method static Builder|ProductCategory whereIconId($value)
  * @method static Builder|ProductCategory whereId($value)
  * @method static Builder|ProductCategory whereName($value)
  * @method static Builder|ProductCategory whereUpdatedAt($value)
  * @mixin Eloquent
- * @method static ProductCategoryFactory factory(...$parameters)
- * @property int $icon_id
- * @property-read Icon|null $icon
- * @method static Builder|ProductCategory whereIconId($value)
  */
 class ProductCategory extends Model
 {
     use HasFactory;
+
+    protected $table = 'product_categories';
 
     protected $fillable = [
         'name',
