@@ -104,4 +104,9 @@ class Admin extends User
     {
         return $this->hasMany(Order::class, 'id', 'handed_over_by');
     }
+
+    public function coupons_created(): HasOneOrMany
+    {
+        return $this->hasMany(CouponCode::class, 'id', 'created_by');
+    }
 }
