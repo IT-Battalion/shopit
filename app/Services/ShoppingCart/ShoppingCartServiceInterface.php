@@ -17,7 +17,7 @@ interface ShoppingCartServiceInterface
     /**
      * Removes a Product from the Shopping Cart of a User.
      * @param Product $product The Product which should be removed from the Shopping Cart.
-     * @param int $amount The Amount which should be removed from the Shopping Cart.
+     * @param int $amount The Amount which should be removed from the Shopping Cart. If -1 all will be removed.
      */
     function removeProduct(Product $product, int $amount = 1): void;
 
@@ -36,4 +36,19 @@ interface ShoppingCartServiceInterface
      * @return float The total price in EUR.
      */
     function calculatePriceOfProduct(Product $product, bool $includeTaxes): float;
+
+    /**
+     * Checks if the Shopping Cart has a specific Product or an Amount of a specific Product.
+     * @param Product $product The Product which should be searched for.
+     * @param int $amount The Amount of the Product which should be checked. Default 0.
+     * @return bool true if the Product is existing and the amount matches. Else false.
+     */
+    function hasShoppingCartProduct(Product $product, int $amount = 0): bool;
+
+    /**
+     * Returns the Amount of a Product in a Shopping Cart.
+     * @param Product $product The Product which should be searched for.
+     * @return int The Amount of the Product in the Shopping Cart.
+     */
+    function getAmountOfProduct(Product $product): int;
 }
