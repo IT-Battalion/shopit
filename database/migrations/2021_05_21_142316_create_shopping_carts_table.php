@@ -14,11 +14,11 @@ class CreateShoppingCartsTable extends Migration
     public function up(): void
     {
         Schema::create('shopping_cart', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignid('product_id')->constrained();
             $table->integer('count');
             $table->timestamps();
-            $table->index('user_id');
         });
     }
 
