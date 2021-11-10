@@ -17,24 +17,25 @@ use Illuminate\Support\Carbon;
  * App\Models\OrderProduct
  *
  * @property int $id
- * @property string $order_id
+ * @property int $order_id
  * @property int $count
  * @property string $name
  * @property string $description
  * @property ProductImage|null $thumbnail
  * @property float $price
- * @property int $sale
+ * @property float $tax
  * @property int $available
  * @property User|null $created_by
  * @property User|null $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property string $order_product_category_id
+ * @property int $order_product_category_id
  * @property-read Collection|OrderProductAttribute[] $attributes
  * @property-read int|null $attributes_count
  * @property-read OrderProductCategory $category
  * @property-read Collection|OrderProductImage[] $images
  * @property-read int|null $images_count
+ * @method static OrderProductFactory factory(...$parameters)
  * @method static Builder|OrderProduct newModelQuery()
  * @method static Builder|OrderProduct newQuery()
  * @method static Builder|OrderProduct query()
@@ -48,18 +49,17 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OrderProduct whereOrderId($value)
  * @method static Builder|OrderProduct whereOrderProductCategoryId($value)
  * @method static Builder|OrderProduct wherePrice($value)
- * @method static Builder|OrderProduct whereSale($value)
+ * @method static Builder|OrderProduct whereTax($value)
  * @method static Builder|OrderProduct whereThumbnail($value)
  * @method static Builder|OrderProduct whereUpdatedAt($value)
  * @method static Builder|OrderProduct whereUpdatedBy($value)
  * @mixin Eloquent
- * @property float $tax
- * @method static Builder|OrderProduct whereTax($value)
- * @method static OrderProductFactory factory(...$parameters)
  */
 class OrderProduct extends Model
 {
     use HasFactory;
+
+    protected $table = 'order_products';
 
     /**
      * The attributes that are mass assignable.
@@ -69,37 +69,42 @@ class OrderProduct extends Model
     protected $fillable = [
         'name',
         'description',
-        'thumbnail',
         'price',
         'available',
+        'tax',
+        'order_product_category_id',
+        'thumbnail',
+        'order_id',
+        'count',
+        'created_by',
+        'updated_by',
+    ];
+
+    protected $casts = [
+        'price' => 'float',
+        'available' => 'integer',
+        'tax' => 'float',
+        'order_product_category_id' => 'integer',
+        'created_by' => 'integer',
+        'updated_by' => 'integer',
+        'thumbnail' => 'integer',
+        'order_id' => 'integer',
+        'count' => 'integer',
     ];
 
     public function thumbnail(): HasOne
     {
-        return $this->hasOne(ProductImage::class, 'id', 'thumbnail');
+        return $this->hasOne(OrderProductImage::class, 'id', 'thumbnail');
     }
 
-    public function created_by(): HasOne
+    public function created_by(): BelongsTo
     {
-        return $this->hasOne(User::class, 'id', 'created_by');
+        return $this->belongsTo(User::class, 'id', 'created_by');
     }
 
-    public function createWith(User $user): OrderProduct
+    public function updated_by(): BelongsTo
     {
-        $this->created_by = $user;
-        $this->updated_by = $user;
-        return $this;
-    }
-
-    public function updated_by(): HasOne
-    {
-        return $this->hasOne(User::class, 'id', 'updated_by');
-    }
-
-    public function updateWith(User $user): OrderProduct
-    {
-        $this->updated_by = $user;
-        return $this;
+        return $this->belongsTo(User::class, 'id', 'updated_by');
     }
 
     public function images(): HasMany
