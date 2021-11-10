@@ -5,6 +5,7 @@ namespace App\Models;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Support\Carbon;
@@ -25,6 +26,7 @@ use LdapRecord\Models\Model;
  * @property bool $isAdmin
  * @property bool $enabled
  * @property string|null $reason_for_disabling
+ * @property string|null $disabled_at
  * @property Carbon|null $deleted_at
  * @property string|null $remember_token
  * @property Carbon|null $created_at
@@ -42,6 +44,7 @@ use LdapRecord\Models\Model;
  * @method static Builder|Admin whereClass($value)
  * @method static Builder|Admin whereCreatedAt($value)
  * @method static Builder|Admin whereDeletedAt($value)
+ * @method static Builder|Admin whereDisabledAt($value)
  * @method static Builder|Admin whereDomain($value)
  * @method static Builder|Admin whereEmail($value)
  * @method static Builder|Admin whereEmployeeType($value)
@@ -67,8 +70,38 @@ class Admin extends User
     {
         parent::boot();
 
-        static::addGlobalScope(function ($query) {
+        static::addGlobalScope('admin', function ($query) {
             $query->where('isAdmin', '=', true);
         });
+    }
+
+    public function products_created(): HasOneOrMany
+    {
+        return $this->hasMany(Product::class, 'id', 'created_by');
+    }
+
+    public function product_images_created(): HasOneOrMany
+    {
+        return $this->hasMany(ProductImage::class, 'id', 'created_by');
+    }
+
+    public function order_transactions_approved(): HasOneOrMany
+    {
+        return $this->hasMany(Order::class, 'id', 'transaction_confirmed_by');
+    }
+
+    public function order_products_ordered(): HasOneOrMany
+    {
+        return $this->hasMany(Order::class, 'id', 'products_ordered_by');
+    }
+
+    public function order_received(): HasOneOrMany
+    {
+        return $this->hasMany(Order::class, 'id', 'received_by');
+    }
+
+    public function order_handed_over(): HasOneOrMany
+    {
+        return $this->hasMany(Order::class, 'id', 'handed_over_by');
     }
 }
