@@ -87,7 +87,6 @@ class ShoppingCartService implements ShoppingCartServiceInterface
 
     function getAmountOfProduct(Product $product): int
     {
-        $user = Auth::user();
-        return $user->shopping_cart()->where('id', '=', $product->id)->count();
+        return Auth::user()->shopping_cart()->where('product_id', '=', $product->id)->get()->count();
     }
 }
