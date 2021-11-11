@@ -40,6 +40,7 @@ use LdapRecord\Laravel\Auth\LdapAuthenticatable;
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property int|null $disabled_by;
  * @property string|null $guid
  * @property string|null $domain
  * @property-read Collection|\App\Models\CouponCode[] $coupons_updated
