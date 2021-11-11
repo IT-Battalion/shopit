@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Events\UserBannedEvent;
+use App\Events\UserBanningEvent;
 use Eloquent;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -53,7 +55,6 @@ use LdapRecord\Laravel\Auth\LdapAuthenticatable;
  * @property-read int|null $products_updated_count
  * @property-read Collection|\App\Models\ShoppingCart[] $shopping_cart
  * @property-read int|null $shopping_cart_count
- * @method static \Illuminate\Database\Eloquent\Builder|User banned()
  * @method static \Database\Factories\UserFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
@@ -109,6 +110,7 @@ class User extends Authenticatable implements LdapAuthenticatable
         'enabled',
         'reason_for_disabling',
         'disabled_at',
+        'disabled_by',
         'deleted_at',
         'guid',
         'domain',
@@ -131,6 +133,7 @@ class User extends Authenticatable implements LdapAuthenticatable
     protected $casts = [
         'isAdmin' => 'boolean',
         'enabled' => 'boolean',
+        'disabled_by' => 'integer',
     ];
 
     /**
@@ -191,5 +194,25 @@ class User extends Authenticatable implements LdapAuthenticatable
     public function scopeNotBanned(Builder $query): Builder
     {
         return $query->where('enabled', '=', true);
+    }
+
+    public function banWith(Admin $admin)
+    {
+        $this->disabled_by = $admin->id;
+    }
+
+    public static function banning($callback)
+    {
+        static::registerModelEvent(UserBanningEvent::class, $callback);
+    }
+
+    public static function banned($callback)
+    {
+        static::registerModelEvent(UserBannedEvent::class, $callback);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
     }
 }
