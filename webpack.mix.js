@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const path = require('path');
 
 /*
  |--------------------------------------------------------------------------
@@ -15,7 +16,10 @@ mix
     .postCss('resources/css/app.css', 'public/css', [
         require('tailwindcss'),
     ])
-    .js('resources/js/app.js', 'public/js')
+    .alias({
+        '@': path.join(__dirname, 'resources/ts'),
+    })
+    .ts('resources/ts/app.ts', 'public/js')
     .vue()
     .extract(['vue'])
     .sass('resources/sass/app.scss', 'public/css')
