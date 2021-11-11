@@ -40,7 +40,7 @@ interface ShoppingCartServiceInterface
     /**
      * Checks if the Shopping Cart has a specific Product or an Amount of a specific Product.
      * @param Product $product The Product which should be searched for.
-     * @param int $amount The Amount of the Product which should be checked. Default 0.
+     * @param int $amount The Amount of the Product which should be checked. Default 0. -1 if any amount should be accepted
      * @return bool true if the Product is existing and the amount matches. Else false.
      */
     function hasShoppingCartProduct(Product $product, int $amount = 0): bool;
