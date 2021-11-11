@@ -27,6 +27,7 @@ class CreateUsersTable extends Migration
             $table->boolean('enabled')->default(true);
             $table->string('reason_for_disabling')->nullable();
             $table->timestamp('disabled_at')->nullable();
+            $table->foreignId('disabled_by')->nullable()->constrained('users');
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
