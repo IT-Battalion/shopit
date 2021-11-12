@@ -34,29 +34,25 @@ class ProductAttributeFactory extends Factory
         ];
     }
 
-    private function available_values(array $attributes) {
-        switch ($attributes['type']) {
-            case AttributeType::CLOTHING_SIZE:
-                return json_encode(['XS', 'S', 'M', 'L', 'XL']);
-            case AttributeType::DIMENSIONS:
-                return json_encode([
-                    [
-                        'width' => $this->faker->randomNumber(3) . 'cm',
-                        'height' => $this->faker->randomNumber(3) . 'cm',
-                        'depth' => $this->faker->randomNumber(3) . 'cm',
-                    ]
-                ]);
-            case AttributeType::VOLUME:
-                return json_encode([
-                    '0.5l', '0.6l', '1l',
-                ]);
-            case AttributeType::COLOR:
-                return json_encode([
-                    'Blau:#0000ff',
-                    'Rot:#ff0000',
-                    'Grün:#00ff00',
-                ]);
-        }
-        return '';
+    public function available_values(array $attributes) {
+        return match ($attributes['type']) {
+            AttributeType::CLOTHING_SIZE => json_encode(['XS', 'S', 'M', 'L', 'XL']),
+            AttributeType::DIMENSIONS => json_encode([
+                [
+                    'width' => $this->faker->randomNumber(3) . 'cm',
+                    'height' => $this->faker->randomNumber(3) . 'cm',
+                    'depth' => $this->faker->randomNumber(3) . 'cm',
+                ]
+            ]),
+            AttributeType::VOLUME => json_encode([
+                '0.5l', '0.6l', '1l',
+            ]),
+            AttributeType::COLOR => json_encode([
+                'Blau:#0000ff',
+                'Rot:#ff0000',
+                'Grün:#00ff00',
+            ]),
+            default => '',
+        };
     }
 }

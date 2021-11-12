@@ -22,8 +22,8 @@ class IconServiceProvider extends ServiceProvider implements DeferrableProvider
     {
         $this->app->singleton(ApiClient::class, function () {
             return new ApiClient(
-                config('shop.icon.api_key'),
-                config('shop.icon.api_secret'));
+                config('services.nounproject.api_key'),
+                config('services.nounproject.api_secret'));
         });
 
     }
