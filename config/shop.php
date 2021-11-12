@@ -34,55 +34,7 @@ return [
 
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Icon APIs
-    |--------------------------------------------------------------------------
-    |
-    | Configure the icon API Service.
-    */
-
-    'icon' => [
-
-        /*
-        | The noun Project API
-        | This API uses Oauth 1a for Authentication.
-        | Client available via https://packagist.org/packages/maglr/noun-project-php-client
-        */
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | API key
-        |--------------------------------------------------------------------------
-        |
-        | The API key for the noun project.
-        | Get started at: https://thenounproject.com/developers/apps/
-        */
-
-        'api_key' => env('NOUN_PROJECT_API_KEY'),
-
-        /*
-        |--------------------------------------------------------------------------
-        | API Secret
-        |--------------------------------------------------------------------------
-        |
-        | The API key for the noun project.
-        | Get started at: https://thenounproject.com/developers/apps/
-        */
-
-        'api_secret' => env('NOUN_PROJECT_API_SECRET'),
-
-        /*
-        |--------------------------------------------------------------------------
-        | Only public domain icons
-        |--------------------------------------------------------------------------
-        |
-        | Only search for icons that are in the public domain
-        */
-
-        'only_public_domain' => boolval(env('NOUN_PROJECT_ONLY_PUBLIC_DOMAIN', true)),
-
+    'shopping_cart' => [
+        'max_product_amount' => env('MAX_PRODUCT_AMOUNT', 100),
     ],
-
 ];
