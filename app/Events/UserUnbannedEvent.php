@@ -7,9 +7,8 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Auth;
 
-class UserBanningEvent
+class UserUnbannedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -18,9 +17,9 @@ class UserBanningEvent
      *
      * @return void
      */
-    public function __construct(User $model)
+    public function __construct(User $user)
     {
-        $model->banWith(Auth::user());
+        //
     }
 
     /**
