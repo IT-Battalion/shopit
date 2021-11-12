@@ -2,9 +2,9 @@
 
 namespace App\Events;
 
-use App\Models\Admin;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
@@ -17,7 +17,7 @@ class UserBannedEvent
      *
      * @return void
      */
-    public function __construct(Admin $model)
+    public function __construct(User $model)
     {
 
     }
