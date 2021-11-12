@@ -11,14 +11,17 @@
         "php": "^8.0",
         "ext-json": "*",
         "bensampo/laravel-enum": "^4.0",
+        "beyondcode/laravel-websockets": "^1.12",
         "directorytree/ldaprecord-laravel": "^2.3",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "guzzlehttp/oauth-subscriber": "^0.6.0",
+        "guzzlehttp/psr7": "^1.7",
         "laravel/framework": "^8.54",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
+        "psr/log": "^1.0",
         "simplesoftwareio/simple-qrcode": "^4.2"
     },
     "require-dev": {

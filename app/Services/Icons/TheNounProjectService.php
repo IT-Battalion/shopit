@@ -47,7 +47,7 @@ class TheNounProjectService implements IconServiceInterface
         if (array_key_exists('limit_to_public_domain', $options)) {
             $limit_to_public_domain = $options['limit_to_public_domain'];
         } else {
-            $limit_to_public_domain = config('shop.icon.only_public_domain');
+            $limit_to_public_domain = config('services.nounproject.only_public_domain');
         }
 
         $parameters = [
