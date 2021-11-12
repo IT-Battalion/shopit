@@ -19,7 +19,7 @@ class UserUnbanningEvent
      */
     public function __construct(User $model)
     {
-        $model->banWith(null);
+        $model->unbanWith();
     }
 
     /**

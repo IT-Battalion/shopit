@@ -205,6 +205,11 @@ class User extends Authenticatable implements LdapAuthenticatable
         $this->disabled_by = $admin->id;
     }
 
+    public function unbanWith(Admin $admin = null)
+    {
+        $this->disabled_by = null;
+    }
+
     public static function unbanning($callback)
     {
         static::registerModelEvent(UserUnbanningEvent::class, $callback);
