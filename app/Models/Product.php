@@ -120,6 +120,11 @@ class Product extends Model
         return $this->belongsTo(ProductCategory::class, 'product_category_id');
     }
 
+    public function highlighted(): HasOne
+    {
+        return $this->hasOne(HighlightedProduct::class, 'id', 'product_id');
+    }
+
     protected static function boot()
     {
         parent::boot();

@@ -13,6 +13,7 @@ return [
     'product_not_found' => 'The requested Product could not be found.',
     'coupon_code_discount_out_of_bounds' => 'The Discount of the Coupon must be between 1 and 100',
     'coupon_code_not_found_exception' => 'The Coupon for this code could not be found.',
+    'highlighted_product_not_found' => 'The Highlighted Product requested could not be found.',
     'illegal_amount_given' => 'The Amount given is invalid.',
     'product_not_in_shopping_cart' => 'The given Product is not in the Shopping Cart.',
     'order_not_paid' => 'The Order has not been paid yet.',
