@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Events\UserBannedEvent;
 use App\Events\UserBanningEvent;
+use App\Events\UserUnbannedEvent;
+use App\Events\UserUnbanningEvent;
 use Eloquent;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -123,7 +125,8 @@ class User extends Authenticatable implements LdapAuthenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     /**
@@ -202,6 +205,16 @@ class User extends Authenticatable implements LdapAuthenticatable
         $this->disabled_by = $admin->id;
     }
 
+    public static function unbanning($callback)
+    {
+        static::registerModelEvent(UserUnbanningEvent::class, $callback);
+    }
+
+    public static function unbanned($callback)
+    {
+        static::registerModelEvent(UserUnbannedEvent::class, $callback);
+    }
+
     public static function banning($callback)
     {
         static::registerModelEvent(UserBanningEvent::class, $callback);
@@ -210,10 +223,5 @@ class User extends Authenticatable implements LdapAuthenticatable
     public static function banned($callback)
     {
         static::registerModelEvent(UserBannedEvent::class, $callback);
-    }
-
-    protected static function boot()
-    {
-        parent::boot();
     }
 }
