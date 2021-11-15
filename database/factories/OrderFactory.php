@@ -47,16 +47,16 @@ class OrderFactory extends Factory
         $hasHanded = $hasReceived && $this->faker->boolean(60);
 
         return [
-            'customer' => User::all()->random()->id,
+            'customer_id' => User::all()->random()->id,
             'coupon_code_id' => $coupon,
-            'payed_at' => $hasPayed ? Date::now() : null,
-            'transaction_confirmed_by' => $hasPayed ? $admin_transaction : null,
+            'paid_at' => $hasPayed ? Date::now() : null,
+            'transaction_confirmed_by_id' => $hasPayed ? $admin_transaction : null,
             'products_ordered_at' => $hasOrdered ? Date::now()->addDays(2) : null,
-            'products_ordered_by' => $hasOrdered ? $admin_ordered : null,
-            'received_at' => $hasReceived ? Date::now()->addDays(20) : null,
-            'received_by' => $hasReceived ? $admin_received : null,
+            'products_ordered_by_id' => $hasOrdered ? $admin_ordered : null,
+            'products_received_at' => $hasReceived ? Date::now()->addDays(20) : null,
+            'products_received_by_id' => $hasReceived ? $admin_received : null,
             'handed_over_at' => $hasHanded ? Date::now()->addDays(22) : null,
-            'handed_over_by' => $hasHanded ? $admin_handed : null,
+            'handed_over_by_id' => $hasHanded ? $admin_handed : null,
         ];
     }
 }

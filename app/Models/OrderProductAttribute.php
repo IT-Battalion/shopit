@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\OrderProductAttributeFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,11 +16,11 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property int $order_product_id
  * @property int $type
- * @property string $values_chosen
+ * @property array $values_chosen
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read \App\Models\Product $product
- * @method static \Database\Factories\OrderProductAttributeFactory factory(...$parameters)
+ * @property-read OrderProduct $product
+ * @method static OrderProductAttributeFactory factory(...$parameters)
  * @method static Builder|OrderProductAttribute newModelQuery()
  * @method static Builder|OrderProductAttribute newQuery()
  * @method static Builder|OrderProductAttribute query()
@@ -39,17 +40,16 @@ class OrderProductAttribute extends Model
 
     protected $fillable = [
         'type',
-        'values_available',
+        'values_chosen',
         'order_product_id',
     ];
 
     protected $casts = [
-        'type' => 'integer',
-        'order_product_id' => 'integer',
+        'values_chosen' => 'array',
     ];
 
     public function product(): BelongsTo
     {
-        return $this->belongsTo(Product::class, 'order_product_id', 'id');
+        return $this->belongsTo(OrderProduct::class, 'order_product_id');
     }
 }
