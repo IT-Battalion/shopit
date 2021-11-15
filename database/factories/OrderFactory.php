@@ -30,14 +30,14 @@ class OrderFactory extends Factory
      */
     public function definition()
     {
-        $admin_received = Admin::all()->random()->id;
-        $admin_handed = Admin::all()->random()->id;
-        $admin_ordered = Admin::all()->random()->id;
-        $admin_transaction = Admin::all()->random()->id;
+        $admin_received = Admin::inRandomOrder()->first()->id;
+        $admin_handed = Admin::inRandomOrder()->first()->id;
+        $admin_ordered = Admin::inRandomOrder()->first()->id;
+        $admin_transaction = Admin::inRandomOrder()->first()->id;
 
         $hasCoupon = $this->faker->boolean(self::COUPON_CODE_CHANCE);
         $coupon = $hasCoupon ? function() {
-            $dbCoupon = CouponCode::whereEnabled(true)->get()->random();
+            $dbCoupon = CouponCode::whereEnabled(true)->inRandomOrder()->first();
             return $dbCoupon->id;
         } : null;
 
@@ -47,7 +47,7 @@ class OrderFactory extends Factory
         $hasHanded = $hasReceived && $this->faker->boolean(60);
 
         return [
-            'customer_id' => User::all()->random()->id,
+            'customer_id' => User::inRandomOrder()->first()->id,
             'coupon_code_id' => $coupon,
             'paid_at' => $hasPayed ? Date::now() : null,
             'transaction_confirmed_by_id' => $hasPayed ? $admin_transaction : null,

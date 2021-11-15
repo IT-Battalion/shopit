@@ -20,6 +20,10 @@ class CreateShoppingCartsTable extends Migration
             $table->integer('count');
             $table->timestamps();
         });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('shopping_cart_coupon_id')->nullable()->constrained('coupon_codes');
+        });
     }
 
     /**
@@ -30,5 +34,9 @@ class CreateShoppingCartsTable extends Migration
     public function down(): void
     {
         Schema::dropIfExists('shopping_cart');
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropConstrainedForeignId('shopping_cart_coupon_id');
+        });
     }
 }

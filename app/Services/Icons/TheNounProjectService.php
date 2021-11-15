@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 
 /**
  * An Icon Service Implementation for the Noun Projects Icon API.
+ * TODO: handle adding for existing Icons
  */
 class TheNounProjectService implements IconServiceInterface
 {
