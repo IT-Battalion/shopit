@@ -28,8 +28,8 @@ class ProductAttributeFactory extends Factory
             'values_available' => function (array $attributes) {
                 return self::available_values($attributes);
             },
-            'product_id' => Product::all()
-                ->random()
+            'product_id' => Product::inRandomOrder()
+                ->first()
                 ->id,
         ];
     }

@@ -23,7 +23,7 @@ class HighlightedProductFactory extends Factory
     public function definition()
     {
         return [
-            'product_id' => Product::all()->random()->id
+            'product_id' => Product::inRandomOrder()->first()->id
         ];
     }
 }

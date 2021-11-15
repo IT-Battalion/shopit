@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * App\Models\OrderProduct
@@ -112,5 +113,33 @@ class OrderProduct extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(OrderProductCategory::class);
+    }
+
+    public function createWith(User $user): OrderProduct
+    {
+        $this->created_by = $user;
+        $this->updated_by = $user;
+        return $this;
+    }
+
+    public function updateWith(User $user): OrderProduct
+    {
+        $this->updated_by = $user;
+        return $this;
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function (OrderProduct $model) {
+            if (!isset($model->created_by)) $model->createWith(Auth::user());
+        });
+        static::updating(function (OrderProduct $model) {
+            if (!isset($model->updated_by)) $model->updateWith(Auth::user());
+        });
+        static::deleting(function (OrderProduct $model) {
+            $model->images()->delete();
+            $model->attributes()->delete();
+        });
     }
 }
