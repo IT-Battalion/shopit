@@ -11,10 +11,8 @@
 |
 */
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-
 uses(Tests\TestCase::class)->in('Feature', 'Unit');
-uses(DatabaseTransactions::class)->in('Unit');
+uses(\Illuminate\Foundation\Testing\DatabaseTransactions::class)->in('Unit');
 
 /*
 |--------------------------------------------------------------------------

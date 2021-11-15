@@ -11,12 +11,12 @@ class UserSeeder extends Seeder
     /**
      * @var int Amount of admin users that get seeded
      */
-    public const adminCount = 5;
+    public const ADMIN_COUNT = 5;
 
     /**
      * @var int Amount of normal users that get seeded
      */
-    public const normalUserCount = 20;
+    public const NORMAL_USER_COUNT = 20;
 
     /**
      * Run the database seeds.
@@ -27,11 +27,11 @@ class UserSeeder extends Seeder
     {
         User::factory()
             ->state(["isAdmin" => true])
-            ->count(self::adminCount)
+            ->count(self::ADMIN_COUNT)
             ->create();
         User::factory()
             ->state(["isAdmin" => false])
-            ->count(self::normalUserCount)
+            ->count(self::NORMAL_USER_COUNT)
             ->create();
     }
 }

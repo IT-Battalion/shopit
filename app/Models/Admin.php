@@ -103,6 +103,13 @@ use LdapRecord\Models\Model;
  * @method static Builder|Admin withTrashed()
  * @method static Builder|Admin withoutTrashed()
  * @mixin Eloquent
+ * @mixin Eloquent
+ * @property string|null $disabled_at
+ * @property-read CouponCode|null $shopping_cart_coupon
+ * @method static Builder|Admin whereDisabledAt($value)
+ * @method static Builder|Admin whereShoppingCartCoupon($value)
+ * @property int|null $shopping_cart_coupon_id
+ * @method static Builder|Admin whereShoppingCartCouponId($value)
  */
 class Admin extends User
 {

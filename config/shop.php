@@ -37,4 +37,6 @@ return [
     'shopping_cart' => [
         'max_product_amount' => env('MAX_PRODUCT_AMOUNT', 100),
     ],
+
+    'money_decimal_points' => 8
 ];

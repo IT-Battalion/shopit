@@ -29,8 +29,8 @@ class OrderProductAttributeFactory extends Factory
             'values_chosen' => function (array $attributes) {
                 return self::available_values($attributes);
             },
-            'order_product_id' => OrderProduct::all()
-                ->random()
+            'order_product_id' => OrderProduct::inRandomOrder()
+                ->first()
                 ->id,
         ];
     }

@@ -23,19 +23,19 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-        $admin = Admin::all()
-            ->random()
+        $admin = Admin::inRandomOrder()
+            ->first()
             ->id;
-        $category = ProductCategory::all()
-            ->random()
+        $category = ProductCategory::inRandomOrder()
+            ->first()
             ->id;
 
         return [
             'name' => $this->faker->unique->word,
             'description' => $this->faker->text,
-            'price' => $this->faker->numberBetween(1, 300),
-            'tax' => $this->faker->numberBetween(0, 100),
-            'available' => $this->faker->numberBetween(0, 1000),
+            'price' => $this->faker->randomFloat(2, 1, 300),
+            'tax' => $this->faker->randomFloat(2, 0, 0.99),
+            'available' => $this->faker->numberBetween(-1, 1000),
             'created_by_id' => $admin,
             'updated_by_id' => $admin,
             "product_category_id" => $category,
