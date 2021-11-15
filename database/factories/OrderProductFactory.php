@@ -24,20 +24,19 @@ class OrderProductFactory extends Factory
      */
     public function definition()
     {
-        $admin = Admin::all()
-            ->random()
+        $admin = Admin::inRandomOrder()
+            ->first()
             ->id;
-        $category = OrderProductCategory::all()
-            ->random()
+        $category = OrderProductCategory::inRandomOrder()
+            ->first()
             ->id;
 
         return [
-            'order_id' => Order::all()->random()->id,
+            'order_id' => Order::inRandomOrder()->first()->id,
             'name' => $this->faker->word,
             'description' => $this->faker->text,
-            'price' => $this->faker->numberBetween(1, 300),
-            'tax' => $this->faker->numberBetween(0, 100),
-            'available' => $this->faker->numberBetween(0, 1000),
+            'price' => $this->faker->randomFloat(2, 1, 300),
+            'tax' => $this->faker->randomFloat(2, 0, 0.99),
             'count' => $this->faker->numberBetween(0, 100),
             'created_by_id' => $admin,
             'updated_by_id' => $admin,

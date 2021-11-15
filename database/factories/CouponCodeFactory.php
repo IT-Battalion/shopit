@@ -23,12 +23,12 @@ class CouponCodeFactory extends Factory
      */
     public function definition(): array
     {
-        $admin = Admin::all()
-            ->random()
+        $admin = Admin::inRandomOrder()
+            ->first()
             ->id;
 
         return [
-            'discount' => $this->faker->numberBetween(0, 99),
+            'discount' => $this->faker->randomFloat(2, 0, 0.99),
             'enabled' => true,
             'enabled_until' => $this->faker->dateTimeThisMonth,
             'code' => Str::random(32),

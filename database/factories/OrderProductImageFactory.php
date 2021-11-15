@@ -23,12 +23,12 @@ class OrderProductImageFactory extends Factory
      */
     public function definition(): array
     {
-        $product = OrderProduct::all()
-            ->random()
+        $product = OrderProduct::inRandomOrder()
+            ->first()
             ->id;
 
-        $admin = Admin::all()
-            ->random()
+        $admin = Admin::inRandomOrder()
+            ->first()
             ->id;
 
         $image = $this->faker->image();

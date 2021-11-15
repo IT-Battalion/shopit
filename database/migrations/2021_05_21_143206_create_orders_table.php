@@ -15,7 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('coupon_codes', function (Blueprint $table) {
             $table->id();
-            $table->integer('discount');
+            $table->float('discount', 2, unsigned: true);
             $table->boolean('enabled')->default(true);
             $table->timestamp('enabled_until')->nullable();
             $table->char('code', 32)->unique();
@@ -52,13 +52,12 @@ class CreateOrdersTable extends Migration
         Schema::create('order_products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained();
-            $table->integer('count');
+            $table->integer('count', unsigned: true);
             $table->string('name');
             $table->text('description');
             $table->foreignId('thumbnail_id')->nullable()->constrained('order_product_images');
-            $table->float('price', 12);
-            $table->float('tax', 12);
-            $table->integer('available');
+            $table->float('price', 16, 8, true);
+            $table->float('tax', 2, 2, true);
             $table->foreignId('created_by_id')->constrained('users');
             $table->foreignId('updated_by_id')->constrained('users');
             $table->timestamps();
@@ -67,7 +66,7 @@ class CreateOrdersTable extends Migration
         Schema::create('order_product_attributes', function (Blueprint $table) {
             $table->id();
             $table->foreignid('order_product_id')->constrained();
-            $table->integer('type');
+            $table->integer('type', unsigned: true);
             $table->json('values_chosen');
             $table->timestamps();
         });
