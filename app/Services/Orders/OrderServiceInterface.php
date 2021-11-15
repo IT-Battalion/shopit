@@ -7,9 +7,13 @@ namespace App\Services\Orders;
 // TODO: add default constructors to every model class
 interface OrderServiceInterface
 {
+<<<<<<< HEAD
     public function createOrder();
 
     public function deleteOrder();
 
     public function getOrder();
+=======
+
+>>>>>>> :construction: :construction: :construction: Small changes
 }
