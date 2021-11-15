@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\OrderProductImageFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,24 +16,26 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property string $path
  * @property string $type
- * @property \App\Models\User $created_by
- * @property \App\Models\User $updated_by
+ * @property int $created_by_id
+ * @property int $updated_by_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property int $order_product_id
- * @property-read \App\Models\OrderProduct $product
- * @method static \Database\Factories\OrderProductImageFactory factory(...$parameters)
+ * @property-read User $created_by
+ * @property-read OrderProduct $product
+ * @property-read User $updated_by
+ * @method static OrderProductImageFactory factory(...$parameters)
  * @method static Builder|OrderProductImage newModelQuery()
  * @method static Builder|OrderProductImage newQuery()
  * @method static Builder|OrderProductImage query()
  * @method static Builder|OrderProductImage whereCreatedAt($value)
- * @method static Builder|OrderProductImage whereCreatedBy($value)
+ * @method static Builder|OrderProductImage whereCreatedById($value)
  * @method static Builder|OrderProductImage whereId($value)
  * @method static Builder|OrderProductImage whereOrderProductId($value)
  * @method static Builder|OrderProductImage wherePath($value)
  * @method static Builder|OrderProductImage whereType($value)
  * @method static Builder|OrderProductImage whereUpdatedAt($value)
- * @method static Builder|OrderProductImage whereUpdatedBy($value)
+ * @method static Builder|OrderProductImage whereUpdatedById($value)
  * @mixin Eloquent
  */
 class OrderProductImage extends Model
@@ -48,23 +51,23 @@ class OrderProductImage extends Model
     ];
 
     protected $casts = [
-        'created_by' => 'integer',
-        'updated_by' => 'integer',
+        'created_by_id' => 'integer',
+        'updated_by_id' => 'integer',
         'order_product_id' => 'integer',
     ];
 
     public function product(): BelongsTo
     {
-        return $this->belongsTo(OrderProduct::class, 'order_product_id', 'id');
+        return $this->belongsTo(OrderProduct::class, 'order_product_id');
     }
 
     public function updated_by(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id', 'updated_by');
+        return $this->belongsTo(User::class, 'updated_by_id');
     }
 
     public function created_by(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id', 'created_by');
+        return $this->belongsTo(User::class, 'created_by_id');
     }
 }

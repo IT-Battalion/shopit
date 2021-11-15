@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Database\Factories\CouponCodeFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,29 +19,31 @@ use Illuminate\Support\Facades\Auth;
  * @property int $id
  * @property int $discount
  * @property bool $enabled
- * @property string $enabled_until
+ * @property Carbon|null $enabled_until
  * @property string $code
- * @property \App\Models\User $created_by
- * @property \App\Models\User $updated_by
+ * @property int $created_by_id
+ * @property int $updated_by_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $orders_used
+ * @property-read Admin $created_by
+ * @property-read Collection|Order[] $orders_used
  * @property-read int|null $orders_used_count
+ * @property-read Admin $updated_by
  * @method static Builder|CouponCode disabled()
  * @method static Builder|CouponCode enabled()
- * @method static \Database\Factories\CouponCodeFactory factory(...$parameters)
+ * @method static CouponCodeFactory factory(...$parameters)
  * @method static Builder|CouponCode newModelQuery()
  * @method static Builder|CouponCode newQuery()
  * @method static Builder|CouponCode query()
  * @method static Builder|CouponCode whereCode($value)
  * @method static Builder|CouponCode whereCreatedAt($value)
- * @method static Builder|CouponCode whereCreatedBy($value)
+ * @method static Builder|CouponCode whereCreatedById($value)
  * @method static Builder|CouponCode whereDiscount($value)
  * @method static Builder|CouponCode whereEnabled($value)
  * @method static Builder|CouponCode whereEnabledUntil($value)
  * @method static Builder|CouponCode whereId($value)
  * @method static Builder|CouponCode whereUpdatedAt($value)
- * @method static Builder|CouponCode whereUpdatedBy($value)
+ * @method static Builder|CouponCode whereUpdatedById($value)
  * @mixin Eloquent
  */
 class CouponCode extends Model
@@ -51,35 +55,32 @@ class CouponCode extends Model
     protected $fillable = [
         'code',
         'discount',
+        'enabled',
         'enabled_until',
     ];
 
-    protected $casts = [
-        'enabled' => 'boolean',
-        'created_by' => 'integer',
-        'updated_by' => 'integer',
-    ];
+    protected $casts = [];
 
     public function created_by(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id', 'created_by');
+        return $this->belongsTo(Admin::class, 'created_by_id');
     }
 
     public function updated_by(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id', 'updated_by');
+        return $this->belongsTo(Admin::class, 'updated_by_id');
     }
 
     public function updateWith(User $user): CouponCode
     {
-        $this->updated_by = $user->id;
+        $this->updated_by_id = $user->id;
         return $this;
     }
 
     public function createWith(User $user): CouponCode
     {
-        $this->created_by = $user->id;
-        $this->updated_by = $user->id;
+        $this->created_by_id = $user->id;
+        $this->updated_by_id = $user->id;
         return $this;
     }
 

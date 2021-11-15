@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\IconFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,7 +14,7 @@ use Illuminate\Support\Carbon;
  * App\Models\Icon
  *
  * @property int $id
- * @property int $original_id
+ * @property string $original_id
  * @property string $name
  * @property string $artist
  * @property string $provider
@@ -22,8 +23,8 @@ use Illuminate\Support\Carbon;
  * @property string $path
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read \App\Models\ProductCategory $product_categories
- * @method static \Database\Factories\IconFactory factory(...$parameters)
+ * @property-read ProductCategory $product_categories
+ * @method static IconFactory factory(...$parameters)
  * @method static Builder|Icon newModelQuery()
  * @method static Builder|Icon newQuery()
  * @method static Builder|Icon query()
@@ -55,13 +56,8 @@ class Icon extends Model
         'path',
     ];
 
-    protected $casts = [
-        'original_id' => 'integer',
-        'license' => 'integer',
-    ];
-
     public function product_categories(): BelongsTo
     {
-        return $this->belongsTo(ProductCategory::class, null, 'icon_id');
+        return $this->belongsTo(ProductCategory::class, 'icon_id');
     }
 }

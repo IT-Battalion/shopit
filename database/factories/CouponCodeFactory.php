@@ -32,8 +32,8 @@ class CouponCodeFactory extends Factory
             'enabled' => true,
             'enabled_until' => $this->faker->dateTimeThisMonth,
             'code' => Str::random(32),
-            'created_by' => $admin,
-            'updated_by' => $admin,
+            'created_by_id' => $admin,
+            'updated_by_id' => $admin,
         ];
     }
 }

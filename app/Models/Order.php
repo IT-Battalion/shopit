@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\OrderFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -16,23 +17,27 @@ use Illuminate\Support\Carbon;
  * App\Models\Order
  *
  * @property int $id
- * @property \App\Models\User $customer
+ * @property int $customer_id
  * @property int|null $coupon_code_id
- * @property string|null $payed_at
- * @property \App\Models\User $transaction_confirmed_by
+ * @property string|null $paid_at
+ * @property int|null $transaction_confirmed_by_id
  * @property string|null $products_ordered_at
- * @property int|null $products_ordered_by
- * @property string|null $received_at
- * @property \App\Models\User $received_by
+ * @property int|null $products_ordered_by_id
+ * @property string|null $products_received_at
+ * @property int|null $products_received_by_id
  * @property string|null $handed_over_at
- * @property \App\Models\User $handed_over_by
+ * @property int|null $handed_over_by_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read \App\Models\CouponCode $coupon_code
- * @property-read \App\Models\User $ordered_by
- * @property-read Collection|\App\Models\Product[] $products
+ * @property-read CouponCode|null $coupon_code
+ * @property-read User $customer
+ * @property-read User|null $handed_over_by
+ * @property-read Collection|OrderProduct[] $products
  * @property-read int|null $products_count
- * @method static \Database\Factories\OrderFactory factory(...$parameters)
+ * @property-read User|null $products_ordered_by
+ * @property-read User|null $products_received_by
+ * @property-read User|null $transaction_confirmed_by
+ * @method static OrderFactory factory(...$parameters)
  * @method static Builder|Order handedOver()
  * @method static Builder|Order newModelQuery()
  * @method static Builder|Order newQuery()
@@ -42,16 +47,16 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Order transactionConfirmed()
  * @method static Builder|Order whereCouponCodeId($value)
  * @method static Builder|Order whereCreatedAt($value)
- * @method static Builder|Order whereCustomer($value)
+ * @method static Builder|Order whereCustomerId($value)
  * @method static Builder|Order whereHandedOverAt($value)
- * @method static Builder|Order whereHandedOverBy($value)
+ * @method static Builder|Order whereHandedOverById($value)
  * @method static Builder|Order whereId($value)
- * @method static Builder|Order wherePayedAt($value)
+ * @method static Builder|Order wherePaidAt($value)
  * @method static Builder|Order whereProductsOrderedAt($value)
- * @method static Builder|Order whereProductsOrderedBy($value)
- * @method static Builder|Order whereReceivedAt($value)
- * @method static Builder|Order whereReceivedBy($value)
- * @method static Builder|Order whereTransactionConfirmedBy($value)
+ * @method static Builder|Order whereProductsOrderedById($value)
+ * @method static Builder|Order whereProductsReceivedAt($value)
+ * @method static Builder|Order whereProductsReceivedById($value)
+ * @method static Builder|Order whereTransactionConfirmedById($value)
  * @method static Builder|Order whereUpdatedAt($value)
  * @mixin Eloquent
  */
@@ -63,61 +68,53 @@ class Order extends Model
 
     protected $fillable = [
         'price',
-        'customer',
+        'customer_id',
         'coupon_code_id',
         'authorizing_admin',
-        'received_at',
-        'received_by',
+        'products_received_at',
+        'products_received_by_id',
         'payed_at',
-        'transaction_confirmed_by',
+        'transaction_confirmed_by_id',
         'handed_over_at',
-        'handed_over_by',
+        'handed_over_by_id',
     ];
 
-    protected $casts = [
-        'price' => 'float',
-        'authorizing_admin' => 'integer',
-        'received_by' => 'integer',
-        'transaction_confirmed_by' => 'integer',
-        'handed_over_by' => 'integer',
-        'customer' => 'integer',
-        'coupon_code_id' => 'integer',
-    ];
+    protected $casts = [];
 
     public function coupon_code(): BelongsTo
     {
-        return $this->belongsTo(CouponCode::class, 'id', 'coupon_code_id');
+        return $this->belongsTo(CouponCode::class);
     }
 
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id', 'customer');
+        return $this->belongsTo(User::class, 'customer_id');
     }
 
-    public function ordered_by(): BelongsTo
+    public function products_ordered_by(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id', 'products_ordered_by');
+        return $this->belongsTo(User::class, 'products_ordered_by_id');
     }
 
-    public function received_by(): BelongsTo
+    public function products_received_by(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id', 'received_by');
+        return $this->belongsTo(User::class, 'products_received_by_id');
     }
 
     public function transaction_confirmed_by(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id', 'transaction_confirmed_by');
+        return $this->belongsTo(User::class, 'transaction_confirmed_by_id');
     }
 
     public function handed_over_by(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id', 'handed_over_by');
+        return $this->belongsTo(User::class, 'handed_over_by_id');
     }
 
     public function products(): HasOneOrMany
     {
         return $this
-            ->hasMany(Product::class);
+            ->hasMany(OrderProduct::class);
     }
 
     private static function olderThan($column, $years): \Illuminate\Database\Query\Builder
@@ -129,7 +126,7 @@ class Order extends Model
         );
     }
 
-    public function prunable(): \Illuminate\Database\Query\Builder
+    public function prunable(): Builder
     {
         if (config('shop.invoice.delete_after_invoice_retention_period')) {
             return static::olderThan(
@@ -146,12 +143,12 @@ class Order extends Model
 
     public function scopeTransactionConfirmed(Builder $query): Builder
     {
-        return $query->whereNotNull('payed_at');
+        return $query->whereNotNull('paid_at');
     }
 
     public function scopeReceived(Builder $query): Builder
     {
-        return $query->whereNotNull('received_at');
+        return $query->whereNotNull('products_received_at');
     }
 
     public function scopeOrdered(Builder $query): Builder
