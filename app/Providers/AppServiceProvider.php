@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Orders\OrderService;
+use App\Services\Orders\OrderServiceInterface;
 use App\Services\ShoppingCart\ShoppingCartService;
 use App\Services\ShoppingCart\ShoppingCartServiceInterface;
 use App\Services\Users\UserService;
@@ -14,6 +16,7 @@ class AppServiceProvider extends ServiceProvider
     public array $singletons = [
         UserServiceInterface::class => UserService::class,
         ShoppingCartServiceInterface::class => ShoppingCartService::class,
+        OrderServiceInterface::class => OrderService::class,
     ];
 
     /**
