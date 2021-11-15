@@ -33,10 +33,10 @@ class OrderService implements OrderServiceInterface
     {
         $products = $customer->shopping_cart();
         if ($products->count() === 0) throw new ShoppingCartEmptyException(__('exceptionMessages.shopping_cart_empty'));
-        $coupon = $customer->shopping_cart_coupon_id;
+        $coupon = $customer->shopping_cart_coupon()->id ?? null;
         $order = Order::create([
             'customer' => $customer->id,
-            'coupon_code_id' => $coupon
+            'coupon_code_id' => $coupon,
         ]);
         foreach ($products as $product) {
             $order_product_category = $product->category();

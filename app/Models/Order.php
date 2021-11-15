@@ -64,7 +64,7 @@ use Illuminate\Support\Facades\Auth;
  */
 class Order extends Model
 {
-    use Prunable, HasFactory, HasOrderEvents;
+    use Prunable, HasFactory;
 
     protected $table = 'orders';
 
@@ -75,7 +75,7 @@ class Order extends Model
         'authorizing_admin',
         'products_received_at',
         'products_received_by_id',
-        'payed_at',
+        'paid_at',
         'transaction_confirmed_by_id',
         'handed_over_at',
         'handed_over_by_id',
@@ -161,29 +161,29 @@ class Order extends Model
     protected static function boot()
     {
         parent::boot();
-        static::registerModelEvent('paying', static function (Order $model) {
-            $model->payed_at = now();
+        static::registerModelEvent('paying', function (Order $model) {
+            $model->paid_at = now();
             if (!isset($model->transaction_confirmed_by)) $model->transaction_confirmed_by = Auth::user()->id;
         });
-        static::registerModelEvent('paid', static function () {
+        static::registerModelEvent('paid', function () {
         });
-        static::registerModelEvent('ordering', static function (Order $model) {
+        static::registerModelEvent('ordering', function (Order $model) {
             $model->products_ordered_at = now();
             if (!isset($model->products_ordered_by)) $model->products_ordered_by = Auth::user()->id;
         });
-        static::registerModelEvent('ordered', static function () {
+        static::registerModelEvent('ordered', function () {
         });
-        static::registerModelEvent('receiving', static function (Order $model) {
+        static::registerModelEvent('receiving', function (Order $model) {
             $model->received_at = now();
             if (!isset($model->received_by)) $model->received_by = Auth::user()->id;
         });
-        static::registerModelEvent('received', static function () {
+        static::registerModelEvent('received', function () {
         });
-        static::registerModelEvent('delivering', static function (Order $model) {
+        static::registerModelEvent('delivering', function (Order $model) {
             $model->handed_over_at = now();
             if (!isset($model->handed_over_by)) $model->handed_over_by = Auth::user()->id;
         });
-        static::registerModelEvent('delivered', static function () {
+        static::registerModelEvent('delivered', function () {
         });
     }
 }
