@@ -22,7 +22,8 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "psr/log": "^1.0",
-        "simplesoftwareio/simple-qrcode": "^4.2"
+        "simplesoftwareio/simple-qrcode": "^4.2",
+        "ext-bcmath": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.10",

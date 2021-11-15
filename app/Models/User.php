@@ -12,8 +12,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Prunable;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
@@ -94,6 +96,12 @@ use LdapRecord\Models\Model;
  * @method static Builder|User whereDisabledBy($value)
  * @property int|null $disabled_by_id
  * @method static Builder|User whereDisabledById($value)
+ * @property string|null $disabled_at
+ * @property-read CouponCode|null $shopping_cart_coupon
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereDisabledAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereShoppingCartCoupon($value)
+ * @property int|null $shopping_cart_coupon_id
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereShoppingCartCouponId($value)
  */
 class User extends Authenticatable implements LdapAuthenticatable
 {
@@ -162,6 +170,11 @@ class User extends Authenticatable implements LdapAuthenticatable
         return $this
             ->belongsToMany(Product::class, 'shopping_cart')
             ->withPivot(['count']);
+    }
+
+    public function shopping_cart_coupon(): BelongsTo
+    {
+        return $this->belongsTo(CouponCode::class, 'shopping_cart_coupon_id');
     }
 
     public function orders(): HasOneOrMany

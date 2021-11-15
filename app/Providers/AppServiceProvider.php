@@ -2,12 +2,6 @@
 
 namespace App\Providers;
 
-use App\Services\Categories\CategoryService;
-use App\Services\Categories\CategoryServiceInterface;
-use App\Services\Coupons\CouponService;
-use App\Services\Coupons\CouponServiceInterface;
-use App\Services\Products\ProductService;
-use App\Services\Products\ProductServiceInterface;
 use App\Services\ShoppingCart\ShoppingCartService;
 use App\Services\ShoppingCart\ShoppingCartServiceInterface;
 use App\Services\Users\UserService;
@@ -19,9 +13,6 @@ class AppServiceProvider extends ServiceProvider
 {
     public array $singletons = [
         UserServiceInterface::class => UserService::class,
-        CouponServiceInterface::class => CouponService::class,
-        CategoryServiceInterface::class => CategoryService::class,
-        ProductServiceInterface::class => ProductService::class,
         ShoppingCartServiceInterface::class => ShoppingCartService::class,
     ];
 
@@ -64,5 +55,9 @@ class AppServiceProvider extends ServiceProvider
 
         // Finally set the root url on the UrlGenerator
         $urlGenerator->forceRootUrl($root);
+
+        // Set bcmath scale globally
+        bcscale(config('shop.money_decimal_points'));
+        ini_set('precision', config('shop.money_decimal_points') * 2);
     }
 }
