@@ -2,7 +2,6 @@
 
 namespace App\Services\ShoppingCart;
 
-use App\Models\CouponCode;
 use App\Models\Product;
 
 interface ShoppingCartServiceInterface
@@ -56,7 +55,7 @@ interface ShoppingCartServiceInterface
      * @param bool $includeCoupon Whether the coupon currently in use should be applied
      * @return float The total price in EUR.
      */
-    function calculatePriceOfProduct(Product $product, bool $includeTaxes, bool $includeCoupon): float;
+    public function calculatePriceOfProduct(Product $product, bool $includeTaxes, bool $includeCoupon): float;
 
     /**
      * Checks if the Shopping Cart has a specific Product or an Amount of a specific Product.
@@ -65,12 +64,12 @@ interface ShoppingCartServiceInterface
      * @param int $amount The Amount of the Product which should be checked. Default -1.
      * @return bool true if the Product is existing and the amount matches. Else false.
      */
-    function hasProductInShoppingCart(Product $product, int $amount = -1): bool;
+    public function hasProductInShoppingCart(Product $product, int $amount = -1): bool;
 
     /**
      * Returns the Amount of a Product in a Shopping Cart.
      * @param Product $product The Product which should be searched for.
      * @return int The Amount of the Product in the Shopping Cart.
      */
-    function getAmountOfProduct(Product $product): int;
+    public function getAmountOfProduct(Product $product): int;
 }
