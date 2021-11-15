@@ -15,4 +15,8 @@ return [
     'coupon_code_not_found_exception' => 'The Coupon for this code could not be found.',
     'illegal_amount_given' => 'The Amount given is invalid.',
     'product_not_in_shopping_cart' => 'The given Product is not in the Shopping Cart.',
+    'order_not_paid' => 'The Order has not been paid yet.',
+    'order_not_ordered' => 'The Order has not been ordered yet.',
+    'order_not_received' => 'The Order has not been received yet.',
+    'shopping_cart_empty' => 'The Shopping Cart cannot be empty for an Order.',
 ];

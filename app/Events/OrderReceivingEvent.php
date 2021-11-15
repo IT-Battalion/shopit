@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Order;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -16,9 +17,10 @@ class OrderReceivingEvent
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Order $model)
     {
-        event(new OrderReceivedEvent());
+        $model->save();
+        event(new OrderReceivedEvent($model));
     }
 
     /**

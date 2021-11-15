@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasOrderEvents;
 use Barryvdh\LaravelIdeHelper\Eloquent;
 use Database\Factories\OrderFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * App\Models\Order
@@ -62,7 +64,7 @@ use Illuminate\Support\Carbon;
  */
 class Order extends Model
 {
-    use Prunable, HasFactory;
+    use Prunable, HasFactory, HasOrderEvents;
 
     protected $table = 'orders';
 
@@ -154,5 +156,34 @@ class Order extends Model
     public function scopeOrdered(Builder $query): Builder
     {
         return $query->whereNotNull('products_ordered_at');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::registerModelEvent('paying', static function (Order $model) {
+            $model->payed_at = now();
+            if (!isset($model->transaction_confirmed_by)) $model->transaction_confirmed_by = Auth::user()->id;
+        });
+        static::registerModelEvent('paid', static function () {
+        });
+        static::registerModelEvent('ordering', static function (Order $model) {
+            $model->products_ordered_at = now();
+            if (!isset($model->products_ordered_by)) $model->products_ordered_by = Auth::user()->id;
+        });
+        static::registerModelEvent('ordered', static function () {
+        });
+        static::registerModelEvent('receiving', static function (Order $model) {
+            $model->received_at = now();
+            if (!isset($model->received_by)) $model->received_by = Auth::user()->id;
+        });
+        static::registerModelEvent('received', static function () {
+        });
+        static::registerModelEvent('delivering', static function (Order $model) {
+            $model->handed_over_at = now();
+            if (!isset($model->handed_over_by)) $model->handed_over_by = Auth::user()->id;
+        });
+        static::registerModelEvent('delivered', static function () {
+        });
     }
 }

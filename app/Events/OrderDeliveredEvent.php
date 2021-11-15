@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Order;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -16,7 +17,7 @@ class OrderDeliveredEvent
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Order $model)
     {
         //TODO: send email
     }

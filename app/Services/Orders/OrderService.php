@@ -6,6 +6,10 @@ use App\Events\OrderDeliveringEvent;
 use App\Events\OrderOrderingEvent;
 use App\Events\OrderPayingEvent;
 use App\Events\OrderReceivingEvent;
+use App\Exceptions\OrderNotOrderedException;
+use App\Exceptions\OrderNotPaidException;
+use App\Exceptions\OrderNotReceivedException;
+use App\Exceptions\ShoppingCartEmptyException;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\OrderProductAttribute;
@@ -22,9 +26,13 @@ class OrderService implements OrderServiceInterface
         $this->shoppingCartService = $shoppingCartService;
     }
 
+    /**
+     * @throws ShoppingCartEmptyException
+     */
     public function createOrder(User $customer): Order
     {
         $products = $customer->shopping_cart();
+        if ($products->count() === 0) throw new ShoppingCartEmptyException(__('exceptionMessages.shopping_cart_empty'));
         $coupon = $customer->shopping_cart_coupon_id;
         $order = Order::create([
             'customer' => $customer->id,
@@ -48,24 +56,39 @@ class OrderService implements OrderServiceInterface
         return $order;
     }
 
-    public function markOrderAsPayed(Order $order): Order
+    public function markOrderAsPaid(Order $order): Order
     {
-        event(new OrderPayingEvent());
+        event(new OrderPayingEvent($order));
         return $order;
     }
 
+    /**
+     * @throws OrderNotPaidException
+     */
     public function markOrderAsOrdered(Order $order): Order
     {
-        event(new OrderOrderingEvent());
+        if (!isset($order->payed_at)) throw new OrderNotPaidException(__('exceptionMessages.order_not_paid'));
+        event(new OrderOrderingEvent($order));
+        return $order;
     }
 
+    /**
+     * @throws OrderNotOrderedException
+     */
     public function markOrderAsReceived(Order $order): Order
     {
-        event(new OrderReceivingEvent());
+        if (!isset($order->products_ordered_at)) throw new OrderNotOrderedException(__('exceptionMessages.order_not_ordered'));
+        event(new OrderReceivingEvent($order));
+        return $order;
     }
 
+    /**
+     * @throws OrderNotReceivedException
+     */
     public function markOrderAsDelivered(Order $order): Order
     {
-        event(new OrderDeliveringEvent());
+        if (!isset($order->received_at)) throw new OrderNotReceivedException(__('exceptionMessages.order_not_received'));
+        event(new OrderDeliveringEvent($order));
+        return $order;
     }
 }

@@ -5,7 +5,6 @@ namespace App\Services\Orders;
 // TODO: implement a service that helps handling orders
 // TODO: not here but Tests for every relation between models to verify that they work
 // TODO: add default constructors to every model class
-// TODO: why is this in that branch????
 use App\Models\Order;
 use App\Models\User;
 
@@ -23,7 +22,7 @@ interface OrderServiceInterface
      * @param Order $order The Order which should be marked as Paid.
      * @return Order The edited Order Model.
      */
-    public function markOrderAsPayed(Order $order): Order;
+    public function markOrderAsPaid(Order $order): Order;
 
     /**
      * Mark an Order as Ordered by the Administrator. Step 3
