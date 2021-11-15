@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Database\Factories\ShoppingCartFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,22 +15,20 @@ use Illuminate\Support\Carbon;
 /**
  * App\Models\ShoppingCart
  *
- * @property int $id
  * @property int $user_id
  * @property int $product_id
  * @property int $count
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $product
+ * @property-read Collection|Product[] $product
  * @property-read int|null $product_count
- * @property-read \App\Models\User $user
- * @method static \Database\Factories\ShoppingCartFactory factory(...$parameters)
+ * @property-read User $user
+ * @method static ShoppingCartFactory factory(...$parameters)
  * @method static Builder|ShoppingCart newModelQuery()
  * @method static Builder|ShoppingCart newQuery()
  * @method static Builder|ShoppingCart query()
  * @method static Builder|ShoppingCart whereCount($value)
  * @method static Builder|ShoppingCart whereCreatedAt($value)
- * @method static Builder|ShoppingCart whereId($value)
  * @method static Builder|ShoppingCart whereProductId($value)
  * @method static Builder|ShoppingCart whereUpdatedAt($value)
  * @method static Builder|ShoppingCart whereUserId($value)
@@ -46,11 +46,7 @@ class ShoppingCart extends Model
         'count',
     ];
 
-    protected $casts = [
-        'count' => 'integer',
-        'user_id' => 'integer',
-        'product_id' => 'integer',
-    ];
+    protected $casts = [];
 
     public function product(): HasOneOrMany
     {

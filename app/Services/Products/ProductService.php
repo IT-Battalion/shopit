@@ -39,7 +39,7 @@ class ProductService implements ProductServiceInterface
     function setThumbnail(ProductImage $image, int $id = null, string $name = null): Product
     {
         $product = $this->get($name, $id);
-        $product->thumbnail = $image->id;
+        $product->thumbnail_id = $image->id;
         $product->save();
         return $product;
     }
