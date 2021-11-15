@@ -23,4 +23,4 @@ mix
     .vue()
     .extract(['vue'])
     .sass('resources/sass/app.scss', 'public/css')
-    .browserSync('laravel.test');
+    .browserSync('localhost:80');
