@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Auth;
+use Database\Factories\ProductImageFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,24 +17,26 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property string $path
  * @property string $type
- * @property \App\Models\User $created_by
- * @property \App\Models\User $updated_by
+ * @property int $created_by_id
+ * @property int $updated_by_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property int $product_id
- * @property-read \App\Models\Product $product
- * @method static \Database\Factories\ProductImageFactory factory(...$parameters)
+ * @property-read User $created_by
+ * @property-read Product $product
+ * @property-read User $updated_by
+ * @method static ProductImageFactory factory(...$parameters)
  * @method static Builder|ProductImage newModelQuery()
  * @method static Builder|ProductImage newQuery()
  * @method static Builder|ProductImage query()
  * @method static Builder|ProductImage whereCreatedAt($value)
- * @method static Builder|ProductImage whereCreatedBy($value)
+ * @method static Builder|ProductImage whereCreatedById($value)
  * @method static Builder|ProductImage whereId($value)
  * @method static Builder|ProductImage wherePath($value)
  * @method static Builder|ProductImage whereProductId($value)
  * @method static Builder|ProductImage whereType($value)
  * @method static Builder|ProductImage whereUpdatedAt($value)
- * @method static Builder|ProductImage whereUpdatedBy($value)
+ * @method static Builder|ProductImage whereUpdatedById($value)
  * @mixin Eloquent
  */
 class ProductImage extends Model
@@ -53,32 +56,28 @@ class ProductImage extends Model
         'product_id',
     ];
 
-    protected $casts = [
-        'product_id' => 'integer',
-        'created_by' => 'integer',
-        'updated_by' => 'integer',
-    ];
+    protected $casts = [];
 
     public function created_by(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id', 'created_by');
+        return $this->belongsTo(User::class, 'created_by_id');
     }
 
     public function createWith(User $user): ProductImage
     {
-        $this->created_by = $user->id;
-        $this->updated_by = $user->id;
+        $this->created_by_id = $user->id;
+        $this->updated_by_id = $user->id;
         return $this;
     }
 
     public function updated_by(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id', 'updated_by');
+        return $this->belongsTo(User::class, 'updated_by_id');
     }
 
     public function updateWith(User $user): ProductImage
     {
-        $this->updated_by = $user->id;
+        $this->updated_by_id = $user->id;
         return $this;
     }
 

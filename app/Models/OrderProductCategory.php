@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\OrderProductCategoryFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -19,10 +20,10 @@ use Illuminate\Support\Carbon;
  * @property int $icon_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read \App\Models\Icon|null $icon
- * @property-read Collection|\App\Models\OrderProduct[] $products
+ * @property-read Icon|null $icon
+ * @property-read Collection|OrderProduct[] $products
  * @property-read int|null $products_count
- * @method static \Database\Factories\OrderProductCategoryFactory factory(...$parameters)
+ * @method static OrderProductCategoryFactory factory(...$parameters)
  * @method static Builder|OrderProductCategory newModelQuery()
  * @method static Builder|OrderProductCategory newQuery()
  * @method static Builder|OrderProductCategory query()
@@ -44,9 +45,7 @@ class OrderProductCategory extends Model
         'icon_id',
     ];
 
-    protected $casts = [
-        'icon_id' => 'integer',
-    ];
+    protected $casts = [];
 
     public function products(): HasMany
     {

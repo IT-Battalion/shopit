@@ -36,8 +36,8 @@ class ProductFactory extends Factory
             'price' => $this->faker->numberBetween(1, 300),
             'tax' => $this->faker->numberBetween(0, 100),
             'available' => $this->faker->numberBetween(0, 1000),
-            "created_by" => $admin,
-            "updated_by" => $admin,
+            'created_by_id' => $admin,
+            'updated_by_id' => $admin,
             "product_category_id" => $category,
         ];
     }

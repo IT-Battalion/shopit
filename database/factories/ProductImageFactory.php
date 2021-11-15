@@ -37,8 +37,8 @@ class ProductImageFactory extends Factory
             'path' => $image,
             'type' => 'image/png',
             'product_id' => $product,
-            'created_by' => $admin,
-            'updated_by' => $admin,
+            'created_by_id' => $admin,
+            'updated_by_id' => $admin,
         ];
     }
 }

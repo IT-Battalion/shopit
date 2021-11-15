@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use Database\Factories\HighlightedProductFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
@@ -16,8 +17,8 @@ use Illuminate\Support\Carbon;
  * @property int $product_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read \App\Models\Product|null $products
- * @method static \Database\Factories\HighlightedProductFactory factory(...$parameters)
+ * @property-read Product $product
+ * @method static HighlightedProductFactory factory(...$parameters)
  * @method static Builder|HighlightedProduct newModelQuery()
  * @method static Builder|HighlightedProduct newQuery()
  * @method static Builder|HighlightedProduct query()
@@ -37,12 +38,10 @@ class HighlightedProduct extends Model
         'product_id'
     ];
 
-    protected $casts = [
-        'product_id' => 'integer'
-    ];
+    protected $casts = [];
 
-    public function products(): HasOne
+    public function product(): BelongsTo
     {
-        return $this->hasOne(Product::class, 'product_id', 'id');
+        return $this->belongsTo(Product::class);
     }
 }
