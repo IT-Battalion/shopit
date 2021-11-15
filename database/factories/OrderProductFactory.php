@@ -39,8 +39,8 @@ class OrderProductFactory extends Factory
             'tax' => $this->faker->numberBetween(0, 100),
             'available' => $this->faker->numberBetween(0, 1000),
             'count' => $this->faker->numberBetween(0, 100),
-            "created_by" => $admin,
-            "updated_by" => $admin,
+            'created_by_id' => $admin,
+            'updated_by_id' => $admin,
             "order_product_category_id" => $category,
         ];
     }

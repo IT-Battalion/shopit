@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Auth;
+use Database\Factories\ProductFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -10,7 +11,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
 /**
@@ -19,38 +19,41 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property string $name
  * @property string $description
- * @property \App\Models\ProductImage|null $thumbnail
+ * @property int|null $thumbnail_id
  * @property float $price
  * @property float $tax
  * @property int $available
- * @property \App\Models\User $created_by
- * @property \App\Models\User $updated_by
+ * @property int $created_by_id
+ * @property int $updated_by_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property int $product_category_id
- * @property-read Collection|\App\Models\ProductAttribute[] $attributes
- * @property-read int|null $attributes_count
- * @property-read \App\Models\ProductCategory $category
- * @property-read Collection|\App\Models\ProductImage[] $images
+ * @property-read ProductCategory $category
+ * @property-read User $created_by
+ * @property-read Collection|ProductImage[] $images
  * @property-read int|null $images_count
+ * @property-read Collection|ProductAttribute[] $productAttributes
+ * @property-read int|null $product_attributes_count
+ * @property-read ProductImage|null $thumbnail
+ * @property-read User $updated_by
  * @method static Builder|Product available()
- * @method static \Database\Factories\ProductFactory factory(...$parameters)
+ * @method static ProductFactory factory(...$parameters)
  * @method static Builder|Product newModelQuery()
  * @method static Builder|Product newQuery()
  * @method static Builder|Product query()
  * @method static Builder|Product unavailable()
  * @method static Builder|Product whereAvailable($value)
  * @method static Builder|Product whereCreatedAt($value)
- * @method static Builder|Product whereCreatedBy($value)
+ * @method static Builder|Product whereCreatedById($value)
  * @method static Builder|Product whereDescription($value)
  * @method static Builder|Product whereId($value)
  * @method static Builder|Product whereName($value)
  * @method static Builder|Product wherePrice($value)
  * @method static Builder|Product whereProductCategoryId($value)
  * @method static Builder|Product whereTax($value)
- * @method static Builder|Product whereThumbnail($value)
+ * @method static Builder|Product whereThumbnailId($value)
  * @method static Builder|Product whereUpdatedAt($value)
- * @method static Builder|Product whereUpdatedBy($value)
+ * @method static Builder|Product whereUpdatedById($value)
  * @mixin Eloquent
  */
 class Product extends Model
@@ -69,44 +72,36 @@ class Product extends Model
         'available',
         'tax',
         'product_category_id',
-        'thumbnail',
+        'thumbnail_id',
     ];
 
-    protected $casts = [
-        'price' => 'float',
-        'available' => 'integer',
-        'tax' => 'float',
-        'product_category_id' => 'integer',
-        'created_by' => 'integer',
-        'updated_by' => 'integer',
-        'thumbnail' => 'integer',
-    ];
+    protected $casts = [];
 
-    public function thumbnail(): HasOne
+    public function thumbnail(): BelongsTo
     {
-        return $this->hasOne(ProductImage::class, 'id', 'thumbnail');
+        return $this->belongsTo(ProductImage::class, 'thumbnail_id');
     }
 
     public function created_by(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id', 'created_by');
+        return $this->belongsTo(User::class, 'created_by_id');
     }
 
     public function createWith(User $user): Product
     {
-        $this->created_by = $user->id;
-        $this->updated_by = $user->id;
+        $this->created_by_id = $user->id;
+        $this->updated_by_id = $user->id;
         return $this;
     }
 
     public function updated_by(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id', 'updated_by');
+        return $this->belongsTo(User::class, 'updated_by_id');
     }
 
     public function updateWith(User $user): Product
     {
-        $this->updated_by = $user->id;
+        $this->updated_by_id = $user->id;
         return $this;
     }
 
@@ -115,14 +110,14 @@ class Product extends Model
         return $this->hasMany(ProductImage::class);
     }
 
-    public function attributes(): HasMany
+    public function productAttributes(): HasMany
     {
         return $this->hasMany(ProductAttribute::class);
     }
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(ProductCategory::class);
+        return $this->belongsTo(ProductCategory::class, 'product_category_id');
     }
 
     protected static function boot()
@@ -136,7 +131,7 @@ class Product extends Model
         });
         static::deleting(function (Product $model) {
             $model->images()->delete();
-            $model->attributes()->delete();
+            $model->productAttributes()->delete();
         });
     }
 

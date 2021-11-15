@@ -17,35 +17,35 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->integer('discount');
             $table->boolean('enabled')->default(true);
-            $table->timestamp('enabled_until');
+            $table->timestamp('enabled_until')->nullable();
             $table->char('code', 32)->unique();
-            $table->foreignId('created_by')->constrained('users');
-            $table->foreignId('updated_by')->constrained('users');
+            $table->foreignId('created_by_id')->constrained('users');
+            $table->foreignId('updated_by_id')->constrained('users');
             $table->timestamps();
         });
 
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer')->constrained('users');
+            $table->foreignId('customer_id')->constrained('users');
             $table->foreignId('coupon_code_id')->nullable()->constrained();
-            $table->timestamp('payed_at')->nullable();
-            $table->foreignId('transaction_confirmed_by')->nullable()->constrained('users');
+            $table->timestamp('paid_at')->nullable();
+            $table->foreignId('transaction_confirmed_by_id')->nullable()->constrained('users');
             $table->timestamp('products_ordered_at')->nullable(); // user order timestamp is the "created_at" column added by
                                                              // the default timestamps with `$table->timestamps()`
-            $table->foreignId('products_ordered_by')->nullable()->constrained('users');
-            $table->timestamp('received_at')->nullable();
-            $table->foreignId('received_by')->nullable()->constrained('users');
+            $table->foreignId('products_ordered_by_id')->nullable()->constrained('users');
+            $table->timestamp('products_received_at')->nullable();
+            $table->foreignId('products_received_by_id')->nullable()->constrained('users');
             $table->timestamp('handed_over_at')->nullable();
-            $table->foreignId('handed_over_by')->nullable()->constrained('users');
+            $table->foreignId('handed_over_by_id')->nullable()->constrained('users');
             $table->timestamps();
         });
 
         Schema::create('order_product_images', function (Blueprint $table) {
             $table->id();
-            $table->string('path');
+            $table->text('path');
             $table->string('type');
-            $table->foreignId('created_by')->constrained('users');
-            $table->foreignId('updated_by')->constrained('users');
+            $table->foreignId('created_by_id')->constrained('users');
+            $table->foreignId('updated_by_id')->constrained('users');
             $table->timestamps();
         });
 
@@ -54,13 +54,13 @@ class CreateOrdersTable extends Migration
             $table->foreignId('order_id')->constrained();
             $table->integer('count');
             $table->string('name');
-            $table->string('description');
-            $table->foreignId('thumbnail')->nullable()->constrained('order_product_images');
+            $table->text('description');
+            $table->foreignId('thumbnail_id')->nullable()->constrained('order_product_images');
             $table->float('price', 12);
             $table->float('tax', 12);
             $table->integer('available');
-            $table->foreignId('created_by')->constrained('users');
-            $table->foreignId('updated_by')->constrained('users');
+            $table->foreignId('created_by_id')->constrained('users');
+            $table->foreignId('updated_by_id')->constrained('users');
             $table->timestamps();
         });
 
@@ -68,7 +68,7 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->foreignid('order_product_id')->constrained();
             $table->integer('type');
-            $table->text('values_chosen');
+            $table->json('values_chosen');
             $table->timestamps();
         });
 

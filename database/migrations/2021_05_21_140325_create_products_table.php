@@ -15,23 +15,23 @@ class CreateProductsTable extends Migration
     {
         Schema::create('product_images', function (Blueprint $table) {
             $table->id();
-            $table->string('path');
+            $table->text('path');
             $table->string('type');
-            $table->foreignId('created_by')->constrained('users');
-            $table->foreignId('updated_by')->constrained('users');
+            $table->foreignId('created_by_id')->constrained('users');
+            $table->foreignId('updated_by_id')->constrained('users');
             $table->timestamps();
         });
 
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('description');
-            $table->foreignId('thumbnail')->nullable()->constrained('product_images')->onDelete('set null');
+            $table->text('description');
+            $table->foreignId('thumbnail_id')->nullable()->constrained('product_images')->onDelete('set null');
             $table->float('price', 12);
             $table->float('tax', 12);
             $table->integer('available')->default(-1);
-            $table->foreignId('created_by')->constrained('users');
-            $table->foreignId('updated_by')->constrained('users');
+            $table->foreignId('created_by_id')->constrained('users');
+            $table->foreignId('updated_by_id')->constrained('users');
             $table->timestamps();
         });
 
