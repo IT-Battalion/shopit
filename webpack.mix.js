@@ -22,5 +22,4 @@ mix
     .ts('resources/ts/app.ts', 'public/js')
     .vue()
     .extract(['vue'])
-    .sass('resources/sass/app.scss', 'public/css')
     .browserSync('localhost:80');
