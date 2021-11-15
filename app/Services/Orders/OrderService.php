@@ -2,6 +2,10 @@
 
 namespace App\Services\Orders;
 
+use App\Events\OrderDeliveringEvent;
+use App\Events\OrderOrderingEvent;
+use App\Events\OrderPayingEvent;
+use App\Events\OrderReceivingEvent;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\OrderProductAttribute;
@@ -11,7 +15,6 @@ use App\Services\ShoppingCart\ShoppingCartServiceInterface;
 
 class OrderService implements OrderServiceInterface
 {
-
     private ShoppingCartServiceInterface $shoppingCartService;
 
     public function __construct(ShoppingCartServiceInterface $shoppingCartService)
@@ -47,21 +50,22 @@ class OrderService implements OrderServiceInterface
 
     public function markOrderAsPayed(Order $order): Order
     {
-        //event
+        event(new OrderPayingEvent());
+        return $order;
     }
 
     public function markOrderAsOrdered(Order $order): Order
     {
-        //event
+        event(new OrderOrderingEvent());
     }
 
     public function markOrderAsReceived(Order $order): Order
     {
-        //event
+        event(new OrderReceivingEvent());
     }
 
     public function markOrderAsDelivered(Order $order): Order
     {
-        //event
+        event(new OrderDeliveringEvent());
     }
 }
