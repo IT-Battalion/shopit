@@ -11,6 +11,9 @@
 |
 */
 
+use App\Models\Product;
+use App\Models\User;
+
 uses(Tests\TestCase::class)->in('Feature', 'Unit');
 uses(\Illuminate\Foundation\Testing\DatabaseTransactions::class)->in('Unit');
 
