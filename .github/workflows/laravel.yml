@@ -29,6 +29,6 @@ jobs:
       - name: Run Docker
         run: ./vendor/bin/sail up -d && echo -e "Sail launched\nSleeping for database..." && sleep 10
       - name: Run Migrations
-        run: ./vendor/bin/sail exec -T laravel.test php artisan migrate:fresh --seed
+        run: ./vendor/bin/sail exec -T laravel.test php artisan migrate:fresh
       - name: Execute tests (Unit and Feature tests) in Sail via Pest
         run: ./vendor/bin/sail exec -T laravel.test php artisan test
