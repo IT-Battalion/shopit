@@ -40,7 +40,24 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function saturateShoppingCart(User $user): array
 {
-    // ..
+    $products = collect();
+
+    for ($i = 0; $i < 2; $i++) {
+        $product = Product::factory()
+            ->state(['name' => "TestProduct$i", 'price' => '20', 'tax' => .20])
+            ->create();
+        $products->add($product);
+    }
+
+    $result = clone $products;
+
+    $products = $products->mapWithKeys(function (Product $product) {
+        return [$product->id => ['count' => 2]];
+    });
+
+    $user->shopping_cart()->attach($products);
+
+    return $result->all();
 }

@@ -8,7 +8,6 @@ use App\Models\Admin;
 use App\Models\OrderProduct;
 use App\Models\OrderProductAttribute;
 use App\Models\OrderProductImage;
-use App\Models\Product;
 use App\Models\User;
 use App\Services\Orders\OrderServiceInterface;
 use function Pest\Laravel\actingAs;
@@ -16,28 +15,6 @@ use function Pest\Laravel\actingAs;
 beforeEach(function () {
     User::factory()->state(['isAdmin' => true])->create();
 });
-
-function saturateShoppingCart(User $user): array
-{
-    $products = collect();
-
-    for ($i = 0; $i < 2; $i++) {
-        $product = Product::factory()
-            ->state(['name' => "TestProduct$i", 'price' => '20', 'tax' => .20])
-            ->create();
-        $products->add($product);
-    }
-
-    $result = clone $products;
-
-    $products = $products->mapWithKeys(function (Product $product) {
-        return [$product->id => ['count' => 2]];
-    });
-
-    $user->shopping_cart()->attach($products);
-
-    return $result->all();
-}
 
 test('create order with 0 products in shopping cart', function () {
     actingAs(Admin::all()->random());
