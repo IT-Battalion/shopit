@@ -21,13 +21,6 @@ interface UserServiceInterface
     function unban(User $user): bool;
 
     /**
-     * Returns if the User is banned or not
-     * @param User $user the specific User Model
-     * @return bool true if the User is banned else false
-     */
-    function isBanned(User $user): bool;
-
-    /**
      * Determines if an Action can be performed on a given User.
      * @param User $user The user which should be checked for.
      * @return bool true if the action can be performed. else false.

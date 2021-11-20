@@ -4,6 +4,7 @@ namespace App\Services\ShoppingCart;
 
 use App\Exceptions\ProductNotInShoppingCartException;
 use App\Models\Product;
+use App\Models\User;
 use DASPRiD\Enum\Exception\IllegalArgumentException;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -17,11 +18,16 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     /**
      * @throws IllegalArgumentException
      */
-    public function addProduct(Product $product, int $amount = 1): void
+    public function addProduct(Product $product, int $amount = 1, User $user = null): void
     {
         if ($amount === 0)
         {
             return;
+        }
+
+        if (is_null($user))
+        {
+            $user = Auth::user();
         }
 
         if ($amount < 0 || $amount > config('shop.shopping_cart.max_product_amount'))
@@ -29,11 +35,11 @@ class ShoppingCartService implements ShoppingCartServiceInterface
             throw new IllegalArgumentException(__('exceptionMessages.illegal_amount_given'));
         }
 
-        if ($this->hasProductInShoppingCart($product)) {
-            $previousAmount = $this->getAmountOfProduct($product);
-            Auth::user()->shopping_cart()->updateExistingPivot($product, ['count' => $previousAmount + $amount]);
+        if ($this->hasProductInShoppingCart($product, user: $user)) {
+            $previousAmount = $this->getAmountOfProduct($product, user: $user);
+            $user->shopping_cart()->updateExistingPivot($product, ['count' => $previousAmount + $amount]);
         } else {
-            Auth::user()->shopping_cart()->attach($product, ['count' => $amount]);
+            $user->shopping_cart()->attach($product, ['count' => $amount]);
         }
     }
 
@@ -41,13 +47,18 @@ class ShoppingCartService implements ShoppingCartServiceInterface
      * @throws IllegalArgumentException
      * @throws ProductNotInShoppingCartException
      */
-    public function removeProduct(Product $product, int $amount = -1): void
+    public function removeProduct(Product $product, int $amount = -1, User $user = null): void
     {
         if ($amount === 0) {
             return;
         }
 
-        if (!$this->hasProductInShoppingCart($product)) {
+        if (is_null($user))
+        {
+            $user = Auth::user();
+        }
+
+        if (!$this->hasProductInShoppingCart($product, user: $user)) {
             throw new ProductNotInShoppingCartException(__('exceptionMessages.product_not_in_shopping_cart'));
         }
 
@@ -56,54 +67,66 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         }
 
         if ($amount === -1) {
-            Auth::user()->shopping_cart()->detach($product);
+            $user->shopping_cart()->detach($product);
+            return;
         }
 
-        $previousAmount = $this->getAmountOfProduct($product);
+        $previousAmount = $this->getAmountOfProduct($product, user: $user);
         $newAmount = $previousAmount - $amount;
 
         if ($newAmount <= 0)
         {
-            Auth::user()->shopping_cart()->detach($product);
+            $user->shopping_cart()->detach($product);
+        } else {
+            $user->shopping_cart()->updateExistingPivot($product, ['count' => $newAmount]);
         }
 
-        Auth::user()->shopping_cart()->updateExistingPivot($product, ['count' => $newAmount]);
     }
 
     /**
      * @throws IllegalArgumentException
      */
-    public function setProductAmount(Product $product, int $amount): void
+    public function setProductAmount(Product $product, int $amount, User $user = null): void
     {
         if ($amount < 0)
         {
             throw new IllegalArgumentException(__('exceptionMessages.illegal_amount_given'));
         }
 
+        if (is_null($user))
+        {
+            $user = Auth::user();
+        }
+
         if ($this->hasProductInShoppingCart($product))
         {
             if ($amount === 0)
             {
-                Auth::user()->shopping_cart()->detach($product);
+                $user->shopping_cart()->detach($product);
             }
 
-            Auth::user()->shopping_cart()->updateExistingPivot($product, ['count' => $amount]);
+            $user->shopping_cart()->updateExistingPivot($product, ['count' => $amount]);
         } else {
             if ($amount === 0)
             {
                 return;
             }
 
-            Auth::user()->shopping_cart()->attach($product, ['count' => $amount]);
+            $user->shopping_cart()->attach($product, ['count' => $amount]);
         }
     }
 
-    public function calculatePrice(bool $includeTax = true, bool $includeCoupon = true): float
+    public function calculatePrice(bool $includeTax = true, bool $includeCoupon = true, User $user = null): float
     {
-        $coupon = Auth::user()->shopping_cart_coupon;
+        if (is_null($user))
+        {
+            $user = Auth::user();
+        }
+
+        $coupon = $user->shopping_cart_coupon;
         $discount = $coupon === null ? 0 : $coupon->discount;
 
-        $price = Auth::user()->shopping_cart
+        $price = $user->shopping_cart
             ->groupBy(function (Product $product) {
                 return $product->tax*100; // can't just be the tax since it can't group by the decimal places of floats
             })
@@ -130,12 +153,17 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         return floatval($price);
     }
 
-    public function calculateTax(): float
+    public function calculateTax(User $user = null): float
     {
-        $coupon = Auth::user()->shopping_cart_coupon;
+        if (is_null($user))
+        {
+            $user = Auth::user();
+        }
+
+        $coupon = $user->shopping_cart_coupon;
         $discount = $coupon->discount ?? 0.0;
 
-        $taxPrice = Auth::user()->shopping_cart
+        $taxPrice = $user->shopping_cart
             ->groupBy(function (Product $product) {
                 return $product->tax*100;
             })
@@ -156,12 +184,17 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         return floatval($taxPrice);
     }
 
-    public function calculateDiscount(): float
+    public function calculateDiscount(User $user = null): float
     {
-        $coupon = Auth::user()->shopping_cart_coupon;
+        if (is_null($user))
+        {
+            $user = Auth::user();
+        }
+
+        $coupon = $user->shopping_cart_coupon;
         $discount = $coupon->discount ?? 0.0;
 
-        $discountPrice = Auth::user()->shopping_cart
+        $discountPrice = $user->shopping_cart
             ->reduce(function (mixed $carry, Product $product) use ($discount) {
                 $discount = bcmul(bcmul($product->price, $discount), $product->pivot->count);
 
@@ -171,31 +204,46 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         return floatval($discountPrice);
     }
 
-    public function calculatePriceOfProduct(Product $product, bool $includeTaxes, bool $includeCoupon): float
+    public function calculatePriceOfProduct(Product $product, bool $includeTaxes, bool $includeCoupon, User $user = null): float
     {
+        if (is_null($user))
+        {
+            $user = Auth::user();
+        }
+
         $product_price = $product->price;
         $product_amount_in_shopping_cart = $this->getAmountOfProduct($product);
         $tax = $includeTaxes ? $product->tax : 0;
-        $discount = $includeCoupon ? Auth::user()->shopping_cart_coupon->discount ?? 0.0 : 0.0;
+        $discount = $includeCoupon ? $user->shopping_cart_coupon->discount ?? 0.0 : 0.0;
         return $product_price * $product_amount_in_shopping_cart * (1 - $discount) * (1 + $tax);
     }
 
     /**
      * @throws IllegalArgumentException
      */
-    public function hasProductInShoppingCart(Product $product, int $amount = -1): bool
+    public function hasProductInShoppingCart(Product $product, int $amount = -1, User $user = null): bool
     {
+        if (is_null($user))
+        {
+            $user = Auth::user();
+        }
+
         if ($amount < -1) throw new IllegalArgumentException(__('exceptionMessages.illegal_amount_given'));
-        if ($amount === -1) return Auth::user()->shopping_cart()->wherePivot('product_id', $product->id)->count() !== 0;
+        if ($amount === -1) return $user->shopping_cart()->wherePivot('product_id', $product->id)->count() !== 0;
         return $this->getAmountOfProduct($product) === $amount;
     }
 
-    public function getAmountOfProduct(Product $product): int
+    public function getAmountOfProduct(Product $product, User $user = null): int
     {
-        if (Auth::user()->shopping_cart()->wherePivot('product_id', $product->id)->count() === 0)
+        if (is_null($user))
+        {
+            $user = Auth::user();
+        }
+
+        if ($user->shopping_cart()->wherePivot('product_id', $product->id)->count() === 0)
         {
             return 0;
         }
-        return Auth::user()->shopping_cart()->find($product)->pivot->count;
+        return $user->shopping_cart()->find($product)->pivot->count;
     }
 }

@@ -2,14 +2,13 @@
 
 namespace App\Events;
 
-use App\Models\User;
+use App\Models\Order;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Auth;
 
-class UserBanningEvent
+class OrderOrderedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -18,8 +17,9 @@ class UserBanningEvent
      *
      * @return void
      */
-    public function __construct(User $model)
+    public function __construct(Order $model)
     {
+        //TODO: send email
     }
 
     /**

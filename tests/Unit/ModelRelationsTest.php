@@ -2,11 +2,11 @@
 
 use App\Models\Admin;
 use App\Models\CouponCode;
+use App\Models\HighlightedProduct;
 use App\Models\Icon;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\OrderProductAttribute;
-use App\Models\OrderProductCategory;
 use App\Models\OrderProductImage;
 use App\Models\Product;
 use App\Models\ProductAttribute;
@@ -18,7 +18,6 @@ beforeEach(function () {
     $icon = Icon::factory()->create();
     Admin::factory()->create();
     ProductCategory::factory()->create(['name' => 'Test', 'icon_id' => $icon->id]);
-    OrderProductCategory::factory()->create(['name' => 'Test', 'icon_id' => $icon->id]);
     CouponCode::factory()->create();
 });
 
@@ -210,7 +209,7 @@ test('coupon relation to updater', function () {
 test('Highlighted product relation to product', function () {
     $product = Product::factory()->create();
 
-    $highlightedProduct = \App\Models\HighlightedProduct::factory()->create([
+    $highlightedProduct = HighlightedProduct::factory()->create([
         'product_id' => $product->id,
     ]);
 

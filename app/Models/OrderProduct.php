@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
+use Barryvdh\LaravelIdeHelper\Eloquent;
 use Database\Factories\OrderProductFactory;
-use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -30,7 +30,6 @@ use Illuminate\Support\Facades\Auth;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property int $order_product_category_id
- * @property-read OrderProductCategory $category
  * @property-read User $created_by
  * @property-read Collection|OrderProductImage[] $images
  * @property-read int|null $images_count
@@ -50,7 +49,6 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|OrderProduct whereId($value)
  * @method static Builder|OrderProduct whereName($value)
  * @method static Builder|OrderProduct whereOrderId($value)
- * @method static Builder|OrderProduct whereOrderProductCategoryId($value)
  * @method static Builder|OrderProduct wherePrice($value)
  * @method static Builder|OrderProduct whereTax($value)
  * @method static Builder|OrderProduct whereThumbnailId($value)
@@ -75,7 +73,6 @@ class OrderProduct extends Model
         'price',
         'available',
         'tax',
-        'order_product_category_id',
         'thumbnail_id',
         'order_id',
         'count',
@@ -110,21 +107,16 @@ class OrderProduct extends Model
         return $this->hasMany(OrderProductAttribute::class);
     }
 
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(OrderProductCategory::class);
-    }
-
     public function createWith(User $user): OrderProduct
     {
-        $this->created_by = $user;
-        $this->updated_by = $user;
+        $this->created_by_id = $user->id;
+        $this->updated_by_id = $user->id;
         return $this;
     }
 
     public function updateWith(User $user): OrderProduct
     {
-        $this->updated_by = $user;
+        $this->updated_by_id = $user->id;
         return $this;
     }
 
@@ -133,13 +125,14 @@ class OrderProduct extends Model
         parent::boot();
         static::creating(function (OrderProduct $model) {
             if (!isset($model->created_by)) $model->createWith(Auth::user());
+            elseif (!isset($model->updated_by)) $model->updateWith(Auth::user());
         });
         static::updating(function (OrderProduct $model) {
             if (!isset($model->updated_by)) $model->updateWith(Auth::user());
         });
         static::deleting(function (OrderProduct $model) {
             $model->images()->delete();
-            $model->attributes()->delete();
+            $model->productAttributes()->delete();
         });
     }
 }
