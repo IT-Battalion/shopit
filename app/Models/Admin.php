@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
+use Barryvdh\LaravelIdeHelper\Eloquent;
 use Database\Factories\AdminFactory;
-use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,7 +19,6 @@ use Illuminate\Support\Carbon;
 use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
 use LdapRecord\Laravel\Auth\HasLdapUser;
 use LdapRecord\Models\Model;
-
 
 /**
  * App\Models\Admin
@@ -42,6 +41,7 @@ use LdapRecord\Models\Model;
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property int|null $shopping_cart_coupon_id
  * @property string|null $guid
  * @property string|null $domain
  * @property-read Collection|CouponCode[] $coupons_created
@@ -71,12 +71,13 @@ use LdapRecord\Models\Model;
  * @property-read int|null $products_updated_count
  * @property-read Collection|Product[] $shopping_cart
  * @property-read int|null $shopping_cart_count
- * @method static Builder|User banned()
+ * @property-read CouponCode|null $shopping_cart_coupon
+ * @method static Builder|User gotBanned()
  * @method static AdminFactory factory(...$parameters)
  * @method static Builder|Admin newModelQuery()
  * @method static Builder|Admin newQuery()
  * @method static Builder|User notBanned()
- * @method static Builder|Admin onlyTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Admin onlyTrashed()
  * @method static Builder|Admin query()
  * @method static Builder|Admin student()
  * @method static Builder|Admin teacher()
@@ -98,18 +99,13 @@ use LdapRecord\Models\Model;
  * @method static Builder|Admin whereName($value)
  * @method static Builder|Admin whereReasonForDisabling($value)
  * @method static Builder|Admin whereRememberToken($value)
+ * @method static Builder|Admin whereShoppingCartCouponId($value)
  * @method static Builder|Admin whereUpdatedAt($value)
  * @method static Builder|Admin whereUsername($value)
- * @method static Builder|Admin withTrashed()
- * @method static Builder|Admin withoutTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Admin withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Admin withoutTrashed()
  * @mixin Eloquent
- * @mixin Eloquent
- * @property string|null $disabled_at
- * @property-read CouponCode|null $shopping_cart_coupon
- * @method static Builder|Admin whereDisabledAt($value)
- * @method static Builder|Admin whereShoppingCartCoupon($value)
- * @property int|null $shopping_cart_coupon_id
- * @method static Builder|Admin whereShoppingCartCouponId($value)
+ * @method static Builder|User banned()
  */
 class Admin extends User
 {

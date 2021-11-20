@@ -20,7 +20,6 @@ class UserBanningEvent
      */
     public function __construct(User $model)
     {
-        $model->banWith(Auth::user());
     }
 
     /**

@@ -2,6 +2,7 @@
 
 use App\Models\Admin;
 use App\Models\CouponCode;
+use App\Models\HighlightedProduct;
 use App\Models\Icon;
 use App\Models\Order;
 use App\Models\OrderProduct;
@@ -210,7 +211,7 @@ test('coupon relation to updater', function () {
 test('Highlighted product relation to product', function () {
     $product = Product::factory()->create();
 
-    $highlightedProduct = \App\Models\HighlightedProduct::factory()->create([
+    $highlightedProduct = HighlightedProduct::factory()->create([
         'product_id' => $product->id,
     ]);
 

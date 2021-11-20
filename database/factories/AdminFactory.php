@@ -77,7 +77,11 @@ class AdminFactory extends Factory
     }
 
     public function disabled() {
-        return $this->state(["disabled" => true]);
+        return $this->state(["enabled" => false]);
+    }
+
+    public function enabled() {
+        return $this->state(["enabled" => true]);
     }
 
     /**

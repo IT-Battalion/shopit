@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use Auth;
+use Barryvdh\LaravelIdeHelper\Eloquent;
 use Database\Factories\ProductFactory;
-use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * App\Models\Product
@@ -118,11 +118,6 @@ class Product extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(ProductCategory::class, 'product_category_id');
-    }
-
-    public function highlighted(): HasOne
-    {
-        return $this->hasOne(HighlightedProduct::class, 'id', 'product_id');
     }
 
     protected static function boot()

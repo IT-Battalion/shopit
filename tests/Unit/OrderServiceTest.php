@@ -13,7 +13,7 @@ use App\Services\Orders\OrderServiceInterface;
 use function Pest\Laravel\actingAs;
 
 beforeEach(function () {
-    User::factory()->state(['isAdmin' => true])->create();
+    Admin::factory()->create();
 });
 
 test('create order with 0 products in shopping cart', function () {
