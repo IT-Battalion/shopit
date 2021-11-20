@@ -22,7 +22,10 @@ class IconFactory extends Factory
      */
     public function definition(): array
     {
-        $icon_image = $this->faker->image(null, 24, 24);
+        $source = fopen(resource_path('image/test_icon.png'), 'r');
+        $destination = tmpfile();
+        stream_copy_to_stream($source, $destination);
+        $path = stream_get_meta_data($destination)['uri'];
 
         return [
             'original_id' => $this->faker->unique()->randomNumber(5, false),
@@ -31,7 +34,7 @@ class IconFactory extends Factory
             'provider' => 'the Noun Project',
             'license' => ApiIcon::LICENSE_CC_BY_3_0,
             'mimetype' => 'image/png',
-            'path' => $icon_image,
+            'path' => $path,
         ];
     }
 }
