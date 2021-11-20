@@ -13,7 +13,6 @@ use App\Exceptions\ShoppingCartEmptyException;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\OrderProductAttribute;
-use App\Models\OrderProductCategory;
 use App\Models\OrderProductImage;
 use App\Models\User;
 use App\Services\ShoppingCart\ShoppingCartServiceInterface;
@@ -41,8 +40,6 @@ class OrderService implements OrderServiceInterface
         ]);
         foreach ($products as $product) {
             //will be removed when order categories are removed
-            $product_category = $product->category();
-            $order_product_category = OrderProductCategory::create(['name' => $product_category->name, 'icon_id' => $product_category->icon_id]);
             $order_product = OrderProduct::create(
                 ['name' => $product->name,
                     'description' => $product->description,
@@ -50,7 +47,6 @@ class OrderService implements OrderServiceInterface
                     'created_at' => $product->created_at,
                     'created_by' => $product->created_by,
                     'order_id' => $order->id,
-                    'order_product_category_id' => $order_product_category->id,
                     'price' => $product->price,
                     'tax' => $product->tax
                 ]);

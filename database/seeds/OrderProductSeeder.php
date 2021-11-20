@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\OrderProduct;
-use Database\Factories\ProductCategoryFactory;
 use Illuminate\Database\Seeder;
 
 class OrderProductSeeder extends Seeder
@@ -15,10 +14,6 @@ class OrderProductSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([
-            OrderProductCategorySeeder::class,
-        ]);
-
         OrderProduct::factory()
             ->count(rand(1, 3))->create();
 

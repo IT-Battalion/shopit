@@ -30,7 +30,6 @@ use Illuminate\Support\Facades\Auth;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property int $order_product_category_id
- * @property-read OrderProductCategory $category
  * @property-read User $created_by
  * @property-read Collection|OrderProductImage[] $images
  * @property-read int|null $images_count
@@ -50,7 +49,6 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|OrderProduct whereId($value)
  * @method static Builder|OrderProduct whereName($value)
  * @method static Builder|OrderProduct whereOrderId($value)
- * @method static Builder|OrderProduct whereOrderProductCategoryId($value)
  * @method static Builder|OrderProduct wherePrice($value)
  * @method static Builder|OrderProduct whereTax($value)
  * @method static Builder|OrderProduct whereThumbnailId($value)
@@ -75,7 +73,6 @@ class OrderProduct extends Model
         'price',
         'available',
         'tax',
-        'order_product_category_id',
         'thumbnail_id',
         'order_id',
         'count',
@@ -108,11 +105,6 @@ class OrderProduct extends Model
     public function productAttributes(): HasMany
     {
         return $this->hasMany(OrderProductAttribute::class);
-    }
-
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(OrderProductCategory::class);
     }
 
     public function createWith(User $user): OrderProduct

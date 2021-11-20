@@ -28,10 +28,6 @@ class CreateIcons extends Migration
         Schema::table('product_categories', function (Blueprint $table) {
             $table->foreignId('icon_id')->after('name')->constrained()->onDelete('cascade');
         });
-
-        Schema::table('order_product_categories', function (Blueprint $table) {
-            $table->foreignId('icon_id')->after('name')->constrained();
-        });
     }
 
     /**
@@ -43,11 +39,6 @@ class CreateIcons extends Migration
     {
         Schema::table('product_categories', function (Blueprint $table) {
             $table->dropForeign('product_categories_icon_id_foreign');
-            $table->dropColumn('icon_id');
-        });
-
-        Schema::table('order_product_categories', function (Blueprint $table) {
-            $table->dropForeign('order_product_categories_icon_id_foreign');
             $table->dropColumn('icon_id');
         });
 
