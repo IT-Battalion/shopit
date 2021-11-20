@@ -1,6 +1,7 @@
 <?php
 
 use App\Exceptions\ProductNotInShoppingCartException;
+use App\Models\Admin;
 use App\Models\CouponCode;
 use App\Models\Icon;
 use App\Models\Product;
@@ -11,8 +12,9 @@ use DASPRiD\Enum\Exception\IllegalArgumentException;
 
 beforeEach(function () {
     $icon = Icon::factory()->create();
-    User::factory()->create(['isAdmin' => true]);
+    Admin::factory()->create();
     ProductCategory::factory()->create(['name' => 'Test', 'icon_id' => $icon->id]);
+    CouponCode::factory()->create();
 });
 
 function generateShoppingCartCoupon(User $user) {
