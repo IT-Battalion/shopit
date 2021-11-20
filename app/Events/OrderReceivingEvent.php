@@ -19,7 +19,6 @@ class OrderReceivingEvent
      */
     public function __construct(Order $model)
     {
-        $model->save();
         event(new OrderReceivedEvent($model));
     }
 

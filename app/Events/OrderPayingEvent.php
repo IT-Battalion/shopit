@@ -19,7 +19,6 @@ class OrderPayingEvent
      */
     public function __construct(Order $model)
     {
-        $model->save();
         event(new OrderPaidEvent($model));
     }
 

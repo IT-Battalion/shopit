@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\HasOrderEvents;
 use Barryvdh\LaravelIdeHelper\Eloquent;
 use Database\Factories\OrderFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -111,6 +110,26 @@ class Order extends Model
     public function handed_over_by(): BelongsTo
     {
         return $this->belongsTo(User::class, 'handed_over_by_id');
+    }
+
+    public function isPaid()
+    {
+        return isset($this->paid_at);
+    }
+
+    public function isOrdered()
+    {
+        return isset($this->products_ordered_at);
+    }
+
+    public function isReceived()
+    {
+        return isset($this->products_received_at);
+    }
+
+    public function isHandedOver()
+    {
+        return isset($this->handed_over_at);
     }
 
     public function products(): HasOneOrMany

@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
+use Barryvdh\LaravelIdeHelper\Eloquent;
 use Database\Factories\OrderProductFactory;
-use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -109,14 +109,14 @@ class OrderProduct extends Model
 
     public function createWith(User $user): OrderProduct
     {
-        $this->created_by = $user;
-        $this->updated_by = $user;
+        $this->created_by_id = $user->id;
+        $this->updated_by_id = $user->id;
         return $this;
     }
 
     public function updateWith(User $user): OrderProduct
     {
-        $this->updated_by = $user;
+        $this->updated_by_id = $user->id;
         return $this;
     }
 
@@ -125,13 +125,14 @@ class OrderProduct extends Model
         parent::boot();
         static::creating(function (OrderProduct $model) {
             if (!isset($model->created_by)) $model->createWith(Auth::user());
+            elseif (!isset($model->updated_by)) $model->updateWith(Auth::user());
         });
         static::updating(function (OrderProduct $model) {
             if (!isset($model->updated_by)) $model->updateWith(Auth::user());
         });
         static::deleting(function (OrderProduct $model) {
             $model->images()->delete();
-            $model->attributes()->delete();
+            $model->productAttributes()->delete();
         });
     }
 }

@@ -7,7 +7,6 @@ use App\Models\Icon;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\OrderProductAttribute;
-use App\Models\OrderProductCategory;
 use App\Models\OrderProductImage;
 use App\Models\Product;
 use App\Models\ProductAttribute;
@@ -19,7 +18,6 @@ beforeEach(function () {
     $icon = Icon::factory()->create();
     Admin::factory()->create();
     ProductCategory::factory()->create(['name' => 'Test', 'icon_id' => $icon->id]);
-    OrderProductCategory::factory()->create(['name' => 'Test', 'icon_id' => $icon->id]);
     CouponCode::factory()->create();
 });
 
