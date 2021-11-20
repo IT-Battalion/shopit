@@ -13,6 +13,7 @@
 
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Support\Collection;
 
 uses(Tests\TestCase::class)->in('Feature', 'Unit');
 uses(\Illuminate\Foundation\Testing\DatabaseTransactions::class)->in('Unit');
@@ -43,7 +44,7 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function saturateShoppingCart(User $user): array
+function saturateShoppingCart(User $user): Collection
 {
     $products = collect();
 
@@ -62,5 +63,5 @@ function saturateShoppingCart(User $user): array
 
     $user->shopping_cart()->attach($products);
 
-    return $result->all();
+    return $result;
 }

@@ -27,7 +27,8 @@ test('create order with products in shopping cart', function () {
     actingAs(Admin::all()->random());
     $service = $this->app->make(OrderServiceInterface::class);
     $user = User::factory()->create();
-    $products = saturateShoppingCart($user);
+    $products = saturateShoppingCart($user)->all();
+
     $order = $service->createOrder($user);
     expect(isset($order))->toBeTrue();
     foreach ($products as $product) {

@@ -88,7 +88,7 @@ test('remove a product from the shopping cart', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $product = saturateShoppingCart($user)[0];
+    $product = saturateShoppingCart($user)->first();
 
     $service->removeProduct($product);
 
@@ -101,7 +101,7 @@ test('remove a specific number of items from the shopping cart', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $product = saturateShoppingCart($user)[0];
+    $product = saturateShoppingCart($user)->first();
 
     $service->removeProduct($product, 1);
 
@@ -114,7 +114,7 @@ test('remove all items from the shopping cart', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $product = saturateShoppingCart($user)[0];
+    $product = saturateShoppingCart($user)->first();
 
     $service->removeProduct($product, 2);
 
@@ -127,7 +127,7 @@ test('remove no items from the shopping cart', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $product = saturateShoppingCart($user)[0];
+    $product = saturateShoppingCart($user)->first();
 
     $service->removeProduct($product, 0);
 
@@ -140,7 +140,7 @@ test('remove an invalid number of items from the shopping cart', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $product = saturateShoppingCart($user)[0];
+    $product = saturateShoppingCart($user)->first();
 
     $service->removeProduct($product, -10);
 })->throws(IllegalArgumentException::class);
