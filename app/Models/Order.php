@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
+use Barryvdh\LaravelIdeHelper\Eloquent;
 use Database\Factories\OrderFactory;
-use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * App\Models\Order
@@ -73,7 +74,7 @@ class Order extends Model
         'authorizing_admin',
         'products_received_at',
         'products_received_by_id',
-        'payed_at',
+        'paid_at',
         'transaction_confirmed_by_id',
         'handed_over_at',
         'handed_over_by_id',
@@ -109,6 +110,26 @@ class Order extends Model
     public function handed_over_by(): BelongsTo
     {
         return $this->belongsTo(User::class, 'handed_over_by_id');
+    }
+
+    public function isPaid()
+    {
+        return isset($this->paid_at);
+    }
+
+    public function isOrdered()
+    {
+        return isset($this->products_ordered_at);
+    }
+
+    public function isReceived()
+    {
+        return isset($this->products_received_at);
+    }
+
+    public function isHandedOver()
+    {
+        return isset($this->handed_over_at);
     }
 
     public function products(): HasOneOrMany
@@ -154,5 +175,34 @@ class Order extends Model
     public function scopeOrdered(Builder $query): Builder
     {
         return $query->whereNotNull('products_ordered_at');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::registerModelEvent('paying', function (Order $model) {
+            $model->paid_at = now();
+            if (!isset($model->transaction_confirmed_by)) $model->transaction_confirmed_by = Auth::user()->id;
+        });
+        static::registerModelEvent('paid', function () {
+        });
+        static::registerModelEvent('ordering', function (Order $model) {
+            $model->products_ordered_at = now();
+            if (!isset($model->products_ordered_by)) $model->products_ordered_by = Auth::user()->id;
+        });
+        static::registerModelEvent('ordered', function () {
+        });
+        static::registerModelEvent('receiving', function (Order $model) {
+            $model->received_at = now();
+            if (!isset($model->received_by)) $model->received_by = Auth::user()->id;
+        });
+        static::registerModelEvent('received', function () {
+        });
+        static::registerModelEvent('delivering', function (Order $model) {
+            $model->handed_over_at = now();
+            if (!isset($model->handed_over_by)) $model->handed_over_by = Auth::user()->id;
+        });
+        static::registerModelEvent('delivered', function () {
+        });
     }
 }

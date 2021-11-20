@@ -15,7 +15,7 @@ class CreateHighlightedProductsTable extends Migration
     {
         Schema::create('highlighted_products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained();
+            $table->foreignId('product_id')->unique()->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

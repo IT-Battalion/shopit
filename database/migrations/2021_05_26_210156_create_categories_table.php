@@ -19,18 +19,8 @@ class CreateCategoriesTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('order_product_categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->timestamps();
-        });
-
         Schema::table('products', function (Blueprint $table) {
             $table->foreignId('product_category_id')->constrained()->onDelete('cascade');
-        });
-
-        Schema::table('order_products', function (Blueprint $table) {
-            $table->foreignId('order_product_category_id')->constrained();
         });
     }
 
@@ -46,12 +36,6 @@ class CreateCategoriesTable extends Migration
             $table->dropColumn('product_category_id');
         });
 
-        Schema::table('order_products', function (Blueprint $table) {
-            $table->dropForeign('order_products_order_product_category_id_foreign');
-            $table->dropColumn('order_product_category_id');
-        });
-
         Schema::dropIfExists('product_categories');
-        Schema::dropIfExists('order_product_categories');
     }
 }

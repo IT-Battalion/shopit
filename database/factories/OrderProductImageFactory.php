@@ -31,10 +31,13 @@ class OrderProductImageFactory extends Factory
             ->first()
             ->id;
 
-        $image = $this->faker->image();
+        $source = fopen(resource_path('image/bottle.png'), 'r');
+        $destination = tmpfile();
+        stream_copy_to_stream($source, $destination);
+        $path = stream_get_meta_data($destination)['uri'];
 
         return [
-            'path' => $image,
+            'path' => $path,
             'type' => 'image/png',
             'order_product_id' => $product,
             'created_by_id' => $admin,
