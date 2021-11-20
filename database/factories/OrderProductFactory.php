@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Models\Admin;
 use App\Models\Order;
 use App\Models\OrderProduct;
-use App\Models\OrderProductCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class OrderProductFactory extends Factory
@@ -27,9 +26,6 @@ class OrderProductFactory extends Factory
         $admin = Admin::inRandomOrder()
             ->first()
             ->id;
-        $category = OrderProductCategory::inRandomOrder()
-            ->first()
-            ->id;
 
         return [
             'order_id' => Order::inRandomOrder()->first()->id,
@@ -40,7 +36,6 @@ class OrderProductFactory extends Factory
             'count' => $this->faker->numberBetween(0, 100),
             'created_by_id' => $admin,
             'updated_by_id' => $admin,
-            "order_product_category_id" => $category,
         ];
     }
 }

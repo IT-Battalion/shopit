@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
@@ -76,7 +77,15 @@ class UserFactory extends Factory
     }
 
     public function disabled() {
-        return $this->state(["disabled" => true]);
+        return $this->state([
+            'enabled' => false,
+            'disabled_at' => now(),
+            'disabled_by_id' => Admin::inRandomOrder()->first()->get()->first()->id,
+        ]);
+    }
+
+    public function enabled() {
+        return $this->state(['enabled' => true]);
     }
 
     /**

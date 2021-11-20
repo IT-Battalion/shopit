@@ -6,8 +6,8 @@ use App\Events\UserBannedEvent;
 use App\Events\UserBanningEvent;
 use App\Events\UserUnbannedEvent;
 use App\Events\UserUnbanningEvent;
+use Barryvdh\LaravelIdeHelper\Eloquent;
 use Database\Factories\UserFactory;
-use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
@@ -39,35 +38,32 @@ use LdapRecord\Models\Model;
  * @property string $employeeType
  * @property string|null $class
  * @property string $lang
- * @property bool $isAdmin
- * @property bool $enabled
+ * @property int $isAdmin
+ * @property int $enabled
  * @property string|null $reason_for_disabling
  * @property string|null $disabled_at
+ * @property int|null $disabled_by_id
  * @property Carbon|null $deleted_at
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property int|null $disabled_by;
+ * @property int|null $shopping_cart_coupon_id
  * @property string|null $guid
  * @property string|null $domain
- * @property-read Collection|CouponCode[] $coupons_updated
- * @property-read int|null $coupons_updated_count
  * @property-read Model|null $ldap
  * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
  * @property-read Collection|Order[] $orders
  * @property-read int|null $orders_count
- * @property-read Collection|ProductImage[] $product_images_updated
- * @property-read int|null $product_images_updated_count
- * @property-read Collection|Product[] $products_updated
- * @property-read int|null $products_updated_count
- * @property-read Collection|ShoppingCart[] $shopping_cart
+ * @property-read Collection|Product[] $shopping_cart
  * @property-read int|null $shopping_cart_count
+ * @property-read CouponCode|null $shopping_cart_coupon
+ * @method static Builder|User banned()
  * @method static UserFactory factory(...$parameters)
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()
  * @method static Builder|User notBanned()
- * @method static Builder|User onlyTrashed()
+ * @method static \Illuminate\Database\Query\Builder|User onlyTrashed()
  * @method static Builder|User query()
  * @method static Builder|User student()
  * @method static Builder|User teacher()
@@ -75,6 +71,7 @@ use LdapRecord\Models\Model;
  * @method static Builder|User whereCreatedAt($value)
  * @method static Builder|User whereDeletedAt($value)
  * @method static Builder|User whereDisabledAt($value)
+ * @method static Builder|User whereDisabledById($value)
  * @method static Builder|User whereDomain($value)
  * @method static Builder|User whereEmail($value)
  * @method static Builder|User whereEmployeeType($value)
@@ -88,20 +85,12 @@ use LdapRecord\Models\Model;
  * @method static Builder|User whereName($value)
  * @method static Builder|User whereReasonForDisabling($value)
  * @method static Builder|User whereRememberToken($value)
+ * @method static Builder|User whereShoppingCartCouponId($value)
  * @method static Builder|User whereUpdatedAt($value)
  * @method static Builder|User whereUsername($value)
- * @method static Builder|User withTrashed()
- * @method static Builder|User withoutTrashed()
+ * @method static \Illuminate\Database\Query\Builder|User withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|User withoutTrashed()
  * @mixin Eloquent
- * @method static Builder|User whereDisabledBy($value)
- * @property int|null $disabled_by_id
- * @method static Builder|User whereDisabledById($value)
- * @property string|null $disabled_at
- * @property-read CouponCode|null $shopping_cart_coupon
- * @method static \Illuminate\Database\Eloquent\Builder|User whereDisabledAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereShoppingCartCoupon($value)
- * @property int|null $shopping_cart_coupon_id
- * @method static \Illuminate\Database\Eloquent\Builder|User whereShoppingCartCouponId($value)
  */
 class User extends Authenticatable implements LdapAuthenticatable
 {
@@ -212,6 +201,11 @@ class User extends Authenticatable implements LdapAuthenticatable
         $this->disabled_by_id = null;
     }
 
+    public function disabled_by()
+    {
+        return $this->belongsTo(Admin::class, 'disabled_by_id');
+    }
+
     public static function unbanning($callback)
     {
         static::registerModelEvent(UserUnbanningEvent::class, $callback);
@@ -227,7 +221,7 @@ class User extends Authenticatable implements LdapAuthenticatable
         static::registerModelEvent(UserBanningEvent::class, $callback);
     }
 
-    public static function banned($callback)
+    public static function gotBanned($callback)
     {
         static::registerModelEvent(UserBannedEvent::class, $callback);
     }
