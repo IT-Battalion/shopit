@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
+use Barryvdh\LaravelIdeHelper\Eloquent;
 use Database\Factories\ProductCategoryFactory;
-use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
 /**
@@ -52,8 +52,8 @@ class ProductCategory extends Model
         return $this->hasMany(Product::class);
     }
 
-    public function icon(): HasOne
+    public function icon(): BelongsTo
     {
-        return $this->hasOne(Icon::class);
+        return $this->belongsTo(Icon::class);
     }
 }
