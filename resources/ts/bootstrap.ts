@@ -1,4 +1,15 @@
-(window as any)._ = require('lodash');
+import {AxiosStatic} from "axios";
+
+declare global {
+    interface Window {
+        axios: AxiosStatic,
+        _: LoDashStatic,
+        pusher: Pusher,
+        echo: Echo,
+    }
+}
+
+window._ = require('lodash');
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -6,9 +17,9 @@
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-(window as any).axios = require('axios');
+window.axios = require('axios');
 
-(window as any).axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -17,10 +28,12 @@
  */
 
 import Echo from 'laravel-echo';
+import {LoDashStatic} from "lodash";
+import Pusher from "pusher-js";
 
-(window as any).Pusher = require('pusher-js');
+window.pusher = require('pusher-js');
 
-(window as any).Echo = new Echo({
+window.echo = new Echo({
     broadcaster: 'pusher',
     key: process.env.MIX_PUSHER_APP_KEY,
     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
