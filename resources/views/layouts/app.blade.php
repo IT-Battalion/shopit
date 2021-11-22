@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShopIT</title>
     <link rel="stylesheet" type="text/css" href="/css/tailwind.css">
+    @yield('head-content')
 </head>
 
 <body>
