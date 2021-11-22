@@ -26,7 +26,6 @@
                             name="user-name"
                             type="text"
                             v-model="userName"
-                            ref="userName"
                             v-on:keyup.enter="submitForm"
                             class="w-40"
                         />
@@ -42,7 +41,6 @@
                             name="user-name"
                             type="password"
                             v-model="userPassword"
-                            ref="userPassword"
                             v-on:keyup.enter="submitForm"
                             class="w-40"
                         />
@@ -59,21 +57,23 @@
 </template>
 
 <script lang="ts">
-export default {
+import { defineComponent } from "vue";
+
+export default defineComponent({
     data() {
         return {
             userName: "",
             userPassword: "",
         };
     },
+    $refs: {
+        userName: String,
+        userPassword: String,
+    },
     methods: {
         submitForm() {
-            console.log(
-                this.$refs.userName.value +
-                    " | " +
-                    this.$refs.userPassword.value
-            ); // one get input value
+            console.log(this.userName + " | " + this.userPassword); // one get input value
         },
     },
-};
+});
 </script>
