@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,8 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'home')->name('home')->withoutMiddleware('auth');
-
 Route::permanentRedirect('/home', url('/'));
 
 /*Auth::routes([
@@ -26,8 +25,19 @@ Route::permanentRedirect('/home', url('/'));
 
 // custom login/logout Routes because we have the auth middleware installed on the whole 'web' route domain
 // therefore we needed the withoutMiddle() function to disable the auth middleware for the login routes
+Broadcast::routes();
+
 Route::namespace('Auth')->group(function () {
-    Route::get('/login', 'LoginController@showLoginForm')->withoutMiddleware('auth')->name('login');
-    Route::post('/login', 'LoginController@login')->withoutMiddleware('auth');
-    Route::post('/logout', 'LoginController@logout')->name('logout');
+    Route::view('/login', 'home')->withoutMiddleware('auth')->name('login');
+    Route::view('/logout', 'home')->name('logout');
 });
+
+Route::get('/icon/{id}', function (int $id) {
+    $icon = \App\Models\Icon::whereId($id)->first();
+    return response()->file($icon->path);
+})->name('icon');
+
+Route::view('/{route}', 'home')
+    ->where('route', '.*')
+    ->name('home')
+    ->withoutMiddleware('auth');

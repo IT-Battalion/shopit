@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShopIT</title>
     <link rel="stylesheet" type="text/css" href="/css/tailwind.css">
-    @yield('head-content')
+@yield('head-content')
 </head>
 
 <body>
@@ -15,7 +15,6 @@
     <script src="/js/vendor.js" defer></script>
     <script src="/js/manifest.js" defer></script>
     <script src="/js/app.js" defer></script>
-    <script src="/js/about.js" defer></script>
 </body>
 
 </html>

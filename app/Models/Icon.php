@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use Barryvdh\LaravelIdeHelper\Eloquent;
 use Database\Factories\IconFactory;
-use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -56,8 +56,8 @@ class Icon extends Model
         'path',
     ];
 
-    public function product_categories(): BelongsTo
+    public function product_categories(): HasMany
     {
-        return $this->belongsTo(ProductCategory::class, 'icon_id');
+        return $this->hasMany(ProductCategory::class, 'icon_id');
     }
 }
