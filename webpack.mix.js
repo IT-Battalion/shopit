@@ -13,13 +13,13 @@ const path = require('path');
  */
 
 mix
-    .postCss('resources/css/app.css', 'public/css', [
-        require('tailwindcss'),
-    ])
     .alias({
         '@': path.join(__dirname, 'resources/ts'),
     })
     .ts('resources/ts/app.ts', 'public/js')
     .vue()
+    .postCss('resources/ts/assets/tailwind.css', 'public/css', [
+        require('tailwindcss'),
+    ])
     .extract(['vue'])
     .browserSync('localhost:80');
