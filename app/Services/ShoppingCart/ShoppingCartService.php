@@ -9,9 +9,6 @@ use DASPRiD\Enum\Exception\IllegalArgumentException;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 
-// TODO: implement a service that helps handling orders
-// TODO: not here but Tests for every relation between models to verify that they work
-// TODO: add default constructors to every model class
 class ShoppingCartService implements ShoppingCartServiceInterface
 {
 

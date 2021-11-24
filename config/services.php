@@ -34,6 +34,7 @@ return [
         'api_key' => env('NOUN_PROJECT_API_KEY'),
         'api_secret' => env('NOUN_PROJECT_API_SECRET'),
         'only_public_domain' => boolval(env('NOUN_PROJECT_ONLY_PUBLIC_DOMAIN', true)),
+        'default_page_size' => 25,
     ]
 
 ];

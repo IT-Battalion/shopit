@@ -34,11 +34,55 @@ class TheNounProjectService implements IconServiceInterface
      * @param int|null $limit the limit of icons on one page
      * @param array $options Additional options
      * @return ApiIcon[] the icons that have been found
-     * @throws MalformedIconDataException
-     * @throws RequestException
      */
 
     public function findByName(
+        string $iconName,
+        int    $offset = null,
+        int    $page = null,
+        int    $limit = null,
+        array  $options = []): array
+    {
+        $entries = $this->findByNameInDatabase($iconName, $offset, $page, $limit);
+
+        if (empty($entries))
+        {
+            $entries = $this->findByNameThroughApi($iconName, $offset, $page, $limit, $options);
+        }
+
+        return $entries;
+    }
+
+    public function findByNameInDatabase(
+        string $iconName,
+        int    $offset = null,
+        int    $page = null,
+        int    $limit = null) : array
+    {
+        if (is_null($offset))
+        {
+            $offset = 0;
+        }
+
+        if (is_null($page))
+        {
+            $page = 0;
+        }
+
+        if (is_null($limit))
+        {
+            $limit = config('services.nounproject.default_page_size');
+        }
+
+        $icons = Icon::whereName($iconName)
+            ->offset($offset)
+            ->forPage($page, $limit)
+            ->get();
+
+        return $icons->all();
+    }
+
+    public function findByNameThroughApi(
         string $iconName,
         int    $offset = null,
         int    $page = null,
@@ -92,12 +136,43 @@ class TheNounProjectService implements IconServiceInterface
     /**
      * Searches for a single icon
      * @param string $id the icon name or id to search for
-     * @return ApiIcon the icon data fetched from the API
+     * @return ApiIcon the icon data fetched from the API or false if no matching icon could be found
      * @throws IconNotFoundException
      * @throws MalformedIconDataException|RequestException
      */
 
     public function findById(string $id): ApiIcon
+    {
+        return $this->findByIdInDatabase($id) ?? $this->findByIdThroughApi($id);
+    }
+
+    public function findByIdInDatabase(string $id): ApiIcon|null
+    {
+        $icon = Icon::whereOriginalId($id)->first();
+
+        if (is_null($icon))
+        {
+            return null;
+        }
+
+        return new ApiIcon(
+            $icon->original_id,
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+        );
+    }
+
+    /**
+     * @throws IconNotFoundException
+     * @throws RequestException
+     * @throws MalformedIconDataException
+     */
+    public function findByIdThroughApi(string $id): ApiIcon
     {
         $response = $this->apiClient->fetch('icon/' . $id, []);
 
@@ -132,8 +207,9 @@ class TheNounProjectService implements IconServiceInterface
 
     /**
      * @param array $iconData
-     * @return ApiIcon|bool returns the {@link Icon} generated from the $iconData or false if no icon could be generated.
-     * @throws MalformedIconDataException Gets thrown when you try to generate an icon based on invalid data
+     * @return ApiIcon|bool returns the {@link ApiIcon} generated from the $iconData or false if the icon doesn't have
+     *                      a preview url
+     * @throws MalformedIconDataException Gets thrown when you try to parse an icon from invalid data
      */
 
     public static function parseIcon(array $iconData): ApiIcon|bool
@@ -147,9 +223,9 @@ class TheNounProjectService implements IconServiceInterface
         } else if (array_key_exists('preview_url', $iconData)) {
             $preview_url = $iconData['preview_url'];
         } else {
-            throw new MalformedIconDataException('Couldn\'t create Icon from icon data\n\
-            No url for an icon preview could be found\n\
-            This is most likely a problem with the API of the Noun Project (It is inconsistent some times and that definitely didn\'t cost me hours🤪)');
+            throw new MalformedIconDataException('Couldn\'t create Icon from icon data
+No url for an icon preview could be found
+This is most likely a problem with the API of the Noun Project (It is inconsistent some times and that definitely didn\'t cost me hours🤪)');
         }
 
         $iconData['license'] = match ($iconData['license_description']) {
@@ -218,7 +294,7 @@ class TheNounProjectService implements IconServiceInterface
 
     public function getByName(string $iconName): Collection
     {
-        return Icon::where('name', $iconName)->get();
+        return Icon::whereName($iconName)->get();
     }
 
     /**
@@ -228,6 +304,6 @@ class TheNounProjectService implements IconServiceInterface
 
     public function getById(string $id): Icon
     {
-        return Icon::where('id', $id)->get()->first();
+        return Icon::whereId($id)->get()->first();
     }
 }
