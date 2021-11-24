@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Icon;
 use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,8 +35,22 @@ Route::namespace('Auth')->group(function () {
 });
 
 Route::get('/icon/{id}', function (int $id) {
-    $icon = \App\Models\Icon::whereId($id)->first();
-    return response()->file($icon->path);
+    $icon = Icon::whereId($id);
+
+    if (!$icon->exists())
+    {
+        abort(404);
+    }
+
+    $icon = $icon->first();
+    $path = storage_path("app/$icon->path");
+
+    if (!File::exists($path))
+    {
+        abort(404);
+    }
+
+    return response()->file($path);
 })->name('icon');
 
 Route::view('/{route}', 'home')
