@@ -16,7 +16,7 @@ mix
     .alias({
         '@': path.join(__dirname, 'resources/ts'),
     })
-    .ts('resources/ts/app.ts', 'public/js')
+    .ts(['resources/ts/bootstrap.ts', 'resources/ts/app.ts'], 'public/js/app.min.js')
     .copyDirectory('resources/assets/images/', 'public/img/')
     .vue()
     .postCss('resources/assets/tailwind.css', 'public/css', [

@@ -53,3 +53,16 @@ window.echo = new Echo({
 
 require( 'jszip' );
 require( 'pdfmake' );
+
+// Init csrf
+window.axios.get('/sanctum/csrf-cookie').then(response => {
+    console.info("CSRF received");
+    window.axios.post('/login', {'username': 'gharrer.test', 'password': 'test'}).then(response => {
+        console.log('Successfully authenticated');
+        console.debug(response);
+    }).catch(_ => {
+        console.debug('Failed to authenticate');
+    });
+}).catch(_ => {
+    console.info("CSRF couldn't be fetched");
+});
