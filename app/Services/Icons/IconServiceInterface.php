@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface IconServiceInterface
 {
-
     /**
      * Searches for an icon by title
      * @param string $iconName the name to search for
@@ -27,12 +26,60 @@ interface IconServiceInterface
         array $options = []) : array;
 
     /**
+     * Searches in the api for an icon by title
+     * @param string $iconName the name to search for
+     * @param int|null $offset the number of icons to skip from the result
+     * @param int|null $page the page is an offset calculated with  $limit * $page
+     * @param int|null $limit the maximum number of icons to search for
+     * @param array $options Additional implementation specific options
+     * @return ApiIcon[] The API response in form of an array of {@link ApiIcon}s
+     */
+
+    public function findByNameThroughApi(
+        string $iconName,
+        int $offset = null,
+        int $page = null,
+        int $limit = null,
+        array $options = []) : array;
+
+    /**
+     * Searches in the database for an icon by title
+     * @param string $iconName the name to search for
+     * @param int|null $offset the number of icons to skip from the result
+     * @param int|null $page the page is an offset calculated with  $limit * $page
+     * @param int|null $limit the maximum number of icons to search for
+     * @return ApiIcon[] The API response in form of an array of {@link ApiIcon}s
+     */
+
+    public function findByNameInDatabase(
+        string $iconName,
+        int $offset = null,
+        int $page = null,
+        int $limit = null) : array;
+
+    /**
      * Searches for an icon by the icon id
      * @param string $id The id of the icon to search
      * @return ApiIcon The icon that the API found in response to the id
      */
 
     public function findById(string $id) : ApiIcon;
+
+    /**
+     * Searches for an icon by the icon id
+     * @param string $id The id of the icon to search
+     * @return ApiIcon|null The icon that the API found in response to the id
+     */
+
+    public function findByIdInDatabase(string $id) : ApiIcon|null;
+
+    /**
+     * Searches for an icon by the icon id
+     * @param string $id The id of the icon to search
+     * @return ApiIcon The icon that the API found in response to the id
+     */
+
+    public function findByIdThroughApi(string $id) : ApiIcon;
 
     /**
      * Downloads an icon and adds it to the application
