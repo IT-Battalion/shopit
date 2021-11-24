@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Models\Icon;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\File;
@@ -30,8 +31,9 @@ Route::permanentRedirect('/home', url('/'));
 Broadcast::routes();
 
 Route::namespace('Auth')->group(function () {
-    Route::view('/login', 'home')->withoutMiddleware('auth')->name('login');
-    Route::view('/logout', 'home')->name('logout');
+    Route::post('/login', [LoginController::class, 'login']);
+    Route::view('/login', 'home')->name('login');
+    Route::view('/logout', 'home')->middleware('auth')->name('logout');
 });
 
 Route::get('/icon/{id}', function (int $id) {
@@ -51,9 +53,10 @@ Route::get('/icon/{id}', function (int $id) {
     }
 
     return response()->file($path);
-})->name('icon');
+})
+    ->middleware('auth')
+    ->name('icon');
 
 Route::view('/{route}', 'home')
     ->where('route', '.*')
-    ->name('home')
-    ->withoutMiddleware('auth');
+    ->name('home');

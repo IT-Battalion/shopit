@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use App\Traits\ApiResponder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use LdapRecord\Laravel\Auth\ListensForLdapBindFailure;
 
 class LoginController extends Controller
@@ -20,7 +22,7 @@ class LoginController extends Controller
     |
     */
 
-    use ListensForLdapBindFailure;
+    use ListensForLdapBindFailure, ApiResponder;
 
     /**
      * Where to redirect users after login.
@@ -36,7 +38,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+
     }
 
     public function username(): string
@@ -51,5 +53,21 @@ class LoginController extends Controller
             'username'          => $request->username,
             'password'          => $request->password,
         ];
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'username' => ['required'],
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            return $this->success([
+                'redirect_to' => $this->redirectTo,
+            ], 'Successfully authenticated');
+        }
+
+        return $this->error(401, 'Username or password are invalid');
     }
 }
