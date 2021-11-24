@@ -1,9 +1,10 @@
 @extends('layouts.app')
 @section('head-content')
     <script>
-        window.config = JSON.parse("<?php
+        window.config = JSON.parse("@php
+            use App\Models\ProductCategory;
             echo str_replace('"', '\\"', json_encode([
-                'categories' => \App\Models\ProductCategory::all()->map(function (\App\Models\ProductCategory $category) {
+                'categories' => ProductCategory::all()->map(function (ProductCategory $category) {
                     $icon = $category->icon;
 
                     return [
@@ -13,7 +14,7 @@
                         'icon_url' => route('icon', $icon->id),
                     ];
                 }),
-            ]))
-        ?>");
+            ], JSON_THROW_ON_ERROR))
+        @endphp");
     </script>
 @endsection
