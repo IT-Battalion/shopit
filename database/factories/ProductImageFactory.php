@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Storage;
 
 class ProductImageFactory extends Factory
 {
@@ -31,10 +32,10 @@ class ProductImageFactory extends Factory
             ->first()
             ->id;
 
-        $source = fopen(resource_path('image/bottle.png'), 'r');
-        $destination = tmpfile();
-        stream_copy_to_stream($source, $destination);
-        $path = stream_get_meta_data($destination)['uri'];
+        $id = $this->faker->unique()->randomNumber(5, false);
+        $source = fopen(resource_path('image/test_icon.png'), 'r');
+        $path = "icons/$id.png";
+        Storage::put($path, $source);
 
         return [
             'path' => $path,
