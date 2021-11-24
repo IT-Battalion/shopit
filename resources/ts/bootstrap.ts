@@ -6,6 +6,14 @@ declare global {
         _: LoDashStatic,
         pusher: Pusher,
         echo: Echo,
+        config: {
+            categories: {
+                id: string,
+                name: string,
+                icon_name: string,
+                icon_url: string,
+            }[]
+        }
     }
 }
 
