@@ -13,7 +13,7 @@ export default {
     data() {
         return {
             profilePicture: "test",
-            userName: "test",
+            userName: "Max Musterman",
             iconShoppingCart: "test",
         };
     },

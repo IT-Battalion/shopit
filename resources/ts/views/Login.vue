@@ -4,7 +4,7 @@
         <div
             class="absolute w-full transform -translate-x-1/2 -translate-y-1/2  top-1/2 left-1/2"
         >
-            <img src="../assets/loginBackground.svg" alt="back" />
+            <img src="/img/loginBackground.svg" alt="back" />
         </div>
         <div class="relative grid h-screen ml-10 mr-10 place-items-center">
             <form
@@ -45,6 +45,15 @@
                             class="w-40"
                         />
                     </div>
+                    <div class="flex flex-row">
+                        <input
+                            type="checkbox"
+                            name="stayLogedIn"
+                            id="stayLogedIn"
+                            v-model="stayLogedIn"
+                        />
+                        <p class="ml-2 text-white">Angemeldet bleiben</p>
+                    </div>
                     <!-- only call `submitForm()` when the `key` is `Enter` -->
                 </div>
                 <div></div>
@@ -64,6 +73,7 @@ export default defineComponent({
         return {
             userName: "",
             userPassword: "",
+            stayLogedIn: false,
         };
     },
     $refs: {

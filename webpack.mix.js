@@ -17,8 +17,9 @@ mix
         '@': path.join(__dirname, 'resources/ts'),
     })
     .ts('resources/ts/app.ts', 'public/js')
+    .copyDirectory('resources/assets/images/', 'public/img/')
     .vue()
-    .postCss('resources/ts/assets/tailwind.css', 'public/css', [
+    .postCss('resources/assets/tailwind.css', 'public/css', [
         require('tailwindcss'),
     ])
     .extract(['vue'])
