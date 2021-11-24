@@ -5,10 +5,10 @@ use App\Services\Icons\NounProjectApi\ApiClient;
 use App\Services\Icons\NounProjectApi\ApiIcon;
 use App\Services\Icons\TheNounProjectService;
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Storage;
 use Mockery\MockInterface;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertIsArray;
-use function PHPUnit\Framework\assertStringStartsWith;
 
 test('search for valid icons', function () {
     $testData = '{
@@ -330,6 +330,8 @@ test('search for valid icons', function () {
 
     assertEquals($testResult, $service->findByName('test'), 'Couldn\'t find related icons');
 });
+
+// TODO Test searching in specific source
 
 test('search for non-existent icons', function () {
     $response = $this->partialMock(Response::class, function (MockInterface $mock) {
