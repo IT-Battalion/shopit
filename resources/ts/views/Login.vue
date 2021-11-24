@@ -2,7 +2,14 @@
     <div class="w-screen h-screen bg-backgroundColor">
         <!-- the submit event will no longer reload the page -->
         <div
-            class="absolute w-full transform -translate-x-1/2 -translate-y-1/2  top-1/2 left-1/2"
+            class="
+                absolute
+                w-full
+                transform
+                -translate-x-1/2 -translate-y-1/2
+                top-1/2
+                left-1/2
+            "
         >
             <img src="/img/loginBackground.svg" alt="back" />
         </div>
