@@ -41,20 +41,6 @@ class LoginController extends Controller
 
     }
 
-    public function username(): string
-    {
-        return 'username';
-    }
-
-    public function credentials(Request $request): array
-    {
-        return [
-            //'sAMAccountName'    => $request->username,
-            'username'          => $request->username,
-            'password'          => $request->password,
-        ];
-    }
-
     public function login(Request $request)
     {
         $credentials = $request->validate([
