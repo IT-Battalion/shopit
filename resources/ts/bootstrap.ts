@@ -6,14 +6,7 @@ declare global {
         _: LoDashStatic,
         pusher: Pusher,
         echo: Echo,
-        config: {
-            categories: {
-                id: string,
-                name: string,
-                icon_name: string,
-                icon_url: string,
-            }[]
-        }
+        config: GlobalConfig,
     }
 }
 
@@ -38,6 +31,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 import Echo from 'laravel-echo';
 import {LoDashStatic} from "lodash";
 import Pusher from "pusher-js";
+import { GlobalConfig } from "./types/config";
 
 window.pusher = require('pusher-js');
 
@@ -55,14 +49,6 @@ require( 'jszip' );
 require( 'pdfmake' );
 
 // Init csrf
-window.axios.get('/sanctum/csrf-cookie').then(response => {
-    console.info("CSRF received");
-    window.axios.post('/login', {'username': 'gharrer.test', 'password': 'test'}).then(response => {
-        console.log('Successfully authenticated');
-        console.debug(response);
-    }).catch(_ => {
-        console.debug('Failed to authenticate');
-    });
-}).catch(_ => {
+window.axios.get('/sanctum/csrf-cookie').catch(_ => {
     console.info("CSRF couldn't be fetched");
 });

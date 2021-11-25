@@ -1,9 +1,11 @@
 import { computed, reactive } from 'vue'
 import * as Request from '../request'
+import router from '../router'
 
 const state = reactive({
   name: '',
   username: '',
+  isLoggedIn: window.config.user.logged_in,
 
   error: ''
 })
@@ -21,21 +23,24 @@ const actions = {
     state.username = user.username
   },
   async login(username: string, password: string) {
-    const user = await Request.login(username, password)
-    if (user == null) {
-      state.error = 'Could not find user.'
-      return false
-    }
+    Request.login(username, password).then(user => {
+      state.isLoggedIn = true;
+      state.name = user.name;
+      state.username = username;
+      state.error = '';
 
-    state.name = user.name
-    state.username = username
-    state.error = ''
+      router.push('/products')
 
-    return true
+      return true;
+    }).catch(err => {
+      console.error(err);
+    });
   },
   async logout() {
-    state.name = ''
-    state.username = ''
+    Request.logout();
+    state.isLoggedIn = false;
+    state.name = '';
+    state.username = '';
   }
 }
 
