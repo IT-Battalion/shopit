@@ -65,6 +65,11 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             return $this->success([
                 'redirect_to' => $this->redirectTo,
+                'username' => Auth::user()->username,
+                'name' => Auth::user()->name,
+                'firstname' => Auth::user()->firstname,
+                'lastname' => Auth::user()->lastname,
+                'email' => Auth::user()->email,
             ], 'Successfully authenticated');
         }
 
