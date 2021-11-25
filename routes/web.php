@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
 use App\Models\Icon;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\File;
@@ -31,22 +32,22 @@ Route::permanentRedirect('/home', url('/'));
 Broadcast::routes();
 
 Route::namespace('Auth')->group(function () {
+    Route::post('login', [LoginController::class, 'login'])->withoutMiddleware('auth');
+    Route::post('logout', [LogoutController::class, 'logout'])->middleware('auth');
     Route::view('/login', 'home')->name('login');
 });
 
 Route::get('/icon/{id}', function (int $id) {
     $icon = Icon::whereId($id);
 
-    if (!$icon->exists())
-    {
+    if (!$icon->exists()) {
         abort(404);
     }
 
     $icon = $icon->first();
     $path = storage_path("app/$icon->path");
 
-    if (!File::exists($path))
-    {
+    if (!File::exists($path)) {
         abort(404);
     }
 

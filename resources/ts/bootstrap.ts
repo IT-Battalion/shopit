@@ -1,4 +1,4 @@
-import {AxiosStatic} from "axios";
+import { AxiosStatic } from "axios";
 
 declare global {
     interface Window {
@@ -29,7 +29,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  */
 
 import Echo from 'laravel-echo';
-import {LoDashStatic} from "lodash";
+import { LoDashStatic } from "lodash";
 import Pusher from "pusher-js";
 import { GlobalConfig } from "./types/config";
 
@@ -45,10 +45,10 @@ window.echo = new Echo({
     disableStats: true,
 });
 
-require( 'jszip' );
-require( 'pdfmake' );
+require('jszip');
+require('pdfmake');
 
 // Init csrf
 window.axios.get('/sanctum/csrf-cookie').catch(_ => {
-    console.info("CSRF couldn't be fetched");
+    console.error("CSRF couldn't be fetched");
 });

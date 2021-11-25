@@ -13,7 +13,7 @@
                     :src="category.icon_url"
                     class="object-scale-down h-8 mr-4"
                 />
-                <p class="text-left">{{ category.name }}</p>
+                <p class="my-1 text-left">{{ category.name }}</p>
             </div>
         </ul>
     </div>
