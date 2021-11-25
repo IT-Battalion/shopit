@@ -56,6 +56,10 @@ class LoginController extends Controller
                 'firstname' => Auth::user()->firstname,
                 'lastname' => Auth::user()->lastname,
                 'email' => Auth::user()->email,
+                'employeeType' => Auth::user()->employeeType,
+                'class' => Auth::user()->class,
+                'lang' => Auth::user()->lang,
+                'isAdmin' => Auth::user()->isAdmin,
             ], 'Successfully authenticated');
         }
 

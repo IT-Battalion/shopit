@@ -1,35 +1,35 @@
-import { computed, reactive } from 'vue'
+import { computed, reactive, toRefs } from 'vue'
 import * as Request from '../request'
 import router from '../router'
 
-const state = reactive({
-  name: '',
+export const user = reactive({
   username: '',
+  name: '',
+  firstname: '',
+  lastname: '',
+  email: '',
+  employeeType: '',
+  class: '',
+  lang: '',
+  isAdmin: false,
   isLoggedIn: window.config.user.logged_in,
 
   error: ''
 })
 
-const getters = reactive({
-  isLoggedIn: computed(() => state.username !== '')
-})
-
 const actions = {
-  async getUser() {
-    const user = await Request.getUser()
-    if (user == null) return
-
-    state.name = user.name
-    state.username = user.username
-  },
   async login(username: string, password: string) {
-    Request.login(username, password).then(user => {
-      state.isLoggedIn = true;
-      state.name = user.name;
-      state.username = username;
-      state.error = '';
-
-      router.push('/products')
+    return Request.login(username, password).then(responseUser => {
+      user.isLoggedIn = true;
+      user.username = responseUser.username;
+      user.name = responseUser.name;
+      user.firstname = responseUser.firstname;
+      user.lastname = responseUser.lastname;
+      user.email = responseUser.lastname;
+      user.employeeType = responseUser.employeeType;
+      user.class = responseUser.class;
+      user.lang = responseUser.lang;
+      user.isAdmin = responseUser.isAdmin;
 
       return true;
     }).catch(err => {
@@ -37,11 +37,23 @@ const actions = {
     });
   },
   async logout() {
-    Request.logout();
-    state.isLoggedIn = false;
-    state.name = '';
-    state.username = '';
+    await Request.logout();
+    user.isLoggedIn = false;
+    user.username = '';
+    user.name = '';
+    user.firstname = '';
+    user.lastname = '';
+    user.email = '';
+    user.employeeType = '';
+    user.class = '';
+    user.lang = '';
+    user.isAdmin = false;
+
+    router.push({
+      name: 'Login',
+      params: { nextUrl: router.currentRoute.value.fullPath },
+    });
   }
 }
 
-export default { state, getters, ...actions }
+export default { user, ...actions }

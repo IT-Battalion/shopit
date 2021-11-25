@@ -16,21 +16,23 @@ interface LoginData {
 }
 
 interface LoginResponseData {
+  redirect_to: string,
   username: string,
   name: string,
   firstname: string,
   lastname: string,
   email: string,
+  employeeType: string,
+  class: string,
+  lang: string,
+  isAdmin: boolean,
 }
 
 export async function login(username: string, password: string): Promise<LoginResponseData> {
-  return window.axios.post<LoginData, AxiosResponse<ApiResponse<LoginResponseData>>>('/login', {'username': username, 'password': password}).then(response => {
-    console.log('Successfully authenticated');
-    console.debug(response);
+  return window.axios.post<LoginData, AxiosResponse<ApiResponse<LoginResponseData>>>('/login', { 'username': username, 'password': password }).then(response => {
     return response.data.data;
   }).catch(response => {
-      console.debug('Failed to authenticate');
-      return response;
+    return response;
   });
 }
 
