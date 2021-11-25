@@ -33,7 +33,7 @@ trait ApiResponder
      */
     protected function error(int $code, string $message = null, $data = null)
     {
-        return response()->setStatusCode($code)->json([
+        return response()->json([
             'status' => 'Error',
             'message' => $message,
             'data' => $data

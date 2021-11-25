@@ -1,11 +1,5 @@
 <template>
-    <div v-if="!userStore.getters.isLoggedIn">
-        <FormLogin />
-    </div>
-    <div v-else>
-        <!-- <h2>Willkommen, {{ userStore.state.name }}</h2> -->
-        <Products />
-    </div>
+    <FormLogin />
 </template>
 
 <script lang="ts">

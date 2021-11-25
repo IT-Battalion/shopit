@@ -33,7 +33,8 @@ Broadcast::routes();
 Route::namespace('Auth')->group(function () {
     Route::post('/login', [LoginController::class, 'login']);
     Route::view('/login', 'home')->name('login');
-    Route::view('/logout', 'home')->middleware('auth')->name('logout');
+    //Route::view('/logout', 'home')->middleware('auth')->name('logout');
+    Route::view('/logout', [LogoutController::class, 'logout'])->middleware('auth');
 });
 
 Route::get('/icon/{id}', function (int $id) {
