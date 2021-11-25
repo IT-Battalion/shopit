@@ -7,5 +7,14 @@ export interface GlobalConfig {
     }[]
     user: {
         logged_in: boolean,
+        username?: string,
+        name?: string,
+        firstname?: string,
+        lastname?: string,
+        email?: string,
+        employeeType?: string,
+        class?: string,
+        lang?: string,
+        isAdmin?: boolean,
     },
 }
