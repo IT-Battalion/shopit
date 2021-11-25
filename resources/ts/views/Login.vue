@@ -3,8 +3,8 @@
         <FormLogin />
     </div>
     <div v-else>
-        <h2>Willkommen, {{ userStore.state.name }}</h2>
-        <button @click="userStore.logout()">Abmelden</button>
+        <!-- <h2>Willkommen, {{ userStore.state.name }}</h2> -->
+        <Products />
     </div>
 </template>
 
@@ -12,10 +12,11 @@
 import { defineComponent, onMounted } from "vue";
 import FormLogin from "../components/FormLogin.vue";
 import userStore from "../stores/user";
+import Products from "./Products.vue";
 
 export default defineComponent({
     name: "Login",
-    components: { FormLogin },
+    components: { FormLogin, Products },
     setup() {
         onMounted(userStore.getUser);
         return { userStore };
