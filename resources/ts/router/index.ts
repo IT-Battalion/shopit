@@ -1,13 +1,6 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
-import Login from "../views/Login.vue";
-import Products from "../views/Products.vue";
 
 const routes: Array<RouteRecordRaw> = [
-  {
-    path: "/",
-    name: "Login",
-    component: Login,
-  },
   {
     path: "/products",
     name: "Products",
