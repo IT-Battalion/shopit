@@ -22,7 +22,7 @@ beforeEach(function () {
 });
 
 test('admin relation to no created products', function () {
-    $admin = Admin::inRandomOrder()->first()->get()->first();
+    $admin = Admin::factory()->create();
 
     $products = $admin->products_created->all();
 
@@ -30,7 +30,7 @@ test('admin relation to no created products', function () {
 });
 
 test('admin relation to created products', function () {
-    $admin = Admin::inRandomOrder()->first()->get()->first();
+    $admin = Admin::factory()->create();
 
     $expectedProducts = Product::factory()->count(2)->create([
         'created_by_id' => $admin->id,
@@ -51,7 +51,7 @@ test('admin relation to created products', function () {
 });
 
 test('admin relation to no updated products', function () {
-    $admin = Admin::inRandomOrder()->first()->get()->first();
+    $admin = Admin::factory()->create();
     $admin2 = Admin::factory()->create();
 
     Product::factory()->count(2)->create([
@@ -65,7 +65,7 @@ test('admin relation to no updated products', function () {
 });
 
 test('admin relation to updated products', function () {
-    $admin = Admin::inRandomOrder()->first()->get()->first();
+    $admin = Admin::factory()->create();
     $admin2 = Admin::factory()->create();
 
     $expectedProducts = Product::factory()->count(2)->create([
@@ -87,7 +87,7 @@ test('admin relation to updated products', function () {
 });
 
 test('admin relation to no products in the shopping cart', function () {
-    $admin = Admin::inRandomOrder()->first()->get()->first();
+    $admin = Admin::factory()->create();
 
     $products = Product::factory()->count(2)->create();
 
@@ -97,7 +97,7 @@ test('admin relation to no products in the shopping cart', function () {
 });
 
 test('admin relation to products in the shopping cart', function () {
-    $admin = Admin::inRandomOrder()->first()->get()->first();
+    $admin = Admin::factory()->create();
 
     $products = Product::factory()->count(2)->create();
     $admin->shopping_cart()->attach($products, ['count' => 2]);
@@ -108,7 +108,7 @@ test('admin relation to products in the shopping cart', function () {
 });
 
 test('admin relation to no orders', function () {
-    $admin = Admin::inRandomOrder()->first()->get()->first();
+    $admin = Admin::factory()->create();
 
     $orders = $admin->orders->all();
 
@@ -116,7 +116,7 @@ test('admin relation to no orders', function () {
 });
 
 test('admin relation to orders', function () {
-    $admin = Admin::inRandomOrder()->first()->get()->first();
+    $admin = Admin::factory()->create();
 
     $expectedOrders = Order::factory()->count(2)->create([
         'customer_id' => $admin->id,
@@ -183,7 +183,7 @@ test('user relation to orders', function () {
 });
 
 test('coupon relation to creator', function () {
-    $admin = Admin::inRandomOrder()->first()->get()->first();
+    $admin = Admin::factory()->create();
     $admin2 = Admin::factory()->create();
 
     $coupon = CouponCode::factory()->create([
@@ -195,7 +195,7 @@ test('coupon relation to creator', function () {
 });
 
 test('coupon relation to updater', function () {
-    $admin = Admin::inRandomOrder()->first()->get()->first();
+    $admin = Admin::factory()->create();
     $admin2 = Admin::factory()->create();
 
     $coupon = CouponCode::factory()->create([
