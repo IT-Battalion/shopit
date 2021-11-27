@@ -30,8 +30,12 @@ class ProductFactory extends Factory
             ->first()
             ->id;
 
+        $uniqueNameValidator = function($name) {
+            return Product::whereName($name)->count() === 0;
+        };
+
         return [
-            'name' => $this->faker->unique()->word,
+            'name' => $this->faker->valid($uniqueNameValidator)->word,
             'description' => $this->faker->text,
             'price' => $this->faker->randomFloat(2, 1, 300),
             'tax' => $this->faker->randomFloat(2, 0, 0.99),

@@ -47,8 +47,16 @@ class AdminFactory extends Factory
      */
     public function definition(): array
     {
-        $firstname = $this->faker->unique()->firstName();
-        $lastname = $this->faker->unique()->lastName();
+        $uniqueFirstNameValidator = function($firstName) {
+            return User::whereFirstname($firstName)->count() === 0;
+        };
+
+        $uniqueLastNameValidator = function($lastName) {
+            return User::whereLastname($lastName)->count() === 0;
+        };
+
+        $firstname = $this->faker->valid($uniqueFirstNameValidator)->firstName;
+        $lastname = $this->faker->valid($uniqueLastNameValidator)->lastName();
         $username = strtolower($firstname[0]) . strtolower($lastname) . ".test";
         $employeeType = Arr::random(self::employeeTypes);
 

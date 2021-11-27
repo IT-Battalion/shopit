@@ -14,7 +14,7 @@ class OrderFactory extends Factory
     /**
      * The number of coupon codes
      */
-    public const COUPON_CODE_CHANCE = 25;
+    public const COUPON_CODE_CHANCE = .25;
 
     /**
      * The name of the factory's corresponding model.
@@ -35,11 +35,8 @@ class OrderFactory extends Factory
         $admin_ordered = Admin::inRandomOrder()->first()->id;
         $admin_transaction = Admin::inRandomOrder()->first()->id;
 
-        $hasCoupon = $this->faker->boolean(self::COUPON_CODE_CHANCE);
-        $coupon = $hasCoupon ? function() {
-            $dbCoupon = CouponCode::whereEnabled(true)->inRandomOrder()->first();
-            return $dbCoupon->id;
-        } : null;
+        $coupon = $this->faker->optional(1 - self::COUPON_CODE_CHANCE)
+            ->passthrough(CouponCode::whereEnabled(true)->inRandomOrder()->first()->id);
 
         $hasPayed = $this->faker->boolean(90);
         $hasOrdered = $hasPayed && $this->faker->boolean(80);
