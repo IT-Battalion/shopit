@@ -91,6 +91,7 @@ use LdapRecord\Models\Model;
  * @method static \Illuminate\Database\Query\Builder|User withTrashed()
  * @method static \Illuminate\Database\Query\Builder|User withoutTrashed()
  * @mixin Eloquent
+ * @property-read Admin|null $disabled_by
  */
 class User extends Authenticatable implements LdapAuthenticatable
 {
