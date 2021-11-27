@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
@@ -13,7 +14,7 @@ class AdminFactory extends Factory
      *
      * @var string
      */
-    protected $model = User::class;
+    protected $model = Admin::class;
 
     /**
      * The two types of employees
@@ -46,8 +47,16 @@ class AdminFactory extends Factory
      */
     public function definition(): array
     {
-        $firstname = $this->faker->unique()->firstName();
-        $lastname = $this->faker->unique()->lastName();
+        $uniqueFirstNameValidator = function($firstName) {
+            return User::whereFirstname($firstName)->count() === 0;
+        };
+
+        $uniqueLastNameValidator = function($lastName) {
+            return User::whereLastname($lastName)->count() === 0;
+        };
+
+        $firstname = $this->faker->valid($uniqueFirstNameValidator)->firstName;
+        $lastname = $this->faker->valid($uniqueLastNameValidator)->lastName();
         $username = strtolower($firstname[0]) . strtolower($lastname) . ".test";
         $employeeType = Arr::random(self::employeeTypes);
 
