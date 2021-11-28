@@ -1,5 +1,5 @@
 <template>
-    <FormLogin />
+  <FormLogin />
 </template>
 
 <script lang="ts">
@@ -8,10 +8,10 @@ import FormLogin from "../components/FormLogin.vue";
 import userStore from "../stores/user";
 
 export default defineComponent({
-    name: "Login",
-    components: { FormLogin },
-    setup() {
-        return { userStore };
-    },
+  name: "Login",
+  components: { FormLogin },
+  setup() {
+    return { userStore };
+  },
 });
 </script>

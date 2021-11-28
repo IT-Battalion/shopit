@@ -1,5 +1,5 @@
 <template>
-  <div class="w-screen h-screen bg-backgroundColor">
+  <div class="w-screen h-screen overflow-hidden bg-backgroundColor">
     <!-- the submit event will no longer reload the page -->
     <div
       class="absolute flex items-center justify-center w-full h-full overflow-hidden  top-4"
@@ -82,10 +82,15 @@
         </g>
       </svg>
     </div>
-    <div class="flex items-center justify-center">
+    <div class="flex items-center justify-center overflow-hidden">
       <div class="relative grid w-3/4 h-screen grid-cols-2 place-items-center">
-        <div class="w-1/2">
-          <h1 class="text-white">Login</h1>
+        <div class="grid w-1/2 grid-rows-2 gap-5 place-items-center">
+          <h1 class="text-lg text-white md:text-5xl whitespace-nowrap">
+            Willkommen zurück!
+          </h1>
+          <p class="text-sm text-gray-500 md:text-2xl">
+            Der Fanshop der HITler-Abteilung
+          </p>
         </div>
         <form
           @submit.prevent="onSubmit"
