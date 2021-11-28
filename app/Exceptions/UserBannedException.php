@@ -8,7 +8,7 @@ class UserBannedException extends Exception
 {
     public function __construct()
     {
-        parent::__construct(__('exceptionMessages.user_already_banned'));
+        parent::__construct(t('error_messages.user_already_banned'));
     }
 
     public function render($request) {

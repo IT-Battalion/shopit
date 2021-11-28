@@ -1,0 +1,32 @@
+{
+    "error_messages": {
+        "insufficient_permission": "You do not have enough permissions to perform this action.",
+        "user_not_banned": "The given user is currently not banned.",
+        "user_already_banned": "The given user is already banned.",
+        "action_not_allowed_on_administrator": "This action cannot be performed on an administrator.",
+        "product_not_found_for_deletion": "The given product cannot be deleted since it can\"t be found.",
+        "product_not_found_for_image": "An image cannot be added to a missing product.",
+        "product_not_found_for_attribute": "An attribute cannot be added to a missing product.",
+        "product_image_not_found_for_thumbnail": "A non existing image cannot be set as a thumbnail for a product.",
+        "category_not_found": "The category could not be found.",
+        "product_not_found": "The requested product could not be found.",
+        "coupon_code_discount_out_of_bounds": "The discount of the coupon must be between 1 and 100.",
+        "coupon_code_not_found_exception": "No matching coupon could be found for your coupon code.",
+        "highlighted_product_not_found": "The product could not be found.",
+        "illegal_amount_given": "The given amount is invalid.",
+        "product_not_in_shopping_cart": "The given Product is not in the shopping cart.",
+        "order_not_paid": "The order has not been paid yet.",
+        "order_not_ordered": "The order has not been ordered by an administrator yet.",
+        "order_not_received": "The Order has not been received by an administrator yet.",
+        "shopping_cart_empty": "An order cannot be filled from an empty shopping cart.",
+        "icon_not_found": "We couldn\"t find any icons with the name or id {id}.",
+        "no_icon_preview": "Couldn\"t create Icon from icon data.\nNo url for an icon preview could be found.\nThis is most likely a problem with the API of the Noun Project (It is inconsistent some times and that definitely didn\"t cost me hours🤪).",
+        "no_valid_licenses": "No valid license detected for icon {iconName}",
+        "icon_not_found_for_download": "Couldn\"t download icon because it wasn\"t found.",
+        "icon_not_saved": "Couldn\"t save the icon."
+    },
+    "licenses": {
+        "public-domain": "This icon is in the public domain",
+        "creative-commons-by-30": "<a rel=\"license\" href=\"http://creativecommons.org/licenses/by/3.0/\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"https://i.creativecommons.org/l/by/3.0/88x31.png\" /></a><br />This work is licensed under a <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/3.0/\">Creative Commons Attribution 3.0 Unported License</a>."
+    }
+}

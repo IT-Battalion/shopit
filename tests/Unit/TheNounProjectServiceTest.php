@@ -787,7 +787,7 @@ test('search for non existent icon', function () {
 
     $service = $this->app->make(TheNounProjectService::class);
     $service->findById('abc123');
-})->throws(IconNotFoundException::class, "We couldn't find any icons with the name or id \"abc123\"");
+})->throws(IconNotFoundException::class,t('error_messages.icon_not_found'));
 
 test('add icon', function () {
     $testData = new ApiIcon(

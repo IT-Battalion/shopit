@@ -33,7 +33,7 @@ class OrderService implements OrderServiceInterface
     public function createOrder(User $customer): Order
     {
         $products = $customer->shopping_cart;
-        if ($products->count() === 0) throw new ShoppingCartEmptyException(__('exceptionMessages.shopping_cart_empty'));
+        if ($products->count() === 0) throw new ShoppingCartEmptyException(t('error_messages.shopping_cart_empty'));
         $coupon = $customer->shopping_cart_coupon()->id ?? null;
         $order = Order::create([
             'customer_id' => $customer->id,
@@ -95,7 +95,7 @@ class OrderService implements OrderServiceInterface
     {
         if (!$order->isPaid())
         {
-            throw new OrderNotPaidException(__('exceptionMessages.order_not_paid'));
+            throw new OrderNotPaidException(t('error_messages.order_not_paid'));
         }
 
         $order->products_ordered_at = now();
@@ -113,7 +113,7 @@ class OrderService implements OrderServiceInterface
     {
         if (!$order->isOrdered())
         {
-            throw new OrderNotOrderedException(__('exceptionMessages.order_not_ordered'));
+            throw new OrderNotOrderedException(t('error_messages.order_not_ordered'));
         }
 
         $order->products_received_at = now();
@@ -131,7 +131,7 @@ class OrderService implements OrderServiceInterface
     {
         if (!$order->isReceived())
         {
-            throw new OrderNotReceivedException(__('exceptionMessages.order_not_received'));
+            throw new OrderNotReceivedException(t('error_messages.order_not_received'));
         }
 
         $order->handed_over_at = now();

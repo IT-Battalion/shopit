@@ -14,10 +14,11 @@ const path = require('path');
 
 mix
     .alias({
-        '@': path.join(__dirname, 'resources/ts'),
+        '@': path.join(__dirname, 'resources/vue'),
     })
-    .ts(['resources/ts/bootstrap.ts', 'resources/ts/app.ts'], 'public/js/app.min.js')
+    .ts('resources/vue/bootstrap.ts', 'public/js/app.min.js')
     .copyDirectory('resources/assets/images/', 'public/img/')
+    .copyDirectory('resources/locales', 'public/locales')
     .vue()
     .postCss('resources/assets/tailwind.css', 'public/css', [
         require('tailwindcss'),
