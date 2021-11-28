@@ -20,4 +20,11 @@ return [
     'order_not_ordered' => 'Die Bestellung wurde noch nicht von einem Administrator bestellt.',
     'order_not_received' => 'Die Bestellung wurde noch nicht von einem Administrator erhalten.',
     'shopping_cart_empty' => 'Eine Bestellung kann nicht von einem leeren Einkaufswagen zusammengestellt werden.',
+    'icon_not_found' => 'Ein Icon mit dem Namen oder der Id :id konnte nicht gefunden werden.',
+    'no_icon_preview' => 'Von den gegebenen Informationen konnte kein Icon erstellt werden.
+Es konnte keine URL für eine Vorschau des Icons gefunden werden.
+Dies ist höchstwahrscheinlich ein Problem mit der API von the Noun Project (Die ist recht inkonsistent, was mich sicherlich keine Stunden gekostet hat🤪)',
+    'no_known_licenses' => 'Es wurde keine bekannte Lizenz für das Icon :iconName gefunden.',
+    'icon_not_found_for_download' => 'Das Icon konnte nicht gefunden werden wodurch es nicht heruntergeladen werden konnte.',
+    'icon_not_saved' => 'Das Icon konnte nicht gespeichert werden.',
 ];

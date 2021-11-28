@@ -180,7 +180,7 @@ class TheNounProjectService implements IconServiceInterface
             switch ($response->status()) {
                 case 404:
                     $exception = $response->toException();
-                    throw new IconNotFoundException("We couldn't find any icons with the name or id \"$id\"", 0, $exception);
+                    throw new IconNotFoundException(__('exceptionMessages.icon_not_found', ['id' => $id]), 0, $exception);
                 default:
                     $response->throw();
             }
@@ -223,15 +223,13 @@ class TheNounProjectService implements IconServiceInterface
         } else if (array_key_exists('preview_url', $iconData)) {
             $preview_url = $iconData['preview_url'];
         } else {
-            throw new MalformedIconDataException('Couldn\'t create Icon from icon data
-No url for an icon preview could be found
-This is most likely a problem with the API of the Noun Project (It is inconsistent some times and that definitely didn\'t cost me hours🤪)');
+            throw new MalformedIconDataException(__('exceptionMessages.no_icon_preview'));
         }
 
         $iconData['license'] = match ($iconData['license_description']) {
             'public-domain' => strval(ApiIcon::LICENSE_PUBLIC_DOMAIN),
             'creative-commons-attribution' => strval(ApiIcon::LICENSE_CC_BY_3_0),
-            default => throw new MalformedIconDataException("No valid license detected for icon " . $iconData['name']),
+            default => throw new MalformedIconDataException(__('exceptionMessages.no_known_licenses', ['iconName' => $iconData['name']])),
         };
 
         return new ApiIcon(
@@ -260,7 +258,7 @@ This is most likely a problem with the API of the Noun Project (It is inconsiste
         if ($response->failed()) {
             switch ($response->status()) {
                 case 404:
-                    throw new IconNotFoundException('Couldn\'t download icon');
+                    throw new IconNotFoundException(__('exceptionMessages.icon_not_found_for_download'));
                 default:
                     $response->throw();
             }
@@ -281,7 +279,7 @@ This is most likely a problem with the API of the Noun Project (It is inconsiste
 
         if (!$icon->save()) {
             Storage::delete($savePath);
-            throw new IconSaveException("Couldn't save icon to the database", 0);
+            throw new IconSaveException(__('exceptionMessages.icon_not_saved'), 0);
         }
 
         return $icon;
