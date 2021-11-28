@@ -18,8 +18,8 @@ export const user = reactive({
 })
 
 const actions = {
-    async login(username: string, password: string) {
-        return Request.login(username, password).then(responseUser => {
+    async login(username: string, password: string, stayLoggedIn: boolean) {
+        return Request.login(username, password, stayLoggedIn).then(responseUser => {
             user.isLoggedIn = true;
             user.username = responseUser.username;
             user.name = responseUser.name;

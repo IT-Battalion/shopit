@@ -133,9 +133,9 @@
               id="stayLogedIn"
               v-model="form.stayLogedIn"
             />
-            <p class="my-auto ml-2 text-center text-white">
+            <label for="stayLogedIn" class="my-auto ml-2 text-center text-white">
               Angemeldet bleiben
-            </p>
+            </label>
           </div>
           <!-- only call `submitForm()` when the `key` is `Enter` -->
           <div class="text-red-400">
@@ -170,7 +170,7 @@ export default defineComponent({
     });
 
     const onSubmit = () => {
-      userStore.login(form.username, form.password).then((_) => {
+      userStore.login(form.username, form.password, form.stayLogedIn).then((_) => {
         form.username = "";
         form.password = "";
 

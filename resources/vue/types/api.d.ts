@@ -7,6 +7,7 @@ export interface ApiResponse<T = any> {
 interface LoginData {
     username: string,
     password: string,
+    remember: boolean,
 }
 
 interface LoginResponseData {

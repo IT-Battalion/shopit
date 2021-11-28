@@ -10,11 +10,12 @@ export async function getUser() {
     return user
 }
 
-export async function login(username: string, password: string): Promise<LoginResponseData> {
+export async function login(username: string, password: string, stayLoggedIn: boolean): Promise<LoginResponseData> {
     return new Promise<LoginResponseData>((res, rej) => {
         window.axios.post<LoginData, AxiosResponse<ApiResponse<LoginResponseData>>>('/login', {
-            'username': username,
-            'password': password,
+            username: username,
+            password: password,
+            remember: stayLoggedIn,
         }).then(response => {
             res(response.data.data);
         }).catch(response => {

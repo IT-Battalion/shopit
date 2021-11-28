@@ -43,12 +43,18 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
+        $data = $request->validate([
             'username' => ['required'],
             'password' => 'required',
+            'remember' => 'boolean',
         ]);
 
-        if (Auth::attempt($credentials)) {
+        $credentials = [
+            'username' => $data['username'],
+            'password' => $data['password'],
+        ];
+
+        if (Auth::attempt($credentials, $data['remember'])) {
             return $this->success([
                 'redirect_to' => $this->redirectTo,
                 'username' => Auth::user()->username,
