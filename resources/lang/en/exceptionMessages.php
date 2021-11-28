@@ -20,4 +20,11 @@ return [
     'order_not_ordered' => 'The order has not been ordered by an administrator yet.',
     'order_not_received' => 'The Order has not been received by an administrator yet.',
     'shopping_cart_empty' => 'An order cannot be filled from an empty shopping cart.',
+    'icon_not_found' => 'We couldn\'t find any icons with the name or id :id.',
+    'no_icon_preview' => 'Couldn\'t create Icon from icon data.
+No url for an icon preview could be found.
+This is most likely a problem with the API of the Noun Project (It is inconsistent some times and that definitely didn\'t cost me hours🤪).',
+    'no_valid_licenses' => 'No valid license detected for icon :iconName',
+    'icon_not_found_for_download' => 'Couldn\'t download icon because it wasn\'t found.',
+    'icon_not_saved' => 'Couldn\'t save the icon.',
 ];
