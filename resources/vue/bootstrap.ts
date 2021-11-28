@@ -53,3 +53,43 @@ require('pdfmake');
 window.axios.get('/sanctum/csrf-cookie').catch(_ => {
     console.error("CSRF couldn't be fetched");
 });
+
+import {
+    createApp
+} from "vue";
+import App from "./App.vue";
+import router from "./router";
+import {createI18n, I18n} from "vue-i18n";
+
+export const SUPPORT_LOCALES = ['de', 'en'];
+
+let userLocale = 'en';
+
+for (let lang of window.navigator.languages) {
+    if (lang in SUPPORT_LOCALES) {
+        userLocale = lang;
+        break;
+    }
+}
+
+window.axios.defaults.headers.common['Accept-Language'] = userLocale;
+// @ts-ignore
+document.querySelector<HTMLHtmlElement>('html').setAttribute('lang', userLocale);
+
+export function loadLocale(i18n: I18n, locale: string) {
+    window.axios.get(
+        `/locales/${userLocale}.json`
+    ).then(messages => {
+        i18n.global.setLocaleMessage(locale, messages.data);
+    });
+}
+const i18n = createI18n({
+    locale: userLocale,
+});
+
+createApp(App)
+    .use(router)
+    .use(i18n)
+    .mount("#app");
+
+loadLocale(i18n, userLocale);

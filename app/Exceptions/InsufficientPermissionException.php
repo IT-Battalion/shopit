@@ -8,7 +8,7 @@ class InsufficientPermissionException extends Exception
 {
     public function __construct()
     {
-        parent::__construct(__('exceptionMessages.insufficient_permission'));
+        parent::__construct(t('error_messages.insufficient_permission'));
     }
 
     public function render($request)

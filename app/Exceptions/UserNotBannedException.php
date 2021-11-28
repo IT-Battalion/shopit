@@ -8,7 +8,7 @@ class UserNotBannedException extends Exception
 {
     public function __construct()
     {
-        parent::__construct(__('exceptionMessages.user_not_banned'));
+        parent::__construct(t('error_messages.user_not_banned'));
     }
 
     public function render($request) {

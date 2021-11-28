@@ -180,7 +180,7 @@ class TheNounProjectService implements IconServiceInterface
             switch ($response->status()) {
                 case 404:
                     $exception = $response->toException();
-                    throw new IconNotFoundException(__('exceptionMessages.icon_not_found', ['id' => $id]), 0, $exception);
+                    throw new IconNotFoundException(t('error_messages.icon_not_found', ['id' => $id]), 0, $exception);
                 default:
                     $response->throw();
             }
@@ -223,13 +223,13 @@ class TheNounProjectService implements IconServiceInterface
         } else if (array_key_exists('preview_url', $iconData)) {
             $preview_url = $iconData['preview_url'];
         } else {
-            throw new MalformedIconDataException(__('exceptionMessages.no_icon_preview'));
+            throw new MalformedIconDataException(t('error_messages.no_icon_preview'));
         }
 
         $iconData['license'] = match ($iconData['license_description']) {
             'public-domain' => strval(ApiIcon::LICENSE_PUBLIC_DOMAIN),
             'creative-commons-attribution' => strval(ApiIcon::LICENSE_CC_BY_3_0),
-            default => throw new MalformedIconDataException(__('exceptionMessages.no_known_licenses', ['iconName' => $iconData['name']])),
+            default => throw new MalformedIconDataException(t('error_messages.no_known_licenses', ['iconName' => $iconData['name']])),
         };
 
         return new ApiIcon(
@@ -258,7 +258,7 @@ class TheNounProjectService implements IconServiceInterface
         if ($response->failed()) {
             switch ($response->status()) {
                 case 404:
-                    throw new IconNotFoundException(__('exceptionMessages.icon_not_found_for_download'));
+                    throw new IconNotFoundException(t('error_messages.icon_not_found_for_download'));
                 default:
                     $response->throw();
             }
@@ -279,7 +279,7 @@ class TheNounProjectService implements IconServiceInterface
 
         if (!$icon->save()) {
             Storage::delete($savePath);
-            throw new IconSaveException(__('exceptionMessages.icon_not_saved'), 0);
+            throw new IconSaveException(t('error_messages.icon_not_saved'), 0);
         }
 
         return $icon;

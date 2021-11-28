@@ -29,7 +29,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
 
         if ($amount < 0 || $amount > config('shop.shopping_cart.max_product_amount'))
         {
-            throw new IllegalArgumentException(__('exceptionMessages.illegal_amount_given'));
+            throw new IllegalArgumentException(t('error_messages.illegal_amount_given'));
         }
 
         if ($this->hasProductInShoppingCart($product, user: $user)) {
@@ -56,11 +56,11 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         }
 
         if (!$this->hasProductInShoppingCart($product, user: $user)) {
-            throw new ProductNotInShoppingCartException(__('exceptionMessages.product_not_in_shopping_cart'));
+            throw new ProductNotInShoppingCartException(t('error_messages.product_not_in_shopping_cart'));
         }
 
         if ($amount < -1) {
-            throw new IllegalArgumentException(__('exceptionMessages.illegal_amount_given'));
+            throw new IllegalArgumentException(t('error_messages.illegal_amount_given'));
         }
 
         if ($amount === -1) {
@@ -87,7 +87,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     {
         if ($amount < 0)
         {
-            throw new IllegalArgumentException(__('exceptionMessages.illegal_amount_given'));
+            throw new IllegalArgumentException(t('error_messages.illegal_amount_given'));
         }
 
         if (is_null($user))
@@ -225,7 +225,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
             $user = Auth::user();
         }
 
-        if ($amount < -1) throw new IllegalArgumentException(__('exceptionMessages.illegal_amount_given'));
+        if ($amount < -1) throw new IllegalArgumentException(t('error_messages.illegal_amount_given'));
         if ($amount === -1) return $user->shopping_cart()->wherePivot('product_id', $product->id)->count() !== 0;
         return $this->getAmountOfProduct($product) === $amount;
     }
