@@ -1,6 +1,6 @@
 import {reactive} from 'vue'
 import * as Request from '../request'
-import router from '../router'
+import {redirectToLogin} from "../util";
 
 export const user = reactive({
     username: '',
@@ -37,7 +37,6 @@ const actions = {
                 console.log(err.response.data.message);
                 user.error = err.response.data.message;
             }
-            console.error(err);
         });
     },
     async logout() {
@@ -53,10 +52,7 @@ const actions = {
         user.lang = '';
         user.isAdmin = false;
 
-        await router.push({
-            name: 'Login',
-            params: {nextUrl: router.currentRoute.value.fullPath},
-        });
+        await redirectToLogin();
     }
 }
 
