@@ -81,7 +81,7 @@ class AdminFactory extends Factory
             'class' => $this->generateClass(),
             'lang' => 'de-AT',
             'guid' => $this->faker->unique()->uuid(),
-            'isAdmin' => true,
+            'is_admin' => true,
         ];
     }
 

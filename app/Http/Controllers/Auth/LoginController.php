@@ -59,7 +59,7 @@ class LoginController extends Controller
                 'employeeType' => Auth::user()->employeeType,
                 'class' => Auth::user()->class,
                 'lang' => Auth::user()->lang,
-                'isAdmin' => Auth::user()->isAdmin,
+                'is_admin' => Auth::user()->is_admin,
             ], 'Successfully authenticated');
         }
 

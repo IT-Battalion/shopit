@@ -5,22 +5,24 @@
             use App\Models\ProductCategory;
             use Illuminate\Support\Facades\Auth;
 
+            $user = Auth::user();
+
             if (Auth::check())
             {
-                $user = [
-					'logged_in' => true,
-					'username' => Auth::user()->name,
-					'firstname' => Auth::user()->firstname,
-					'lastname' => Auth::user()->lastname,
-					'email' => Auth::user()->email,
-                    'employeeType' => Auth::user()->employeeType,
-                    'class' => Auth::user()->class,
-                    'lang' => Auth::user()->lang,
-                    'isAdmin' => Auth::user()->isAdmin,
+                $userData = [
+                    'logged_in' => true,
+                    'username' => $user->name,
+                    'firstname' => $user->firstname,
+                    'lastname' => $user->lastname,
+                    'email' => $user->email,
+                    'employeeType' => $user->employeeType,
+                    'class' => $user->class,
+                    'lang' => $user->lang,
+                    'is_admin' => $user->is_admin,
                 ];
             } else {
-                $user = [
-					'logged_in' => false,
+                $userData = [
+                    'logged_in' => false,
                 ];
             }
 
@@ -35,7 +37,7 @@
                         'icon_url' => route('icon', $icon->id),
                     ];
                 }),
-                'user' => $user,
+                'user' => $userData,
             ], JSON_THROW_ON_ERROR))
         @endphp");
     </script>

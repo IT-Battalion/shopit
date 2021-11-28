@@ -32,7 +32,7 @@ use LdapRecord\Models\Model;
  * @property string $employeeType
  * @property string|null $class
  * @property string $lang
- * @property int $isAdmin
+ * @property int $is_admin
  * @property int $enabled
  * @property string|null $reason_for_disabling
  * @property string|null $disabled_at
@@ -93,7 +93,7 @@ use LdapRecord\Models\Model;
  * @method static Builder|Admin whereFirstname($value)
  * @method static Builder|Admin whereGuid($value)
  * @method static Builder|Admin whereId($value)
- * @method static Builder|Admin whereIsAdmin($value)
+ * @method static Builder|Admin whereis_admin($value)
  * @method static Builder|Admin whereLang($value)
  * @method static Builder|Admin whereLastname($value)
  * @method static Builder|Admin whereName($value)
@@ -128,7 +128,7 @@ class Admin extends User
         'employeeType',
         'class',
         'lang',
-        'isAdmin',
+        'is_admin',
         'enabled',
         'reason_for_disabling',
         'disabled_at',
@@ -137,23 +137,6 @@ class Admin extends User
         'guid',
         'domain',
     ];
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [];
 
     /**
      * Das is hässlich wie sau no joke
@@ -207,7 +190,7 @@ class Admin extends User
         parent::boot();
 
         static::addGlobalScope('admin', function ($query) {
-            $query->where('isAdmin', '=', true);
+            $query->where('is_admin', '=', true);
         });
     }
 

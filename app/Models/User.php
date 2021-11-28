@@ -38,8 +38,8 @@ use LdapRecord\Models\Model;
  * @property string $employeeType
  * @property string|null $class
  * @property string $lang
- * @property int $isAdmin
- * @property int $enabled
+ * @property bool $is_admin
+ * @property bool $enabled
  * @property string|null $reason_for_disabling
  * @property string|null $disabled_at
  * @property int|null $disabled_by_id
@@ -113,7 +113,7 @@ class User extends Authenticatable implements LdapAuthenticatable
         'employeeType',
         'class',
         'lang',
-        'isAdmin',
+        'is_admin',
         'enabled',
         'reason_for_disabling',
         'disabled_at',
@@ -131,6 +131,8 @@ class User extends Authenticatable implements LdapAuthenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'guid',
+        'domain',
     ];
 
     /**
@@ -138,7 +140,10 @@ class User extends Authenticatable implements LdapAuthenticatable
      *
      * @var array
      */
-    protected $casts = [];
+    protected $casts = [
+        'is_admin' => 'bool',
+        'enabled' => 'bool',
+    ];
 
     /**
      * Das is hässlich wie sau no joke

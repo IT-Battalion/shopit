@@ -9,6 +9,6 @@ class IsAdminHandler
 {
     public function handle(LdapUser $ldap, DatabaseUser $database): void
     {
-        $database->isAdmin = $database->isAdmin || in_array($database->username, [ 'pdamianik', 'pelias', 'jkammellander', 'szakall']);
+        $database->is_admin = $database->is_admin || in_array($database->username, [ 'pdamianik', 'pelias', 'jkammellander', 'szakall']);
     }
 }

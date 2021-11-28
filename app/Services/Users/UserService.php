@@ -63,7 +63,7 @@ class UserService implements UserServiceInterface
      */
     function canBePerformedOnUser(User $user): bool
     {
-        if (!$user->isAdmin) {
+        if (!$user->is_admin) {
             return true;
         } else {
             throw new ActionNotAllowedForAdministratorExeption();

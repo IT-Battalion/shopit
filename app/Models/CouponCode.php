@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
+use Barryvdh\LaravelIdeHelper\Eloquent;
 use Database\Factories\CouponCodeFactory;
-use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -59,7 +59,9 @@ class CouponCode extends Model
         'enabled_until',
     ];
 
-    protected $casts = [];
+    protected $casts = [
+        'enabled' => 'bool',
+    ];
 
     public function created_by(): BelongsTo
     {

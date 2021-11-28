@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('employeeType');
             $table->string('class')->nullable();
             $table->string('lang')->default('de-AT');
-            $table->boolean('isAdmin')->default(false);
+            $table->boolean('is_admin')->default(false);
             $table->boolean('enabled')->default(true);
             $table->string('reason_for_disabling')->nullable();
             $table->timestamp('disabled_at')->nullable();
