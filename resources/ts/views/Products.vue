@@ -3,9 +3,6 @@
         <Navbar/>
         <div class="flex flex-row m-auto">
             <Sidenav class="invisible sm:visible md:visible"/>
-            <div class="m-auto bg-gray-100">
-                <button @click="userStore.logout()">Abmelden</button>
-            </div>
         </div>
     </div>
 </template>
