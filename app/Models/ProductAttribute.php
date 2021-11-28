@@ -44,7 +44,9 @@ class ProductAttribute extends Model
         'product_id',
     ];
 
-    protected $casts = [];
+    protected $casts = [
+        'values_available' => 'array',
+    ];
 
     public function product(): BelongsTo
     {
