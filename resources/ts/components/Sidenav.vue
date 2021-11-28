@@ -1,7 +1,7 @@
 <template>
     <div>
         <ul
-            class="fixed left-0 flex flex-col justify-center w-40 h-screen m-0 text-white shadow-lg  bg-backgroundColor top-10"
+            class="fixed left-0 flex flex-col justify-center w-40 h-full m-0 text-white bg-backgroundColor"
         >
             <div
                 v-for="category in categories"

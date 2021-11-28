@@ -2,7 +2,7 @@
     <div class="w-screen h-screen bg-backgroundColor">
         <!-- the submit event will no longer reload the page -->
         <div class="absolute grid h-screen place-items-center">
-            <img src="/images/loginBackground.svg" alt="back" />
+            <img src="/img/loginBackground.svg" alt="back" />
         </div>
         <div class="relative grid h-screen ml-10 mr-10 place-items-center">
             <form @submit.prevent="onSubmit" class="grid grid-cols-2 gap-4">

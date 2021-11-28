@@ -1,7 +1,8 @@
 <template>
     <div class="w-screen h-screen bg-backgroundColor">
+        <Navbar/>
         <div class="flex flex-row m-auto">
-            <Sidenav></Sidenav>
+            <Sidenav class="invisible sm:visible md:visible"/>
             <div class="m-auto bg-gray-100">
                 <button @click="userStore.logout()">Abmelden</button>
             </div>
