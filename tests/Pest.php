@@ -11,21 +11,13 @@
 |
 */
 
-use App\Models\Icon;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Storage;
 
-uses(Tests\TestCase::class)->in('Feature', 'Unit');
+uses(Tests\TestCase::class)
+    ->in('Feature', 'Unit');
 uses(\Illuminate\Foundation\Testing\DatabaseTransactions::class)->in('Unit');
-uses()
-    ->afterAll(function () {
-        Icon::all()
-            ->diff(
-                Storage::files('icons', true)
-            );
-    });
 
 /*
 |--------------------------------------------------------------------------

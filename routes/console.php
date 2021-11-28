@@ -1,7 +1,10 @@
 <?php
 
+use App\Models\Icon;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +20,15 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->describe('Display an inspiring quote');
+
+Artisan::command('clean:icons', function () {
+    $dbIcons = Icon::all()->map(fn (Icon $icon) => $icon->path);
+    $unnecessaryFiles = collect(Storage::files('icons', true))->diff($dbIcons);
+    $fileCount = $unnecessaryFiles->count();
+
+    if ($this->confirm("$fileCount unnecessary icon image files were found. Do you wish to continue?")) {
+        if (!Storage::delete($unnecessaryFiles->all())) {
+            $this->error('Failed to delete the files');
+        }
+    }
+})->describe('Cleanup icon image files that aren\'t in the database');
