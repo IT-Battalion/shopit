@@ -4,7 +4,6 @@ use App\Models\Icon;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +24,11 @@ Artisan::command('clean:icons', function () {
     $dbIcons = Icon::all()->map(fn (Icon $icon) => $icon->path);
     $unnecessaryFiles = collect(Storage::files('icons', true))->diff($dbIcons);
     $fileCount = $unnecessaryFiles->count();
+
+    if ($fileCount === 0) {
+        $this->info('No unnecessary icon image files were found');
+        return;
+    }
 
     if ($this->confirm("$fileCount unnecessary icon image files were found. Do you wish to continue?")) {
         if (!Storage::delete($unnecessaryFiles->all())) {
