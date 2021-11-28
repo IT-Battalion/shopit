@@ -20,7 +20,7 @@
       <MenuItems class="absolute right-0 w-40 mt-2 origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
         <div class="py-1">
           <MenuItem v-slot="{ active }" class="flex flex-row items-center justify-center">
-            <a href="#" :class="[active ? ' text-gray-400' : 'text-white', 'block px-4 py-2 text-sm']"><img src="img/logout.svg" class="object-scale-down mr-4 h-7">Abmelden</a>
+            <a href="#" :class="[active ? ' text-gray-400' : 'text-white', 'block px-4 py-2 text-sm']" @click="userStore.logout()"><img src="img/logout.svg" class="object-scale-down mr-4 h-7">Abmelden</a>
           </MenuItem>
         </div>
       </MenuItems>
@@ -35,6 +35,7 @@
 
 <script lang="ts">
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
+import userStore from "../stores/user";
 
 export default {
   components: {
@@ -43,5 +44,8 @@ export default {
     MenuItem,
     MenuItems,
   },
+  setup() {
+        return { userStore };
+    },
 }
 </script>
