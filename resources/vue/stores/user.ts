@@ -1,18 +1,19 @@
-import {reactive} from 'vue'
+import { reactive, toRefs } from 'vue'
 import * as Request from '../request'
-import {redirectToLogin} from "../util";
+import { User } from '../types/api';
+import { redirectToLogin } from "../util";
 
 export const user = reactive({
-    username: '',
-    name: '',
-    firstname: '',
-    lastname: '',
-    email: '',
-    employeeType: '',
-    class: '',
-    lang: '',
-    isAdmin: false,
-    isLoggedIn: window.config.user.logged_in,
+    username: window.config.user.username ?? '',
+    name: window.config.user.name ?? '',
+    firstname: window.config.user.firstname ?? '',
+    lastname: window.config.user.lastname ?? '',
+    email: window.config.user.email ?? '',
+    employeeType: window.config.user.employeeType ?? '',
+    class: window.config.user.class ?? '',
+    lang: window.config.user.lang ?? '',
+    isAdmin: window.config.user.isAdmin ?? false,
+    isLoggedIn: window.config.user.isLoggedIn ?? false,
 
     error: ''
 })
@@ -56,4 +57,9 @@ const actions = {
     }
 }
 
-export default {user, ...actions}
+export default function useUser() {
+    return {
+        user: toRefs(user),
+        ...actions,
+    }
+}

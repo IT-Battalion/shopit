@@ -7,7 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShopIT</title>
     <link rel="stylesheet" type="text/css" href="/css/tailwind.css">
-@yield('head-content')
+    <style>
+        html,
+        body {
+            background: rgb(30, 29, 43);
+        }
+
+    </style>
+    @yield('head-content')
 </head>
 
 <body>

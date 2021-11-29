@@ -1,12 +1,15 @@
 <template>
   <nav>
     <div
-      class="flex items-center justify-between invisible w-screen px-12 py-4 mx-auto  mb-14 md:visible bg-backgroundColor bg-opacity-90"
+      class="fixed top-0 z-10 flex items-center justify-between invisible w-screen h-32 px-12 py-4 mx-auto  md:visible bg-backgroundColor"
     >
-      <div class="inline-flex items-center text-2xl font-semibold text-white">
+      <router-link
+        :to="{ name: 'Products' }"
+        class="inline-flex items-center text-2xl font-semibold text-white"
+      >
         <img src="img/logo.svg" class="w-16 mr-4" alt="logo-img" />
         <span>ShopIT</span>
-      </div>
+      </router-link>
       <div>
         <ul class="flex text-white">
           <li class="flex flex-row items-center justify-center px-2 py-1 ml-5">
@@ -18,7 +21,7 @@
                 <MenuButton
                   class="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white rounded-md shadow-sm  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
                 >
-                  Max Musterman
+                  {{ user.name.value }}
                   <img
                     src="img/dropdown.svg"
                     alt=""
@@ -49,7 +52,7 @@
                           active ? ' text-gray-400' : 'text-white',
                           'block px-4 py-2 text-sm',
                         ]"
-                        @click="userStore.logout()"
+                        @click="logout()"
                         ><img
                           src="img/logout.svg"
                           class="object-scale-down mr-4 h-7"
@@ -76,7 +79,7 @@
 
 <script lang="ts">
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
-import userStore from "../stores/user";
+import useUser from "../stores/user";
 
 export default {
   components: {
@@ -86,7 +89,9 @@ export default {
     MenuItems,
   },
   setup() {
-    return { userStore };
+    const { user, logout } = useUser();
+
+    return { user, logout };
   },
 };
 </script>

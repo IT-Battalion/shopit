@@ -33,3 +33,16 @@ interface HighlightedProductData {
     }]
     amount: number,
 }
+
+interface User {
+    username?: string,
+    name?: string,
+    firstname?: string,
+    lastname?: string,
+    email?: string,
+    employeeType?: string,
+    class?: string,
+    lang?: string,
+    isAdmin?: boolean,
+    isLoggedIn?: boolean,
+}

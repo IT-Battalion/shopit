@@ -133,13 +133,16 @@
               id="stayLogedIn"
               v-model="form.stayLogedIn"
             />
-            <label for="stayLogedIn" class="my-auto ml-2 text-center text-white">
+            <label
+              for="stayLogedIn"
+              class="my-auto ml-2 text-center text-white"
+            >
               Angemeldet bleiben
             </label>
           </div>
           <!-- only call `submitForm()` when the `key` is `Enter` -->
           <div class="text-red-400">
-            {{ userStore.user.error }}
+            {{ user.error }}
           </div>
           <button
             class="px-4 py-2 font-bold text-white bg-gray-800 rounded  hover:bg-gray-700"
@@ -157,11 +160,13 @@
 import { defineComponent, reactive } from "vue";
 import { useRoute } from "vue-router";
 import router from "../router";
+import useUser from "../stores/user";
 import userStore from "../stores/user";
 
 export default defineComponent({
   setup() {
     const route = useRoute();
+    const { user, login } = useUser();
 
     const form = reactive({
       username: "",
@@ -170,7 +175,7 @@ export default defineComponent({
     });
 
     const onSubmit = () => {
-      userStore.login(form.username, form.password, form.stayLogedIn).then((_) => {
+      login(form.username, form.password, form.stayLogedIn).then((_) => {
         form.username = "";
         form.password = "";
 
@@ -184,6 +189,7 @@ export default defineComponent({
 
     return {
       form,
+      user,
       userStore,
       onSubmit,
     };

@@ -1,18 +1,16 @@
 <template>
-  <div class="invisible md:visible">
-    <ul
-      class="fixed left-0 flex flex-col justify-center w-40 h-full m-0 text-white  bg-backgroundColor"
+  <div
+    class="fixed left-0 flex flex-col justify-center w-56 pl-4 m-0 text-white  sidebar top-32 bg-backgroundColor"
+  >
+    <div
+      v-for="category in categories"
+      v-bind:key="category.icon_url"
+      v-bind:name="category.name"
+      class="flex flex-row my-6 ml-6"
     >
-      <div
-        v-for="category in categories"
-        v-bind:key="category.icon_url"
-        v-bind:name="category.name"
-        class="flex flex-row my-6 ml-6"
-      >
-        <img :src="category.icon_url" class="object-scale-down h-8 mr-4" />
-        <p class="my-1 text-left">{{ category.name }}</p>
-      </div>
-    </ul>
+      <img :src="category.icon_url" class="object-scale-down h-8 mr-4" />
+      <p class="my-1 text-left">{{ category.name }}</p>
+    </div>
   </div>
 </template>
 
@@ -26,4 +24,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.sidebar {
+  height: calc(100% - 8rem);
+}
+</style>

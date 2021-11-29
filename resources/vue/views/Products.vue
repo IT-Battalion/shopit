@@ -1,16 +1,6 @@
 <template>
-  <div class="w-screen h-screen bg-backgroundColor">
-    <Navbar />
-    <div class="flex flex-row">
-      <Sidenav class="w-1/12" />
-      <div
-        class="flex flex-col items-center justify-center w-full h-screen  md:h-full md:w-11/12 md:mt-0"
-      >
-        <LatestProduct class="w-full md:w-1/2 h-96" />
-        <ProductList class="invisible bg-backgroundColor md:visible" />
-      </div>
-    </div>
-  </div>
+  <LatestProduct class="w-full md:w-1/2 h-96" />
+  <ProductList class="invisible bg-backgroundColor md:visible" />
 </template>
 
 <script lang="ts">
