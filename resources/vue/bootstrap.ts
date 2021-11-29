@@ -66,8 +66,8 @@ import {
 } from "vue";
 import App from "./App.vue";
 import router from "./router";
-import {createI18n, I18n} from "vue-i18n";
-import {redirectToLogin} from "./util";
+import { createI18n, I18n } from "vue-i18n";
+import { redirectToLogin } from "./util";
 
 export const SUPPORT_LOCALES = ['de', 'en'];
 

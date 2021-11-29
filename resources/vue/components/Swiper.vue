@@ -1,10 +1,9 @@
 <template>
-  <swiper :navigation="true">
+  <swiper :navigation="true" v-if="loading">
     <swiper-slide class="text-center text-black">Slide 1</swiper-slide>
     <swiper-slide class="text-center text-black">Slide 2</swiper-slide>
-    <swiper-slide class="text-center text-black">Slide 3</swiper-slide>
-    <swiper-slide class="text-center text-black">Slide 4</swiper-slide>
   </swiper>
+  <Skeletor v-else />
 </template>
 
 <script lang="ts">
@@ -15,6 +14,9 @@ import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 
 import "swiper/css/navigation";
+import { Skeletor } from "vue-skeletor";
+import { AxiosResponse } from "axios";
+import { HighlightedProductData } from "../types/api";
 
 // import Swiper core and required modules
 import SwiperCore, { Navigation } from "swiper";
@@ -26,9 +28,19 @@ export default {
   components: {
     Swiper,
     SwiperSlide,
+    Skeletor,
   },
   data() {
-    return {};
+    return {
+      loading: true,
+      highlightedProduct: [],
+    };
+  },
+  async created() {
+    let response: AxiosResponse<HighlightedProductData> =
+      await window.axios.get("/api/highlighted");
+
+    console.log(response);
   },
   methods: {},
 };

@@ -22,3 +22,14 @@ interface LoginResponseData {
     lang: string,
     isAdmin: boolean,
 }
+
+interface HighlightedProductData {
+    name: string,
+    description: string,
+    price: number,
+    attribute: [{
+        type: number,
+        values_available: any,
+    }]
+    amount: number,
+}

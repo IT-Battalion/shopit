@@ -4,10 +4,10 @@
     <div class="flex flex-row">
       <Sidenav class="w-1/12" />
       <div
-        class="flex flex-col items-center justify-center w-full h-screen -mt-48  md:h-full md:w-11/12 md:mt-0"
+        class="flex flex-col items-center justify-center w-full h-screen  md:h-full md:w-11/12 md:mt-0"
       >
         <LatestProduct class="w-full md:w-1/2 h-96" />
-        <Button>Bitte !!</Button>
+        <ProductList class="invisible bg-backgroundColor md:visible" />
       </div>
     </div>
   </div>
@@ -19,11 +19,13 @@ import Navbar from "../components/Navbar.vue";
 import userStore from "../stores/user";
 import LatestProduct from "../components/LatestProduct.vue";
 import user from "../stores/user";
+import ProductList from "../components/ProductList.vue";
 export default {
   components: {
     Sidenav,
     Navbar,
     LatestProduct,
+    ProductList,
   },
   setup() {
     return { userStore };
