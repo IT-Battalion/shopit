@@ -14,7 +14,7 @@
         <ul class="flex text-white">
           <li class="flex flex-row items-center justify-center px-2 py-1 ml-5">
             <img
-              src="https://avatars.dicebear.com/api/micah/:Max Musterman.svg"
+              :src="profilePicture"
               class="object-scale-down h-12 mr-4 bg-gray-800 rounded-full"
             /><Menu as="div" class="relative inline-block text-left">
               <div>
@@ -90,8 +90,10 @@ export default {
   },
   setup() {
     const { user, logout } = useUser();
+    const profilePicture =
+      "https://avatars.dicebear.com/api/micah/:" + user.username.value + ".svg";
 
-    return { user, logout };
+    return { user, logout, profilePicture };
   },
 };
 </script>

@@ -46,3 +46,14 @@ interface User {
     isAdmin?: boolean,
     isLoggedIn?: boolean,
 }
+
+interface Product {
+    name: string,
+    description: string,
+    price: number,
+    imgSrc: string,
+    attribute: [{
+        type: number,
+        values_available: any,
+    }]
+}
