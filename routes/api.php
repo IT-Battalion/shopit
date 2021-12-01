@@ -19,3 +19,4 @@ Route::get('/user', function (Request $request) {
 });
 
 Route::apiResource('/highlighted', HighlightedProductController::class);
+Route::apiResource('/product', ProductController::class);

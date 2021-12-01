@@ -24,17 +24,22 @@ class ProductImageFactory extends Factory
      */
     public function definition(): array
     {
-        $product = Product::inRandomOrder()
-            ->first()
-            ->id;
+        $product = (Product::select('products.id')
+            ->leftJoin('product_images', 'products.id', 'product_images.product_id')
+            ->groupBy('products.id')
+            ->havingRaw('count(`product_images`.`id`) = 0')
+            ->inRandomOrder()
+            ->first() ??
+            Product::inRandomOrder()
+                ->first())->id;
 
         $admin = Admin::inRandomOrder()
             ->first()
             ->id;
 
         $id = $this->faker->unique()->randomNumber(5, false);
-        $source = fopen(resource_path('image/test_icon.png'), 'r');
-        $path = "icons/$id.png";
+        $source = fopen(resource_path('image/bottle.png'), 'r');
+        $path = "product/images/$id.png";
         Storage::put($path, $source);
 
         return [

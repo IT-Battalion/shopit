@@ -22,10 +22,13 @@ class HighlightedProductController extends Controller
         $products = HighlightedProduct::all()
             ->map(fn (HighlightedProduct $product) => $product->product)
             ->map(function (Product $product) {
+                $thumbnail = $product->thumbnail ?? $product->images->first();
+
                 return [
                     'name' => $product->name,
                     'description' => $product->description,
                     'price' => $product->price,
+                    'imgSrc' => route('product-image', [ 'id' => $thumbnail->id ]),
                     'attributes' => $product->productAttributes
                         ->map(function (ProductAttribute $attribute) {
                             return [

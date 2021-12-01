@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Models\Icon;
+use App\Models\ProductImage;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
@@ -55,6 +56,25 @@ Route::get('/icon/{id}', function (int $id) {
 })
     ->middleware('auth')
     ->name('icon');
+
+Route::get('/product-image/{id}', function (int $id) {
+    $image = ProductImage::whereId($id)->first();
+
+    if (!$image->exists()) {
+        abort(404);
+    }
+
+    $icon = $image->first();
+    $path = storage_path("app/$image->path");
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    return response()->file($path);
+})
+    ->middleware('auth')
+    ->name('product-image');
 
 Route::view('/{route}', 'home')
     ->where('route', '.*')

@@ -16,6 +16,8 @@ class ProductFactory extends Factory
      */
     protected $model = Product::class;
 
+    protected $namesSeen = [];
+
     /**
      * Define the model's default state.
      *
@@ -31,11 +33,19 @@ class ProductFactory extends Factory
             ->id;
 
         $uniqueNameValidator = function($name) {
+            if (in_array($name, $this->namesSeen)) {
+                return false;
+            }
+
             return Product::whereName($name)->count() === 0;
         };
 
+        $name = $this->faker->valid($uniqueNameValidator)->word;
+
+        $this->namesSeen[] = $name;
+
         return [
-            'name' => $this->faker->valid($uniqueNameValidator)->word,
+            'name' => $name,
             'description' => $this->faker->text,
             'price' => $this->faker->randomFloat(2, 1, 300),
             'tax' => $this->faker->randomFloat(2, 0, 0.99),
