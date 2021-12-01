@@ -41,7 +41,7 @@
                 <MenuItems
                   class="absolute right-0 w-40 mt-2 origin-top-right rounded-md shadow-lg  ring-1 ring-black ring-opacity-5 focus:outline-none"
                 >
-                  <div class="py-1">
+                  <div class="py-1 bg-backgroundColor">
                     <MenuItem
                       v-slot="{ active }"
                       class="flex flex-row items-center justify-center"
@@ -78,7 +78,7 @@
 </template>
 
 <script lang="ts">
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
+import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
 import useUser from "../stores/user";
 
 export default {
