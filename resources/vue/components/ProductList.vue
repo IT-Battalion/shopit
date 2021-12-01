@@ -8,14 +8,7 @@
       </h2>
 
       <div
-        class="
-          grid grid-cols-1
-          mt-6
-          gap-y-10 gap-x-6
-          sm:grid-cols-2
-          lg:grid-cols-4
-          xl:gap-x-8
-        "
+        class="grid grid-cols-1 mt-6  gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8"
       >
         <div
           v-for="product in products"

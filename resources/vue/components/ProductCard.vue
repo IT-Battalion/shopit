@@ -53,3 +53,13 @@ export default {
   },
 };
 </script>
+
+<script lang="ts">
+import { Product } from "../types/api";
+
+export default {
+  props: {
+    product: Object,
+  },
+};
+</script>

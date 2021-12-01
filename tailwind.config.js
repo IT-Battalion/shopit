@@ -14,6 +14,9 @@ module.exports = {
                 inputLabel: "#9595A2",
             }
         },
+        fontFamily: {
+            poppins: ['Poppins', 'sans-serif'],
+        }
     },
     variants: {
         extend: {},
