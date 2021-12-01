@@ -11,11 +11,9 @@
 
 <script lang="ts">
 import Sidenav from "@/components/Sidenav.vue";
-import LatestProduct from "@/components/LatestProduct.vue";
 export default {
   components: {
     Sidenav,
-    LatestProduct,
   },
 };
 </script>

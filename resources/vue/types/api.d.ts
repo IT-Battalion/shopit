@@ -27,6 +27,7 @@ interface HighlightedProductData {
     name: string,
     description: string,
     price: number,
+    imgSrc: string,
     attribute: [{
         type: number,
         values_available: any,

@@ -68,6 +68,9 @@ import App from "./App.vue";
 import router from "./router";
 import { createI18n, I18n } from "vue-i18n";
 import { redirectToLogin } from "./util";
+import { Vue3Mq } from "vue3-mq";
+import { Skeletor } from "vue-skeletor";
+import 'vue-skeletor/dist/vue-skeletor.css';
 
 export const SUPPORT_LOCALES = ['de', 'en'];
 
@@ -98,6 +101,8 @@ const i18n = createI18n({
 createApp(App)
     .use(router)
     .use(i18n)
+    .use(Vue3Mq, { preset: "tailwind" })
+    .component(Skeletor.name, Skeletor)
     .mount("#app");
 
 loadLocale(i18n, userLocale);

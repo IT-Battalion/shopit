@@ -20,8 +20,9 @@ mix
     .copyDirectory('resources/assets/images/', 'public/img/')
     .copyDirectory('resources/locales', 'public/locales')
     .vue()
-    .postCss('resources/assets/tailwind.css', 'public/css', [
+    .extract(['vue'])
+    .postCss('resources/assets/tailwind.css', 'public/css/vendor.css', [
         require('tailwindcss'),
     ])
-    .extract(['vue'])
+    .css('node_modules/vue-skeletor/dist/vue-skeletor.css', 'public/css/vendor.css' )
     .browserSync('localhost:80');
