@@ -84,7 +84,7 @@
     </div>
     <div class="flex items-center justify-center overflow-hidden">
       <div class="relative grid w-3/4 h-screen grid-cols-2 place-items-center">
-        <div class="grid w-1/2 grid-rows-2 gap-5 place-items-center">
+        <div class="grid grid-rows-2 gap-5 place-items-center">
           <h1 class="text-lg text-white md:text-5xl whitespace-nowrap">
             Willkommen zurück!
           </h1>
@@ -94,7 +94,7 @@
         </div>
         <form
           @submit.prevent="onSubmit"
-          class="grid w-1/2 grid-rows-6 gap-2 md:gap-4 place-items-center"
+          class="grid w-1/2 grid-rows-6 gap-2 md:gap-4 place-items-start"
         >
           <label
             for="username"
@@ -157,8 +157,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
-import { useRoute } from "vue-router";
+import {defineComponent, reactive} from "vue";
+import {useRoute} from "vue-router";
 import router from "../router";
 import useUser from "../stores/user";
 import userStore from "../stores/user";
