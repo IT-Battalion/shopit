@@ -142,7 +142,7 @@
           </div>
           <!-- only call `submitForm()` when the `key` is `Enter` -->
           <div class="text-red-400">
-            {{ user.error }}
+            {{ user.error.value }}
           </div>
           <button
             class="px-4 py-2 font-bold text-white bg-gray-800 rounded  hover:bg-gray-700"

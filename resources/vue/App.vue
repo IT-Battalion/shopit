@@ -8,8 +8,6 @@ export default {
   setup() {
     const { user } = useUser();
 
-    console.debug(user);
-
     return {
       user,
     };
