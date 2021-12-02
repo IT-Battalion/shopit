@@ -13,11 +13,12 @@
 
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Collection;
 
 uses(Tests\TestCase::class)
     ->in('Feature', 'Unit');
-uses(\Illuminate\Foundation\Testing\DatabaseTransactions::class)->in('Unit');
+uses(DatabaseTransactions::class)->in('Unit');
 
 /*
 |--------------------------------------------------------------------------
