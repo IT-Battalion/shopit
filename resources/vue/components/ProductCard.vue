@@ -2,10 +2,10 @@
   <div
     class="w-full overflow-hidden rounded-md  bg-backgroundColor min-h-80 aspect-w-1 group-hover:backgroundOpacity-80 aspect-h-1 lg:h-80 lg:aspect-none"
   >
-    <a :href="product.href">
+    <a>
       <img
-        :src="product.imageSrc"
-        :alt="product.name"
+        :src="product?.imgSrc"
+        :alt="product?.name"
         class="object-cover object-center w-full h-full lg:w-full lg:h-full"
       />
     </a>
@@ -13,13 +13,13 @@
   <div class="flex justify-between mt-4">
     <div>
       <h3 class="text-sm text-gray-700">
-        <a :href="product.href">
-          {{ product.name }}
+        <a>
+          {{ product?.name }}
         </a>
       </h3>
-      <p class="mt-1 text-sm text-gray-500">{{ product.color }}</p>
+      <!--<p class="mt-1 text-sm text-gray-500">{{ product.color }}</p>-->
     </div>
-    <p class="text-sm font-medium text-gray-900">{{ product.price }}</p>
+    <p class="text-sm font-medium text-gray-900">{{ product?.price }}</p>
     <button
       class="w-24 px-4 py-2 bg-white rounded-3xl hover:bg-gray-300"
       type="button"
@@ -49,17 +49,7 @@ import { Product } from "../types/api";
 
 export default {
   props: {
-    product: Object,
-  },
-};
-</script>
-
-<script lang="ts">
-import { Product } from "../types/api";
-
-export default {
-  props: {
-    product: Object,
+    product: Object as () => Product,
   },
 };
 </script>

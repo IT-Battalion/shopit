@@ -12,7 +12,7 @@
       >
         <div
           v-for="product in products"
-          :key="product.id"
+          :key="product.name"
           class="relative group"
         >
           <ProductCard :product="product" />
@@ -30,7 +30,7 @@ import { Product } from "../types/api";
 export default {
   data() {
     return {
-      products: [],
+      products: [] as Product[],
       isLoading: true,
     };
   },
