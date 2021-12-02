@@ -11,8 +11,8 @@ class IsEnabled extends Rule
      *
      * @return bool
      */
-    public function isValid()
+    public function isValid(): bool
     {
-        return isset($this->model->enabled) ? $this->model->enabled : true;
+        return $this->model->enabled ?? true;
     }
 }

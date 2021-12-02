@@ -9,7 +9,7 @@ trait UuidKey {
      * Initialize the key with a random uuid
      */
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
         static::creating(function ($model) {
@@ -24,7 +24,7 @@ trait UuidKey {
      * The UUID type doesn't automatically increment
      */
 
-    public function getIncrementing()
+    public function getIncrementing(): bool
     {
         return false;
     }
@@ -33,7 +33,7 @@ trait UuidKey {
      * Tell the model that the key is a string
      */
 
-    public function getKeyType()
+    public function getKeyType(): string
     {
         return 'string';
     }

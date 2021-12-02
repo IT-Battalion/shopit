@@ -6,6 +6,8 @@ use App\Traits\TrackInteractionUsers;
 use App\Traits\UuidKey;
 use App\Traits\UuidKeyAndTrackInteractionUsers;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ProductImage extends Model
 {
@@ -22,13 +24,13 @@ class ProductImage extends Model
         'thumbnail',
     ];
 
-    public function created_by()
+    public function created_by(): HasOne
     {
-        return $this->hasOne('App\\Models\\User', 'id', 'created_by');
+        return $this->hasOne(User::class, 'id', 'created_by');
     }
 
-    public function updated_by()
+    public function updated_by(): HasOne
     {
-        return $this->hasOne('App\\Models\\User', 'id', 'updated_by');
+        return $this->hasOne(User::class, 'id', 'updated_by');
     }
 }

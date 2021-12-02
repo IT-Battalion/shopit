@@ -13,7 +13,7 @@ class OnlyHitDepartmentMembers extends Rule
      *
      * @return bool
      */
-    public function isValid()
+    public function isValid(): bool
     {
         $schuelerHIT = Group::find('CN=schuelerHIT,OU=Groups,OU=tgm,DC=tgm,DC=ac,DC=at');
         $lehrerHIT = Group::find('CN=lehrerHIT,OU=Groups,OU=tgm,DC=tgm,DC=ac,DC=at');
