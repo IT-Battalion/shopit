@@ -78,8 +78,9 @@
 </template>
 
 <script lang="ts">
-import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import useUser from "../stores/user";
+import shoppingcart from "ShoppingCart.vue";
 
 export default {
   components: {
@@ -87,6 +88,7 @@ export default {
     MenuButton,
     MenuItem,
     MenuItems,
+    shoppingcart,
   },
   setup() {
     const { user, logout } = useUser();
