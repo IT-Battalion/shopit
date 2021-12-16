@@ -1,6 +1,5 @@
 import { reactive, toRefs } from 'vue'
 import * as Request from '../request'
-import { User } from '../types/api';
 import { redirectToLogin } from "../util";
 
 export const user = reactive({
