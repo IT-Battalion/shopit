@@ -69,7 +69,7 @@
               <img
                 src="img/shoppingCart.svg"
                 alt=""
-                class="object-scale-down h-8 mr-4"
+                class="object-scale-down h-8 mr-4 cursor-pointer"
                 @click="setOpen(true)"
               />
             </Shoppingcart>
