@@ -531,7 +531,7 @@ test('Product to attributes', function () {
 test('Product to category', function () {
     $admin = Admin::factory()->create();
     $this->actingAs($admin);
-    $category = ProductCategory::factory()->create(['name' => 'Test', 'icon_id' => Icon::first()->id]);
+    $category = ProductCategory::factory()->create(['name' => 'Test2', 'icon_id' => Icon::first()->id]);
     $product = Product::factory()->create([
         'product_category_id' => $category->id,
     ]);

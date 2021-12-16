@@ -1,5 +1,5 @@
 <template>
-  <div class="w-screen h-screen bg-backgroundColor">
+  <div class="bg-backgroundColor">
     <Navbar />
     <main class="mt-32 ml-56">
       <router-view />

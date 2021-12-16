@@ -7,6 +7,7 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use App\Models\ProductAttribute;
+use App\Models\ProductCategory;
 
 class ProductController extends Controller
 {
@@ -17,24 +18,28 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all()
-            ->mapWithKeys(function (Product $product) {
-                $thumbnail = $product->thumbnail ?? $product->images->first();
+        $products = ProductCategory::all()
+            ->mapWithKeys(function (ProductCategory $category) {
 
                 return [
-                    $product->category->name => [
-                        'name' => $product->name,
-                        'description' => $product->description,
-                        'price' => $product->price,
-                        'amount' => $product->available,
-                        'imgSrc' => route('product-image', [ 'id' => $thumbnail->id ]),
-                        'attributes' => $product->productAttributes->map(function (ProductAttribute $attribute) {
-                            return [
-                                'type' => $attribute->type,
-                                'values_available' => $attribute->values_available,
-                            ];
-                        }),
-                    ],
+                    $category->name => $category->products->map(function (Product $product) {
+                        $thumbnail = $product->thumbnail ?? $product->images->first();
+
+                        return [
+                            'name' => $product->name,
+                            'description' => $product->description,
+                            'price' => $product->price,
+                            'amount' => $product->available,
+                            'imgSrc' => route('product-image', [ 'id' => $thumbnail->id ]),
+                            'tax' => $product->tax,
+                            'attributes' => $product->productAttributes->map(function (ProductAttribute $attribute) {
+                                return [
+                                    'type' => $attribute->type,
+                                    'values_available' => $attribute->values_available,
+                                ];
+                            }),
+                        ];
+                    }),
                 ];
             });
 

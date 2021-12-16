@@ -12,6 +12,7 @@ module.exports = {
             colors: {
                 backgroundColor: "#1E1D2B",
                 inputLabel: "#9595A2",
+                elevatedColor: "#323c50",
             }
         },
         fontFamily: {

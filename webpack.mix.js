@@ -19,7 +19,7 @@ mix
     .ts('resources/vue/bootstrap.ts', 'public/js/app.min.js')
     .copyDirectory('resources/assets/images/', 'public/img/')
     .copyDirectory('resources/locales', 'public/locales')
-    .vue()
+    .vue({version: 3})
     .extract(['vue'])
     .postCss('resources/assets/tailwind.css', 'public/css/vendor.css', [
         require('tailwindcss'),

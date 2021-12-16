@@ -30,10 +30,9 @@ class HighlightedProductController extends Controller
                     'price' => $product->price,
                     'imgSrc' => route('product-image', [ 'id' => $thumbnail->id ]),
                     'attributes' => $product->productAttributes
-                        ->map(function (ProductAttribute $attribute) {
+                        ->mapWithKeys(function (ProductAttribute $attribute) {
                             return [
-                                'type' => $attribute->type,
-                                'values_available' => $attribute->values_available,
+                                $attribute->type => json_decode($attribute->values_available, true),
                             ];
                         }),
                     'amount' => $product->available,

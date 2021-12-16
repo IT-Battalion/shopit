@@ -1,157 +1,77 @@
 <template>
-  <div class="w-screen h-screen overflow-hidden bg-backgroundColor">
+  <div class="overflow-hidden bg-backgroundColor">
     <!-- the submit event will no longer reload the page -->
-    <div
-      class="absolute flex items-center justify-center w-full h-full overflow-hidden  top-4"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        width="1544"
-        height="1020.002"
-        viewBox="0 0 1544 1020.002"
+    <div class="grid w-10/12 grid-cols-2 place-items-center bg-elevatedColor login-form__container">
+      <div
+        class="flex flex-col items-center justify-center w-full h-full inset-0 login-form__elevation"
       >
-        <defs>
-          <filter
-            id="a"
-            x="51"
-            y="21"
-            width="1493"
-            height="930"
-            filterUnits="userSpaceOnUse"
-          >
-            <feOffset dx="6" dy="6" input="SourceAlpha" />
-            <feGaussianBlur stdDeviation="15" result="b" />
-            <feFlood flood-opacity="0.161" />
-            <feComposite operator="in" in2="b" />
-            <feComposite in="SourceGraphic" />
-          </filter>
-          <filter
-            id="c"
-            x="0"
-            y="0"
-            width="881"
-            height="1020.002"
-            filterUnits="userSpaceOnUse"
-          >
-            <feOffset dy="30" input="SourceAlpha" />
-            <feGaussianBlur stdDeviation="30" result="d" />
-            <feFlood flood-opacity="0.161" />
-            <feComposite operator="in" in2="d" />
-            <feComposite in="SourceGraphic" />
-          </filter>
-          <filter
-            id="e"
-            x="44.999"
-            y="29.999"
-            width="791"
-            height="930.003"
-            filterUnits="userSpaceOnUse"
-          >
-            <feOffset dy="15" input="SourceAlpha" />
-            <feGaussianBlur stdDeviation="15" result="f" />
-            <feFlood flood-opacity="0.161" />
-            <feComposite operator="in" in2="f" />
-            <feComposite in="SourceGraphic" />
-          </filter>
-        </defs>
-        <g transform="translate(-169 -60)">
-          <g class="d" transform="matrix(1, 0, 0, 1, 169, 60)">
-            <rect
-              class="a"
-              width="1403"
-              height="840"
-              rx="24"
-              transform="translate(90 60)"
-            />
-          </g>
-          <g class="c" transform="matrix(1, 0, 0, 1, 169, 60)">
-            <path
-              class="a"
-              d="M701,878H24A24,24,0,0,1,0,854V62A24,24,0,0,1,24,38H701V878Z"
-              transform="translate(90 22)"
-            />
-          </g>
-          <g class="b" transform="matrix(1, 0, 0, 1, 169, 60)">
-            <path
-              class="a"
-              d="M701,1014l-375.332,0A267.861,267.861,0,0,0,0,821.33V198a24,24,0,0,1,24-24H528c.264,95.121,77.87,172.728,173,173v667Z"
-              transform="translate(90 -114)"
-            />
-          </g>
-        </g>
-      </svg>
-    </div>
-    <div class="flex items-center justify-center overflow-hidden">
-      <div class="relative grid w-3/4 h-screen grid-cols-2 place-items-center">
-        <div class="grid grid-rows-2 gap-5 place-items-center">
-          <h1 class="text-lg text-white md:text-5xl whitespace-nowrap">
-            Willkommen zurück!
-          </h1>
-          <p class="text-sm text-gray-500 md:text-2xl">
-            Der Fanshop der HITler-Abteilung
-          </p>
-        </div>
-        <form
-          @submit.prevent="onSubmit"
-          class="grid w-1/2 grid-rows-6 gap-2 md:gap-4 place-items-start"
-        >
-          <label
-            for="username"
-            class="block mb-2 text-sm font-bold text-left text-inputLabel"
-            >Benutzername</label
-          >
-          <div>
-            <input
-              id="username"
-              name="username"
-              type="text"
-              v-model="form.username"
-              class="w-full px-3 py-2 leading-tight text-white bg-gray-900 rounded shadow appearance-none  focus:outline-none focus:shadow-outline"
-              required
-            />
-          </div>
-          <label
-            for="user-password"
-            class="block mb-2 text-sm font-bold text-inputLabel"
-            >Passwort</label
-          >
-          <div>
-            <input
-              id="user-password"
-              name="username"
-              type="password"
-              v-model="form.password"
-              class="w-full px-3 py-2 leading-tight text-white bg-gray-900 rounded shadow appearance-none  focus:outline-none focus:shadow-outline"
-              required
-            />
-          </div>
-          <div class="flex flex-row">
-            <input
-              type="checkbox"
-              name="stayLogedIn"
-              id="stayLogedIn"
-              v-model="form.stayLogedIn"
-            />
-            <label
-              for="stayLogedIn"
-              class="my-auto ml-2 text-center text-white"
-            >
-              Angemeldet bleiben
-            </label>
-          </div>
-          <!-- only call `submitForm()` when the `key` is `Enter` -->
-          <div class="text-red-400">
-            {{ user.error.value }}
-          </div>
-          <button
-            class="px-4 py-2 font-bold text-white bg-gray-800 rounded  hover:bg-gray-700"
-            type="submit"
-          >
-            Anmelden
-          </button>
-        </form>
+        <h1 class="text-lg text-white md:text-5xl whitespace-nowrap mb-2">
+          Willkommen zurück!
+        </h1>
+        <p class="text-sm text-gray-400 md:text-2xl">
+          Der Fanshop der HIT-Abteilung
+        </p>
       </div>
+      <form
+        @submit.prevent="onSubmit"
+        class="grid w-1/2 grid-rows-6 gap-2 md:gap-4 place-items-center"
+      >
+        <label
+          for="username"
+          class="block mt-2 text-sm font-bold text-left text-inputLabel"
+          >Benutzername</label
+        >
+        <div>
+          <input
+            id="username"
+            name="username"
+            type="text"
+            v-model="form.username"
+            class="w-full px-3 py-2 leading-tight text-white bg-gray-900 rounded shadow appearance-none  focus:outline-none focus:shadow-outline"
+            autofocus
+            required
+          />
+        </div>
+        <label
+          for="user-password"
+          class="block mt-2 text-sm font-bold text-inputLabel"
+          >Passwort</label
+        >
+        <div>
+          <input
+            id="user-password"
+            name="username"
+            type="password"
+            v-model="form.password"
+            class="w-full px-3 py-2 leading-tight text-white bg-gray-900 rounded shadow appearance-none  focus:outline-none focus:shadow-outline"
+            required
+          />
+        </div>
+        <div class="flex flex-row">
+          <input
+            type="checkbox"
+            name="stayLogedIn"
+            id="stayLogedIn"
+            v-model="form.stayLogedIn"
+          />
+          <label
+            for="stayLogedIn"
+            class="my-auto ml-2 text-center text-white"
+          >
+            Angemeldet bleiben
+          </label>
+        </div>
+        <!-- only call `submitForm()` when the `key` is `Enter` -->
+        <div class="text-red-400" v-if="user.error.value">
+          {{ user.error.value }}
+        </div>
+        <button
+          class="px-4 py-2 font-bold text-white bg-gray-800 rounded  hover:bg-gray-700"
+          type="submit"
+        >
+          Anmelden
+        </button>
+      </form>
     </div>
   </div>
 </template>
@@ -175,10 +95,13 @@ export default defineComponent({
     });
 
     const onSubmit = () => {
-      login(form.username, form.password, form.stayLogedIn).then((_) => {
-        form.username = "";
-        form.password = "";
+      let username = form.username;
+      let password = form.password;
 
+      user.error.value = "";
+      form.username = "";
+      form.password = "";
+      login(username, password, form.stayLogedIn).then((_) => {
         const next = (route.params.nextUrl as string) || "/";
 
         router.replace({
@@ -198,19 +121,13 @@ export default defineComponent({
 </script>
 
 <style>
-.a {
-  fill: #323c50;
+.login-form__container {
+  margin: 10vh 8.33333333%;
+  border-radius: 1.5rem;
+  height: 80vh;
+  box-shadow: 0 0 3rem .8rem rgba(0,0,0,.2);
 }
 
-.b {
-  filter: url(#e);
-}
-
-.c {
-  filter: url(#c);
-}
-
-.d {
-  filter: url(#a);
+.login-form__elevation {
 }
 </style>
