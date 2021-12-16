@@ -65,11 +65,14 @@
             </Menu>
           </li>
           <li class="flex flex-row items-center justify-center px-2 py-1 ml-5">
-            <img
-              src="img/shoppingCart.svg"
-              alt=""
-              class="object-scale-down h-8 mr-4"
-            />
+            <Shoppingcart ref="shoppingCart">
+              <img
+                src="img/shoppingCart.svg"
+                alt=""
+                class="object-scale-down h-8 mr-4"
+                @click="setOpen(true)"
+              />
+            </Shoppingcart>
           </li>
         </ul>
       </div>
@@ -79,16 +82,17 @@
 
 <script lang="ts">
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
+import { defineComponent } from "@vue/runtime-core";
 import useUser from "../stores/user";
-import shoppingcart from "ShoppingCart.vue";
+import Shoppingcart from "./Shoppingcart.vue";
 
-export default {
+export default defineComponent({
   components: {
     Menu,
     MenuButton,
     MenuItem,
     MenuItems,
-    shoppingcart,
+    Shoppingcart,
   },
   setup() {
     const { user, logout } = useUser();
@@ -97,5 +101,10 @@ export default {
 
     return { user, logout, profilePicture };
   },
-};
+  methods: {
+    setOpen(isOpen: boolean) {
+      (this.$refs as any).shoppingCart.setOpen(isOpen);
+    },
+  },
+});
 </script>
