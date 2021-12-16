@@ -2,9 +2,11 @@
   <div class="w-full">
     <div
       class="max-w-2xl px-4 py-16 mx-auto sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8"
+      v-for="(products, categoryName) in categories"
+      :key="categoryName"
     >
       <h2 class="text-2xl font-extrabold tracking-tight text-white">
-        Kategoriename
+        {{ categoryName }}
       </h2>
 
       <div
@@ -31,16 +33,17 @@ import { defineComponent } from "@vue/runtime-core";
 export default defineComponent({
   data() {
     return {
-      products: [] as Product[],
+      categories: {} as { String: Product[] },
       isLoading: true,
     };
   },
   async created() {
-    let response: AxiosResponse<Map<String, [Product]>> =
-      await window.axios.get("/api/product");
-    this.products = response.data;
+    let response: AxiosResponse<{ String: Product[] }> = await window.axios.get(
+      "/api/product"
+    );
+    this.categories = response.data;
 
-    console.log(response);
+    console.log(this.categories);
   },
   components: {
     ProductCard,
