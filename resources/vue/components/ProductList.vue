@@ -26,8 +26,9 @@
 import ProductCard from "./ProductCard.vue";
 import { AxiosResponse } from "axios";
 import { Product } from "../types/api";
+import { defineComponent } from "@vue/runtime-core";
 
-export default {
+export default defineComponent({
   data() {
     return {
       products: [] as Product[],
@@ -35,14 +36,14 @@ export default {
     };
   },
   async created() {
-    let response: AxiosResponse<[Product]> = await window.axios.get(
-      "/api/product"
-    );
+    let response: AxiosResponse<Map<String, [Product]>> =
+      await window.axios.get("/api/product");
+    this.products = response.data;
 
     console.log(response);
   },
   components: {
     ProductCard,
   },
-};
+});
 </script>

@@ -13,7 +13,7 @@
           :key="highlightedProduct.name"
         >
           <div
-            class="grid items-center w-full h-full grid-cols-2 grid-rows-4  gap-x-6"
+            class="grid items-center w-full h-full grid-cols-2 grid-rows-4  gap-x-6 justify-items-center"
             v-if="!isLoading"
           >
             <div class="w-full h-full row-span-full">
