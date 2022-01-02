@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Admin;
+use App\Models\Money;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -37,7 +38,7 @@ class ProductFactory extends Factory
         return [
             'name' => $this->faker->valid($uniqueNameValidator)->word,
             'description' => $this->faker->text,
-            'price' => $this->faker->randomFloat(2, 1, 300),
+            'price' => new Money($this->faker->randomFloat(2, 1, 300)),
             'tax' => $this->faker->randomFloat(2, 0, 0.99),
             'available' => $this->faker->numberBetween(-1, 1000),
             'created_by_id' => $admin,

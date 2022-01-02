@@ -38,5 +38,9 @@ return [
         'max_product_amount' => env('MAX_PRODUCT_AMOUNT', 100),
     ],
 
-    'money_decimal_points' => 8
+    'money' => [
+        'decimal_points' => 8,
+        'max_digits' => 8,
+        'currency' => '€',
+    ],
 ];
