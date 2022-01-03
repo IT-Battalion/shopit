@@ -2,8 +2,24 @@
   <div>
     <div>
       <!-- Image gallery -->
-      <swiper :navigation="true" class="w-1/2 h-full">
-        <swiper-slide></swiper-slide>
+      <swiper
+        :navigation="true"
+        :pagination="{
+          dynamicBullets: true,
+        }"
+        class="w-1/2 h-full"
+      >
+        <swiper-slide
+          class="w-full h-full"
+          v-for="image in product.images"
+          :key="image"
+        >
+          <img
+            :src="'/product-image/' + image.id"
+            :alt="'productimage'"
+            class="object-cover w-full h-full"
+          />
+        </swiper-slide>
       </swiper>
 
       <!-- Product info -->
@@ -27,13 +43,7 @@
       >
         <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
           <h1
-            class="
-              text-2xl
-              font-extrabold
-              tracking-tight
-              text-white
-              sm:text-3xl
-            "
+            class="text-2xl font-extrabold tracking-tight text-white  sm:text-3xl"
           >
             {{ product.name }}
           </h1>
@@ -135,23 +145,10 @@
                       <div
                         v-else
                         aria-hidden="true"
-                        class="
-                          absolute
-                          border-2 border-gray-200
-                          rounded-md
-                          pointer-events-none
-                          -inset-px
-                        "
+                        class="absolute border-2 border-gray-200 rounded-md pointer-events-none  -inset-px"
                       >
                         <svg
-                          class="
-                            absolute
-                            inset-0
-                            w-full
-                            h-full
-                            text-gray-200
-                            stroke-2
-                          "
+                          class="absolute inset-0 w-full h-full text-gray-200 stroke-2 "
                           viewBox="0 0 100 100"
                           preserveAspectRatio="none"
                           stroke="currentColor"
@@ -171,22 +168,7 @@
               </RadioGroup>
             </div>
             <button
-              class="
-                flex
-                items-center
-                justify-center
-                w-full
-                px-8
-                py-3
-                mt-10
-                text-base
-                font-medium
-                text-gray-900
-                bg-white
-                row-span-full
-                rounded-3xl
-                hover:bg-gray-300
-              "
+              class="flex items-center justify-center w-full px-8 py-3 mt-10 text-base font-medium text-gray-900 bg-white  row-span-full rounded-3xl hover:bg-gray-300"
               type="button"
             >
               <a class="pr-2">Add to Bag</a>
@@ -211,16 +193,7 @@
         </div>
 
         <div
-          class="
-            py-10
-            lg:pt-6
-            lg:pb-16
-            lg:col-start-1
-            lg:col-span-2
-            lg:border-r
-            lg:border-gray-200
-            lg:pr-8
-          "
+          class="py-10  lg:pt-6 lg:pb-16 lg:col-start-1 lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8"
         >
           <!-- Description and details -->
           <div>
@@ -228,30 +201,6 @@
 
             <div class="space-y-6">
               <p class="text-base text-white">{{ product.description }}</p>
-            </div>
-          </div>
-
-          <div class="mt-10">
-            <h3 class="text-sm font-medium text-white">Highlights</h3>
-
-            <div class="mt-4">
-              <ul role="list" class="pl-4 space-y-2 text-sm list-disc">
-                <li
-                  v-for="highlight in product.highlights"
-                  :key="highlight"
-                  class="text-gray-200"
-                >
-                  <span class="text-gray-300">{{ highlight }}</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="mt-10">
-            <h2 class="text-sm font-medium text-white">Details</h2>
-
-            <div class="mt-4 space-y-6">
-              <p class="text-sm text-gray-300">{{ product.details }}</p>
             </div>
           </div>
         </div>
@@ -268,12 +217,22 @@ import { Product } from "../types/api";
 import { useRoute } from "vue-router";
 import { computed } from "vue";
 import { defineComponent } from "@vue/runtime-core";
+import { Swiper, SwiperSlide } from "swiper/vue";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import SwiperCore, { Navigation, Pagination } from "swiper";
+
+SwiperCore.use([Navigation]);
+SwiperCore.use([Pagination]);
 
 export default defineComponent({
   components: {
     RadioGroup,
     RadioGroupLabel,
     RadioGroupOption,
+    Swiper,
+    SwiperSlide,
   },
   data() {
     return {
@@ -288,7 +247,8 @@ export default defineComponent({
       "/api/product/" + name.value
     );
 
-    this.product = response.data;
+    this.product = response.data.data;
+    console.log(this.product);
     this.isLoading = false;
   },
 });

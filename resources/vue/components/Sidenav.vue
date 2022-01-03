@@ -9,7 +9,9 @@
       class="flex flex-row my-6 ml-6"
     >
       <img :src="category.icon_url" class="object-scale-down h-8 mr-4" />
-      <p class="my-1 text-left">{{ category.name }}</p>
+      <a class="my-1 text-left" :href="'#' + category.name">{{
+        category.name
+      }}</a>
     </div>
   </div>
 </template>
