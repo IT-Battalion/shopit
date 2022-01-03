@@ -3,7 +3,7 @@
     <div
       class="w-full overflow-hidden rounded-md  bg-backgroundColor min-h-80 aspect-w-1 group-hover:backgroundOpacity-80 aspect-h-1 lg:h-80 lg:aspect-none"
     >
-      <router-link to="ProductOverview">
+      <router-link :to="{ name: 'product', params: { name: product?.name } }">
         <img
           :src="product?.imgSrc"
           :alt="product?.name"
@@ -83,15 +83,11 @@
 
 <script lang="ts">
 import { Product } from "../types/api";
-import { InformationCircleIcon } from "@heroicons/vue/outline";
 
 export default {
   props: {
     product: Object as () => Product,
     isLoading: Boolean,
-  },
-  components: {
-    InformationCircleIcon,
   },
 };
 </script>

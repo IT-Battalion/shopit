@@ -255,6 +255,9 @@
 <script lang="ts">
 import { ref } from "vue";
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
+import { Product } from "../types/api";
+import { useRoute } from "vue-router";
+import { computed } from "vue";
 
 const product = {
   name: "Basic Tee 6-Pack",
@@ -308,23 +311,29 @@ const product = {
   details:
     'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
 };
-const reviews = { href: "#", average: 4, totalCount: 117 };
 
 export default {
+  props: {
+    product: Object as () => Product,
+    isLoading: Boolean,
+  },
   components: {
     RadioGroup,
     RadioGroupLabel,
     RadioGroupOption,
   },
   setup() {
+    const route = useRoute();
     const selectedColor = ref(product.colors[0]);
     const selectedSize = ref(product.sizes[2]);
 
+    const name = computed(() => route.params.name);
+
     return {
       product,
-      reviews,
       selectedColor,
       selectedSize,
+      name,
     };
   },
 };
