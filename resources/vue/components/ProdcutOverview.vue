@@ -1,45 +1,10 @@
 <template>
   <div>
-    <div class="pt-6">
+    <div>
       <!-- Image gallery -->
-      <div
-        class="max-w-2xl mx-auto mt-6  sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-3 lg:gap-x-8"
-      >
-        <div
-          class="hidden overflow-hidden rounded-lg  aspect-w-3 aspect-h-4 lg:block"
-        >
-          <img
-            :src="product.images[0].src"
-            :alt="product.images[0].alt"
-            class="object-cover object-center w-full h-full"
-          />
-        </div>
-        <div class="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-          <div class="overflow-hidden rounded-lg aspect-w-3 aspect-h-2">
-            <img
-              :src="product.images[1].src"
-              :alt="product.images[1].alt"
-              class="object-cover object-center w-full h-full"
-            />
-          </div>
-          <div class="overflow-hidden rounded-lg aspect-w-3 aspect-h-2">
-            <img
-              :src="product.images[2].src"
-              :alt="product.images[2].alt"
-              class="object-cover object-center w-full h-full"
-            />
-          </div>
-        </div>
-        <div
-          class=" aspect-w-4 aspect-h-5 sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4"
-        >
-          <img
-            :src="product.images[3].src"
-            :alt="product.images[3].alt"
-            class="object-cover object-center w-full h-full"
-          />
-        </div>
-      </div>
+      <swiper :navigation="true" class="w-1/2 h-full">
+        <swiper-slide></swiper-slide>
+      </swiper>
 
       <!-- Product info -->
       <div
@@ -62,7 +27,13 @@
       >
         <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
           <h1
-            class="text-2xl font-extrabold tracking-tight text-white  sm:text-3xl"
+            class="
+              text-2xl
+              font-extrabold
+              tracking-tight
+              text-white
+              sm:text-3xl
+            "
           >
             {{ product.name }}
           </h1>
@@ -164,10 +135,23 @@
                       <div
                         v-else
                         aria-hidden="true"
-                        class="absolute border-2 border-gray-200 rounded-md pointer-events-none  -inset-px"
+                        class="
+                          absolute
+                          border-2 border-gray-200
+                          rounded-md
+                          pointer-events-none
+                          -inset-px
+                        "
                       >
                         <svg
-                          class="absolute inset-0 w-full h-full text-gray-200 stroke-2 "
+                          class="
+                            absolute
+                            inset-0
+                            w-full
+                            h-full
+                            text-gray-200
+                            stroke-2
+                          "
                           viewBox="0 0 100 100"
                           preserveAspectRatio="none"
                           stroke="currentColor"
@@ -187,7 +171,22 @@
               </RadioGroup>
             </div>
             <button
-              class="flex items-center justify-center w-full px-8 py-3 mt-10 text-base font-medium text-gray-900 bg-white  row-span-full rounded-3xl hover:bg-gray-300"
+              class="
+                flex
+                items-center
+                justify-center
+                w-full
+                px-8
+                py-3
+                mt-10
+                text-base
+                font-medium
+                text-gray-900
+                bg-white
+                row-span-full
+                rounded-3xl
+                hover:bg-gray-300
+              "
               type="button"
             >
               <a class="pr-2">Add to Bag</a>
@@ -212,7 +211,16 @@
         </div>
 
         <div
-          class="py-10  lg:pt-6 lg:pb-16 lg:col-start-1 lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8"
+          class="
+            py-10
+            lg:pt-6
+            lg:pb-16
+            lg:col-start-1
+            lg:col-span-2
+            lg:border-r
+            lg:border-gray-200
+            lg:pr-8
+          "
         >
           <!-- Description and details -->
           <div>
@@ -253,88 +261,35 @@
 </template>
 
 <script lang="ts">
+import { AxiosResponse } from "axios";
 import { ref } from "vue";
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
 import { Product } from "../types/api";
 import { useRoute } from "vue-router";
 import { computed } from "vue";
+import { defineComponent } from "@vue/runtime-core";
 
-const product = {
-  name: "Basic Tee 6-Pack",
-  price: "$192",
-  href: "#",
-  breadcrumbs: [
-    { id: 1, name: "Men", href: "#" },
-    { id: 2, name: "Clothing", href: "#" },
-  ],
-  images: [
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-secondary-product-shot.jpg",
-      alt: "Two each of gray, white, and black shirts laying flat.",
-    },
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg",
-      alt: "Model wearing plain black basic tee.",
-    },
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg",
-      alt: "Model wearing plain gray basic tee.",
-    },
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg",
-      alt: "Model wearing plain white basic tee.",
-    },
-  ],
-  colors: [
-    { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
-    { name: "Gray", class: "bg-gray-200", selectedClass: "ring-gray-400" },
-    { name: "Black", class: "bg-gray-900", selectedClass: "ring-gray-900" },
-  ],
-  sizes: [
-    { name: "XXS", inStock: false },
-    { name: "XS", inStock: true },
-    { name: "S", inStock: true },
-    { name: "M", inStock: true },
-    { name: "L", inStock: true },
-    { name: "XL", inStock: true },
-    { name: "2XL", inStock: true },
-    { name: "3XL", inStock: true },
-  ],
-  description:
-    'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
-  highlights: [
-    "Hand cut and sewn locally",
-    "Dyed with our proprietary colors",
-    "Pre-washed & pre-shrunk",
-    "Ultra-soft 100% cotton",
-  ],
-  details:
-    'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
-};
-
-export default {
-  props: {
-    product: Object as () => Product,
-    isLoading: Boolean,
-  },
+export default defineComponent({
   components: {
     RadioGroup,
     RadioGroupLabel,
     RadioGroupOption,
   },
-  setup() {
-    const route = useRoute();
-    const selectedColor = ref(product.colors[0]);
-    const selectedSize = ref(product.sizes[2]);
-
-    const name = computed(() => route.params.name);
-
+  data() {
     return {
-      product,
-      selectedColor,
-      selectedSize,
-      name,
+      isLoading: true,
+      product: [] as any as Product,
     };
   },
-};
+  async created() {
+    const route = useRoute();
+    const name = computed(() => route.params.name);
+    let response: AxiosResponse<Product> = await window.axios.get(
+      "/api/product/" + name.value
+    );
+
+    this.product = response.data;
+    this.isLoading = false;
+  },
+});
 </script>
