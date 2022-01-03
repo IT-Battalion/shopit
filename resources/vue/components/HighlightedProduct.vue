@@ -6,12 +6,14 @@
     <div
       class="absolute w-2/3  rounded-r-3xl left-48 top-12 h-3/4 bg-gradient-to-r from-purple-200 to-blue-400"
     >
-      <swiper :navigation="true" class="w-full h-full">
-        <swiper-slide class="text-center text-black" v-if="!isLoading">
+      <swiper :navigation="true" class="w-full h-full" v-if="!isLoading">
+        <swiper-slide
+          class="text-center text-black"
+          v-for="highlightedProduct in highlightedProducts"
+          :key="highlightedProduct.name"
+        >
           <div
             class="grid items-center w-full h-full grid-cols-2 grid-rows-4  gap-x-6 justify-items-center"
-            v-for="highlightedProduct in highlightedProducts"
-            :key="highlightedProduct.name"
           >
             <div class="w-full h-full row-span-full">
               <img
@@ -52,7 +54,9 @@
             </button>
           </div>
         </swiper-slide>
-        <swiper-slide v-else>
+      </swiper>
+      <swiper class="w-full h-full" v-else>
+        <swiper-slide>
           <div
             class="grid items-center w-full h-full grid-cols-2 grid-rows-4  gap-x-6"
           >

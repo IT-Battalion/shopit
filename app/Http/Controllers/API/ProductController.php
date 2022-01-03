@@ -34,7 +34,7 @@ class ProductController extends Controller
                             'description' => $product->description,
                             'price' => $product->price,
                             'amount' => $product->available,
-                            'imgSrc' => route('product-image', [ 'id' => $thumbnail->id ]),
+                            'imgSrc' => route('product-image', ['id' => $thumbnail->id]),
                             'tax' => $product->tax,
                             'attributes' => $product->productAttributes->map(function (ProductAttribute $attribute) {
                                 return [
@@ -69,7 +69,7 @@ class ProductController extends Controller
      */
     public function show(string $nameOrId)
     {
-        $product = Product::whereId($nameOrId) ?? Product::whereName($nameOrId)->first();
+        $product = Product::whereId($nameOrId)->first() ?? Product::whereName($nameOrId)->first();
 
         if (is_null($product)) {
             return $this->error(404, "Not found");
