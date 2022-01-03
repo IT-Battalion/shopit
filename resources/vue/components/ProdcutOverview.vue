@@ -1,44 +1,6 @@
 <template>
-  <div class="bg-white">
+  <div>
     <div class="pt-6">
-      <nav aria-label="Breadcrumb">
-        <ol
-          role="list"
-          class="flex items-center max-w-2xl px-4 mx-auto space-x-2  sm:px-6 lg:max-w-7xl lg:px-8"
-        >
-          <li v-for="breadcrumb in product.breadcrumbs" :key="breadcrumb.id">
-            <div class="flex items-center">
-              <a
-                :href="breadcrumb.href"
-                class="mr-2 text-sm font-medium text-gray-900"
-              >
-                {{ breadcrumb.name }}
-              </a>
-              <svg
-                width="16"
-                height="20"
-                viewBox="0 0 16 20"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-                class="w-4 h-5 text-gray-300"
-              >
-                <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
-              </svg>
-            </div>
-          </li>
-          <li class="text-sm">
-            <a
-              :href="product.href"
-              aria-current="page"
-              class="font-medium text-gray-500 hover:text-gray-600"
-            >
-              {{ product.name }}
-            </a>
-          </li>
-        </ol>
-      </nav>
-
       <!-- Image gallery -->
       <div
         class="max-w-2xl mx-auto mt-6  sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-3 lg:gap-x-8"
@@ -100,7 +62,7 @@
       >
         <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
           <h1
-            class="text-2xl font-extrabold tracking-tight text-gray-900  sm:text-3xl"
+            class="text-2xl font-extrabold tracking-tight text-white  sm:text-3xl"
           >
             {{ product.name }}
           </h1>
@@ -109,12 +71,12 @@
         <!-- Options -->
         <div class="mt-4 lg:mt-0 lg:row-span-3">
           <h2 class="sr-only">Product information</h2>
-          <p class="text-3xl text-gray-900">{{ product.price }}</p>
+          <p class="text-3xl text-white">{{ product.price }}</p>
 
           <form class="mt-10">
             <!-- Colors -->
             <div>
-              <h3 class="text-sm font-medium text-gray-900">Color</h3>
+              <h3 class="text-sm font-medium text-white">Color</h3>
 
               <RadioGroup v-model="selectedColor" class="mt-4">
                 <RadioGroupLabel class="sr-only">
@@ -143,7 +105,7 @@
                         aria-hidden="true"
                         :class="[
                           color.class,
-                          'h-8 w-8 border border-black border-opacity-10 rounded-full',
+                          'h-8 w-8 border border-white border-opacity-10 rounded-full',
                         ]"
                       />
                     </div>
@@ -155,10 +117,10 @@
             <!-- Sizes -->
             <div class="mt-10">
               <div class="flex items-center justify-between">
-                <h3 class="text-sm font-medium text-gray-900">Size</h3>
+                <h3 class="text-sm font-medium text-white">Size</h3>
                 <a
                   href="#"
-                  class="text-sm font-medium text-indigo-600  hover:text-indigo-500"
+                  class="text-sm font-medium text-gray-400 hover:text-gray-700"
                   >Size guide</a
                 >
               </div>
@@ -181,10 +143,10 @@
                     <div
                       :class="[
                         size.inStock
-                          ? 'bg-white shadow-sm text-gray-900 cursor-pointer'
-                          : 'bg-gray-50 text-gray-200 cursor-not-allowed',
-                        active ? 'ring-2 ring-indigo-500' : '',
-                        'group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6',
+                          ? 'shadow-sm text-gray-300 cursor-pointer'
+                          : 'text-gray-900 cursor-not-allowed',
+                        active ? 'ring-2 ring-white' : '',
+                        'group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-400 focus:outline-none sm:flex-1 sm:py-6',
                       ]"
                     >
                       <RadioGroupLabel as="p">
@@ -224,12 +186,27 @@
                 </div>
               </RadioGroup>
             </div>
-
             <button
-              type="submit"
-              class="flex items-center justify-center w-full px-8 py-3 mt-10 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md  hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              class="flex items-center justify-center w-full px-8 py-3 mt-10 text-base font-medium text-gray-900 bg-white  row-span-full rounded-3xl hover:bg-gray-300"
+              type="button"
             >
-              Add to bag
+              <a class="pr-2">Add to Bag</a>
+              <svg
+                fill="#000"
+                version="1.1"
+                viewBox="0 0 100 100"
+                xmlns="http://www.w3.org/2000/svg"
+                class="object-scale-down h-8"
+              >
+                <g>
+                  <path
+                    d="m48.359 42.656c-0.09375-0.89062-0.15625-1.7969-0.15625-2.7188s0.046875-1.8438 0.15625-2.75h-25.078l-2.125-8.0625c-0.3125-1.2031-1.4062-2.0312-2.6406-2.0312h-9.5312c-1.5156 0-2.7344 1.2188-2.7344 2.7344s1.2188 2.7344 2.7344 2.7344h7.4219l2.125 8.0625s0 0.015625 0.015625 0.015625l6.6406 25.609c0.3125 1.2031 1.4062 2.0312 2.6562 2.0312h0.32812c-0.39062 0.98438-0.60938 2.0469-0.60938 3.1719 0 4.75 3.875 8.625 8.625 8.625s8.625-3.875 8.625-8.625c0-1.125-0.21875-2.1875-0.60938-3.1719h6.5c-0.39062 0.98438-0.60938 2.0469-0.60938 3.1719 0 4.75 3.875 8.625 8.625 8.625s8.625-3.875 8.625-8.625c0-1.125-0.21875-2.1875-0.60938-3.1719h0.32812c1.25 0 2.3438-0.82812 2.6562-2.0312l0.28125-1.1094c-2.6562-0.375-5.1719-1.1875-7.4844-2.3281-7.7031-3.75-13.219-11.281-14.156-20.156zm-9.0156 28.812c0 1.7344-1.4062 3.1562-3.1562 3.1562-1.7344 0-3.1562-1.4219-3.1562-3.1562 0-1.75 1.4219-3.1719 3.1562-3.1719 1.75 0 3.1562 1.4219 3.1562 3.1719zm22.516 0c0 1.7344-1.4219 3.1562-3.1562 3.1562-1.75 0-3.1562-1.4219-3.1562-3.1562 0-1.75 1.4062-3.1719 3.1562-3.1719 1.7344 0 3.1562 1.4219 3.1562 3.1719z"
+                  />
+                  <path
+                    d="m73.703 19.906c-11.047 0-20.031 9-20.031 20.047s8.9844 20.031 20.031 20.031c11.062 0 20.031-8.9844 20.031-20.031 0-11.062-8.9688-20.047-20.031-20.047zm5.9531 22.766h-3.2188v3.2188c0 1.5-1.2188 2.7344-2.7344 2.7344-1.5 0-2.7344-1.2344-2.7344-2.7344v-3.2188h-3.2031c-1.5156 0-2.7344-1.2344-2.7344-2.7344 0-1.5156 1.2188-2.7344 2.7344-2.7344h3.2031v-3.2188c0-1.5156 1.2344-2.7344 2.7344-2.7344 1.5156 0 2.7344 1.2188 2.7344 2.7344v3.2188h3.2188c1.5156 0 2.7344 1.2188 2.7344 2.7344-0.015625 1.5-1.2188 2.7344-2.7344 2.7344z"
+                  />
+                </g>
+              </svg>
             </button>
           </form>
         </div>
@@ -242,31 +219,31 @@
             <h3 class="sr-only">Description</h3>
 
             <div class="space-y-6">
-              <p class="text-base text-gray-900">{{ product.description }}</p>
+              <p class="text-base text-white">{{ product.description }}</p>
             </div>
           </div>
 
           <div class="mt-10">
-            <h3 class="text-sm font-medium text-gray-900">Highlights</h3>
+            <h3 class="text-sm font-medium text-white">Highlights</h3>
 
             <div class="mt-4">
               <ul role="list" class="pl-4 space-y-2 text-sm list-disc">
                 <li
                   v-for="highlight in product.highlights"
                   :key="highlight"
-                  class="text-gray-400"
+                  class="text-gray-200"
                 >
-                  <span class="text-gray-600">{{ highlight }}</span>
+                  <span class="text-gray-300">{{ highlight }}</span>
                 </li>
               </ul>
             </div>
           </div>
 
           <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">Details</h2>
+            <h2 class="text-sm font-medium text-white">Details</h2>
 
             <div class="mt-4 space-y-6">
-              <p class="text-sm text-gray-600">{{ product.details }}</p>
+              <p class="text-sm text-gray-300">{{ product.details }}</p>
             </div>
           </div>
         </div>

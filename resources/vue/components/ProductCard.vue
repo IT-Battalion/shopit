@@ -3,13 +3,13 @@
     <div
       class="w-full overflow-hidden rounded-md  bg-backgroundColor min-h-80 aspect-w-1 group-hover:backgroundOpacity-80 aspect-h-1 lg:h-80 lg:aspect-none"
     >
-      <a>
+      <router-link to="ProductOverview">
         <img
           :src="product?.imgSrc"
           :alt="product?.name"
           class="object-cover object-center w-full h-full lg:w-full lg:h-full"
         />
-      </a>
+      </router-link>
     </div>
     <div class="grid grid-cols-2 grid-rows-2 justify-items-start">
       <h3 class="col-span-1 mt-2 text-lg text-white">
