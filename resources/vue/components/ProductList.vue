@@ -5,10 +5,16 @@
       v-for="(products, categoryName) in categories"
       :key="categoryName"
     >
-      <h2 class="text-2xl font-extrabold tracking-tight text-white">
-        {{ categoryName }}
-      </h2>
-
+      <div v-if="!isLoading">
+        <h2 class="text-2xl font-extrabold tracking-tight text-white">
+          {{ categoryName }}
+        </h2>
+      </div>
+      <div v-else>
+        <h2 class="w-1/4 text-2xl font-extrabold tracking-tight text-white">
+          <Skeletor :pill="true" />
+        </h2>
+      </div>
       <div
         class="grid grid-cols-1 mt-6  gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8"
       >
@@ -17,7 +23,7 @@
           :key="product.name"
           class="relative group"
         >
-          <ProductCard :product="product" />
+          <ProductCard :product="product" :isLoading="isLoading" />
         </div>
       </div>
     </div>
@@ -42,8 +48,7 @@ export default defineComponent({
       "/api/product"
     );
     this.categories = response.data;
-
-    console.log(this.categories);
+    this.isLoading = false;
   },
   components: {
     ProductCard,
