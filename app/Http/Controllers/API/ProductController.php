@@ -8,9 +8,13 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use App\Models\ProductAttribute;
 use App\Models\ProductCategory;
+use App\Models\ProductImage;
+use App\Traits\ApiResponder;
 
 class ProductController extends Controller
 {
+    use ApiResponder;
+
     /**
      * Display a listing of the resource.
      *
@@ -61,11 +65,34 @@ class ProductController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Product $product)
+    public function show(string $nameOrId)
     {
-        //
+        $product = Product::whereId($nameOrId) ?? Product::whereName($nameOrId)->first();
+
+        if (is_null($product)) {
+            return $this->error(404, "Not found");
+        }
+
+        return $this->success([
+            'name' => $product->name,
+            'description' => $product->description,
+            'price' => $product->price,
+            'tax' => $product->tax,
+            'available' => $product->available,
+            'images' => $product->images->map(function (ProductImage $image) {
+                return [
+                    'id' => $image->id,
+                ];
+            }),
+            'attributes' => $product->productAttributes->map(function (ProductAttribute $attribute) {
+                return [
+                    'type' => $attribute->type,
+                    'values_available' => $attribute->values_available,
+                ];
+            }),
+        ]);
     }
 
     /**

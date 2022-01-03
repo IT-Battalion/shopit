@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,4 +20,6 @@ Route::get('/user', function (Request $request) {
 });
 
 Route::apiResource('/highlighted', HighlightedProductController::class);
-Route::apiResource('/product', ProductController::class);
+Route::get('/product/', [ProductController::class, 'index']);
+Route::get('/product/{name}', [ProductController::class, 'show']);
+//Route::apiResource('/product', ProductController::class);
