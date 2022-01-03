@@ -56,7 +56,7 @@ test('create order with products in shopping cart', function () {
             expect($order_product_attribute->exists())->toBeTrue();
         }
     }
-    expect($user->shopping_cart()->count() === 0)->toBeTrue();
+    expect($user->shopping_cart()->count())->toBe(0);
 });
 
 test('mark order as paid', function () {

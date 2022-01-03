@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
  * App\Models\CouponCode
  *
  * @property int $id
- * @property int $discount
+ * @property string $discount
  * @property bool $enabled
  * @property Carbon|null $enabled_until
  * @property string $code
@@ -59,7 +59,9 @@ class CouponCode extends Model
         'enabled_until',
     ];
 
-    protected $casts = [];
+    protected $casts = [
+        'discount' => 'string',
+    ];
 
     public function created_by(): BelongsTo
     {

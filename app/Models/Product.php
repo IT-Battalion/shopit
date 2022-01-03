@@ -20,8 +20,8 @@ use Illuminate\Support\Facades\Auth;
  * @property string $name
  * @property string $description
  * @property int|null $thumbnail_id
- * @property float $price
- * @property float $tax
+ * @property Money $price
+ * @property string $tax
  * @property int $available
  * @property int $created_by_id
  * @property int $updated_by_id
@@ -75,7 +75,10 @@ class Product extends Model
         'thumbnail_id',
     ];
 
-    protected $casts = [];
+    protected $casts = [
+        'price' => Money::class,
+        'tax' => 'string',
+    ];
 
     public function thumbnail(): BelongsTo
     {

@@ -11,6 +11,7 @@
 |
 */
 
+use App\Models\Money;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Support\Collection;
@@ -50,7 +51,7 @@ function saturateShoppingCart(User $user): Collection
 
     for ($i = 0; $i < 2; $i++) {
         $product = Product::factory()
-            ->state(['name' => "TestProduct$i", 'price' => '20', 'tax' => .20])
+            ->state(['name' => "TestProduct$i", 'price' => new Money('20'), 'tax' => .20])
             ->create();
         $products->add($product);
     }

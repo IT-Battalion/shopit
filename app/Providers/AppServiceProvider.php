@@ -60,7 +60,7 @@ class AppServiceProvider extends ServiceProvider
         $urlGenerator->forceRootUrl($root);
 
         // Set bcmath scale globally
-        bcscale(config('shop.money_decimal_points'));
-        ini_set('precision', config('shop.money_decimal_points') * 2);
+        bcscale(config('shop.money.decimal_points'));
+        ini_set('precision', config('shop.money.decimal_points') * 2);
     }
 }
