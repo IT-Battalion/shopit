@@ -3,7 +3,7 @@ import Login from "../views/Login.vue";
 import Products from "../views/Products.vue";
 import Main from "../views/layout/Main.vue";
 import { user } from "../stores/user";
-import ProductOverview from "../components/ProdcutOverview.vue"
+import ProductOverview from "../components/ProductOverview.vue"
 
 const routes: Array<RouteRecordRaw> = [
   {

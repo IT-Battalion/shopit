@@ -1,26 +1,30 @@
 <template>
   <div>
     <div>
-      <!-- Image gallery -->
-      <swiper
-        :navigation="true"
-        :pagination="{
-          dynamicBullets: true,
-        }"
-        class="w-1/2 h-full"
-      >
-        <swiper-slide
-          class="w-full h-full"
-          v-for="image in product.images"
-          :key="image"
+      <div v-if="!isLoading">
+        <swiper
+          :navigation="true"
+          :pagination="{
+            dynamicBullets: true,
+          }"
+          class="w-1/2 h-full"
         >
-          <img
-            :src="'/product-image/' + image.id"
-            :alt="'productimage'"
-            class="object-cover w-full h-full"
-          />
-        </swiper-slide>
-      </swiper>
+          <swiper-slide
+            class="w-full h-full"
+            v-for="image in product.images"
+            :key="image"
+          >
+            <img
+              :src="'/product-image/' + image.id"
+              :alt="'productimage'"
+              class="object-cover w-full h-full"
+            />
+          </swiper-slide>
+        </swiper>
+      </div>
+      <div class="w-96 h-96 mx-auto" v-else>
+        <Skeletor :pill="false" as="div" height="100%" />
+      </div>
 
       <!-- Product info -->
       <div
@@ -43,16 +47,31 @@
       >
         <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
           <h1
-            class="text-2xl font-extrabold tracking-tight text-white  sm:text-3xl"
+            class="
+              text-2xl
+              font-extrabold
+              tracking-tight
+              text-white
+              sm:text-3xl
+            "
+            v-if="!isLoading"
           >
             {{ product.name }}
           </h1>
+          <div v-else class="h-10">
+            <Skeletor :pill="true" />
+          </div>
         </div>
 
         <!-- Options -->
         <div class="mt-4 lg:mt-0 lg:row-span-3">
           <h2 class="sr-only">Product information</h2>
-          <p class="text-3xl text-white">{{ product.price }}</p>
+          <p class="text-3xl text-white" v-if="!isLoading">
+            {{ product.price }}
+          </p>
+          <div class="text-3xl" v-else>
+            <Skeletor :pill="true" />
+          </div>
 
           <form class="mt-10">
             <!-- Colors -->
@@ -145,10 +164,23 @@
                       <div
                         v-else
                         aria-hidden="true"
-                        class="absolute border-2 border-gray-200 rounded-md pointer-events-none  -inset-px"
+                        class="
+                          absolute
+                          border-2 border-gray-200
+                          rounded-md
+                          pointer-events-none
+                          -inset-px
+                        "
                       >
                         <svg
-                          class="absolute inset-0 w-full h-full text-gray-200 stroke-2 "
+                          class="
+                            absolute
+                            inset-0
+                            w-full
+                            h-full
+                            text-gray-200
+                            stroke-2
+                          "
                           viewBox="0 0 100 100"
                           preserveAspectRatio="none"
                           stroke="currentColor"
@@ -168,7 +200,22 @@
               </RadioGroup>
             </div>
             <button
-              class="flex items-center justify-center w-full px-8 py-3 mt-10 text-base font-medium text-gray-900 bg-white  row-span-full rounded-3xl hover:bg-gray-300"
+              class="
+                flex
+                items-center
+                justify-center
+                w-full
+                px-8
+                py-3
+                mt-10
+                text-base
+                font-medium
+                text-gray-900
+                bg-white
+                row-span-full
+                rounded-3xl
+                hover:bg-gray-300
+              "
               type="button"
             >
               <a class="pr-2">Add to Bag</a>
@@ -193,14 +240,34 @@
         </div>
 
         <div
-          class="py-10  lg:pt-6 lg:pb-16 lg:col-start-1 lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8"
+          class="
+            py-10
+            lg:pt-6
+            lg:pb-16
+            lg:col-start-1
+            lg:col-span-2
+            lg:border-r
+            lg:border-gray-200
+            lg:pr-8
+          "
         >
           <!-- Description and details -->
           <div>
-            <h3 class="sr-only">Description</h3>
-
             <div class="space-y-6">
-              <p class="text-base text-white">{{ product.description }}</p>
+              <p class="text-base text-white" v-if="!isLoading">
+                {{ product.description }}
+              </p>
+              <div v-else>
+                <div class="w-2/3">
+                  <Skeletor :pill="true" />
+                </div>
+                <div class="w-1/3">
+                  <Skeletor :pill="true" />
+                </div>
+                <div class="w-1/2">
+                  <Skeletor :pill="true" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
