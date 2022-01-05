@@ -21,7 +21,6 @@ class ProductController extends Controller
     {
         $products = ProductCategory::all()
             ->mapWithKeys(function (ProductCategory $category) {
-
                 return [
                     $category->name => $category->products->map(function (Product $product) {
                         $thumbnail = $product->thumbnail ?? $product->images->first();

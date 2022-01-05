@@ -42,15 +42,34 @@ class ProductAttributeFactory extends Factory
                     'width' => $this->faker->randomNumber(3) . 'cm',
                     'height' => $this->faker->randomNumber(3) . 'cm',
                     'depth' => $this->faker->randomNumber(3) . 'cm',
+                ],
+                [
+                    'width' => $this->faker->randomNumber(3) . 'cm',
+                    'height' => $this->faker->randomNumber(3) . 'cm',
+                    'depth' => $this->faker->randomNumber(3) . 'cm',
+                ],
+                [
+                    'width' => $this->faker->randomNumber(3) . 'cm',
+                    'height' => $this->faker->randomNumber(3) . 'cm',
+                    'depth' => $this->faker->randomNumber(3) . 'cm',
                 ]
             ]),
             AttributeType::VOLUME => json_encode([
                 '0.5l', '0.6l', '1l',
             ]),
             AttributeType::COLOR => json_encode([
-                'Blau:#0000ff',
-                'Rot:#ff0000',
-                'Grün:#00ff00',
+                [
+                    'name' => 'Blau',
+                    'color' => '#0000ff',
+                ],
+                [
+                    'name' => 'Rot',
+                    'color' => '#ff0000',
+                ],
+                [
+                    'name' => 'Grün',
+                    'color' => '#00ff00',
+                ]
             ]),
             default => '',
         };

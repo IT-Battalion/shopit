@@ -27,7 +27,7 @@ class OrderProductAttributeFactory extends Factory
         return [
             'type' => $this->faker->randomElement(AttributeType::getValues()),
             'values_chosen' => function (array $attributes) {
-                return self::available_values($attributes);
+                return self::chosen_values($attributes);
             },
             'order_product_id' => OrderProduct::inRandomOrder()
                 ->first()
@@ -35,7 +35,7 @@ class OrderProductAttributeFactory extends Factory
         ];
     }
 
-    private function available_values(array $attributes) {
-        return ProductAttribute::factory()->available_values($attributes);
+    private function chosen_values(array $attributes) {
+        return collect(ProductAttribute::factory()->available_values($attributes))->random();
     }
 }
