@@ -1,8 +1,8 @@
-import { AxiosStatic } from "axios";
+import { AxiosInstance, default as axios } from "axios";
 
 declare global {
     interface Window {
-        axios: AxiosStatic,
+        axios: AxiosInstance,
         _: LoDashStatic,
         pusher: Pusher,
         echo: Echo,
@@ -18,15 +18,20 @@ window._ = require('lodash');
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = require('axios');
-
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios = axios.create({
+    headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+    },
+    baseURL: '/api'
+});
 
 window.axios.interceptors.response.use(res => res, err => {
     if (err.response.status === 401) {
         redirectToLogin().then(r => console.log(r));
         return Promise.reject(err);
     }
+
+    return err;
 });
 
 /**
@@ -98,11 +103,14 @@ const i18n = createI18n({
     locale: userLocale,
 });
 
-createApp(App)
+let createdApp = createApp(App);
+createdApp
     .use(router)
     .use(i18n)
     .use(Vue3Mq, { preset: "tailwind" })
     .component(Skeletor.name, Skeletor)
     .mount("#app");
+
+createdApp.config.globalProperties.$http = window.axios;
 
 loadLocale(i18n, userLocale);

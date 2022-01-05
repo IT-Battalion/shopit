@@ -47,8 +47,8 @@ export default defineComponent({
     };
   },
   async created() {
-    let response: AxiosResponse<{ String: Product[] }> = await window.axios.get(
-      "/api/product"
+    let response: AxiosResponse<{ String: Product[] }> = await this.$http.get(
+      "/product"
     );
     this.categories = response.data;
     this.isLoading = false;

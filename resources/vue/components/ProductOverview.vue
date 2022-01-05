@@ -318,8 +318,8 @@ export default defineComponent({
   async created() {
     const route = useRoute();
     const name = computed(() => route.params.name);
-    let response: AxiosResponse<Product> = await window.axios.get(
-      "/api/product/" + name.value
+    let response: AxiosResponse<Product> = await this.$http.get(
+      "/product/" + name.value
     );
 
     this.product = response.data.data;

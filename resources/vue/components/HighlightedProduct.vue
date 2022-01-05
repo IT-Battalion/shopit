@@ -136,7 +136,7 @@ export default defineComponent({
   },
   async created() {
     let response: AxiosResponse<HighlightedProductData[]> =
-      await window.axios.get("/api/highlighted");
+      await this.$http.get("/highlighted");
 
     this.highlightedProducts = response.data;
     this.isLoading = false;
