@@ -3,7 +3,8 @@ import Login from "../views/Login.vue";
 import Products from "../views/Products.vue";
 import Main from "../views/layout/Main.vue";
 import { user } from "../stores/user";
-import ProductOverview from "../components/ProductOverview.vue"
+import ProductOverview from "../components/ProductOverview.vue";
+import ProfilePage from "../components/ProfilePage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -46,7 +47,21 @@ const routes: Array<RouteRecordRaw> = [
           }
         ]
       },
-    ]
+      {
+        path: "/admin/",
+        name: "Admin",
+        component: () =>
+          import("../views/layout/Admin.vue"),
+
+        children: [
+          {
+            path: "",
+            name: "ProfilePage",
+            component: () => ProfilePage,
+          }
+        ]
+      }
+    ],
   },
 ];
 

@@ -14,6 +14,7 @@
       sidebar
       top-32
       bg-backgroundColor
+      overflow-auto
     "
   >
     <div

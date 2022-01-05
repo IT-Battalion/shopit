@@ -1,7 +1,22 @@
 <template>
   <nav>
     <div
-      class="fixed top-0 z-10 flex items-center justify-between invisible w-screen h-32 px-12 py-4 mx-auto  md:visible bg-backgroundColor"
+      class="
+        fixed
+        top-0
+        z-10
+        flex
+        items-center
+        justify-between
+        invisible
+        w-screen
+        h-32
+        px-12
+        py-4
+        mx-auto
+        md:visible
+        bg-backgroundColor
+      "
     >
       <router-link
         :to="{ name: 'Products' }"
@@ -13,14 +28,28 @@
       <div>
         <ul class="flex text-white">
           <li class="flex flex-row items-center justify-center px-2 py-1 ml-5">
-            <img
-              :src="profilePicture"
-              class="object-scale-down h-12 mr-4 bg-gray-800 rounded-full"
-            /><Menu as="div" class="relative inline-block text-left">
+            <Menu as="div" class="relative inline-block text-left">
               <div>
                 <MenuButton
-                  class="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white rounded-md shadow-sm  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
+                  class="
+                    inline-flex
+                    items-center
+                    justify-center
+                    w-full
+                    px-4
+                    py-2
+                    text-sm
+                    font-medium
+                    text-white
+                    rounded-md
+                    shadow-sm
+                    focus:outline-none focus:ring-2 focus:ring-highlighted
+                  "
                 >
+                  <img
+                    :src="profilePicture"
+                    class="object-scale-down h-12 mr-4 bg-gray-800 rounded-full"
+                  />
                   {{ user.name.value }}
                   <img
                     src="img/dropdown.svg"
@@ -39,9 +68,37 @@
                 leave-to-class="transform scale-95 opacity-0"
               >
                 <MenuItems
-                  class="absolute right-0 w-40 mt-2 origin-top-right rounded-md shadow-lg  ring-1 ring-black ring-opacity-5 focus:outline-none"
+                  class="
+                    absolute
+                    right-0
+                    w-40
+                    mt-2
+                    origin-top-right
+                    rounded-md
+                    shadow-lg
+                    ring-1 ring-black ring-opacity-5
+                    focus:outline-none
+                  "
                 >
-                  <div class="py-1 bg-backgroundColor">
+                  <div class="py-1 bg-gray-900">
+                    <router-link to="/admin">
+                      <MenuItem
+                        v-slot="{ active }"
+                        class="flex flex-row items-center justify-center"
+                      >
+                        <a
+                          href="#"
+                          :class="[
+                            active ? ' text-gray-400' : 'text-white',
+                            'block px-4 py-2 text-sm',
+                          ]"
+                          ><img
+                            src="img/profile.svg"
+                            class="object-scale-down mr-7 h-7"
+                          />Profilseite</a
+                        >
+                      </MenuItem>
+                    </router-link>
                     <MenuItem
                       v-slot="{ active }"
                       class="flex flex-row items-center justify-center"
