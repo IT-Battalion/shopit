@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use App\Traits\ApiResponder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use LdapRecord\Laravel\Auth\ListensForLdapBindFailure;
@@ -22,7 +21,7 @@ class LoginController extends Controller
     |
     */
 
-    use ListensForLdapBindFailure, ApiResponder;
+    use ListensForLdapBindFailure;
 
     /**
      * Where to redirect users after login.
@@ -54,21 +53,21 @@ class LoginController extends Controller
             'password' => $data['password'],
         ];
 
-        if (Auth::attempt($credentials, $data['remember'])) {
-            return $this->success([
-                'redirect_to' => $this->redirectTo,
-                'username' => Auth::user()->username,
-                'name' => Auth::user()->name,
-                'firstname' => Auth::user()->firstname,
-                'lastname' => Auth::user()->lastname,
-                'email' => Auth::user()->email,
-                'employeeType' => Auth::user()->employeeType,
-                'class' => Auth::user()->class,
-                'lang' => Auth::user()->lang,
-                'is_admin' => Auth::user()->is_admin,
-            ], 'Successfully authenticated');
+        if ( ! Auth::attempt($credentials, $data['remember'])) {
+            abort(401);
         }
 
-        return $this->error(401, 'Username or password are invalid');
+        return response()->json([
+            'redirect_to' => $this->redirectTo,
+            'username' => Auth::user()->username,
+            'name' => Auth::user()->name,
+            'firstname' => Auth::user()->firstname,
+            'lastname' => Auth::user()->lastname,
+            'email' => Auth::user()->email,
+            'employeeType' => Auth::user()->employeeType,
+            'class' => Auth::user()->class,
+            'lang' => Auth::user()->lang,
+            'is_admin' => Auth::user()->is_admin,
+        ]);
     }
 }

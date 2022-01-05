@@ -1,5 +1,5 @@
 import {AxiosResponse} from "axios"
-import {ApiResponse, LoginData, LoginResponseData} from "./types/api"
+import {LoginRequestData, LoginResponseData} from "./types/api"
 
 export type User = { name: string; username: string }
 export type UserList = Array<User & { password: string }>
@@ -12,12 +12,12 @@ export async function getUser() {
 
 export async function login(username: string, password: string, stayLoggedIn: boolean): Promise<LoginResponseData> {
     return new Promise<LoginResponseData>((res, rej) => {
-        window.axios.post<LoginData, AxiosResponse<ApiResponse<LoginResponseData>>>('/login', {
+        window.axios.post<LoginRequestData, AxiosResponse<LoginResponseData>>('/login', {
             username: username,
             password: password,
             remember: stayLoggedIn,
         }).then(response => {
-            res(response.data.data);
+            res(response.data);
         }).catch(response => {
             rej(response);
         });

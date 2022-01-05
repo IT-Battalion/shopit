@@ -1,10 +1,4 @@
-export interface ApiResponse<T = any> {
-    status: string,
-    message: string,
-    data: T,
-}
-
-interface LoginData {
+export interface LoginRequestData {
     username: string,
     password: string,
     remember: boolean,

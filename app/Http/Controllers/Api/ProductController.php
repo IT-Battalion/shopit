@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
@@ -9,12 +9,9 @@ use App\Models\Product;
 use App\Models\ProductAttribute;
 use App\Models\ProductCategory;
 use App\Models\ProductImage;
-use App\Traits\ApiResponder;
 
 class ProductController extends Controller
 {
-    use ApiResponder;
-
     /**
      * Display a listing of the resource.
      *
@@ -71,11 +68,9 @@ class ProductController extends Controller
     {
         $product = Product::whereId($nameOrId)->first() ?? Product::whereName($nameOrId)->first();
 
-        if (is_null($product)) {
-            return $this->error(404, "Not found");
-        }
+        abort_if(is_null($product), 404);
 
-        return $this->success([
+        return response()->json([
             'name' => $product->name,
             'description' => $product->description,
             'price' => $product->price,

@@ -322,7 +322,7 @@ export default defineComponent({
       "/product/" + name.value
     );
 
-    this.product = response.data.data;
+    this.product = response.data;
     console.log(this.product);
     this.isLoading = false;
   },
