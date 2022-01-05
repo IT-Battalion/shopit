@@ -16,6 +16,8 @@ export async function login(username: string, password: string, stayLoggedIn: bo
             username: username,
             password: password,
             remember: stayLoggedIn,
+        }, {
+            baseURL: '/',
         }).then(response => {
             res(response.data);
         }).catch(response => {
@@ -25,5 +27,7 @@ export async function login(username: string, password: string, stayLoggedIn: bo
 }
 
 export async function logout(): Promise<void> {
-    return window.axios.post('/logout');
+    return window.axios.post('/logout', undefined, {
+        baseURL: '/',
+    });
 }

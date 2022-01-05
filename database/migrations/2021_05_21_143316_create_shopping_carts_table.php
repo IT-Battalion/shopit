@@ -18,6 +18,7 @@ class CreateShoppingCartsTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignid('product_id')->constrained();
             $table->integer('count');
+            $table->json('values_chosen');
             $table->timestamps();
         });
 

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\CouponCode;
 use App\Models\Product;
+use App\Models\ProductAttribute;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -23,7 +24,12 @@ class ShoppingCartSeeder extends Seeder
                 ->limit(rand(1, ProductSeeder::PRODUCT_COUNT))
                 ->get()
                 ->mapWithKeys(function (Product $product) {
-                    return [$product->id => ['count' => rand(1, 10)]];
+                    return [$product->id => [
+                        'count' => rand(1, 10),
+                        'values_chosen' => $product->productAttributes->map(function (ProductAttribute $attribute) {
+                            return collect(json_decode($attribute->values_available, true))->random();
+                        }),
+                    ]];
                 })
                 ->toArray();
 

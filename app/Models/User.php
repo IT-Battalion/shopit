@@ -164,7 +164,7 @@ class User extends Authenticatable implements LdapAuthenticatable
     {
         return $this
             ->belongsToMany(Product::class, 'shopping_cart')
-            ->withPivot(['count']);
+            ->withPivot(['count', 'values_chosen']);
     }
 
     public function shopping_cart_coupon(): BelongsTo

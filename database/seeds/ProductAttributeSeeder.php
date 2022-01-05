@@ -15,7 +15,7 @@ class ProductAttributeSeeder extends Seeder
     public function run()
     {
         ProductAttribute::factory()
-            ->count(ProductSeeder::PRODUCT_COUNT * 4)
+            ->count(ProductSeeder::PRODUCT_COUNT)
             ->create();
     }
 }
