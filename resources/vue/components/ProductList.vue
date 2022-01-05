@@ -1,13 +1,13 @@
 <template>
   <div class="w-full">
     <div
-      class="max-w-2xl px-4 py-16 mx-auto sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8"
+      class="max-w-2xl px-4 pt-32 mx-auto sm:px-6 lg:max-w-7xl lg:px-8"
       v-for="(products, categoryName) in categories"
       :key="categoryName"
+      :id="categoryName"
     >
       <div v-if="!isLoading">
         <h2
-          :id="categoryName"
           class="text-2xl font-extrabold tracking-tight text-white"
         >
           {{ categoryName }}

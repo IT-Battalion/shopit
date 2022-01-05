@@ -39,6 +39,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Icon whereProvider($value)
  * @method static Builder|Icon whereUpdatedAt($value)
  * @mixin Eloquent
+ * @property-read int|null $product_categories_count
  */
 class Icon extends Model
 {

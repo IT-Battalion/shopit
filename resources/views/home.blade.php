@@ -4,9 +4,9 @@
         window.config = JSON.parse("@php
         use App\Models\ProductCategory;
         use Illuminate\Support\Facades\Auth;
-        
+
         $user = Auth::user();
-        
+
         if (Auth::check()) {
             $userData = [
                 'isLoggedIn' => true,
@@ -25,22 +25,24 @@
                 'isLoggedIn' => false,
             ];
         }
-        
+
         echo str_replace(
             '"',
             '\\"',
             json_encode(
                 [
-                    'categories' => ProductCategory::all()->map(function (ProductCategory $category) {
-                        $icon = $category->icon;
-        
-                        return [
-                            'id' => $category->id,
-                            'name' => $category->name,
-                            'icon_name' => $icon->name,
-                            'icon_url' => route('icon', $icon->id),
-                        ];
-                    }),
+                    'categories' => ProductCategory::nonEmpty()
+                        ->get()
+                        ->map(function (ProductCategory $category) {
+                            $icon = $category->icon;
+
+                            return [
+                                'id' => $category->id,
+                                'name' => $category->name,
+                                'icon_name' => $icon->name,
+                                'icon_url' => route('icon', $icon->id),
+                            ];
+                        }),
                     'user' => $userData,
                 ],
                 JSON_THROW_ON_ERROR,

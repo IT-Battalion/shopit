@@ -107,6 +107,7 @@ use LdapRecord\Models\Model;
  * @mixin Eloquent
  * @method static Builder|User banned()
  * @property-read Admin|null $disabled_by
+ * @method static Builder|Admin whereIsAdmin($value)
  */
 class Admin extends User
 {

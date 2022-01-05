@@ -19,7 +19,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = ProductCategory::all()
+        $products = ProductCategory::nonEmpty()
+            ->get()
             ->mapWithKeys(function (ProductCategory $category) {
                 return [
                     $category->name => $category->products->map(function (Product $product) {
