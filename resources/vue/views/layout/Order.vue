@@ -10,10 +10,10 @@
         justify-center
         w-full
         h-screen
-        md:h-full
-        mt-14
+        md:h-full md:mt-14
       "
     >
+      <OrderProcess />
       <router-view />
     </div>
   </div>
@@ -21,9 +21,11 @@
 
 <script lang="ts">
 import SidenavAdmin from "@/components/SidenavAdmin.vue";
+import OrderProcess from "@/components/OrderProcess.vue";
 export default {
   components: {
     SidenavAdmin,
+    OrderProcess,
   },
 };
 </script>

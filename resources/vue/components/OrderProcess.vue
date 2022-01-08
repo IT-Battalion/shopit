@@ -1,16 +1,13 @@
 <template>
-  <div
-    class="grid justify-center w-full grid-cols-10 grid-rows-2  justify-items-center"
-  >
+  <div class="justify-center w-full flex flex-row items-center gap-5">
     <template v-for="process in orderProcess" :key="process.name">
-      <img
-        :src="process.icon_url"
-        :alt="process.name"
-        class="col-span-1 row-span-1"
-      />
-      <a class="col-span-1 row-span-1 text-xl text-white">{{ process.name }}</a>
-      <hr
-        class="w-20 col-span-1 row-span-2 border-white rounded-full border-6"
+      <div class="flex flex-col items-center">
+        <img :src="process.icon_url" :alt="process.name" />
+        <a class="text-base mt-3 text-white text-center">{{ process.name }}</a>
+      </div>
+      <span
+        class="w-20 h-2 bg-white rounded-full"
+        v-if="process.name !== 'Abgeschlossen'"
       />
     </template>
   </div>

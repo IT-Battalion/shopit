@@ -1,9 +1,13 @@
 <template>
   <div class="bg-backgroundColor">
-    <Navbar />
-    <main class="mt-32 ml-56">
-      <router-view />
-    </main>
+    <mq-responsive target="md+">
+      <Navbar />
+    </mq-responsive>
+    <div class="md:mt-32 md:ml-56 mt-16 mx-16">
+      <main class="w-full">
+        <router-view />
+      </main>
+    </div>
   </div>
 </template>
 

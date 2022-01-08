@@ -5,12 +5,10 @@
       left-0
       flex flex-col
       justify-center
-      invisible
       w-56
       pl-4
       m-0
       text-white
-      md:visible
       sidebar
       top-32
       bg-backgroundColor

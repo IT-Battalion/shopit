@@ -1,9 +1,9 @@
 <template>
   <div class="flex flex-row">
-    <Sidenav />
-    <div
-      class="flex flex-col items-center justify-center w-full h-screen  md:h-full md:w-11/12 mt-14"
-    >
+    <mq-responsive target="md+">
+      <Sidenav />
+    </mq-responsive>
+    <div class="flex flex-col items-center w-full">
       <router-view />
     </div>
   </div>

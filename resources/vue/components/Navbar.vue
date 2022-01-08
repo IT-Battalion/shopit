@@ -8,13 +8,11 @@
         flex
         items-center
         justify-between
-        invisible
         w-screen
         h-32
         px-12
         py-4
         mx-auto
-        md:visible
         bg-backgroundColor
       "
     >
