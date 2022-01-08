@@ -21,7 +21,7 @@
       v-for="category in categories"
       v-bind:key="category.icon_url"
       v-bind:name="category.name"
-      class="flex flex-row my-6 ml-6"
+      class="flex flex-row my-6 ml-6 hover:bg-sidenavSelected rounded-full"
     >
       <img :src="category.icon_url" class="object-scale-down h-8 mr-4" />
       <a class="my-1 text-left" :href="'#' + category.name">{{

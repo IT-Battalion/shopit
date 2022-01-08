@@ -13,6 +13,7 @@ module.exports = {
                 inputLabel: "#9595A2",
                 elevatedColor: "#323c50",
                 linecolor: "#20202B",
+                sidenavSelected: "#383651",
             },
             gridTemplateRows: {
           '[auto,auto,1fr]': 'auto auto 1fr',
