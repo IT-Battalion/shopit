@@ -67,6 +67,29 @@ const routes: Array<RouteRecordRaw> = [
 
 const router = createRouter({
   history: createWebHistory(),
+  scrollBehavior: (to, from, savedPosition) => {
+    console.log(to, from, savedPosition);
+    if (savedPosition) {
+      console.log('saved');
+      return savedPosition;
+    } else if (to.hash) {
+      console.log('element');
+      console.log({
+        el: to.hash,
+        behavior: 'smooth',
+      });
+      return {
+        el: to.hash,
+        behavior: 'smooth',
+      }
+    } else {
+      return {
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      }
+    }
+  },
   routes,
 });
 
