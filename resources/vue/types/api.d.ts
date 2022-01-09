@@ -46,7 +46,9 @@ interface Product {
     name: string,
     description: string,
     price: number,
-    imgSrc: string,
+    thumbnail: {
+      id: number,
+    }
     attribute: [{
         type: number,
         values_available: any,

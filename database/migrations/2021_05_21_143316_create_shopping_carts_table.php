@@ -18,7 +18,10 @@ class CreateShoppingCartsTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignid('product_id')->constrained();
             $table->integer('count');
-            $table->json('values_chosen');
+            $table->foreignId('product_clothing_attribute_id')->nullable()->constrained();
+            $table->foreignId('product_dimension_attribute_id')->nullable()->constrained();
+            $table->foreignId('product_volume_attribute_id')->nullable()->constrained();
+            $table->foreignId('product_color_attribute_id')->nullable()->constrained();
             $table->timestamps();
         });
 

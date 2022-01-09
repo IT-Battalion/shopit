@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class ActionNotAllowedForAdministratorExeption extends Exception
+class ActionNotAllowedForAdministratorException extends Exception
 {
     public function __construct()
     {

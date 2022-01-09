@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -132,7 +132,7 @@ class Order extends Model
         return isset($this->handed_over_at);
     }
 
-    public function products(): HasOneOrMany
+    public function products(): HasMany
     {
         return $this
             ->hasMany(OrderProduct::class);

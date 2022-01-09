@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
-use App\Models\ProductAttribute;
 use App\Models\ProductCategory;
 use App\Models\ProductImage;
 
@@ -19,8 +18,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = ProductCategory::nonEmpty()
-            ->get()
+        $products = ProductCategory::whereHas('products')->get()
             ->mapWithKeys(function (ProductCategory $category) {
                 return [
                     $category->name => $category->products->map(function (Product $product) {
@@ -28,17 +26,14 @@ class ProductController extends Controller
 
                         return [
                             'name' => $product->name,
-                            'description' => $product->description,
+//                            'description' => $product->description,
                             'price' => $product->price,
                             'amount' => $product->available,
-                            'imgSrc' => route('product-image', ['id' => $thumbnail->id]),
+                            'thumbnail' => [
+                                'id' => $product->main_thumbnail->id,
+                            ],
                             'tax' => $product->tax,
-                            'attributes' => $product->productAttributes->map(function (ProductAttribute $attribute) {
-                                return [
-                                    'type' => $attribute->type,
-                                    'values_available' => $attribute->values_available,
-                                ];
-                            }),
+                            'attributes' => $product->productAttributes,
                         ];
                     }),
                 ];
@@ -61,7 +56,7 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Product  $product
+     * @param string $nameOrId
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(string $nameOrId)
@@ -81,12 +76,7 @@ class ProductController extends Controller
                     'id' => $image->id,
                 ];
             }),
-            'attributes' => $product->productAttributes->map(function (ProductAttribute $attribute) {
-                return [
-                    'type' => $attribute->type,
-                    'values_available' => $attribute->values_available,
-                ];
-            }),
+            'attributes' => $product->productAttributes,
         ]);
     }
 

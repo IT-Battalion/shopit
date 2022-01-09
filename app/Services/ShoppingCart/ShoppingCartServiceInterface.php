@@ -4,30 +4,37 @@ namespace App\Services\ShoppingCart;
 
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Support\Collection;
 
 interface ShoppingCartServiceInterface
 {
     /**
      * Adds a Product into the Shopping Cart of a User.
      * @param Product $product The Product which should be added to the Shopping Cart.
+     * @param Collection $attributes the product's attributes (color, size, ...)
      * @param int $amount The Amount which should be added to the Shopping Cart.
+     * @param User|null $user the shopping cart's owner
      */
-    public function addProduct(Product $product, int $amount = 1, User $user = null): void;
+    public function addProduct(Product $product, Collection $attributes, int $amount = 1, User $user = null): void;
 
     /**
      * Removes products from the shopping cart of a user.
      * Per default all of a certain product will be removed from the shopping cart.
      * @param Product $product The Product which should be removed from the Shopping Cart.
+     * @param Collection $attributes the product's attributes (color, size, ...)
      * @param int $amount The Amount which should be removed from the Shopping Cart. If -1 all will be removed.
+     * @param User|null $user the shopping cart's owner
      */
-    public function removeProduct(Product $product, int $amount = -1, User $user = null): void;
+    public function removeProduct(Product $product, Collection $attributes, int $amount = -1, User $user = null): void;
 
     /**
      * Sets the amount of a product in the shopping cart
      * @param Product $product The product of a specified amount should exist in the shopping cart
+     * @param Collection $attributes the product's attributes (color, size, ...)
      * @param int $amount How much of a given Product should be in the shopping cart
+     * @param User|null $user the shopping cart's owner
      */
-    public function setProductAmount(Product $product, int $amount, User $user = null): void;
+    public function setProductAmount(Product $product, Collection $attributes, int $amount, User $user = null): void;
 
     /**
      * Calculates the total price of the Shopping Cart.
@@ -52,25 +59,31 @@ interface ShoppingCartServiceInterface
     /**
      * Calculates the total Price of a Product from the Shopping Cart (usually more than one)
      * @param Product $product The Product of which the total price should be calculated. (usually more than one)
+     * @param Collection $attributes the product's attributes (color, size, ...)
      * @param bool $includeTaxes If Taxes should be included.
      * @param bool $includeCoupon Whether the coupon currently in use should be applied
+     * @param User|null $user the shopping cart's owner
      * @return float The total price in EUR.
      */
-    public function calculatePriceOfProduct(Product $product, bool $includeTaxes, bool $includeCoupon, User $user = null): float;
+    public function calculatePriceOfProduct(Product $product, Collection $attributes, bool $includeTaxes, bool $includeCoupon, User $user = null): float;
 
     /**
      * Checks if the Shopping Cart has a specific Product or an Amount of a specific Product.
      * If the amount is -1 (default) any amount of that product counts.
      * @param Product $product The Product which should be searched for.
+     * @param Collection $attributes the product's attributes (color, size, ...)
      * @param int $amount The Amount of the Product which should be checked. Default -1.
+     * @param User|null $user the shopping cart's owner
      * @return bool true if the Product is existing and the amount matches. Else false.
      */
-    public function hasProductInShoppingCart(Product $product, int $amount = -1, User $user = null): bool;
+    public function hasProductInShoppingCart(Product $product, Collection $attributes, int $amount = -1, User $user = null): bool;
 
     /**
      * Returns the Amount of a Product in a Shopping Cart.
      * @param Product $product The Product which should be searched for.
+     * @param Collection $attributes the product's attributes (color, size, ...)
+     * @param User|null $user the shopping cart's owner
      * @return int The Amount of the Product in the Shopping Cart.
      */
-    public function getAmountOfProduct(Product $product, User $user = null): int;
+    public function getAmountOfProduct(Product $product, Collection $attributes, User $user = null): int;
 }

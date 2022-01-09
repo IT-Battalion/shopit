@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums;
+namespace App\Types;
 
 use BenSampo\Enum\Enum;
 
@@ -15,12 +15,12 @@ final class AttributeType extends Enum
     /*
      * Clothing size
      */
-    public const CLOTHING_SIZE = 0;
+    public const CLOTHING = 0;
 
     /*
      * Product dimensions
      */
-    public const DIMENSIONS = 1;
+    public const DIMENSION = 1;
 
     /*
      * Volume in l

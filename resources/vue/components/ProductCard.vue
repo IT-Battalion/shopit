@@ -5,7 +5,7 @@
     >
       <router-link :to="{ name: 'product', params: { name: product?.name } }">
         <img
-          :src="product?.imgSrc"
+          :src="'/product-image/' + product?.thumbnail.id"
           :alt="product?.name"
           class="object-cover object-center w-full h-full lg:w-full lg:h-full"
         />

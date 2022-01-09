@@ -139,28 +139,6 @@ class Admin extends User
         'domain',
     ];
 
-    /**
-     * Das is hässlich wie sau no joke
-     * @return Builder
-     */
-    public function prunable(): Builder
-    {
-        return static::whereNotNull('deleted_at')
-            ->whereRaw('(SELECT customer_id FROM orders
-        WHERE users.id = orders.customer_id
-        GROUP BY customer_id) IS NULL'); // An diese Query wird ein ORDER BY `id` angehängt was JOINS unmöglich macht,
-        // da dies nicht zwischen der orders.id und der users.id unterscheiden könnte
-        // deswegen die Subquery. Die Subquery ist in raw SQL, da der Query Builder für
-        // Subqueries keine Möglichkeit bietet mit IS NULL zu vergleichen
-    }
-
-    public function shopping_cart(): BelongsToMany
-    {
-        return $this
-            ->belongsToMany(Product::class, 'shopping_cart', 'user_id')
-            ->withPivot(['count']);
-    }
-
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class, 'customer_id');
@@ -174,16 +152,6 @@ class Admin extends User
     public function coupons_updated(): HasOneOrMany
     {
         return $this->hasMany(CouponCode::class, 'updated_by_id');
-    }
-
-    public function scopeTeacher(Builder $query): Builder
-    {
-        return $query->where('employeeType', '=', 'lehrer');
-    }
-
-    public function scopeStudent(Builder $query): Builder
-    {
-        return $query->where('employeeType', '=', 'schueler');
     }
 
     public static function boot()

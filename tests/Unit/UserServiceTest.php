@@ -1,6 +1,6 @@
 <?php
 
-use App\Exceptions\ActionNotAllowedForAdministratorExeption;
+use App\Exceptions\ActionNotAllowedForAdministratorException;
 use App\Models\Admin;
 use App\Models\User;
 use App\Services\Users\UserService;
@@ -43,7 +43,7 @@ test('admin can not be banned', function () {
     $admin = Admin::whereEnabled(true)->get()->random();
 
     $service->ban($admin);
-})->throws(ActionNotAllowedForAdministratorExeption::class);
+})->throws(ActionNotAllowedForAdministratorException::class);
 
 test('admin can not be unbanned', function () {
     $this->actingAs(Admin::all()->random());
@@ -51,7 +51,7 @@ test('admin can not be unbanned', function () {
     $admin = Admin::factory()->disabled()->create();
 
     $service->unban($admin);
-})->throws(ActionNotAllowedForAdministratorExeption::class);
+})->throws(ActionNotAllowedForAdministratorException::class);
 
 test('is user banned', function () {
     $this->actingAs(Admin::all()->random());

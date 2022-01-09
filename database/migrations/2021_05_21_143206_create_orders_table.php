@@ -44,8 +44,36 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->text('path');
             $table->string('type');
+            $table->string('hash')->index();
             $table->foreignId('created_by_id')->constrained('users');
             $table->foreignId('updated_by_id')->constrained('users');
+            $table->timestamps();
+        });
+
+        Schema::create('order_clothing_attributes', function (Blueprint $table) {
+            $table->id();
+            $table->integer('size', unsigned: true); // enum clothing size
+            $table->timestamps();
+        });
+
+        Schema::create('order_dimension_attributes', function (Blueprint $table) {
+            $table->id();
+            $table->integer('width', unsigned: true);
+            $table->integer('height', unsigned: true);
+            $table->integer('depth', unsigned: true);
+            $table->timestamps();
+        });
+
+        Schema::create('order_volume_attributes', function (Blueprint $table) {
+            $table->id();
+            $table->integer('volume', unsigned: true);
+            $table->timestamps();
+        });
+
+        Schema::create('order_color_attributes', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('color', 6);
             $table->timestamps();
         });
 
@@ -53,26 +81,30 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained();
             $table->integer('count', unsigned: true);
+
             $table->string('name');
             $table->text('description');
+
             $table->foreignId('thumbnail_id')->nullable()->constrained('order_product_images');
+
             $table->float('price', 16, 8, true);
             $table->float('tax', 2, 2, true);
+
+            $table->foreignId('order_clothing_attribute_id')->nullable()->constrained();
+            $table->foreignId('order_dimension_attribute_id')->nullable()->constrained();
+            $table->foreignId('order_volume_attribute_id')->nullable()->constrained();
+            $table->foreignId('order_color_attribute_id')->nullable()->constrained();
+
             $table->foreignId('created_by_id')->constrained('users');
             $table->foreignId('updated_by_id')->constrained('users');
+
             $table->timestamps();
         });
 
-        Schema::create('order_product_attributes', function (Blueprint $table) {
+        Schema::create('order_product_order_product_image', function (Blueprint $table) {
             $table->id();
-            $table->foreignid('order_product_id')->constrained();
-            $table->integer('type', unsigned: true);
-            $table->json('values_chosen');
-            $table->timestamps();
-        });
-
-        Schema::table('order_product_images', function (Blueprint $table) {
             $table->foreignId('order_product_id')->constrained();
+            $table->foreignId('order_product_image_id')->constrained();
         });
     }
 
@@ -88,7 +120,11 @@ class CreateOrdersTable extends Migration
                 $table->dropForeign('order_product_images_order_product_id_foreign');
             });
         }
-        Schema::dropIfExists('order_product_attributes');
+        Schema::dropIfExists('order_clothing_attributes');
+        Schema::dropIfExists('order_dimension_attributes');
+        Schema::dropIfExists('order_volume_attributes');
+        Schema::dropIfExists('order_color_attributes');
+
         Schema::dropIfExists('order_products');
         Schema::dropIfExists('order_product_images');
         Schema::dropIfExists('orders');

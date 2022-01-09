@@ -4,7 +4,11 @@ namespace Database\Factories;
 
 use App\Models\Admin;
 use App\Models\Order;
+use App\Models\OrderClothingAttribute;
+use App\Models\OrderColorAttribute;
+use App\Models\OrderDimensionAttribute;
 use App\Models\OrderProduct;
+use App\Models\OrderVolumeAttribute;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class OrderProductFactory extends Factory
@@ -27,13 +31,19 @@ class OrderProductFactory extends Factory
             ->first()
             ->id;
 
+        $order = Order::doesntHave('products')->inRandomOrder()->first() ?? Order::inRandomOrder()->first();
+
         return [
-            'order_id' => Order::inRandomOrder()->first()->id,
+            'order_id' => $order->id,
             'name' => $this->faker->word,
             'description' => $this->faker->text,
             'price' => $this->faker->randomFloat(2, 1, 300),
             'tax' => $this->faker->randomFloat(2, 0, 0.99),
             'count' => $this->faker->numberBetween(0, 100),
+            'order_clothing_attribute_id' => mt_rand(0, 1) ? OrderClothingAttribute::inRandomOrder()->first()->id : null,
+            'order_dimension_attribute_id' => mt_rand(0, 1) ? OrderDimensionAttribute::inRandomOrder()->first()->id : null,
+            'order_volume_attribute_id' => mt_rand(0, 1) ? OrderVolumeAttribute::inRandomOrder()->first()->id : null,
+            'order_color_attribute_id' => mt_rand(0, 1) ? OrderColorAttribute::inRandomOrder()->first()->id : null,
             'created_by_id' => $admin,
             'updated_by_id' => $admin,
         ];

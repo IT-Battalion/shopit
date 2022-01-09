@@ -24,15 +24,6 @@ class OrderProductImageFactory extends Factory
      */
     public function definition(): array
     {
-        $product = (OrderProduct::select('order_products.id')
-                ->leftJoin('order_product_images', 'order_products.id', 'order_product_images.order_product_id')
-                ->groupBy('order_products.id')
-                ->havingRaw('count(`order_product_images`.`id`) = 0')
-                ->inRandomOrder()
-                ->first() ??
-            Product::inRandomOrder()
-                ->first())->id;
-
         $admin = Admin::inRandomOrder()
             ->first()
             ->id;
@@ -45,7 +36,7 @@ class OrderProductImageFactory extends Factory
         return [
             'path' => $path,
             'type' => 'image/png',
-            'order_product_id' => $product,
+            'hash' => $this->faker->unique()->sha256(),
             'created_by_id' => $admin,
             'updated_by_id' => $admin,
         ];

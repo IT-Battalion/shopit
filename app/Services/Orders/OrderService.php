@@ -11,9 +11,6 @@ use App\Exceptions\OrderNotPaidException;
 use App\Exceptions\OrderNotReceivedException;
 use App\Exceptions\ShoppingCartEmptyException;
 use App\Models\Order;
-use App\Models\OrderProduct;
-use App\Models\OrderProductAttribute;
-use App\Models\OrderProductImage;
 use App\Models\User;
 use App\Services\ShoppingCart\ShoppingCartServiceInterface;
 use Illuminate\Support\Facades\Auth;
@@ -30,51 +27,44 @@ class OrderService implements OrderServiceInterface
     /**
      * @throws ShoppingCartEmptyException
      */
-    public function createOrder(User $customer): Order
+    public function createOrder(User $customer = null): Order
     {
+        $customer = $customer ?? Auth::user();
+
         $products = $customer->shopping_cart;
+
         if ($products->count() === 0) throw new ShoppingCartEmptyException(t('error_messages.shopping_cart_empty'));
-        $coupon = $customer->shopping_cart_coupon()->id ?? null;
+
+        $coupon = $customer->shopping_cart_coupon?->id;
+
         $order = Order::create([
             'customer_id' => $customer->id,
             'coupon_code_id' => $coupon,
         ]);
+
         foreach ($products as $product) {
-            //will be removed when order categories are removed
-            $order_product = OrderProduct::create(
-                [
-                    'name' => $product->name,
-                    'description' => $product->description,
-                    'count' => $product->pivot->count,
-                    'created_at' => $product->created_at,
-                    'created_by_id' => $product->created_by->id,
-                    'order_id' => $order->id,
-                    'price' => $product->price,
-                    'tax' => $product->tax,
-                ]);
+            $metadata = $product->pivot;
+
+            // convert product to order product
+            $orderProduct = $product->getOrderEquivalent([
+                'count' => $product->pivot->count,
+                'order_id' => $order->id,
+            ]);
+
+            // convert images and set thumbnail
             foreach ($product->images as $image) {
-                $product_image = OrderProductImage::create([
-                    'path' => $image->path,
-                    'type' => $image->type,
-                    'order_product_id' => $order_product->id,
-                    'created_by_id' => $image->created_by,
-                    'created_at' => $image->created_at,
-                ]);
+                $orderImage = $image->getOrderEquivalent();
 
                 if ($product->thumbnail === $image->id) {
-                    $order_product->thumbnail = $product_image->id;
-                    $order_product->save();
+                    $orderProduct->thumbnail_id = $orderImage->id;
+                    $orderProduct->save();
                 }
             }
-            foreach ($product->productAttributes as $attribute) {
-                OrderProductAttribute::create([
-                    'type' => $attribute->type,
-                    'values_chosen' => $attribute->values_chosen,
-                    'created_at' => $attribute->created_at,
-                    'order_product_id' => $order_product->id,
-                ]);
-            }
-            $this->shoppingCartService->removeProduct($product, user: $customer);
+
+            $newAttributes = $metadata->convertAttributesToOrder();
+            $orderProduct->product_attributes = $newAttributes;
+
+            $this->shoppingCartService->removeProduct($product, $metadata->product_attributes, user: $customer);
         }
         return $order;
     }

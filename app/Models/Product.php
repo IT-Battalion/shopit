@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Contracts\ConvertableToOrder;
+use App\Types\AttributeType;
 use Database\Factories\ProductFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -10,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -32,7 +35,6 @@ use Illuminate\Support\Facades\Auth;
  * @property-read User $created_by
  * @property-read Collection|ProductImage[] $images
  * @property-read int|null $images_count
- * @property-read Collection|ProductAttribute[] $productAttributes
  * @property-read int|null $product_attributes_count
  * @property-read ProductImage|null $thumbnail
  * @property-read User $updated_by
@@ -55,8 +57,18 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|Product whereUpdatedAt($value)
  * @method static Builder|Product whereUpdatedById($value)
  * @mixin Eloquent
+ * @property-read Collection $product_attributes
+ * @property-read Collection|ProductClothingAttribute[] $productClothingAttributes
+ * @property-read int|null $product_clothing_attributes_count
+ * @property-read Collection|ProductColorAttribute[] $productColorAttributes
+ * @property-read int|null $product_color_attributes_count
+ * @property-read Collection|ProductDimensionAttribute[] $productDimensionAttributes
+ * @property-read int|null $product_dimension_attributes_count
+ * @property-read Collection|ProductVolumeAttribute[] $productVolumeAttributes
+ * @property-read int|null $product_volume_attributes_count
+ * @property-read mixed $main_thumbnail
  */
-class Product extends Model
+class Product extends Model implements ConvertableToOrder
 {
     use HasFactory;
 
@@ -80,6 +92,11 @@ class Product extends Model
     public function thumbnail(): BelongsTo
     {
         return $this->belongsTo(ProductImage::class, 'thumbnail_id');
+    }
+
+    public function getMainThumbnailAttribute()
+    {
+        return $this->thumbnail ?? $this->images()->first();
     }
 
     public function created_by(): BelongsTo
@@ -110,9 +127,66 @@ class Product extends Model
         return $this->hasMany(ProductImage::class);
     }
 
-    public function productAttributes(): HasMany
+    public function getProductAttributesAttribute()
     {
-        return $this->hasMany(ProductAttribute::class);
+        $clothingAttributes = $this->productClothingAttributes;
+        $dimensionAttributes = $this->productDimensionAttributes;
+        $volumeAttributes = $this->productVolumeAttributes;
+        $colorAttributes = $this->productColorAttributes;
+
+        return
+            collect([
+                AttributeType::CLOTHING => $clothingAttributes,
+                AttributeType::DIMENSION => $dimensionAttributes,
+                AttributeType::VOLUME => $volumeAttributes,
+                AttributeType::COLOR => $colorAttributes,
+            ]);
+    }
+
+    public function productClothingAttributes(): MorphToMany
+    {
+        return $this->morphedByMany(ProductClothingAttribute::class, 'product_attribute');
+    }
+
+    public function productDimensionAttributes(): MorphToMany
+    {
+        return $this->morphedByMany(ProductDimensionAttribute::class, 'product_attribute');
+    }
+
+    public function productVolumeAttributes(): MorphToMany
+    {
+        return $this->morphedByMany(ProductVolumeAttribute::class, 'product_attribute');
+    }
+
+    public function productColorAttributes(): MorphToMany
+    {
+        return $this->morphedByMany(ProductColorAttribute::class, 'product_attribute');
+    }
+
+    public function isAttributeAvailable(int $attributeType, $attribute): bool
+    {
+        $attributes = match ($attributeType) {
+            AttributeType::CLOTHING => $this->productClothingAttributes(),
+            AttributeType::DIMENSION => $this->productDimensionAttributes(),
+            AttributeType::VOLUME => $this->productVolumeAttributes(),
+            AttributeType::COLOR => $this->productColorAttributes(),
+            default => null,
+        };
+
+        return ! is_null($attributes) && $attributes
+                ->wherePivot('product_attribute_id', $attribute)
+                ->count() !== 0;
+    }
+
+    public function areAttributesAvailable(\Illuminate\Support\Collection $attributes): bool
+    {
+        foreach ($attributes as $type => $attribute)
+        {
+            if ( ! $this->isAttributeAvailable($type, $attribute))
+                return false;
+        }
+
+        return true;
     }
 
     public function category(): BelongsTo
@@ -143,5 +217,24 @@ class Product extends Model
     public function scopeUnavailable(Builder $query): Builder
     {
         return $query->where('available', '=', '0');
+    }
+
+    public function getOrderEquivalent(array $attributes = [])
+    {
+        return OrderProduct::create([
+            'name' => $this->name,
+            'description' => $this->description,
+            'count' => $attributes['count'],
+            'created_at' => $this->created_at,
+            'created_by_id' => $this->created_by->id,
+            'order_id' => $attributes['order_id'],
+            'price' => $this->price,
+            'tax' => $this->tax,
+        ]);
+    }
+
+    public function findOrderEquivalent()
+    {
+        return null;
     }
 }

@@ -5,14 +5,22 @@ use App\Models\CouponCode;
 use App\Models\HighlightedProduct;
 use App\Models\Icon;
 use App\Models\Order;
+use App\Models\OrderClothingAttribute;
+use App\Models\OrderColorAttribute;
+use App\Models\OrderDimensionAttribute;
 use App\Models\OrderProduct;
-use App\Models\OrderProductAttribute;
 use App\Models\OrderProductImage;
+use App\Models\OrderVolumeAttribute;
 use App\Models\Product;
-use App\Models\ProductAttribute;
 use App\Models\ProductCategory;
+use App\Models\ProductClothingAttribute;
+use App\Models\ProductColorAttribute;
+use App\Models\ProductDimensionAttribute;
 use App\Models\ProductImage;
+use App\Models\ProductVolumeAttribute;
 use App\Models\User;
+use App\Types\AttributeType;
+use Illuminate\Support\Collection;
 
 beforeEach(function () {
     $icon = Icon::factory()->create();
@@ -100,7 +108,7 @@ test('admin relation to products in the shopping cart', function () {
     $admin = Admin::factory()->create();
 
     $products = Product::factory()->count(2)->create();
-    $admin->shopping_cart()->attach($products, ['count' => 2]);
+    $admin->shopping_cart()->attach($products, ['count' => 2, 'values_chosen' => '[]']);
 
     $products = $admin->shopping_cart->all();
 
@@ -148,7 +156,7 @@ test('user relation to products in the shopping cart', function () {
     $user = User::factory()->create();
 
     $products = Product::factory()->count(2)->create();
-    $user->shopping_cart()->attach($products, ['count' => 2]);
+    $user->shopping_cart()->attach($products, ['count' => 2, 'values_chosen' => '[]']);
 
     $products = $user->shopping_cart->all();
 
@@ -375,12 +383,13 @@ test('OrderProduct to images', function () {
     Order::factory()->create();
     $product = OrderProduct::factory()->create();
 
-    $expectedImages = OrderProductImage::factory()->count(4)->create([
-        'order_product_id' => $product->id,
-    ])
-    ->map(function (OrderProductImage $image) {
-        return $image->id;
-    });
+    $expectedImages = OrderProductImage::factory()->count(4)->create()
+        ->each(function (OrderProductImage $image) use ($product) {
+            $product->images()->attach($image);
+        })
+        ->map(function (OrderProductImage $image) {
+            return $image->id;
+        });
 
     $images = $product->images
         ->map(function (OrderProductImage $image) {
@@ -390,43 +399,131 @@ test('OrderProduct to images', function () {
     expect($expectedImages->all())->toBe($images->all());
 });
 
-test('OrderProduct to attributes', function () {
+test('OrderProduct to no attributes', function () {
     Order::factory()->create();
-    $product = OrderProduct::factory()->create();
 
-    $expectedAttributes = OrderProductAttribute::factory()->count(4)->create([
-        'order_product_id' => $product->id,
-    ])
-    ->map(function (OrderProductAttribute $attribute) {
-        return $attribute->id;
-    });
+    $expectedAttributes = [];
 
-    $attributes = $product->productAttributes
-        ->map(function (OrderProductAttribute $attribute) {
-            return $attribute->id;
-        });
-
-    expect($attributes)->toEqual($expectedAttributes);
-});
-
-test('OrderProductAttribute to OrderProduct', function () {
-    Order::factory()->create();
-    $product = OrderProduct::factory()->create();
-    $attribute = OrderProductAttribute::factory()->create([
-        'order_product_id' => $product->id,
+    $product = OrderProduct::factory()->create([
+        'order_clothing_attribute_id' => null,
+        'order_dimension_attribute_id' => null,
+        'order_volume_attribute_id' => null,
+        'order_color_attribute_id' => null,
     ]);
 
-    expect($attribute->product->id)->toEqual($product->id);
+    expect($product->orderClothingAttribute)->toEqual(null);
+    expect($product->orderDimensionAttribute)->toEqual(null);
+    expect($product->orderVolumeAttribute)->toEqual(null);
+    expect($product->orderColorAttribute)->toEqual(null);
+
+    $attributes = $product->product_attributes
+        ->map(fn ($attribute) => $attribute->id)
+        ->all();
+
+    expect($attributes)->toEqual($expectedAttributes);
+    expect($attributes)->toHaveLength(sizeof($expectedAttributes));
+});
+
+test('OrderProduct to attributes', function () {
+    Order::factory()->create();
+
+    $expectedClothingAttribute = OrderClothingAttribute::factory()
+        ->create();
+    $expectedDimensionAttribute = OrderDimensionAttribute::factory()
+        ->create();
+    $expectedVolumeAttribute = OrderVolumeAttribute::factory()
+        ->create();
+    $expectedColorAttribute = OrderColorAttribute::factory()
+        ->create();
+
+    $expectedAttributes = [
+        $expectedClothingAttribute->id,
+        $expectedDimensionAttribute->id,
+        $expectedVolumeAttribute->id,
+        $expectedColorAttribute->id,
+    ];
+
+    $product = OrderProduct::factory()->create([
+        'order_clothing_attribute_id' => $expectedClothingAttribute->id,
+        'order_dimension_attribute_id' => $expectedDimensionAttribute->id,
+        'order_volume_attribute_id' => $expectedVolumeAttribute->id,
+        'order_color_attribute_id' => $expectedColorAttribute->id,
+    ]);
+
+    expect($product->orderClothingAttribute->id)->toEqual($expectedClothingAttribute->id);
+    expect($product->orderDimensionAttribute->id)->toEqual($expectedDimensionAttribute->id);
+    expect($product->orderVolumeAttribute->id)->toEqual($expectedVolumeAttribute->id);
+    expect($product->orderColorAttribute->id)->toEqual($expectedColorAttribute->id);
+
+    $attributes = $product->product_attributes
+        ->map(fn ($attribute) => $attribute->id)
+        ->all();
+
+    expect($attributes)->toEqual($expectedAttributes);
+    expect($attributes)->toHaveLength(sizeof($expectedAttributes));
+});
+
+test('OrderClothingAttribute to OrderProduct', function () {
+    Order::factory()->create();
+
+    $attribute = OrderClothingAttribute::factory()->create();
+
+    $product = OrderProduct::factory()->create([
+        'order_clothing_attribute_id' => $attribute->id,
+    ]);
+
+    expect($attribute->products->first()->id)->toEqual($product->id);
+    expect($attribute->products->count())->toEqual(1);
+});
+
+test('OrderDimensionAttribute to OrderProduct', function () {
+    Order::factory()->create();
+
+    $attribute = OrderDimensionAttribute::factory()->create();
+
+    $product = OrderProduct::factory()->create([
+        'order_dimension_attribute_id' => $attribute->id,
+    ]);
+
+    expect($attribute->products->first()->id)->toEqual($product->id);
+    expect($attribute->products->count())->toEqual(1);
+});
+
+test('OrderVolumeAttribute to OrderProduct', function () {
+    Order::factory()->create();
+
+    $attribute = OrderVolumeAttribute::factory()->create();
+
+    $product = OrderProduct::factory()->create([
+        'order_volume_attribute_id' => $attribute->id,
+    ]);
+
+    expect($attribute->products->first()->id)->toEqual($product->id);
+    expect($attribute->products->count())->toEqual(1);
+});
+
+test('OrderColorAttribute to OrderProduct', function () {
+    Order::factory()->create();
+
+    $attribute = OrderColorAttribute::factory()->create();
+
+    $product = OrderProduct::factory()->create([
+        'order_color_attribute_id' => $attribute->id,
+    ]);
+
+    expect($attribute->products->first()->id)->toEqual($product->id);
+    expect($attribute->products->count())->toEqual(1);
 });
 
 test('OrderProductImage to OrderProduct', function () {
     Order::factory()->create();
     $product = OrderProduct::factory()->create();
-    $image = OrderProductImage::factory()->create([
-        'order_product_id' => $product->id,
-    ]);
+    $image = OrderProductImage::factory()->create();
 
-    expect($image->product->id)->toBe($product->id);
+    $product->images()->attach($image);
+
+    expect($image->products->first()->id)->toBe($product->id);
+    expect($image->products->count())->toBe(1);
 });
 
 test('OrderProductImage to creator', function () {
@@ -513,17 +610,56 @@ test('Product to attributes', function () {
     $this->actingAs($admin);
     $product = Product::factory()->create();
 
-    $expectedAttributes = ProductAttribute::factory()->count(4)->create([
-        'product_id' => $product->id,
-    ])
-        ->map(function (ProductAttribute $attribute) {
-            return $attribute->id;
-        });
+    $expectedClothingAttributes = ProductClothingAttribute::factory()->count(4)->create();
+    $expectedDimensionAttributes = ProductDimensionAttribute::factory()->count(4)->create();
+    $expectedVolumeAttributes = ProductVolumeAttribute::factory()->count(4)->create();
+    $expectedColorAttributes = ProductColorAttribute::factory()->count(4)->create();
+
+    $expectedClothingAttributes->each(function (ProductClothingAttribute $clothingAttribute) use ($product) {
+        $product->productClothingAttributes()->attach($clothingAttribute);
+    });
+    $expectedDimensionAttributes->each(function (ProductDimensionAttribute $clothingAttribute) use ($product) {
+        $product->productDimensionAttributes()->attach($clothingAttribute);
+    });
+    $expectedVolumeAttributes->each(function (ProductVolumeAttribute $clothingAttribute) use ($product) {
+        $product->productVolumeAttributes()->attach($clothingAttribute);
+    });
+    $expectedColorAttributes->each(function (ProductColorAttribute $clothingAttribute) use ($product) {
+        $product->productColorAttributes()->attach($clothingAttribute);
+    });
+
+    $expectedAttributes =
+        collect([
+            AttributeType::CLOTHING => $expectedClothingAttributes,
+            AttributeType::DIMENSION => $expectedDimensionAttributes,
+            AttributeType::VOLUME => $expectedVolumeAttributes,
+            AttributeType::COLOR => $expectedColorAttributes,
+        ])
+        ->map(fn (Collection $attributes) => $attributes->map(fn ($attribute) => $attribute->id))
+        ->all();
 
     $attributes = $product->productAttributes
-        ->map(function (ProductAttribute $attribute) {
-            return $attribute->id;
-        });
+        ->map(fn (Collection $attributes) => $attributes->map(fn ($attribute) => $attribute->id))
+        ->all();
+
+    expect($attributes)->toEqual($expectedAttributes);
+});
+
+test('Product to no attributes', function () {
+    $admin = Admin::factory()->create();
+    $this->actingAs($admin);
+    $product = Product::factory()->create();
+
+    $expectedAttributes = [
+        AttributeType::CLOTHING => [],
+        AttributeType::DIMENSION => [],
+        AttributeType::VOLUME => [],
+        AttributeType::COLOR => [],
+    ];
+
+    $attributes = $product->productAttributes
+        ->map(fn (Collection $attributes) => $attributes->map(fn ($attribute) => $attribute->id)->all())
+        ->all();
 
     expect($attributes)->toEqual($expectedAttributes);
 });
@@ -539,16 +675,60 @@ test('Product to category', function () {
     expect($product->category->id)->toBe($category->id);
 });
 
-test('ProductAttribute to product', function () {
+test('ProductClothingAttribute to product', function () {
     $admin = Admin::factory()->create();
     $this->actingAs($admin);
 
     $product = Product::factory()->create();
-    $attribute = ProductAttribute::factory()->create([
-        'product_id' => $product->id,
-    ]);
+    $attribute = ProductClothingAttribute::factory()->create();
 
-    expect($attribute->product->id)->toBe($product->id);
+    $product->productClothingAttributes()->attach($attribute);
+    $products = $attribute->products;
+
+    expect($products->first()->id)->toBe($product->id);
+    expect($products)->toHaveLength(1);
+});
+
+test('ProductDimensionAttribute to product', function () {
+    $admin = Admin::factory()->create();
+    $this->actingAs($admin);
+
+    $product = Product::factory()->create();
+    $attribute = ProductDimensionAttribute::factory()->create();
+
+    $product->productDimensionAttributes()->attach($attribute);
+    $products = $attribute->products;
+
+    expect($products->first()->id)->toBe($product->id);
+    expect($products)->toHaveLength(1);
+});
+
+test('ProductVolumeAttribute to product', function () {
+    $admin = Admin::factory()->create();
+    $this->actingAs($admin);
+
+    $product = Product::factory()->create();
+    $attribute = ProductVolumeAttribute::factory()->create();
+
+    $product->productVolumeAttributes()->attach($attribute);
+    $products = $attribute->products;
+
+    expect($products->first()->id)->toBe($product->id);
+    expect($products)->toHaveLength(1);
+});
+
+test('ProductColorAttribute to product', function () {
+    $admin = Admin::factory()->create();
+    $this->actingAs($admin);
+
+    $product = Product::factory()->create();
+    $attribute = ProductColorAttribute::factory()->create();
+
+    $product->productColorAttributes()->attach($attribute);
+    $products = $attribute->products;
+
+    expect($products->first()->id)->toBe($product->id);
+    expect($products)->toHaveLength(1);
 });
 
 test('ProductImage to creator', function () {

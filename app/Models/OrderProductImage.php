@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -37,6 +38,10 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OrderProductImage whereUpdatedAt($value)
  * @method static Builder|OrderProductImage whereUpdatedById($value)
  * @mixin Eloquent
+ * @property string $hash
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderProduct[] $products
+ * @property-read int|null $products_count
+ * @method static Builder|OrderProductImage whereHash($value)
  */
 class OrderProductImage extends Model
 {
@@ -56,9 +61,9 @@ class OrderProductImage extends Model
         'order_product_id' => 'integer',
     ];
 
-    public function product(): BelongsTo
+    public function products(): BelongsToMany
     {
-        return $this->belongsTo(OrderProduct::class, 'order_product_id');
+        return $this->belongsToMany(OrderProduct::class);
     }
 
     public function updated_by(): BelongsTo

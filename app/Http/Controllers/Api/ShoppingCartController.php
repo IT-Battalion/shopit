@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use App\Models\ProductAttribute;
 use App\Models\ProductImage;
 use App\Services\ShoppingCart\ShoppingCartServiceInterface;
 use Illuminate\Http\Request;
@@ -24,12 +23,8 @@ class ShoppingCartController extends Controller
                         'id' => $image->id,
                     ];
                 }),
-                'attributes' => $product->productAttributes->map(function (ProductAttribute $attribute) use ($product) {
-                    return [
-                        'type' => $attribute->type,
-                        'values_chosen' => json_decode($product->pivot->values_chosen),
-                    ];
-                }),
+                'attributes' => $product->productAttributes,
+                'selected_attributes' => $product->pivot->productAttributes,
             ];
         });
 

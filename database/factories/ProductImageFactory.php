@@ -24,10 +24,7 @@ class ProductImageFactory extends Factory
      */
     public function definition(): array
     {
-        $product = (Product::select('products.id')
-            ->leftJoin('product_images', 'products.id', 'product_images.product_id')
-            ->groupBy('products.id')
-            ->havingRaw('count(`product_images`.`id`) = 0')
+        $product = (Product::doesntHave('images')
             ->inRandomOrder()
             ->first() ??
             Product::inRandomOrder()

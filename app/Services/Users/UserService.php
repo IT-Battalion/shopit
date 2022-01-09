@@ -6,7 +6,7 @@ use App\Events\UserBannedEvent;
 use App\Events\UserBanningEvent;
 use App\Events\UserUnbannedEvent;
 use App\Events\UserUnbanningEvent;
-use App\Exceptions\ActionNotAllowedForAdministratorExeption;
+use App\Exceptions\ActionNotAllowedForAdministratorException;
 use App\Exceptions\UserBannedException;
 use App\Exceptions\UserNotBannedException;
 use App\Models\User;
@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 class UserService implements UserServiceInterface
 {
     /**
-     * @throws ActionNotAllowedForAdministratorExeption
+     * @throws ActionNotAllowedForAdministratorException
      * @throws UserBannedException
      */
     function ban(User $user): bool
@@ -38,7 +38,7 @@ class UserService implements UserServiceInterface
 
     /**
      * @throws UserNotBannedException
-     * @throws ActionNotAllowedForAdministratorExeption
+     * @throws ActionNotAllowedForAdministratorException
      */
     function unban(User $user): bool
     {
@@ -59,14 +59,14 @@ class UserService implements UserServiceInterface
     }
 
     /**
-     * @throws ActionNotAllowedForAdministratorExeption
+     * @throws ActionNotAllowedForAdministratorException
      */
     function canBePerformedOnUser(User $user): bool
     {
         if (!$user->is_admin) {
             return true;
         } else {
-            throw new ActionNotAllowedForAdministratorExeption();
+            throw new ActionNotAllowedForAdministratorException();
         }
     }
 }

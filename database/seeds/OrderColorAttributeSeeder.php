@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\OrderProductAttribute;
+use App\Models\OrderColorAttribute;
 use Illuminate\Database\Seeder;
 
-class OrderProductAttributeSeeder extends Seeder
+class OrderColorAttributeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,8 +14,8 @@ class OrderProductAttributeSeeder extends Seeder
      */
     public function run()
     {
-        OrderProductAttribute::factory()
-            ->count(ProductSeeder::PRODUCT_COUNT * 4)
+        OrderColorAttribute::factory()
+            ->count(ProductSeeder::ATTRIBUTE_COUNT)
             ->create();
     }
 }

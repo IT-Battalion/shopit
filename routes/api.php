@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\HighlightedProductController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ShoppingCartController;
 use Illuminate\Http\Request;
@@ -22,7 +23,7 @@ Route::get('/user', function (Request $request) {
 Route::get('/user/shopping-cart', [ShoppingCartController::class, 'all']);
 
 // Highlighted Products
-Route::apiResource('/highlighted', HighlightedProductController::class);
+Route::get('/highlighted', [HighlightedProductController::class, 'all']);
 
 // Product routes
 Route::get('/product/', [ProductController::class, 'index']);

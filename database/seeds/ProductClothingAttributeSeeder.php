@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\ProductAttribute;
+use App\Models\ProductClothingAttribute;
 use Illuminate\Database\Seeder;
 
-class ProductAttributeSeeder extends Seeder
+class ProductClothingAttributeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,8 +14,8 @@ class ProductAttributeSeeder extends Seeder
      */
     public function run()
     {
-        ProductAttribute::factory()
-            ->count(ProductSeeder::PRODUCT_COUNT)
+        ProductClothingAttribute::factory()
+            ->count(ProductSeeder::ATTRIBUTE_COUNT)
             ->create();
     }
 }

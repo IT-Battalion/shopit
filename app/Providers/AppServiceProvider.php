@@ -2,13 +2,21 @@
 
 namespace App\Providers;
 
+use App\Models\Admin;
+use App\Models\ProductClothingAttribute;
+use App\Models\ProductColorAttribute;
+use App\Models\ProductDimensionAttribute;
+use App\Models\ProductVolumeAttribute;
+use App\Models\User;
 use App\Services\Orders\OrderService;
 use App\Services\Orders\OrderServiceInterface;
 use App\Services\ShoppingCart\ShoppingCartService;
 use App\Services\ShoppingCart\ShoppingCartServiceInterface;
 use App\Services\Users\UserService;
 use App\Services\Users\UserServiceInterface;
+use App\Types\AttributeType;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -62,5 +70,14 @@ class AppServiceProvider extends ServiceProvider
         // Set bcmath scale globally
         bcscale(config('shop.money_decimal_points'));
         ini_set('precision', config('shop.money_decimal_points') * 2);
+
+        Relation::enforceMorphMap([
+            AttributeType::CLOTHING => ProductClothingAttribute::class,
+            AttributeType::DIMENSION => ProductDimensionAttribute::class,
+            AttributeType::VOLUME => ProductVolumeAttribute::class,
+            AttributeType::COLOR => ProductColorAttribute::class,
+            'user' => User::class,
+            'admin' => Admin::class,
+        ]);
     }
 }

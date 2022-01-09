@@ -8,7 +8,6 @@ use App\Models\Admin;
 use App\Models\CouponCode;
 use App\Models\Icon;
 use App\Models\OrderProduct;
-use App\Models\OrderProductAttribute;
 use App\Models\OrderProductImage;
 use App\Models\ProductCategory;
 use App\Models\User;
@@ -51,10 +50,7 @@ test('create order with products in shopping cart', function () {
                 expect($order_product->thumbnail === $order_product_image->id)->toBeTrue();
             }
         }
-        foreach ($product->productAttributes as $attribute) {
-            $order_product_attribute = OrderProductAttribute::whereOrderProductId($order_product->id)->where('values_chosen', '=', $attribute->values_chosen);
-            expect($order_product_attribute->exists())->toBeTrue();
-        }
+        expect($product->productAttributes->flatten()->all())->toHaveLength(0);
     }
     expect($user->shopping_cart()->count() === 0)->toBeTrue();
 });

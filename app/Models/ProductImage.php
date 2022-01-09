@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Contracts\ConvertableToOrder;
 use Auth;
 use Database\Factories\ProductImageFactory;
 use Eloquent;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * App\Models\ProductImage
@@ -39,7 +41,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|ProductImage whereUpdatedById($value)
  * @mixin Eloquent
  */
-class ProductImage extends Model
+class ProductImage extends Model implements ConvertableToOrder
 {
     use HasFactory;
 
@@ -94,5 +96,33 @@ class ProductImage extends Model
         static::updating(function (ProductImage $model) {
             if (!isset($model->updated_by)) $model->updateWith(Auth::user());
         });
+    }
+
+    public function getOrderEquivalent(array $attributes = [])
+    {
+        $orderProductImage = $this->findOrderEquivalent();
+
+        if (isset($orderProductImage)) {
+            return $orderProductImage;
+        }
+
+        $hash = hash_file('sha256', $this->path);
+        $orderPath = Storage::path('order/product/images/' . $hash . time() . pathinfo($this->path, PATHINFO_EXTENSION));
+        Storage::copy($this->path, $orderPath);
+
+        return OrderProductImage::create([
+            'path' => $orderPath,
+            'type' => $this->type,
+            'hash' => $hash,
+            'created_by_id' => $this->created_by_id,
+            'updated_by_id' => $this->updated_by_id,
+        ]);
+    }
+
+    public function findOrderEquivalent()
+    {
+        $hash = hash_file('sha256', $this->path);
+
+        return OrderProductImage::whereHash($hash);
     }
 }

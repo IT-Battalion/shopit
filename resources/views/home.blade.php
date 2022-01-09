@@ -31,7 +31,7 @@
             '\\"',
             json_encode(
                 [
-                    'categories' => ProductCategory::nonEmpty()
+                    'categories' => ProductCategory::whereHas('products')
                         ->get()
                         ->map(function (ProductCategory $category) {
                             $icon = $category->icon;

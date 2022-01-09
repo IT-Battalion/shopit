@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
+use App\Types\AttributeType;
 use Barryvdh\LaravelIdeHelper\Eloquent;
 use Database\Factories\OrderProductFactory;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -33,8 +34,6 @@ use Illuminate\Support\Facades\Auth;
  * @property-read User $created_by
  * @property-read Collection|OrderProductImage[] $images
  * @property-read int|null $images_count
- * @property-read Collection|OrderProductAttribute[] $productAttributes
- * @property-read int|null $product_attributes_count
  * @property-read OrderProductImage|null $thumbnail
  * @property-read User $updated_by
  * @method static OrderProductFactory factory(...$parameters)
@@ -55,6 +54,20 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|OrderProduct whereUpdatedAt($value)
  * @method static Builder|OrderProduct whereUpdatedById($value)
  * @mixin Eloquent
+ * @property int|null $order_clothing_attribute_id
+ * @property int|null $order_dimension_attribute_id
+ * @property int|null $order_volume_attribute_id
+ * @property int|null $order_color_attribute_id
+ * @property-read OrderClothingAttribute|null $orderClothingAttribute
+ * @property-read OrderColorAttribute|null $orderColorAttribute
+ * @property-read OrderDimensionAttribute|null $orderDimensionAttribute
+ * @property-read OrderVolumeAttribute|null $orderVolumeAttribute
+ * @method static Builder|OrderProduct whereOrderClothingAttributeId($value)
+ * @method static Builder|OrderProduct whereOrderColorAttributeId($value)
+ * @method static Builder|OrderProduct whereOrderDimensionAttributeId($value)
+ * @method static Builder|OrderProduct whereOrderVolumeAttributeId($value)
+ * @property-read mixed $main_thumbnail
+ * @property mixed $product_attributes
  */
 class OrderProduct extends Model
 {
@@ -87,6 +100,11 @@ class OrderProduct extends Model
         return $this->belongsTo(OrderProductImage::class, 'thumbnail_id');
     }
 
+    public function getMainThumbnailAttribute()
+    {
+        return $this->thumbnail ?? $this->images->first();
+    }
+
     public function created_by(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by_id');
@@ -97,14 +115,63 @@ class OrderProduct extends Model
         return $this->belongsTo(User::class, 'updated_by_id');
     }
 
-    public function images(): HasMany
+    public function images(): BelongsToMany
     {
-        return $this->hasMany(OrderProductImage::class);
+        return $this->belongsToMany(OrderProductImage::class);
     }
 
-    public function productAttributes(): HasMany
+    public function getProductAttributesAttribute()
     {
-        return $this->hasMany(OrderProductAttribute::class);
+        $attributes = collect([
+            $this->orderClothingAttribute,
+            $this->orderDimensionAttribute,
+            $this->orderVolumeAttribute,
+            $this->orderColorAttribute,
+        ]);
+
+        return $attributes
+            ->filter(fn ($attribute) => !is_null($attribute));
+    }
+
+    public function setProductAttributesAttribute(Collection $attributes)
+    {
+        foreach ($attributes as $type => $attribute)
+        {
+            switch ($type) {
+                case AttributeType::CLOTHING:
+                    $this->order_clothing_attribute_id = $attribute->id;
+                    break;
+                case AttributeType::DIMENSION:
+                    $this->order_dimension_attribute_id = $attribute->id;
+                    break;
+                case AttributeType::VOLUME:
+                    $this->order_volume_attribute_id = $attribute->id;
+                    break;
+                case AttributeType::COLOR:
+                    $this->order_color_attribute_id = $attribute->id;
+                    break;
+            }
+        }
+    }
+
+    public function orderClothingAttribute()
+    {
+        return $this->belongsTo(OrderClothingAttribute::class);
+    }
+
+    public function orderDimensionAttribute()
+    {
+        return $this->belongsTo(OrderDimensionAttribute::class);
+    }
+
+    public function orderVolumeAttribute()
+    {
+        return $this->belongsTo(OrderVolumeAttribute::class);
+    }
+
+    public function orderColorAttribute()
+    {
+        return $this->belongsTo(OrderColorAttribute::class);
     }
 
     public function createWith(User $user): OrderProduct

@@ -60,7 +60,9 @@ function saturateShoppingCart(User $user): Collection
     $result = clone $products;
 
     $products = $products->mapWithKeys(function (Product $product) {
-        return [$product->id => ['count' => 2]];
+        return [$product->id => [
+            'count' => 2,
+        ]];
     });
 
     $user->shopping_cart()->attach($products);

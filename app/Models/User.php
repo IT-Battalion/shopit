@@ -149,22 +149,23 @@ class User extends Authenticatable implements LdapAuthenticatable
      * Das is hässlich wie sau no joke
      * @return Builder
      */
-    public function prunable(): Builder
+    public function prunable()
     {
-        return static::whereNotNull('deleted_at')
-            ->whereRaw('(SELECT customer_id FROM orders
-        WHERE users.id = orders.customer_id
-        GROUP BY customer_id) IS NULL'); // An diese Query wird ein ORDER BY `id` angehängt was JOINS unmöglich macht,
-        // da dies nicht zwischen der orders.id und der users.id unterscheiden könnte
-        // deswegen die Subquery. Die Subquery ist in raw SQL, da der Query Builder für
-        // Subqueries keine Möglichkeit bietet mit IS NULL zu vergleichen
+        return static::doesntHave('orders');
     }
 
     public function shopping_cart(): BelongsToMany
     {
         return $this
-            ->belongsToMany(Product::class, 'shopping_cart')
-            ->withPivot(['count', 'values_chosen']);
+            ->belongsToMany(Product::class, 'shopping_cart', 'user_id')
+            ->withPivot([
+                'count',
+                'product_clothing_attribute_id',
+                'product_dimension_attribute_id',
+                'product_volume_attribute_id',
+                'product_color_attribute_id',
+            ])
+            ->using(ShoppingCartEntry::class);
     }
 
     public function shopping_cart_coupon(): BelongsTo

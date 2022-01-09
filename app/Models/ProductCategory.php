@@ -33,7 +33,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder|ProductCategory whereName($value)
  * @method static Builder|ProductCategory whereUpdatedAt($value)
  * @mixin Eloquent
- * @method static Builder|ProductCategory nonEmpty()
  */
 class ProductCategory extends Model
 {
@@ -57,14 +56,4 @@ class ProductCategory extends Model
     {
         return $this->belongsTo(Icon::class);
     }
-
-    /**
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public static function scopeNonEmpty($query) {
-        return $query
-            ->whereHas('products');
-    }
-
 }
