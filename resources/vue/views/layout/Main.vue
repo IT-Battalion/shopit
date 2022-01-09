@@ -6,6 +6,7 @@
     <main class="w-full">
       <router-view />
     </main>
+    <Footer />
   </div>
   <mq-responsive target="sm-">
     <MobileNavbar />
@@ -15,10 +16,12 @@
 <script lang="ts">
 import Navbar from "@/components/Navbar.vue";
 import MobileNavbar from "@/components/MobileNavbar.vue";
+import Footer from "@/components/Footer.vue";
 export default {
   components: {
     Navbar,
     MobileNavbar,
+    Footer,
   },
 };
 </script>
