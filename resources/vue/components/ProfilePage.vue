@@ -2,7 +2,7 @@
   <div class="w-full h-full">
     <img
       :src="profilePicture"
-      class="bg-gray-800 rounded-full w-1/5 h-1/5 mx-auto"
+      class="bg-gray-800 rounded-full md:w-1/5 w-2/5 mx-auto"
     />
     <div>
       <h1 class="text-white text-5xl text-center font-bold mt-10">
@@ -14,6 +14,31 @@
         <h2 class="mt-3">
           {{ user.username.value }}<a class="text-gray-600">{{ email }}</a>
         </h2>
+        <mq-responsive target="sm-">
+          <button
+            class="
+              flex
+              items-center
+              justify-center
+              w-1/2
+              text-base
+              font-medium
+              text-gray-900
+              bg-white
+              row-span-full
+              rounded-3xl
+              hover:bg-gray-300
+              mx-auto
+              py-2
+              mt-5
+            "
+            type="button"
+            @click="logout()"
+          >
+            <a class="pr-2">Abmelden</a>
+            <img src="img/logoutBlack.svg" class="object-scale-down h-10" />
+          </button>
+        </mq-responsive>
       </div>
     </div>
   </div>
@@ -25,7 +50,7 @@ import useUser from "../stores/user";
 
 export default defineComponent({
   setup() {
-    const { user } = useUser();
+    const { user, logout } = useUser();
     const profilePicture =
       "https://avatars.dicebear.com/api/micah/:" + user.username.value + ".svg";
     const email = user.email.value.slice(
@@ -33,7 +58,7 @@ export default defineComponent({
       user.email.value.length
     );
 
-    return { user, profilePicture, email };
+    return { user, profilePicture, email, logout };
   },
 });
 </script>

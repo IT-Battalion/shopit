@@ -1,14 +1,15 @@
 <template>
-  <div class="w-full h-full">
+  <div class="w-full md:w-1/2 h-full">
     <div>
-      <div v-if="!isLoading">
-        <swiper
-          :navigation="true"
-          :pagination="{
-            dynamicBullets: true,
-          }"
-          class="w-1/2 h-full"
-        >
+      <swiper
+        :navigation="true"
+        :pagination="{
+          dynamicBullets: true,
+        }"
+        v-show="!isLoading"
+        class="w-full h-full"
+      >
+        <template v-if="isMetadataLoaded">
           <swiper-slide
             class="w-full h-full"
             v-for="image in product.images"
@@ -17,14 +18,23 @@
             <img
               :src="'/product-image/' + image.id"
               :alt="'productimage'"
-              class="object-cover w-full h-full"
+              @load="
+                () => {
+                  imagesLoading--;
+                }
+              "
+              class="object-contain w-full max-h-[60vh]"
             />
           </swiper-slide>
-        </swiper>
-      </div>
-      <div class="w-96 h-96 mx-auto" v-else>
-        <Skeletor :pill="false" as="div" height="100%" />
-      </div>
+        </template>
+      </swiper>
+      <Skeletor
+        :pill="false"
+        as="div"
+        height="60vh"
+        class="object-contain mx-auto w-full md:w-1/2 rounded-3xl"
+        v-if="isLoading"
+      />
 
       <!-- Product info -->
       <div
@@ -311,7 +321,11 @@ export default defineComponent({
   },
   data() {
     return {
-      isLoading: true,
+      isLoading: computed(() => {
+        return !this.isMetadataLoaded || (this.imagesLoading as any) > 0;
+      }),
+      imagesLoading: 0,
+      isMetadataLoaded: false,
       product: [] as any as Product,
     };
   },
@@ -323,8 +337,8 @@ export default defineComponent({
     );
 
     this.product = response.data;
-    console.log(this.product);
-    this.isLoading = false;
+    this.imagesLoading = this.product.images.length;
+    this.isMetadataLoaded = true;
   },
 });
 </script>

@@ -73,7 +73,7 @@ import App from "./App.vue";
 import router from "./router";
 import { createI18n, I18n } from "vue-i18n";
 import { redirectToLogin } from "./util";
-import { Vue3Mq } from "vue3-mq";
+import { Vue3Mq, MqResponsive } from "vue3-mq";
 import { Skeletor } from "vue-skeletor";
 import 'vue-skeletor/dist/vue-skeletor.css';
 
@@ -108,6 +108,7 @@ createdApp
     .use(router)
     .use(i18n)
     .use(Vue3Mq, { preset: "tailwind" })
+    .component('mq-responsive', MqResponsive)
     .component(Skeletor.name, Skeletor)
     .mount("#app");
 

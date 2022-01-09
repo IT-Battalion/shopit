@@ -1,5 +1,5 @@
 <template>
-  <HighlightedProduct class="w-full h-96" />
+  <HighlightedProduct class="w-3/4 h-96" />
   <ProductList />
 </template>
 

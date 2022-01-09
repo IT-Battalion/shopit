@@ -4,7 +4,6 @@ import Products from "../views/Products.vue";
 import Main from "../views/layout/Main.vue";
 import { user } from "../stores/user";
 import ProductOverview from "../components/ProductOverview.vue";
-import ProfilePage from "../components/ProfilePage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -49,7 +48,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: "/admin/",
-        name: "Admin",
+        name: "admin",
         component: () =>
           import("../views/layout/Admin.vue"),
 
@@ -57,9 +56,16 @@ const routes: Array<RouteRecordRaw> = [
           {
             path: "",
             name: "ProfilePage",
-            component: () => ProfilePage,
+            component: () =>
+              import("../components/ProfilePage.vue"),
           }
         ]
+      },
+      {
+        path: "/order/",
+        name: "order",
+        component: () =>
+          import("../views/layout/Order.vue"),
       }
     ],
   },

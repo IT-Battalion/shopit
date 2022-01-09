@@ -18,7 +18,12 @@
             leave-to="opacity-0"
           >
             <DialogOverlay
-              class="absolute inset-0 transition-opacity bg-gray-500 bg-opacity-75 "
+              class="
+                absolute
+                inset-0
+                transition-opacity
+                bg-gray-500 bg-opacity-75
+              "
             />
           </TransitionChild>
 
@@ -34,7 +39,13 @@
             >
               <div class="w-screen max-w-md">
                 <div
-                  class="flex flex-col h-full overflow-y-scroll bg-white shadow-xl "
+                  class="
+                    flex flex-col
+                    h-full
+                    overflow-y-scroll
+                    bg-white
+                    shadow-xl
+                  "
                 >
                   <div class="flex-1 px-4 py-6 overflow-y-auto sm:px-6">
                     <div class="flex items-start justify-between">
@@ -62,7 +73,14 @@
                             class="flex py-6"
                           >
                             <div
-                              class="flex-shrink-0 w-24 h-24 overflow-hidden border border-gray-200 rounded-md "
+                              class="
+                                flex-shrink-0
+                                w-24
+                                h-24
+                                overflow-hidden
+                                border border-gray-200
+                                rounded-md
+                              "
                             >
                               <img
                                 :src="product.imageSrc"
@@ -74,7 +92,13 @@
                             <div class="flex flex-col flex-1 ml-4">
                               <div>
                                 <div
-                                  class="flex justify-between text-base font-medium text-gray-900 "
+                                  class="
+                                    flex
+                                    justify-between
+                                    text-base
+                                    font-medium
+                                    text-gray-900
+                                  "
                                 >
                                   <h3>
                                     <a :href="product.href">
@@ -90,7 +114,13 @@
                                 </p>
                               </div>
                               <div
-                                class="flex items-end justify-between flex-1 text-sm "
+                                class="
+                                  flex
+                                  items-end
+                                  justify-between
+                                  flex-1
+                                  text-sm
+                                "
                               >
                                 <p class="text-gray-500">
                                   Qty {{ product.quantity }}
@@ -99,7 +129,11 @@
                                 <div class="flex">
                                   <button
                                     type="button"
-                                    class="font-medium text-indigo-600  hover:text-indigo-500"
+                                    class="
+                                      font-medium
+                                      text-indigo-600
+                                      hover:text-indigo-500
+                                    "
                                   >
                                     Remove
                                   </button>
@@ -114,7 +148,13 @@
 
                   <div class="px-4 py-6 border-t border-gray-200 sm:px-6">
                     <div
-                      class="flex justify-between text-base font-medium text-gray-900 "
+                      class="
+                        flex
+                        justify-between
+                        text-base
+                        font-medium
+                        text-gray-900
+                      "
                     >
                       <p>Subtotal</p>
                       <p>$262.00</p>
@@ -123,20 +163,45 @@
                       Shipping and taxes calculated at checkout.
                     </p>
                     <div class="mt-6">
-                      <a
-                        href="#"
-                        class="flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm  hover:bg-indigo-700"
-                        >Checkout</a
-                      >
+                      <router-link :to="{ name: 'order' }">
+                        <a
+                          href="#"
+                          class="
+                            flex
+                            items-center
+                            justify-center
+                            px-6
+                            py-3
+                            text-base
+                            font-medium
+                            text-white
+                            bg-indigo-600
+                            border border-transparent
+                            rounded-md
+                            shadow-sm
+                            hover:bg-indigo-700
+                          "
+                          >Checkout</a
+                        >
+                      </router-link>
                     </div>
                     <div
-                      class="flex justify-center mt-6 text-sm text-center text-gray-500 "
+                      class="
+                        flex
+                        justify-center
+                        mt-6
+                        text-sm text-center text-gray-500
+                      "
                     >
                       <p>
                         or
                         <button
                           type="button"
-                          class="font-medium text-indigo-600  hover:text-indigo-500"
+                          class="
+                            font-medium
+                            text-indigo-600
+                            hover:text-indigo-500
+                          "
                           @click="isOpen = false"
                         >
                           Continue Shopping<span aria-hidden="true">
