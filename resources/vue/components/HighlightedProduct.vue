@@ -1,10 +1,34 @@
 <template>
   <div class="relative">
     <div
-      class="absolute w-5/12 h-full ml-0  rounded-3xl left-24 bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500"
+      class="
+        absolute
+        md:w-5/12
+        w-3/4
+        h-full
+        ml-0
+        rounded-3xl
+        md:left-24
+        bg-gradient-to-r
+        from-yellow-400
+        via-red-500
+        to-pink-500
+      "
     ></div>
     <div
-      class="absolute w-2/3  rounded-r-3xl left-48 top-12 h-3/4 bg-gradient-to-r from-purple-200 to-blue-400"
+      class="
+        absolute
+        sm:w-2/3
+        w-[calc(100%-1.25rem)]
+        rounded-r-3xl
+        md:left-48
+        left-5
+        top-12
+        h-3/4
+        bg-gradient-to-r
+        from-purple-200
+        to-blue-400
+      "
     >
       <swiper :navigation="true" class="w-full h-full" v-if="!isLoading">
         <swiper-slide
@@ -13,7 +37,15 @@
           :key="highlightedProduct.name"
         >
           <div
-            class="grid items-center w-full h-full grid-cols-2 grid-rows-4  gap-x-6 justify-items-center"
+            class="
+              grid
+              items-center
+              w-full
+              h-full
+              grid-cols-2 grid-rows-4
+              gap-x-6
+              justify-items-center
+            "
           >
             <div class="w-full h-full row-span-full">
               <img
@@ -58,7 +90,14 @@
       <swiper class="w-full h-full" v-else>
         <swiper-slide>
           <div
-            class="grid items-center w-full h-full grid-cols-2 grid-rows-4  gap-x-6"
+            class="
+              grid
+              items-center
+              w-full
+              h-full
+              grid-cols-2 grid-rows-4
+              gap-x-6
+            "
           >
             <div class="w-full h-full row-span-full">
               <Skeletor
