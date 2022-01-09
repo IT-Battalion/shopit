@@ -1,10 +1,19 @@
 <template>
-  <div class="w-full text-white z-20 left-52">
+  <div class="w-full text-white z-20 left-52 mt-48">
     <div class="xl:px-40 pb-12 lg:px-20 md:px-10 sm:px-5 px-10">
       <div
         class="w-full pt-12 flex flex-col sm:flex-row space-y-2 justify-start"
       >
-        <div class="w-full sm:w-2/5 pr-6 flex flex-col space-y-4">
+        <div
+          class="
+            w-full
+            sm:w-2/5
+            pr-6
+            grid grid-cols-3 grid-rows-1
+            gap-1
+            space-y-4
+          "
+        >
           <img src="img/lernenImAufbruch.svg" class="h-16 w-16" />
           <p class="opacity-60 flex flex-row">
             <HomeIcon class="w-5 h-5 pr-1" />Wexstraße 19-23 1200 Wien

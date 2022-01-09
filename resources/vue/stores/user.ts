@@ -37,6 +37,7 @@ const actions = {
                 console.log(err.response.data.message);
                 user.error = err.response.data.message;
             }
+            return err;
         });
     },
     async logout() {

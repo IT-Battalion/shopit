@@ -20,7 +20,7 @@
         absolute
         sm:w-2/3
         w-[calc(100%-1.25rem)]
-        rounded-r-3xl
+        rounded-3xl
         md:left-48
         left-5
         top-12
