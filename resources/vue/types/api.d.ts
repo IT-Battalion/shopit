@@ -85,12 +85,10 @@ export type Meter = Unit;
 export type Liter = Unit;
 export type Color = string;
 
-export type Money = {
-  amount: string,
-  currency: string,
-}
+export type Money = string;
 
 export interface Product {
+  id: number,
   name: string,
   description: string,
   price: Money,

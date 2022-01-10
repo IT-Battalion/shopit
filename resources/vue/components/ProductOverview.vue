@@ -11,9 +11,9 @@
       >
         <template v-if="isMetadataLoaded">
           <swiper-slide
-            class="w-full h-full object-cover"
+            class="object-cover w-full h-full"
             v-for="image in product.images"
-            :key="image"
+            :key="image.id"
           >
             <img
               :src="'/product-image/' + image.id"
@@ -32,7 +32,7 @@
         :pill="false"
         as="div"
         height="60vh"
-        class="object-contain mx-auto w-full md:w-1/2 rounded-3xl"
+        class="object-contain w-full mx-auto md:w-1/2 rounded-3xl"
         v-if="isLoading"
       />
 
@@ -57,13 +57,7 @@
       >
         <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
           <h1
-            class="
-              text-2xl
-              font-extrabold
-              tracking-tight
-              text-white
-              sm:text-3xl
-            "
+            class="text-2xl font-extrabold tracking-tight text-white sm:text-3xl"
             v-if="!isLoading"
           >
             {{ product.name }}
@@ -130,12 +124,7 @@
                   <h3 class="text-sm font-medium text-white">Size</h3>
                   <a
                     href="#"
-                    class="
-                      text-sm
-                      font-medium
-                      text-gray-400
-                      hover:text-gray-700
-                    "
+                    class="text-sm font-medium text-gray-400 hover:text-gray-700"
                     >Size guide</a
                   >
                 </div>
@@ -181,23 +170,10 @@
                         <div
                           v-else
                           aria-hidden="true"
-                          class="
-                            absolute
-                            border-2 border-gray-200
-                            rounded-md
-                            pointer-events-none
-                            -inset-px
-                          "
+                          class="absolute border-2 border-gray-200 rounded-md pointer-events-none -inset-px"
                         >
                           <svg
-                            class="
-                              absolute
-                              inset-0
-                              w-full
-                              h-full
-                              text-gray-200
-                              stroke-2
-                            "
+                            class="absolute inset-0 w-full h-full text-gray-200 stroke-2 "
                             viewBox="0 0 100 100"
                             preserveAspectRatio="none"
                             stroke="currentColor"
@@ -218,22 +194,7 @@
               </div>
             </div>
             <button
-              class="
-                flex
-                items-center
-                justify-center
-                w-full
-                px-8
-                py-3
-                mt-10
-                text-base
-                font-medium
-                text-gray-900
-                bg-white
-                row-span-full
-                rounded-3xl
-                hover:bg-gray-300
-              "
+              class="flex items-center justify-center w-full px-8 py-3 mt-10 text-base font-medium text-gray-900 bg-white row-span-full rounded-3xl hover:bg-gray-300"
               type="button"
             >
               <a class="pr-2">Add to Bag</a>
@@ -258,16 +219,7 @@
         </div>
 
         <div
-          class="
-            py-10
-            lg:pt-6
-            lg:pb-16
-            lg:col-start-1
-            lg:col-span-2
-            lg:border-r
-            lg:border-gray-200
-            lg:pr-8
-          "
+          class="py-10 lg:pt-6 lg:pb-16 lg:col-start-1 lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8"
         >
           <!-- Description and details -->
           <div>

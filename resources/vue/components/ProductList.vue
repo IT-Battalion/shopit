@@ -7,9 +7,7 @@
       :id="categoryName"
     >
       <div v-if="!isLoading">
-        <h2
-          class="text-2xl font-extrabold tracking-tight text-white"
-        >
+        <h2 class="text-2xl font-extrabold tracking-tight text-white">
           {{ categoryName }}
         </h2>
       </div>

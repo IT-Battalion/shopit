@@ -177,16 +177,15 @@ class Product extends Model implements ConvertableToOrder
             default => null,
         };
 
-        return ! is_null($attributes) && $attributes
-                ->wherePivot('product_attribute_id', $attribute)
-                ->count() !== 0;
+        return !is_null($attributes) && $attributes
+            ->wherePivot('product_attribute_id', $attribute)
+            ->count() !== 0;
     }
 
     public function areAttributesAvailable(\Illuminate\Support\Collection $attributes): bool
     {
-        foreach ($attributes as $type => $attribute)
-        {
-            if ( ! $this->isAttributeAvailable($type, $attribute))
+        foreach ($attributes as $type => $attribute) {
+            if (!$this->isAttributeAvailable($type, $attribute))
                 return false;
         }
 
@@ -223,6 +222,11 @@ class Product extends Model implements ConvertableToOrder
         return $query->where('available', '=', '0');
     }
 
+    public function getBruttoPriceAttribute(): Money
+    {
+        return $this->price->mul(bcadd($this->tax, 1));
+    }
+
     public function getOrderEquivalent(array $attributes = [])
     {
         return OrderProduct::create([
@@ -245,9 +249,10 @@ class Product extends Model implements ConvertableToOrder
     public function jsonSerialize()
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'description' => $this->name,
-            'price' => $this->price,
+            'price' => $this->brutto_price,
             'tax' => $this->tax,
             'available' => $this->available,
             'thumbnail' => [
@@ -257,5 +262,4 @@ class Product extends Model implements ConvertableToOrder
             'attributes' => $this->product_attributes,
         ];
     }
-
 }

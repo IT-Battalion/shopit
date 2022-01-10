@@ -18,12 +18,7 @@
             leave-to="opacity-0"
           >
             <DialogOverlay
-              class="
-                absolute
-                inset-0
-                transition-opacity
-                bg-gray-500 bg-opacity-75
-              "
+              class="absolute inset-0 transition-opacity bg-gray-500 bg-opacity-75 "
             />
           </TransitionChild>
 
@@ -39,13 +34,7 @@
             >
               <div class="w-screen max-w-md">
                 <div
-                  class="
-                    flex flex-col
-                    h-full
-                    overflow-y-scroll
-                    bg-white
-                    shadow-xl
-                  "
+                  class="flex flex-col h-full overflow-y-scroll bg-white shadow-xl "
                 >
                   <div class="flex-1 px-4 py-6 overflow-y-auto sm:px-6">
                     <div class="flex items-start justify-between">
@@ -68,23 +57,18 @@
                       <div class="flow-root">
                         <ul role="list" class="-my-6 divide-y divide-gray-200">
                           <li
-                            v-for="product in products"
-                            :key="product.id"
+                            v-for="entry in shoppingCart.products"
+                            :key="entry.product.id"
                             class="flex py-6"
                           >
                             <div
-                              class="
-                                flex-shrink-0
-                                w-24
-                                h-24
-                                overflow-hidden
-                                border border-gray-200
-                                rounded-md
-                              "
+                              class="flex-shrink-0 w-24 h-24 overflow-hidden border border-gray-200 rounded-md "
                             >
                               <img
-                                :src="product.imageSrc"
-                                :alt="product.imageAlt"
+                                :src="
+                                  '/product-image/' + entry.product.thumbnail.id
+                                "
+                                :alt="entry.product.name"
                                 class="object-cover object-center w-full h-full"
                               />
                             </div>
@@ -92,48 +76,35 @@
                             <div class="flex flex-col flex-1 ml-4">
                               <div>
                                 <div
-                                  class="
-                                    flex
-                                    justify-between
-                                    text-base
-                                    font-medium
-                                    text-gray-900
-                                  "
+                                  class="flex justify-between text-base font-medium text-gray-900 "
                                 >
                                   <h3>
-                                    <a :href="product.href">
-                                      {{ product.name }}
-                                    </a>
+                                    <router-link
+                                      :to="'/product/' + entry.product.name"
+                                      @click="isOpen = false"
+                                    >
+                                      {{ entry.product.name }}
+                                    </router-link>
                                   </h3>
                                   <p class="ml-4">
-                                    {{ product.price }}
+                                    {{ entry.product.price }}
                                   </p>
                                 </div>
                                 <p class="mt-1 text-sm text-gray-500">
-                                  {{ product.color }}
+                                  {{ entry.product.name }}
                                 </p>
                               </div>
                               <div
-                                class="
-                                  flex
-                                  items-end
-                                  justify-between
-                                  flex-1
-                                  text-sm
-                                "
+                                class="flex items-end justify-between flex-1 text-sm "
                               >
                                 <p class="text-gray-500">
-                                  Qty {{ product.quantity }}
+                                  Qty {{ entry.count }}
                                 </p>
 
                                 <div class="flex">
                                   <button
                                     type="button"
-                                    class="
-                                      font-medium
-                                      text-indigo-600
-                                      hover:text-indigo-500
-                                    "
+                                    class="font-medium text-indigo-600  hover:text-indigo-500"
                                   >
                                     Remove
                                   </button>
@@ -148,13 +119,7 @@
 
                   <div class="px-4 py-6 border-t border-gray-200 sm:px-6">
                     <div
-                      class="
-                        flex
-                        justify-between
-                        text-base
-                        font-medium
-                        text-gray-900
-                      "
+                      class="flex justify-between text-base font-medium text-gray-900 "
                     >
                       <p>Subtotal</p>
                       <p>$262.00</p>
@@ -166,42 +131,19 @@
                       <router-link :to="{ name: 'order' }">
                         <a
                           href="#"
-                          class="
-                            flex
-                            items-center
-                            justify-center
-                            px-6
-                            py-3
-                            text-base
-                            font-medium
-                            text-white
-                            bg-indigo-600
-                            border border-transparent
-                            rounded-md
-                            shadow-sm
-                            hover:bg-indigo-700
-                          "
+                          class="flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm  hover:bg-indigo-700"
                           >Checkout</a
                         >
                       </router-link>
                     </div>
                     <div
-                      class="
-                        flex
-                        justify-center
-                        mt-6
-                        text-sm text-center text-gray-500
-                      "
+                      class="flex justify-center mt-6 text-sm text-center text-gray-500 "
                     >
                       <p>
                         or
                         <button
                           type="button"
-                          class="
-                            font-medium
-                            text-indigo-600
-                            hover:text-indigo-500
-                          "
+                          class="font-medium text-indigo-600  hover:text-indigo-500"
                           @click="isOpen = false"
                         >
                           Continue Shopping<span aria-hidden="true">
@@ -222,7 +164,7 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent } from "vue";
+import { defineComponent, computed } from "vue";
 import {
   Dialog,
   DialogOverlay,
@@ -231,34 +173,8 @@ import {
   TransitionRoot,
 } from "@headlessui/vue";
 import { XIcon } from "@heroicons/vue/outline";
-
-const products = [
-  {
-    id: 1,
-    name: "Throwback Hip Bag",
-    href: "#",
-    color: "Salmon",
-    price: "$90.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
-    imageAlt:
-      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
-  },
-  {
-    id: 2,
-    name: "Medium Stuff Satchel",
-    href: "#",
-    color: "Blue",
-    price: "$32.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-    imageAlt:
-      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-  },
-  // More products...
-];
+import { AxiosResponse } from "axios";
+import { ShoppingCart } from "../types/api";
 
 export default defineComponent({
   components: {
@@ -272,12 +188,19 @@ export default defineComponent({
   data() {
     return {
       isOpen: false,
+      shoppingCart: {} as ShoppingCart,
+      imagesLoading: 0,
+      metadataLoading: true,
+      isLoading: computed(() => (this.imagesLoading as any) > 0),
     };
   },
-  setup() {
-    return {
-      products,
-    };
+  async created() {
+    let response: AxiosResponse<ShoppingCart> = await this.$http.get(
+      "/user/shopping-cart"
+    );
+    this.shoppingCart = response.data;
+    this.imagesLoading = this.shoppingCart.products.length;
+    this.metadataLoading = false;
   },
   methods: {
     toggleOpen() {

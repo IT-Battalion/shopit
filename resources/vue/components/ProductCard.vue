@@ -82,12 +82,13 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from "vue";
 import { Product } from "../types/api";
 
-export default {
+export default defineComponent({
   props: {
     product: Object as () => Product,
     isLoading: Boolean,
   },
-};
+});
 </script>

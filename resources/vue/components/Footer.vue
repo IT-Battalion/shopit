@@ -1,69 +1,42 @@
 <template>
-  <div class="w-full text-white z-20 left-52 mt-48">
-    <div class="xl:px-40 pb-12 lg:px-20 md:px-10 sm:px-5 px-10">
+  <div class="z-20 w-full mt-10 mb-24 text-white left-52 sm:mt-48 sm:mb-0">
+    <div class="px-10 pb-12 xl:px-40 lg:px-20 md:px-10 sm:px-5">
       <div
-        class="w-full pt-12 flex flex-col sm:flex-row space-y-2 justify-start"
+        class="flex flex-col justify-start w-full pt-12 space-y-2 sm:flex-row"
       >
         <div
-          class="
-            w-full
-            sm:w-2/5
-            pr-6
-            grid grid-cols-3 grid-rows-1
-            gap-1
-            space-y-4
-          "
+          class="grid w-full grid-cols-3 grid-rows-1 gap-1 pr-6 space-y-4  sm:w-2/5"
         >
-          <img src="/img/lernenImAufbruch.svg" class="h-16 w-16" />
-          <p class="opacity-60 flex flex-row">
+          <img src="/img/lernenImAufbruch.svg" class="w-16 h-16" />
+          <p class="flex flex-row opacity-60">
             <HomeIcon class="w-5 h-5 pr-1" />Wexstraße 19-23 1200 Wien
           </p>
         </div>
-        <div class="w-full sm:w-2/5 flex flex-col space-y-4">
-          <a class="opacity-60 flex flex-row"
-            >Kontakt<AnnotationIcon class="w-5 h-5 pl-1"
-          /></a>
+        <div class="flex flex-col w-full space-y-4 sm:w-2/5">
+          <a class="flex flex-row text-lg font-medium opacity-60">Kontakt</a>
           <a
             href="mailto:info@LernenImAufbruch.at"
-            class="
-              opacity-60
-              hover:opacity-100
-              flex flex-row
-              underline
-              decoration-solid
-            "
-            >info@LernenImAufbruch.at<MailIcon class="w-5 h-5 pl-1" />
-          </a>
+            class="flex flex-row underline  opacity-60 hover:opacity-100 decoration-solid"
+            >info@LernenImAufbruch.at</a
+          >
         </div>
-        <div class="w-full sm:w-1/5 flex flex-col space-y-4">
-          <a class="opacity-60 flex flex-row"
-            >Links<LinkIcon class="w-5 h-5 pl-1"
-          /></a>
+        <div class="flex flex-col w-full space-y-4 sm:w-1/5">
+          <a class="flex flex-row mt-4 text-lg font-medium opacity-60 sm:mt-0"
+            >Links</a
+          >
           <a
             href="https://www.tgm.ac.at/tagesschule/"
-            class="
-              opacity-60
-              hover:opacity-100
-              flex flex-row
-              underline
-              decoration-solid
-            "
+            class="flex flex-row underline  opacity-60 hover:opacity-100 decoration-solid"
             >TGM HIT<ExternalLinkIcon class="w-5 h-5 pl-1"
           /></a>
           <a
             href="https://lernenimaufbruch.at/impressum.html"
-            class="
-              opacity-60
-              hover:opacity-100
-              flex flex-row
-              underline
-              decoration-solid
-            "
+            class="flex flex-row underline  opacity-60 hover:opacity-100 decoration-solid"
             >Impressum<ExternalLinkIcon class="w-5 h-5 pl-1"
           /></a>
         </div>
       </div>
-      <div class="opacity-60 pt-2">
+      <div class="pt-2 opacity-60">
         <p>© Lernen im Aufbruch - Alle Rechte vorbehalten</p>
       </div>
     </div>
@@ -71,20 +44,11 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
-import {
-  HomeIcon,
-  ExternalLinkIcon,
-  MailIcon,
-  AnnotationIcon,
-  LinkIcon,
-} from "@heroicons/vue/solid";
+import { HomeIcon, ExternalLinkIcon } from "@heroicons/vue/solid";
 export default defineComponent({
   components: {
     HomeIcon,
     ExternalLinkIcon,
-    MailIcon,
-    AnnotationIcon,
-    LinkIcon,
   },
 });
 </script>

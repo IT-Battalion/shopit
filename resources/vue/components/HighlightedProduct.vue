@@ -1,19 +1,7 @@
 <template>
   <div class="relative">
     <div
-      class="
-        absolute
-        md:w-5/12
-        w-3/4
-        h-full
-        ml-0
-        rounded-3xl
-        md:left-24
-        bg-gradient-to-r
-        from-yellow-400
-        via-red-500
-        to-pink-500
-      "
+      class="absolute w-3/4 h-full ml-0  md:w-5/12 rounded-3xl md:left-24 bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500"
     ></div>
     <div
       class="
@@ -37,15 +25,7 @@
           :key="highlightedProduct.name"
         >
           <div
-            class="
-              grid
-              items-center
-              w-full
-              h-full
-              grid-cols-2 grid-rows-4
-              gap-x-6
-              justify-items-center
-            "
+            class="grid items-center w-full h-full grid-cols-2 grid-rows-4  gap-x-6 justify-items-center"
           >
             <div class="w-full h-full row-span-full">
               <img
@@ -58,13 +38,11 @@
               {{ highlightedProduct.name }}
             </h3>
             <p class="self-end w-2/3 text-sm font-medium text-gray-900">
-              {{ highlightedProduct.price }}
-            </p>
-            <p class="w-2/3 text-sm font-medium text-gray-900">
-              {{ highlightedProduct.price }}
+              {{ highlightedProduct.price.amount.replace(".", ",")
+              }}{{ highlightedProduct.price.currency }}
             </p>
             <button
-              class="w-24 px-4 py-1 bg-white rounded-3xl hover:bg-gray-300"
+              class="w-24 row-span-2 px-4 py-1 bg-white  rounded-3xl hover:bg-gray-300"
               type="button"
             >
               <svg
@@ -90,14 +68,7 @@
       <swiper class="w-full h-full" v-else>
         <swiper-slide>
           <div
-            class="
-              grid
-              items-center
-              w-full
-              h-full
-              grid-cols-2 grid-rows-4
-              gap-x-6
-            "
+            class="grid items-center w-full h-full grid-cols-2 grid-rows-4  gap-x-6"
           >
             <div class="w-full h-full row-span-full">
               <Skeletor
@@ -153,7 +124,7 @@ import "swiper/css";
 
 import "swiper/css/navigation";
 import { AxiosResponse } from "axios";
-import {Product} from "../types/api";
+import { Product } from "../types/util";
 
 // import Swiper core and required modules
 import SwiperCore, { Navigation } from "swiper";
@@ -174,8 +145,9 @@ export default defineComponent({
     };
   },
   async created() {
-    let response: AxiosResponse<Product[]> =
-      await this.$http.get("/highlighted");
+    let response: AxiosResponse<Product[]> = await this.$http.get(
+      "/highlighted"
+    );
 
     this.highlightedProducts = response.data;
     this.isLoading = false;

@@ -1,5 +1,5 @@
-import {AxiosResponse} from "axios"
-import {LoginRequestData, LoginResponseData} from "./types/api"
+import { AxiosResponse } from "axios"
+import { LoginRequestData, LoginResponseData } from "./types/api"
 
 export type User = { name: string; username: string }
 export type UserList = Array<User & { password: string }>
