@@ -3,6 +3,7 @@
 use App\Models\Admin;
 use App\Models\CouponCode;
 use App\Models\Icon;
+use App\Models\Money;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductClothingAttribute;
@@ -427,8 +428,8 @@ test('get total price without taxes and without missing coupon', function () {
 
     $price = $service->calculatePrice(false, false);
 
-    $realPrice = 20 * 2 * 2.0;
-    expect($price)->toBe($realPrice);
+    $realPrice = new Money(20 * 2 * 2.0);
+    expect($price)->toEqual($realPrice);
 });
 
 test('get total price without taxes and without existing coupon', function () {
@@ -443,8 +444,8 @@ test('get total price without taxes and without existing coupon', function () {
 
     $price = $service->calculatePrice(false, false);
 
-    $realPrice = 20 * 2 * 2.0;
-    expect($price)->toBe($realPrice);
+    $realPrice = new Money(20 * 2 * 2.0);
+    expect($price)->toEqual($realPrice);
 });
 
 test('get total price without taxes and with missing coupon', function () {
@@ -457,8 +458,8 @@ test('get total price without taxes and with missing coupon', function () {
 
     $price = $service->calculatePrice(false, true);
 
-    $realPrice = 20 * 2 * 2.0;
-    expect($price)->toBe($realPrice);
+    $realPrice = new Money(20 * 2 * 2.0);
+    expect($price)->toEqual($realPrice);
 });
 
 test('get total price without taxes and with existing coupon', function () {
@@ -473,8 +474,8 @@ test('get total price without taxes and with existing coupon', function () {
 
     $price = $service->calculatePrice(false, true);
 
-    $realPrice = 20 * 0.8 * 2 * 2;
-    expect($price)->toBe($realPrice);
+    $realPrice = new Money(20 * 0.8 * 2 * 2);
+    expect($price)->toEqual($realPrice);
 });
 
 // =============================
@@ -491,8 +492,8 @@ test('get total price with taxes and without missing coupon', function () {
 
     $price = $service->calculatePrice(true, false);
 
-    $realPrice = 20 * 1.2 * 2 * 2;
-    expect($price)->toBe($realPrice);
+    $realPrice = new Money(20 * 1.2 * 2 * 2);
+    expect($price)->toEqual($realPrice);
 });
 
 test('get total price with taxes and without existing coupon', function () {
@@ -507,8 +508,8 @@ test('get total price with taxes and without existing coupon', function () {
 
     $price = $service->calculatePrice(true, false);
 
-    $realPrice = 20 * 1.2 * 2 * 2;
-    expect($price)->toBe($realPrice);
+    $realPrice = new Money(20 * 1.2 * 2 * 2);
+    expect($price)->toEqual($realPrice);
 });
 
 test('get total price with taxes and with missing coupon', function () {
@@ -521,8 +522,8 @@ test('get total price with taxes and with missing coupon', function () {
 
     $price = $service->calculatePrice(true, true);
 
-    $realPrice = 20 * 1.2 * 2 * 2;
-    expect($price)->toBe($realPrice);
+    $realPrice = new Money(20 * 1.2 * 2 * 2);
+    expect($price)->toEqual($realPrice);
 });
 
 test('get total price with taxes and with existing coupon', function () {
@@ -537,9 +538,9 @@ test('get total price with taxes and with existing coupon', function () {
 
     $price = $service->calculatePrice(true, true);
 
-    $realPrice = 20 * 0.8 * 1.2 * 2 * 2; // Nettopreis * Rabatt * USt * Anzahl des Produkts * Anzahl der Produkte
+    $realPrice = new Money(20 * 0.8 * 1.2 * 2 * 2); // Nettopreis * Rabatt * USt * Anzahl des Produkts * Anzahl der Produkte
 
-    expect($price)->toBe($realPrice);
+    expect($price)->toEqual($realPrice);
 });
 
 // =============================
@@ -554,11 +555,11 @@ test('get the tax without coupon', function () {
 
     saturateShoppingCart($user);
 
-    $expectedTax = 20 * 0.2 * 2 * 2;
+    $expectedTax = new Money(20 * 0.2 * 2 * 2);
 
     $tax = $service->calculateTax();
 
-    expect($tax)->tobe($expectedTax);
+    expect($tax)->toEqual($expectedTax);
 });
 
 test('get the tax with coupon', function () {
@@ -571,11 +572,11 @@ test('get the tax with coupon', function () {
 
     saturateShoppingCart($user);
 
-    $expectedTax = 20 * 0.8 * 0.2 * 2 * 2;
+    $expectedTax = new Money(20 * 0.8 * 0.2 * 2 * 2);
 
     $tax = $service->calculateTax();
 
-    expect($tax)->tobe($expectedTax);
+    expect($tax)->toEqual($expectedTax);
 });
 
 // =============================
@@ -590,11 +591,11 @@ test('get the discount without coupon', function () {
 
     saturateShoppingCart($user);
 
-    $expectedDiscount = 0.0;
+    $expectedDiscount = new Money(0);
 
     $discount = $service->calculateDiscount();
 
-    expect($discount)->tobe($expectedDiscount);
+    expect($discount)->toEqual($expectedDiscount);
 });
 
 test('get the discount with coupon', function () {
@@ -607,11 +608,11 @@ test('get the discount with coupon', function () {
 
     saturateShoppingCart($user);
 
-    $expectedDiscount = 20 * 0.2 * 2 * 2;
+    $expectedDiscount = new Money(20 * 0.2 * 2 * 2);
 
     $discount = $service->calculateDiscount();
 
-    expect($discount)->toBe($expectedDiscount);
+    expect($discount)->toEqual($expectedDiscount);
 });
 
 // =============================
@@ -625,14 +626,14 @@ test('get product price without taxes and without missing coupon', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $product = Product::factory()->create(['price' => 20.0, 'tax' => '0.2']);
+    $product = Product::factory()->create(['price' => new Money(20), 'tax' => '0.2']);
     $service->addProduct($product, collect([]), 2);
 
-    $expectedPrice = 20 * 2.0;
+    $expectedPrice = new Money(20 * 2.0);
 
     $price = $service->calculatePriceOfProduct($product, collect([]), false, false);
 
-    expect($price)->toBe($expectedPrice);
+    expect($price)->toEqual($expectedPrice);
 });
 
 test('get product price without taxes and without existing coupon', function () {
@@ -641,16 +642,16 @@ test('get product price without taxes and without existing coupon', function () 
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $product = Product::factory()->create(['price' => 20.0, 'tax' => '0.2']);
+    $product = Product::factory()->create(['price' => new Money(20), 'tax' => '0.2']);
     $service->addProduct($product, collect([]), 2);
 
     generateShoppingCartCoupon($user);
 
-    $expectedPrice = 20 * 2.0;
+    $expectedPrice = new Money(20 * 2.0);
 
     $price = $service->calculatePriceOfProduct($product, collect([]), false, false);
 
-    expect($price)->toBe($expectedPrice);
+    expect($price)->toEqual($expectedPrice);
 });
 
 test('get product price without taxes and with missing coupon', function () {
@@ -659,14 +660,14 @@ test('get product price without taxes and with missing coupon', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $product = Product::factory()->create(['price' => 20.0, 'tax' => '0.2']);
+    $product = Product::factory()->create(['price' => new Money(20), 'tax' => '0.2']);
     $service->addProduct($product, collect([]), 2);
 
-    $expectedPrice = 20 * 2.0;
+    $expectedPrice = new Money(20 * 2.0);
 
     $price = $service->calculatePriceOfProduct($product, collect([]), false, true);
 
-    expect($price)->toBe($expectedPrice);
+    expect($price)->toEqual($expectedPrice);
 });
 
 test('get product price without taxes and with existing coupon', function () {
@@ -675,16 +676,16 @@ test('get product price without taxes and with existing coupon', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $product = Product::factory()->create(['price' => 20.0, 'tax' => '0.2']);
+    $product = Product::factory()->create(['price' => new Money(20), 'tax' => '0.2']);
     $service->addProduct($product, collect([]), 2);
 
     generateShoppingCartCoupon($user);
 
-    $expectedPrice = 20 * 2 * 0.8;
+    $expectedPrice = new Money(20 * 2 * 0.8);
 
     $price = $service->calculatePriceOfProduct($product, collect([]), false, true);
 
-    expect($price)->toBe($expectedPrice);
+    expect($price)->toEqual($expectedPrice);
 });
 
 // =============================
@@ -698,14 +699,14 @@ test('get product price with taxes and without missing coupon', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $product = Product::factory()->create(['price' => 20.0, 'tax' => '0.2']);
+    $product = Product::factory()->create(['price' => new Money(20), 'tax' => '0.2']);
     $service->addProduct($product, collect([]), 2);
 
-    $expectedPrice = 20 * 2 * 1.2;
+    $expectedPrice = new Money(20 * 2 * 1.2);
 
     $price = $service->calculatePriceOfProduct($product, collect([]), true, false);
 
-    expect($price)->toBe($expectedPrice);
+    expect($price)->toEqual($expectedPrice);
 });
 
 test('get product price with taxes and without existing coupon', function () {
@@ -714,16 +715,16 @@ test('get product price with taxes and without existing coupon', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $product = Product::factory()->create(['price' => 20.0, 'tax' => '0.2']);
+    $product = Product::factory()->create(['price' => new Money(20), 'tax' => '0.2']);
     $service->addProduct($product, collect([]), 2);
 
     generateShoppingCartCoupon($user);
 
-    $expectedPrice = 20 * 2 * 1.2;
+    $expectedPrice = new Money(20 * 2 * 1.2);
 
     $price = $service->calculatePriceOfProduct($product, collect([]), true, false);
 
-    expect($price)->toBe($expectedPrice);
+    expect($price)->toEqual($expectedPrice);
 });
 
 test('get product price with taxes and with missing coupon', function () {
@@ -732,14 +733,14 @@ test('get product price with taxes and with missing coupon', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $product = Product::factory()->create(['price' => 20.0, 'tax' => '0.2']);
+    $product = Product::factory()->create(['price' => new Money(20), 'tax' => '0.2']);
     $service->addProduct($product, collect([]), 2);
 
-    $expectedPrice = 20 * 2 * 1.2;
+    $expectedPrice = new Money(20 * 2 * 1.2);
 
     $price = $service->calculatePriceOfProduct($product, collect([]), true, true);
 
-    expect($price)->toBe($expectedPrice);
+    expect($price)->toEqual($expectedPrice);
 });
 
 test('get product price with taxes and with existing coupon', function () {
@@ -748,16 +749,16 @@ test('get product price with taxes and with existing coupon', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $product = Product::factory()->create(['price' => 20.0, 'tax' => '0.2']);
+    $product = Product::factory()->create(['price' => new Money(20), 'tax' => '0.2']);
     $service->addProduct($product, collect([]), 2);
 
     generateShoppingCartCoupon($user);
 
-    $expectedPrice = 20 * 2 * 0.8 * 1.2; // price * amount * (1 - discount) * (1 + tax)
+    $expectedPrice = new Money(20 * 2 * 0.8 * 1.2); // price * amount * (1 - discount) * (1 + tax)
 
     $price = $service->calculatePriceOfProduct($product, collect([]), true, true);
 
-    expect($price)->toBe($expectedPrice);
+    expect($price)->toEqual($expectedPrice);
 });
 
 // =============================

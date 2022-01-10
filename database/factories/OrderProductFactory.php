@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Admin;
+use App\Models\Money;
 use App\Models\Order;
 use App\Models\OrderClothingAttribute;
 use App\Models\OrderColorAttribute;
@@ -37,7 +38,7 @@ class OrderProductFactory extends Factory
             'order_id' => $order->id,
             'name' => $this->faker->word,
             'description' => $this->faker->text,
-            'price' => $this->faker->randomFloat(2, 1, 300),
+            'price' => new Money($this->faker->randomFloat(2, 1, 300)),
             'tax' => $this->faker->randomFloat(2, 0, 0.99),
             'count' => $this->faker->numberBetween(0, 100),
             'order_clothing_attribute_id' => mt_rand(0, 1) ? OrderClothingAttribute::inRandomOrder()->first()->id : null,

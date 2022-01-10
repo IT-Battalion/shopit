@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
  * App\Models\CouponCode
  *
  * @property int $id
- * @property int $discount
+ * @property string $discount
  * @property bool $enabled
  * @property Carbon|null $enabled_until
  * @property string $code
@@ -60,6 +60,7 @@ class CouponCode extends Model
     ];
 
     protected $casts = [
+        'discount' => 'string',
         'enabled' => 'bool',
     ];
 

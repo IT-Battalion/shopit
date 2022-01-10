@@ -93,7 +93,10 @@ class OrderProduct extends Model
         'updated_by_id',
     ];
 
-    protected $casts = [];
+    protected $casts = [
+        'price' => Money::class,
+        'tax' => 'string',
+    ];
 
     public function thumbnail(): BelongsTo
     {
