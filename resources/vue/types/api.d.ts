@@ -53,6 +53,29 @@ export enum ClothingSize {
   XL = 4,
 }
 
+export interface ClothingAttribute {
+  type: AttributeType.CLOTHING,
+  size: ClothingSize,
+}
+
+export interface DimensionAttribute {
+  type: AttributeType.DIMENSION,
+  width: Meter,
+  height: Meter,
+  depth: Meter,
+}
+
+export interface VolumeAttribute {
+  type: AttributeType.VOLUME,
+  volume: Liter,
+}
+
+export interface ColorAttribute {
+  type: AttributeType.COLOR,
+  name: string,
+  color: Color,
+}
+
 export type Unit = {
   value: number,
   unit: string,
@@ -80,24 +103,26 @@ export interface Product {
     id: number,
   }],
   attributes: {
-    [AttributeType.CLOTHING]: [{
-      type: AttributeType.CLOTHING,
-      size: ClothingSize,
-    }],
-    [AttributeType.DIMENSION]: [{
-      type: AttributeType.DIMENSION,
-      width: Meter,
-      height: Meter,
-      depth: Meter,
-    }],
-    [AttributeType.VOLUME]: [{
-      type: AttributeType.VOLUME,
-      volume: Liter,
-    }],
-    [AttributeType.COLOR]: [{
-      type: AttributeType.COLOR,
-      name: string,
-      color: Color,
-    }],
+    [AttributeType.CLOTHING]: [ClothingAttribute],
+    [AttributeType.DIMENSION]: [DimensionAttribute],
+    [AttributeType.VOLUME]: [VolumeAttribute],
+    [AttributeType.COLOR]: [ColorAttribute],
   }
+}
+
+export interface ShoppingCart {
+  products: [{
+    product: Product,
+    selected_attributes: {
+      [AttributeType.CLOTHING]?: ClothingAttribute,
+      [AttributeType.DIMENSION]?: DimensionAttribute,
+      [AttributeType.VOLUME]?: VolumeAttribute,
+      [AttributeType.COLOR]?: Color,
+    },
+    count: number,
+  }],
+  subtotal: string,
+  discount: string,
+  tax: string,
+  total: string,
 }
