@@ -15,7 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('coupon_codes', function (Blueprint $table) {
             $table->id();
-            $table->float('discount', 2, unsigned: true);
+            $table->decimal('discount', 2, unsigned: true);
             $table->boolean('enabled')->default(true);
             $table->timestamp('enabled_until')->nullable();
             $table->char('code', 32)->unique();
@@ -87,14 +87,13 @@ class CreateOrdersTable extends Migration
 
             $table->foreignId('thumbnail_id')->nullable()->constrained('order_product_images');
 
-            $table->float('price', 16, 8, true);
-            $table->float('tax', 2, 2, true);
+            $table->decimal('price', config('shop.money.max_digits') + config('shop.money.decimal_points'), config('shop.money.decimal_points'), true);
+            $table->decimal('tax', 2, 2, true);
 
             $table->foreignId('order_clothing_attribute_id')->nullable()->constrained();
             $table->foreignId('order_dimension_attribute_id')->nullable()->constrained();
             $table->foreignId('order_volume_attribute_id')->nullable()->constrained();
             $table->foreignId('order_color_attribute_id')->nullable()->constrained();
-
             $table->foreignId('created_by_id')->constrained('users');
             $table->foreignId('updated_by_id')->constrained('users');
 

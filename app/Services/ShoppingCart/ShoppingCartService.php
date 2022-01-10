@@ -3,6 +3,7 @@
 namespace App\Services\ShoppingCart;
 
 use App\Exceptions\InvalidAttributeException;
+use App\Models\Money;
 use App\Models\Product;
 use App\Models\User;
 use App\Types\AttributeType;
@@ -129,94 +130,94 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         }
     }
 
-    public function calculatePrice(bool $includeTax = true, bool $includeCoupon = true, User $user = null): float
+    public function calculatePrice(bool $includeTax = true, bool $includeCoupon = true, User $user = null): Money
     {
         $user = $user ?? Auth::user();
 
         $coupon = $user->shopping_cart_coupon;
-        $discount = $coupon === null ? 0 : $coupon->discount;
+        $discount = $coupon->discount ?? '0';
 
         $price = $user->shopping_cart
             ->groupBy(function (Product $product) {
-                return $product->tax*100; // can't just be the tax since it can't group by the decimal places of floats
+                return $product->tax;
             })
-            ->reduce(function (mixed $carry, Collection $products, int $tax) use ($includeCoupon, $includeTax, $discount) {
-                $price = $products->reduce(function (mixed $carry, Product $product) {
+            ->reduce(function (Money $carry, Collection $products, string $tax) use ($includeCoupon, $includeTax, $discount) {
+                $price = $products->reduce(function (Money $carry, Product $product) {
                     $netto = $product->price;
-                    $amount = strval($product->pivot->count);
-                    return bcadd($carry, bcmul($netto, $amount));
-                });
+                    $amount = $product->pivot->count;
+                    return $carry->add($netto->mul($amount));
+                }, new Money('0'));
 
                 if ($includeCoupon)
                 {
-                    $price = bcmul($price, 1 - $discount);
+                    $price->mul(bcsub(1, $discount));
                 }
 
                 if ($includeTax)
                 {
-                    $price = bcmul($price, 1 + $tax / 100);
+                    $price->mul(bcadd('1', $tax));
                 }
 
-                return bcadd($carry, $price);
-            });
+                return $carry->add($price);
+            }, new Money('0'));
 
-        return floatval($price);
+        return $price;
     }
 
-    public function calculateTax(User $user = null): float
+    public function calculateTax(User $user = null): Money
     {
         $user = $user ?? Auth::user();
 
         $coupon = $user->shopping_cart_coupon;
-        $discount = $coupon->discount ?? 0.0;
+        $discount = $coupon->discount ?? '0';
 
         $taxPrice = $user->shopping_cart
             ->groupBy(function (Product $product) {
-                return $product->tax*100;
+                return $product->tax;
             })
-            ->reduce(function (mixed $carry, Collection $products, int $tax) use ($discount) {
-                $price = $products->reduce(function (mixed $carry, Product $product) {
+            ->reduce(function (Money $carry, Collection $products, string $tax) use ($discount) {
+                $price = $products->reduce(function (Money $carry, Product $product) {
                     $netto = $product->price;
-                    $amount = strval($product->pivot->count);
-                    return bcadd($carry, bcmul($netto, $amount));
-                });
+                    $amount = $product->pivot->count;
+                    return $carry->add($netto->mul($amount));
+                }, new Money('0'));
 
-                $price = bcmul($price, 1 - $discount);
+                $price->mul(bcsub(1, $discount));
 
-                $taxPrice = bcmul($price, $tax / 100.0);
+                $taxPrice = $price->mul($tax);
 
-                return bcadd($carry, $taxPrice);
-            });
+                return $carry->add($taxPrice);
+            }, new Money('0'));
 
-        return floatval($taxPrice);
+        return $taxPrice;
     }
 
-    public function calculateDiscount(User $user = null): float
+    public function calculateDiscount(User $user = null): Money
     {
         $user = $user ?? Auth::user();
 
         $coupon = $user->shopping_cart_coupon;
-        $discount = $coupon->discount ?? 0.0;
+        $discount = $coupon->discount ?? '0';
 
         $discountPrice = $user->shopping_cart
-            ->reduce(function (mixed $carry, Product $product) use ($discount) {
-                $discount = bcmul(bcmul($product->price, $discount), $product->pivot->count);
+            ->reduce(function (Money $carry, Product $product) use ($discount) {
+                $discount = $product->price->mul($product->pivot->count, $discount);
 
-                return bcadd($carry, $discount);
-            });
+                return $carry->add($discount);
+            }, new Money('0'));
 
-        return floatval($discountPrice);
+        return $discountPrice;
     }
 
-    public function calculatePriceOfProduct(Product $product, Collection $attributes, bool $includeTaxes, bool $includeCoupon, User $user = null): float
+    public function calculatePriceOfProduct(Product $product, Collection $attributes, bool $includeTaxes, bool $includeCoupon, User $user = null): Money
     {
         $user = $user ?? Auth::user();
 
         $product_price = $product->price;
         $product_amount_in_shopping_cart = $this->getAmountOfProduct($product, $attributes);
-        $tax = $includeTaxes ? $product->tax : 0;
-        $discount = $includeCoupon ? $user->shopping_cart_coupon->discount ?? 0.0 : 0.0;
-        return $product_price * $product_amount_in_shopping_cart * (1 - $discount) * (1 + $tax);
+        $tax = $includeTaxes ? $product->tax : '0';
+        $discount = $includeCoupon ? $user->shopping_cart_coupon->discount ?? '0' : '0';
+        return $product_price->mul($product_amount_in_shopping_cart, bcsub(1, $discount), bcadd(1, $tax));
     }
 
     /**

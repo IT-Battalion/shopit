@@ -2,6 +2,7 @@
 
 namespace App\Services\ShoppingCart;
 
+use App\Models\Money;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Support\Collection;
@@ -40,21 +41,21 @@ interface ShoppingCartServiceInterface
      * Calculates the total price of the Shopping Cart.
      * @param bool $includeTax whether to include taxes or not
      * @param bool $includeCoupon whether to include the coupon or not
-     * @return float the price in EUR
+     * @return Money the price in EUR
      */
-    public function calculatePrice(bool $includeTax = true, bool $includeCoupon = true, User $user = null): float;
+    public function calculatePrice(bool $includeTax = true, bool $includeCoupon = true, User $user = null): Money;
 
     /**
      * Calculates the amount of tax on the shopping cart of teh authenticated user
-     * @return float the tax in EUR
+     * @return Money the tax in EUR
      */
-    public function calculateTax(User $user = null): float;
+    public function calculateTax(User $user = null): Money;
 
     /**
      * Calculates the discount applied by a coupon
-     * @return float the discount in EUR
+     * @return Money the discount in EUR
      */
-    public function calculateDiscount(User $user = null): float;
+    public function calculateDiscount(User $user = null): Money;
 
     /**
      * Calculates the total Price of a Product from the Shopping Cart (usually more than one)
@@ -63,9 +64,9 @@ interface ShoppingCartServiceInterface
      * @param bool $includeTaxes If Taxes should be included.
      * @param bool $includeCoupon Whether the coupon currently in use should be applied
      * @param User|null $user the shopping cart's owner
-     * @return float The total price in EUR.
+     * @return Money The total price in EUR.
      */
-    public function calculatePriceOfProduct(Product $product, Collection $attributes, bool $includeTaxes, bool $includeCoupon, User $user = null): float;
+    public function calculatePriceOfProduct(Product $product, Collection $attributes, bool $includeTaxes, bool $includeCoupon, User $user = null): Money;
 
     /**
      * Checks if the Shopping Cart has a specific Product or an Amount of a specific Product.
