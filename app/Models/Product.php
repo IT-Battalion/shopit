@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Contracts\ConvertableToOrder;
 use App\Types\AttributeType;
+use App\Types\Money;
 use Database\Factories\ProductFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -240,4 +241,21 @@ class Product extends Model implements ConvertableToOrder
     {
         return null;
     }
+
+    public function jsonSerialize()
+    {
+        return [
+            'name' => $this->name,
+            'description' => $this->name,
+            'price' => $this->price,
+            'tax' => $this->tax,
+            'available' => $this->available,
+            'thumbnail' => [
+                'id' => $this->main_thumbnail?->id,
+            ],
+            'images' => $this->images->map(fn (ProductImage $image) => $image->id),
+            'attributes' => $this->product_attributes,
+        ];
+    }
+
 }

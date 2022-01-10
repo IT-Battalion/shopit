@@ -3,10 +3,10 @@
 namespace App\Services\ShoppingCart;
 
 use App\Exceptions\InvalidAttributeException;
-use App\Models\Money;
 use App\Models\Product;
 use App\Models\User;
 use App\Types\AttributeType;
+use App\Types\Money;
 use DASPRiD\Enum\Exception\IllegalArgumentException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
@@ -135,7 +135,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         $user = $user ?? Auth::user();
 
         $coupon = $user->shopping_cart_coupon;
-        $discount = $coupon->discount ?? '0';
+        $discount = $coupon?->discount ?? 0;
 
         $price = $user->shopping_cart
             ->groupBy(function (Product $product) {

@@ -3,7 +3,6 @@
 use App\Models\Admin;
 use App\Models\CouponCode;
 use App\Models\Icon;
-use App\Models\Money;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductClothingAttribute;
@@ -13,6 +12,7 @@ use App\Models\ProductVolumeAttribute;
 use App\Models\User;
 use App\Services\ShoppingCart\ShoppingCartServiceInterface;
 use App\Types\AttributeType;
+use App\Types\Money;
 use DASPRiD\Enum\Exception\IllegalArgumentException;
 
 beforeEach(function () {

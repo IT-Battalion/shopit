@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Money;
+use App\Types\Money;
 
 test('create money', function () {
     $money1 = new Money('2.43');
@@ -79,5 +79,5 @@ test('divide money', function () {
 test('render', function () {
     $money1 = new Money('2.4355651');
 
-    expect($money1->render())->toEqual('2.44€');
+    expect($money1->jsonSerialize())->toEqual(['amount' => '2.44', 'currency' => '€']);
 });

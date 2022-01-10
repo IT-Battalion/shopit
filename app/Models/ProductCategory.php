@@ -56,4 +56,15 @@ class ProductCategory extends Model
     {
         return $this->belongsTo(Icon::class);
     }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'icon' => [
+                'id' => $this->icon_id,
+            ],
+        ];
+    }
 }

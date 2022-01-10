@@ -17,6 +17,8 @@ class ProductImageFactory extends Factory
      */
     protected $model = ProductImage::class;
 
+    private const PATHS = ['image/bottle.png', 'image/tshirt.jpg'];
+
     /**
      * Define the model's default state.
      *
@@ -35,7 +37,7 @@ class ProductImageFactory extends Factory
             ->id;
 
         $id = $this->faker->unique()->randomNumber(5, false);
-        $source = fopen(resource_path('image/bottle.png'), 'r');
+        $source = fopen(resource_path(collect(self::PATHS)->random()), 'r');
         $path = "product/images/$id.png";
         Storage::put($path, $source);
 

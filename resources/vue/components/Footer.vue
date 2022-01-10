@@ -14,7 +14,7 @@
             space-y-4
           "
         >
-          <img src="img/lernenImAufbruch.svg" class="h-16 w-16" />
+          <img src="/img/lernenImAufbruch.svg" class="h-16 w-16" />
           <p class="opacity-60 flex flex-row">
             <HomeIcon class="w-5 h-5 pr-1" />Wexstraße 19-23 1200 Wien
           </p>

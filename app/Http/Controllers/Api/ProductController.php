@@ -21,21 +21,7 @@ class ProductController extends Controller
         $products = ProductCategory::whereHas('products')->get()
             ->mapWithKeys(function (ProductCategory $category) {
                 return [
-                    $category->name => $category->products->map(function (Product $product) {
-                        $thumbnail = $product->thumbnail ?? $product->images->first();
-
-                        return [
-                            'name' => $product->name,
-//                            'description' => $product->description,
-                            'price' => $product->price,
-                            'amount' => $product->available,
-                            'thumbnail' => [
-                                'id' => $product->main_thumbnail->id,
-                            ],
-                            'tax' => $product->tax,
-                            'attributes' => $product->productAttributes,
-                        ];
-                    }),
+                    $category->name => $category->products,
                 ];
             });
 

@@ -3,9 +3,9 @@
 namespace Database\Factories;
 
 use App\Models\Admin;
-use App\Models\Money;
 use App\Models\Product;
 use App\Models\ProductCategory;
+use App\Types\Money;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductFactory extends Factory
@@ -49,7 +49,7 @@ class ProductFactory extends Factory
             'name' => $name,
             'description' => $this->faker->text,
             'price' => new Money($this->faker->randomFloat(2, 1, 300)),
-            'tax' => $this->faker->randomFloat(2, 0, 0.99),
+            'tax' => collect([.2, 0])->random(),
             'available' => $this->faker->numberBetween(-1, 1000),
             'created_by_id' => $admin,
             'updated_by_id' => $admin,

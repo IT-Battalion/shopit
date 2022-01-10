@@ -36,7 +36,7 @@
             @click="logout()"
           >
             <a class="pr-2">Abmelden</a>
-            <img src="img/logoutBlack.svg" class="object-scale-down h-10" />
+            <img src="/img/logoutBlack.svg" class="object-scale-down h-10" />
           </button>
         </mq-responsive>
       </div>

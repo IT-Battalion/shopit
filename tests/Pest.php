@@ -11,9 +11,9 @@
 |
 */
 
-use App\Models\Money;
 use App\Models\Product;
 use App\Models\User;
+use App\Types\Money;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Collection;
 

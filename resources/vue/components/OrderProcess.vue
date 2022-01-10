@@ -36,23 +36,23 @@ export default defineComponent({
     const orderProcess = [
       {
         name: "Bestellt",
-        icon_url: "../img/orderOrdered.svg",
+        icon_url: "/img/orderOrdered.svg",
       },
       {
         name: "Bezahlen",
-        icon_url: "../img/orderPayed.svg",
+        icon_url: "/img/orderPayed.svg",
       },
       {
         name: "Auf Produkt warten",
-        icon_url: "../img/orderWaiting.svg",
+        icon_url: "/img/orderWaiting.svg",
       },
       {
         name: "Abholen",
-        icon_url: "../img/orderCollect.svg",
+        icon_url: "/img/orderCollect.svg",
       },
       {
         name: "Abgeschlossen",
-        icon_url: "../img/orderComplete.svg",
+        icon_url: "/img/orderComplete.svg",
       },
     ];
     return { orderProcess };

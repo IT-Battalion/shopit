@@ -49,7 +49,7 @@
           >
             <div class="w-full h-full row-span-full">
               <img
-                :src="highlightedProduct.imgSrc"
+                :src="'/product-image/' + highlightedProduct.thumbnail.id"
                 :alt="highlightedProduct.name"
                 class="object-cover w-full h-full"
               />
@@ -153,7 +153,7 @@ import "swiper/css";
 
 import "swiper/css/navigation";
 import { AxiosResponse } from "axios";
-import { HighlightedProductData } from "../types/api";
+import {Product} from "../types/api";
 
 // import Swiper core and required modules
 import SwiperCore, { Navigation } from "swiper";
@@ -170,11 +170,11 @@ export default defineComponent({
   data() {
     return {
       isLoading: true,
-      highlightedProducts: [] as any as HighlightedProductData[],
+      highlightedProducts: [] as any as Product[],
     };
   },
   async created() {
-    let response: AxiosResponse<HighlightedProductData[]> =
+    let response: AxiosResponse<Product[]> =
       await this.$http.get("/highlighted");
 
     this.highlightedProducts = response.data;

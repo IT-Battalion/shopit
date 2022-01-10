@@ -1,11 +1,15 @@
 <?php
 
-namespace App\Models;
+namespace App\Types;
 
+use App\Util\math;
 use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Renderable;
-use App\Util\Math;
+use Illuminate\Database\Eloquent\JsonEncodingException;
+use JsonSerializable;
+use function config;
 
 /**
  * A class for representing a certain amount of money
@@ -13,7 +17,7 @@ use App\Util\Math;
  * @version 2022-01-01
  */
 
-class Money implements Castable, Renderable
+class Money implements Castable, JsonSerializable, Jsonable
 {
     private string $amount;
 
@@ -149,8 +153,22 @@ class Money implements Castable, Renderable
         };
     }
 
-    public function render()
+    public function jsonSerialize()
     {
-        return Math::bcround($this->amount, 2) . config('shop.money.currency');
+        return [
+            'amount' => bcround($this->amount, 2),
+            'currency' => config('shop.money.currency'),
+        ];
+    }
+
+    public function toJson($options = 0)
+    {
+        $json = json_encode($this->jsonSerialize(), $options);
+
+        if (JSON_ERROR_NONE !== json_last_error()) {
+            throw JsonEncodingException::forModel($this, json_last_error_msg());
+        }
+
+        return $json;
     }
 }

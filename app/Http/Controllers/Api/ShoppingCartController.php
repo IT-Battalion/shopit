@@ -13,23 +13,17 @@ class ShoppingCartController extends Controller
     public function all(Request $request, ShoppingCartServiceInterface $shoppingCartService) {
         $shoppingCartProducts = $request->user()->shopping_cart->map(function (Product $product) {
             return [
+                'product' => $product,
                 'count' => $product->pivot->count,
-                'name' => $product->name,
-                'thumbnail_id' => $product->id,
-                'price' => $product->price,
-                'tax' => $product->tax,
-                'images' => $product->images->map(function (ProductImage $image) {
-                    return [
-                        'id' => $image->id,
-                    ];
-                }),
-                'attributes' => $product->productAttributes,
                 'selected_attributes' => $product->pivot->productAttributes,
             ];
         });
 
         $shoppingCart = [
             'products' => $shoppingCartProducts,
+            'subtotal' => $shoppingCartService->calculatePrice(false, false),
+            'tax' => $shoppingCartService->calculateTax(),
+            'discount' => $shoppingCartService->calculateDiscount(),
             'total' => $shoppingCartService->calculatePrice(),
         ];
 

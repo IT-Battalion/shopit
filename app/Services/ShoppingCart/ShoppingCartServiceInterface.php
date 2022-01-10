@@ -2,9 +2,9 @@
 
 namespace App\Services\ShoppingCart;
 
-use App\Models\Money;
 use App\Models\Product;
 use App\Models\User;
+use App\Types\Money;
 use Illuminate\Support\Collection;
 
 interface ShoppingCartServiceInterface

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Types\AttributeType;
+use App\Types\Money;
 use Barryvdh\LaravelIdeHelper\Eloquent;
 use Database\Factories\OrderProductFactory;
 use Illuminate\Database\Eloquent\Builder;

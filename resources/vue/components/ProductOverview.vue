@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full md:w-1/2 h-full">
+  <div class="w-5/6 h-full">
     <div>
       <swiper
         :navigation="true"
@@ -11,7 +11,7 @@
       >
         <template v-if="isMetadataLoaded">
           <swiper-slide
-            class="w-full h-full"
+            class="w-full h-full object-cover"
             v-for="image in product.images"
             :key="image"
           >

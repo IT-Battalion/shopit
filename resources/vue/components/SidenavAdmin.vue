@@ -33,14 +33,14 @@
 export default {
   setup() {
     const categories = [
-      { name: "Meine Daten", icon_url: "../img/categoryProfile.svg" },
-      { name: "Rechnungen", icon_url: "../img/categoryBills.svg" },
-      { name: "Bestellverlauf", icon_url: "../img/categoryHistory.svg" },
-      { name: "Produkte", icon_url: "../img/categoryProducts.svg" },
-      { name: "Kategorien", icon_url: "../img/categoryCategories.svg" },
-      { name: "Bestellungen", icon_url: "../img/categoryOrders.svg" },
-      { name: "Userverwaltung", icon_url: "../img/categoryUser.svg" },
-      { name: "Coupons", icon_url: "../img/categoryCoupon.svg" },
+      { name: "Meine Daten", icon_url: "/img/categoryProfile.svg" },
+      { name: "Rechnungen", icon_url: "/img/categoryBills.svg" },
+      { name: "Bestellverlauf", icon_url: "/img/categoryHistory.svg" },
+      { name: "Produkte", icon_url: "/img/categoryProducts.svg" },
+      { name: "Kategorien", icon_url: "/img/categoryCategories.svg" },
+      { name: "Bestellungen", icon_url: "/img/categoryOrders.svg" },
+      { name: "Userverwaltung", icon_url: "/img/categoryUser.svg" },
+      { name: "Coupons", icon_url: "/img/categoryCoupon.svg" },
     ];
     return { categories };
   },

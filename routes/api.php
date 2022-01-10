@@ -28,4 +28,3 @@ Route::get('/highlighted', [HighlightedProductController::class, 'all']);
 // Product routes
 Route::get('/product/', [ProductController::class, 'index']);
 Route::get('/product/{name}', [ProductController::class, 'show']);
-//Route::apiResource('/product', ProductController::class);

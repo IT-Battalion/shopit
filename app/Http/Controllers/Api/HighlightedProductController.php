@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreHighlightedProductRequest;
 use App\Http\Requests\UpdateHighlightedProductRequest;
 use App\Models\HighlightedProduct;
-use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 
 class HighlightedProductController extends Controller
@@ -19,19 +18,7 @@ class HighlightedProductController extends Controller
     public function all()
     {
         $products = HighlightedProduct::all()
-            ->map(fn (HighlightedProduct $product) => $product->product)
-            ->map(function (Product $product) {
-                $thumbnail = $product->thumbnail ?? $product->images->first();
-
-                return [
-                    'name' => $product->name,
-                    'description' => $product->description,
-                    'price' => $product->price,
-                    'imgSrc' => route('product-image', [ 'id' => $thumbnail->id ]),
-                    'attributes' => $product->productAttributes,
-                    'amount' => $product->available,
-                ];
-            });
+            ->map(fn (HighlightedProduct $product) => $product->product);
 
         return response()->json($products);
     }

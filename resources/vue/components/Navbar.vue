@@ -20,7 +20,7 @@
         :to="{ name: 'Products' }"
         class="inline-flex items-center text-2xl font-semibold text-white"
       >
-        <img src="img/logo.svg" class="w-16 mr-4" alt="logo-img" />
+        <img src="/img/logo.svg" class="w-16 mr-4" alt="logo-img" />
         <span>ShopIT</span>
       </router-link>
       <div>
@@ -50,7 +50,7 @@
                   />
                   {{ user.name.value }}
                   <img
-                    src="img/dropdown.svg"
+                    src="/img/dropdown.svg"
                     alt=""
                     class="object-scale-down ml-4 h-7"
                   />
@@ -91,7 +91,7 @@
                             'block px-4 py-2 text-sm',
                           ]"
                           ><img
-                            src="img/profile.svg"
+                            src="/img/profile.svg"
                             class="object-scale-down mr-7 h-7"
                           />Profilseite</a
                         >
@@ -109,7 +109,7 @@
                         ]"
                         @click="logout()"
                         ><img
-                          src="img/logout.svg"
+                          src="/img/logout.svg"
                           class="object-scale-down mr-4 h-7"
                         />Abmelden</a
                       >
@@ -122,7 +122,7 @@
           <li class="flex flex-row items-center justify-center px-2 py-1 ml-5">
             <Shoppingcart ref="shoppingCart">
               <img
-                src="img/shoppingCart.svg"
+                src="/img/shoppingCart.svg"
                 alt=""
                 class="object-scale-down h-8 mr-4 cursor-pointer"
                 @click="setOpen(true)"
