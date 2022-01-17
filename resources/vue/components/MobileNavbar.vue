@@ -80,39 +80,38 @@
             </div>
           </Categories>
           <Shoppingcart ref="shoppingCart" class="flex-1 group">
-            <div @click="setOpen(true)">
-              <a
-                href="#"
-                class="
-                  flex
-                  items-end
-                  justify-center
-                  text-center
-                  mx-auto
-                  px-3
-                  pt-2
-                  w-full
-                  text-gray-400
-                  group-hover:text-indigo-500
-                "
-              >
-                <span class="block px-1 pt-1 pb-1">
-                  <ShoppingCartIcon
-                    class="h-8 w-8 pt-1 mb-1 block mx-auto"
-                  ></ShoppingCartIcon>
-                  <span class="block text-xs pb-2">Shopping Cart</span>
-                  <span
-                    class="
-                      block
-                      w-5
-                      mx-auto
-                      h-1
-                      group-hover:bg-indigo-500
-                      rounded-full
-                    "
-                  ></span>
-                </span>
-              </a>
+            <div
+              class="
+                flex
+                items-end
+                justify-center
+                text-center
+                mx-auto
+                px-3
+                pt-2
+                w-full
+                text-gray-400
+                group-hover:text-indigo-500
+                cursor-pointer
+              "
+              @click="setOpen(true)"
+            >
+              <span class="block px-1 pt-1 pb-1">
+                <ShoppingCartIcon
+                  class="h-8 w-8 pt-1 mb-1 block mx-auto"
+                ></ShoppingCartIcon>
+                <span class="block text-xs pb-2">Shopping Cart</span>
+                <span
+                  class="
+                    block
+                    w-5
+                    mx-auto
+                    h-1
+                    group-hover:bg-indigo-500
+                    rounded-full
+                  "
+                ></span>
+              </span>
             </div>
           </Shoppingcart>
           <router-link to="/admin" class="flex-1 group">
