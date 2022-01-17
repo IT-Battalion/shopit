@@ -53,9 +53,14 @@ class ProductSeeder extends Seeder
             });
         });
 
-
         $this->call([
             ProductImageSeeder::class,
         ]);
+
+        $products->each(function (Product $product) {
+            $product->thumbnail_id = $product->images()->first(['id'])->id;
+
+            $product->save();
+        });
     }
 }

@@ -186,6 +186,7 @@ import { useRoute } from "vue-router";
 import router from "../router";
 import useUser from "../stores/user";
 import userStore from "../stores/user";
+import {initLoad} from "../loader";
 
 export default defineComponent({
   setup() {

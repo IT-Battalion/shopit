@@ -17,6 +17,7 @@ use App\Services\Users\UserServiceInterface;
 use App\Types\AttributeType;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -79,5 +80,10 @@ class AppServiceProvider extends ServiceProvider
             'user' => User::class,
             'admin' => Admin::class,
         ]);
+
+        Blueprint::macro('user', function () {
+            $this->foreignId('created_by_id')->nullable()->constrained('users');
+            $this->foreignId('updated_by_id')->nullable()->constrained('users');
+        });
     }
 }

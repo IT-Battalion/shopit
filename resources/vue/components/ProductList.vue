@@ -5,8 +5,9 @@
       v-for="(products, categoryName) in categories"
       :key="categoryName"
       :id="categoryName"
+      v-show="!isLoading"
     >
-      <div v-if="!isLoading">
+      <div v-if="!isLoading || state.isProgressing">
         <h2 class="text-2xl font-extrabold tracking-tight text-white">
           {{ categoryName }}
         </h2>
@@ -24,9 +25,12 @@
           :key="product.name"
           class="relative group"
         >
-          <ProductCard :product="product" :isLoading="isLoading" />
+          <ProductCard :product="product" :isLoading="!isLoading || state.isProgressing" @imageLoaded="imageLoaded" />
         </div>
       </div>
+    </div>
+    <div v-if="isLoading">
+      <Skeletor/>
     </div>
   </div>
 </template>
@@ -36,23 +40,43 @@ import ProductCard from "./ProductCard.vue";
 import { AxiosResponse } from "axios";
 import { Product } from "../types/api";
 import { defineComponent } from "@vue/runtime-core";
+import {complete, initLoad, initProgress, state} from "../loader";
 
 export default defineComponent({
   data() {
     return {
-      categories: {} as { String: Product[] },
-      isLoading: true,
+      categories: {} as { [key: string]: Product[] },
+      state: state,
     };
   },
+  computed: {
+    isLoading() {
+      return (this as any).state.isLoading || (this as any).state.isProgressing;
+    }
+  },
   async created() {
-    let response: AxiosResponse<{ String: Product[] }> = await this.$http.get(
+    initLoad();
+    let response: AxiosResponse<{ [key: string]: Product[] }> = await this.$http.get(
       "/product"
     );
     this.categories = response.data;
-    this.isLoading = false;
+
+    let imageCount = 0;
+    for (const key in this.categories) {
+      imageCount += this.categories[key].length;
+    }
+
+    console.log(imageCount);
+
+    initProgress(imageCount);
   },
   components: {
     ProductCard,
   },
+  methods: {
+    imageLoaded() {
+      this.state.progressCurrent++;
+    }
+  }
 });
 </script>

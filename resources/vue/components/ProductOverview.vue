@@ -9,7 +9,7 @@
         v-show="!isLoading"
         class="w-full h-full"
       >
-        <template v-if="isMetadataLoaded">
+        <template v-if="!isLoading || state.isProgressing">
           <swiper-slide
             class="object-cover w-full h-full"
             v-for="image in product.images"
@@ -18,11 +18,8 @@
             <img
               :src="'/product-image/' + image.id"
               :alt="'productimage'"
-              @load="
-                () => {
-                  imagesLoading--;
-                }
-              "
+              @load="state.progressCurrent++"
+              @error="state.progressCurrent++"
               class="object-contain w-full max-h-[60vh]"
             />
           </swiper-slide>
@@ -259,9 +256,9 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import SwiperCore, { Navigation, Pagination } from "swiper";
+import {initProgress, initLoad, state} from "../loader";
 
-SwiperCore.use([Navigation]);
-SwiperCore.use([Pagination]);
+SwiperCore.use([Navigation, Pagination]);
 
 export default defineComponent({
   components: {
@@ -273,24 +270,25 @@ export default defineComponent({
   },
   data() {
     return {
-      isLoading: computed(() => {
-        return !this.isMetadataLoaded || (this.imagesLoading as any) > 0;
-      }),
-      imagesLoading: 0,
-      isMetadataLoaded: false,
+      state: state,
       product: [] as any as Product,
     };
+  },
+  computed: {
+    isLoading() {
+      return (this as any).state.isLoading || (this as any).state.isProgressing;
+    }
   },
   async created() {
     const route = useRoute();
     const name = computed(() => route.params.name);
+
     let response: AxiosResponse<Product> = await this.$http.get(
       "/product/" + name.value
     );
 
     this.product = response.data;
-    this.imagesLoading = this.product.images.length;
-    this.isMetadataLoaded = true;
+    initProgress(this.product.images.length);
   },
 });
 </script>

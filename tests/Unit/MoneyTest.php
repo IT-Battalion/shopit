@@ -15,15 +15,11 @@ test('create money', function () {
 test('add money', function () {
     $money = new Money('2.43');
 
-    $money2 = $money->add(new Money(2));
-    expect($money2)->toBe($money);
+    $money = $money->add(new Money(2));
 
-    $money2 = $money->add(3.1);
-    expect($money2)->toBe($money);
+    $money = $money->add(3.1);
 
-    $money2 = $money->add('5');
-    expect($money2)->toBe($money);
-
+    $money = $money->add('5');
 
     expect($money)->toEqual(new Money('12.53'));
 });
@@ -31,15 +27,11 @@ test('add money', function () {
 test('subtract money', function () {
     $money = new Money('12.53');
 
-    $money2 = $money->sub(new Money(2));
-    expect($money2)->toBe($money);
+    $money = $money->sub(new Money(2));
 
-    $money2 = $money->sub(3.1);
-    expect($money2)->toBe($money);
+    $money = $money->sub(3.1);
 
-    $money2 = $money->sub('5');
-    expect($money2)->toBe($money);
-
+    $money = $money->sub('5');
 
     expect($money)->toEqual(new Money('2.43'));
 });
@@ -47,15 +39,11 @@ test('subtract money', function () {
 test('multipy money', function () {
     $money = new Money('2.43');
 
-    $money2 = $money->mul(new Money(2));
-    expect($money2)->toBe($money);
+    $money = $money->mul(new Money(2));
 
-    $money2 = $money->mul(3.1);
-    expect($money2)->toBe($money);
+    $money = $money->mul(3.1);
 
-    $money2 = $money->mul('5');
-    expect($money2)->toBe($money);
-
+    $money = $money->mul('5');
 
     expect($money)->toEqual(new Money('75.33'));
 });
@@ -63,15 +51,11 @@ test('multipy money', function () {
 test('divide money', function () {
     $money = new Money('75.33');
 
-    $money2 = $money->div(new Money(2));
-    expect($money2)->toBe($money);
+    $money = $money->div(new Money(2));
 
-    $money2 = $money->div(3.1);
-    expect($money2)->toBe($money);
+    $money = $money->div(3.1);
 
-    $money2 = $money->div('5');
-    expect($money2)->toBe($money);
-
+    $money = $money->div('5');
 
     expect($money)->toEqual(new Money('2.43'));
 });
@@ -79,5 +63,5 @@ test('divide money', function () {
 test('render', function () {
     $money1 = new Money('2.4355651');
 
-    expect($money1->jsonSerialize())->toEqual(['amount' => '2.44', 'currency' => '€']);
+    expect($money1->jsonSerialize())->toEqual('2,44€');
 });

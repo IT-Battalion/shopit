@@ -61,12 +61,19 @@ class ShoppingCartEntry extends Pivot
         'product_color_attribute_id',
     ];
 
+    protected $with = [
+        'productClothingAttribute',
+        'productDimensionAttribute',
+        'productVolumeAttribute',
+        'productColorAttribute',
+    ];
+
     public function getProductAttributesAttribute()
     {
-        $clothingAttribute = $this->productClothingAttribute;
-        $dimensionAttribute = $this->productDimensionAttribute;
-        $volumeAttribute = $this->productVolumeAttribute;
-        $colorAttribute = $this->productColorAttribute;
+        $clothingAttribute = $this->productClothingAttribute()->with('productClothingAttribute');
+        $dimensionAttribute = $this->productDimensionAttribute()->with('productDimensionAttribute');
+        $volumeAttribute = $this->productVolumeAttribute()->with('productVolumeAttribute');
+        $colorAttribute = $this->productColorAttribute()->with('productColorAttribute');
 
         return
             collect([

@@ -38,8 +38,7 @@
               {{ highlightedProduct.name }}
             </h3>
             <p class="self-end w-2/3 text-sm font-medium text-gray-900">
-              {{ highlightedProduct.price.amount.replace(".", ",")
-              }}{{ highlightedProduct.price.currency }}
+              {{ highlightedProduct.price }}
             </p>
             <button
               class="w-24 row-span-2 px-4 py-1 bg-white  rounded-3xl hover:bg-gray-300"
@@ -124,11 +123,12 @@ import "swiper/css";
 
 import "swiper/css/navigation";
 import { AxiosResponse } from "axios";
-import { Product } from "../types/util";
+import { Product } from "../types/api";
 
 // import Swiper core and required modules
 import SwiperCore, { Navigation } from "swiper";
 import { defineComponent } from "@vue/runtime-core";
+import {addToShoppingCart} from "../request";
 
 // install Swiper modules
 SwiperCore.use([Navigation]);

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\ConvertableToOrder;
+use App\Traits\TracksModification;
 use Auth;
 use Database\Factories\ProductImageFactory;
 use Eloquent;
@@ -43,7 +44,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class ProductImage extends Model implements ConvertableToOrder
 {
-    use HasFactory;
+    use HasFactory, TracksModification;
 
     protected $table = 'product_images';
 
@@ -60,42 +61,8 @@ class ProductImage extends Model implements ConvertableToOrder
 
     protected $casts = [];
 
-    public function created_by(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'created_by_id');
-    }
-
-    public function createWith(User $user): ProductImage
-    {
-        $this->created_by_id = $user->id;
-        $this->updated_by_id = $user->id;
-        return $this;
-    }
-
-    public function updated_by(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'updated_by_id');
-    }
-
-    public function updateWith(User $user): ProductImage
-    {
-        $this->updated_by_id = $user->id;
-        return $this;
-    }
-
     public function product(): BelongsTo {
         return $this->belongsTo(Product::class, 'product_id', 'id');
-    }
-
-    protected static function boot()
-    {
-        parent::boot();
-        static::creating(function (ProductImage $model) {
-            if (!isset($model->created_by)) $model->createWith(Auth::user());
-        });
-        static::updating(function (ProductImage $model) {
-            if (!isset($model->updated_by)) $model->updateWith(Auth::user());
-        });
     }
 
     public function getOrderEquivalent(array $attributes = [])

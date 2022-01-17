@@ -99,11 +99,10 @@
                           :src="category.icon_url"
                           class="object-scale-down h-8 mr-4"
                         />
-                        <a
+                        <router-link
                           class="my-1 text-left"
-                          :href="'/#' + category.name"
-                          >{{ category.name }}</a
-                        >
+                          :to="'/#' + category.name"
+                          >{{ category.name }}</router-link>
                       </div>
                     </div>
                   </div>

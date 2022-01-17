@@ -8,10 +8,6 @@ class ActionNotAllowedForAdministratorException extends Exception
 {
     public function __construct()
     {
-        parent::__construct(t('error_messages.action_not_allowed_on_administrator'));
-    }
-
-    public function render($request) {
-
+        parent::__construct('Diese Aktion kann nicht an einem Administrator durchgeführt werden.');
     }
 }

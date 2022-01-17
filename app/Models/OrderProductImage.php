@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Traits\TracksModification;
 use Database\Factories\OrderProductImageFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -39,13 +41,13 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OrderProductImage whereUpdatedById($value)
  * @mixin Eloquent
  * @property string $hash
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderProduct[] $products
+ * @property-read Collection|OrderProduct[] $products
  * @property-read int|null $products_count
  * @method static Builder|OrderProductImage whereHash($value)
  */
 class OrderProductImage extends Model
 {
-    use HasFactory;
+    use HasFactory, TracksModification;
 
     protected $table = 'order_product_images';
 
@@ -64,15 +66,5 @@ class OrderProductImage extends Model
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(OrderProduct::class);
-    }
-
-    public function updated_by(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'updated_by_id');
-    }
-
-    public function created_by(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'created_by_id');
     }
 }

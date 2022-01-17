@@ -19,8 +19,7 @@ class CreateOrdersTable extends Migration
             $table->boolean('enabled')->default(true);
             $table->timestamp('enabled_until')->nullable();
             $table->char('code', 32)->unique();
-            $table->foreignId('created_by_id')->constrained('users');
-            $table->foreignId('updated_by_id')->constrained('users');
+            $table->user();
             $table->timestamps();
         });
 
@@ -45,8 +44,7 @@ class CreateOrdersTable extends Migration
             $table->text('path');
             $table->string('type');
             $table->string('hash')->index();
-            $table->foreignId('created_by_id')->constrained('users');
-            $table->foreignId('updated_by_id')->constrained('users');
+            $table->user();
             $table->timestamps();
         });
 
@@ -94,8 +92,7 @@ class CreateOrdersTable extends Migration
             $table->foreignId('order_dimension_attribute_id')->nullable()->constrained();
             $table->foreignId('order_volume_attribute_id')->nullable()->constrained();
             $table->foreignId('order_color_attribute_id')->nullable()->constrained();
-            $table->foreignId('created_by_id')->constrained('users');
-            $table->foreignId('updated_by_id')->constrained('users');
+            $table->user();
 
             $table->timestamps();
         });

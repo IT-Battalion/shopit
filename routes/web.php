@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Models\Icon;
+use App\Models\OrderProductImage;
 use App\Models\ProductImage;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\File;
@@ -19,63 +20,54 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::view('/', 'home')->name('home');
+Route::view('/login', 'home');
+Route::view('/product/{name}', 'home')->where('name', '[^\/]*');
+Route::view('/admin/', 'home');
+Route::view('/order/', 'home');
+
 Route::permanentRedirect('/home', url('/'));
-
-/*Auth::routes([
-    'register' => false,
-    'verify' => false,
-    'reset' => false,
-]);*/
-
 
 // custom login/logout Routes because we have the auth middleware installed on the whole 'web' route domain
 // therefore we needed the withoutMiddle() function to disable the auth middleware for the login routes
 Broadcast::routes();
 
 Route::namespace('Auth')->group(function () {
-    Route::post('login', [LoginController::class, 'login'])->withoutMiddleware('auth');
-    Route::post('logout', [LogoutController::class, 'logout'])->middleware('auth');
+    Route::post('/login', [LoginController::class, 'login']);
+    Route::post('/logout', [LogoutController::class, 'logout'])->middleware('auth');
     Route::view('/login', 'home')->name('login');
 });
 
-Route::get('/icon/{id}', function (int $id) {
-    $icon = Icon::whereId($id);
+Route::middleware('auth')->group(function () {
+    Route::get('/icon/{icon}', function (Icon $icon) {
+        $path = Storage::path($icon->path);
 
-    if (!$icon->exists()) {
-        abort(404);
-    }
+        if (!File::exists($path)) {
+            abort(404);
+        }
 
-    $icon = $icon->first();
-    $path = storage_path("app/$icon->path");
+        return response()->file($path);
+    })
+        ->middleware('auth')
+        ->name('icon');
 
-    if (!File::exists($path)) {
-        abort(404);
-    }
+    Route::get('/product-image/{image}', function (ProductImage $image) {
+        $path = Storage::path($image->path);
 
-    return response()->file($path);
-})
-    ->middleware('auth')
-    ->name('icon');
+        if (!File::exists($path)) {
+            abort(404);
+        }
 
-Route::get('/product-image/{id}', function (int $id) {
-    $image = ProductImage::whereId($id)->first();
+        return response()->file($path);
+    })->name('product-image');
 
-    if (!$image->exists()) {
-        abort(404);
-    }
+    Route::get('/order-product-image/{image}', function (OrderProductImage $image) {
+        $path = Storage::path($image->path);
 
-    $icon = $image->first();
-    $path = storage_path("app/$image->path");
+        if (!File::exists($path)) {
+            abort(404);
+        }
 
-    if (!File::exists($path)) {
-        abort(404);
-    }
-
-    return response()->file($path);
-})
-    ->middleware('auth')
-    ->name('product-image');
-
-Route::view('/{route}', 'home')
-    ->where('route', '.*')
-    ->name('home');
+        return response()->file($path);
+    });
+});

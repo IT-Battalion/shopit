@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\TracksModification;
 use Barryvdh\LaravelIdeHelper\Eloquent;
 use Database\Factories\CouponCodeFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -48,7 +49,7 @@ use Illuminate\Support\Facades\Auth;
  */
 class CouponCode extends Model
 {
-    use HasFactory;
+    use HasFactory, TracksModification;
 
     protected $table = 'coupon_codes';
 
@@ -63,40 +64,6 @@ class CouponCode extends Model
         'discount' => 'string',
         'enabled' => 'bool',
     ];
-
-    public function created_by(): BelongsTo
-    {
-        return $this->belongsTo(Admin::class, 'created_by_id');
-    }
-
-    public function updated_by(): BelongsTo
-    {
-        return $this->belongsTo(Admin::class, 'updated_by_id');
-    }
-
-    public function updateWith(User $user): CouponCode
-    {
-        $this->updated_by_id = $user->id;
-        return $this;
-    }
-
-    public function createWith(User $user): CouponCode
-    {
-        $this->created_by_id = $user->id;
-        $this->updated_by_id = $user->id;
-        return $this;
-    }
-
-    protected static function boot()
-    {
-        parent::boot();
-        static::creating(function (CouponCode $model) {
-            if (!isset($model->created_by)) $model->createWith(Auth::user());
-        });
-        static::updating(function (CouponCode $model) {
-            if (!isset($model->updated_by)) $model->updateWith(Auth::user());
-        });
-    }
 
     public function orders_used(): HasOneOrMany
     {

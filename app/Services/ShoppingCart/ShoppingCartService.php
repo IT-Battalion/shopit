@@ -28,7 +28,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
 
         if ( ! $product->areAttributesAvailable($attributes))
         {
-            throw new InvalidAttributeException(t('exceptions.selected_attribute_not_available'));
+            throw new InvalidAttributeException('Die gewählten Attribute sind nicht verfügbar.');
         }
 
         $user = $user ?? Auth::user();
@@ -37,7 +37,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
 
         if ($amount < 0 || $newAmount > config('shop.shopping_cart.max_product_amount'))
         {
-            throw new IllegalArgumentException(t('error_messages.illegal_amount_given'));
+            throw new IllegalArgumentException('Die gewählte Anzahl an Produkten ist nicht verfügbar.');
         }
 
         if ($this->hasProductInShoppingCart($product, $attributes, user: $user))
@@ -71,7 +71,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         }
 
         if ($amount < -1) {
-            throw new IllegalArgumentException(t('error_messages.illegal_amount_given'));
+            throw new IllegalArgumentException('Die gewählte Anzahl an Produkten ist nicht verfügbar.');
         }
 
         if ($amount === -1) {
@@ -84,7 +84,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
 
         if ($newAmount > config('shop.shopping_cart.max_product_amount'))
         {
-            throw new IllegalArgumentException(t('error_messages.illegal_amount_given'));
+            throw new IllegalArgumentException('Die gewählte Anzahl an Produkten ist nicht verfügbar.');
         }
         else if ($newAmount <= 0)
         {
@@ -102,12 +102,12 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     {
         if ($amount < 0)
         {
-            throw new IllegalArgumentException(t('error_messages.illegal_amount_given'));
+            throw new IllegalArgumentException('Die gewählte Anzahl an Produkten ist nicht verfügbar.');
         }
 
         if ( ! $product->areAttributesAvailable($attributes))
         {
-            throw new InvalidAttributeException(t('exceptions.selected_attribute_not_available'));
+            throw new InvalidAttributeException('Die gewählten Attribute sind nicht verfügbar.');
         }
 
         $user = $user ?? Auth::user();
@@ -135,7 +135,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         $user = $user ?? Auth::user();
 
         $coupon = $user->shopping_cart_coupon;
-        $discount = $coupon?->discount ?? 0;
+        $discount = $coupon?->discount ?? '0';
 
         $price = $user->shopping_cart
             ->groupBy(function (Product $product) {
@@ -150,12 +150,12 @@ class ShoppingCartService implements ShoppingCartServiceInterface
 
                 if ($includeCoupon)
                 {
-                    $price->mul(bcsub(1, $discount));
+                    $price = $price->mul(bcsub('1', $discount));
                 }
 
                 if ($includeTax)
                 {
-                    $price->mul(bcadd('1', $tax));
+                    $price = $price->mul(bcadd('1', $tax));
                 }
 
                 return $carry->add($price);
@@ -182,7 +182,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                     return $carry->add($netto->mul($amount));
                 }, new Money('0'));
 
-                $price->mul(bcsub(1, $discount));
+                $price = $price->mul(bcsub('1', $discount));
 
                 $taxPrice = $price->mul($tax);
 
@@ -229,7 +229,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
 
         if ($amount < -1)
         {
-            throw new IllegalArgumentException(t('error_messages.illegal_amount_given'));
+            throw new IllegalArgumentException('Die gewählte Anzahl an Produkten ist nicht verfügbar.');
         }
 
         $productInShoppingCart = self::getProductInShoppingCartQuery($product, $attributes, $user);
@@ -286,7 +286,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     {
         if ( ! $product->areAttributesAvailable($attributes))
         {
-            throw new InvalidAttributeException(t('exceptions.selected_attribute_not_available'));
+            throw new InvalidAttributeException('Die gewählten Attribute sind nicht verfügbar.');
         }
 
         $newAttributes = ['count' => $newAmount];

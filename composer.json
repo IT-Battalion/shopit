@@ -27,7 +27,7 @@
         "symfony/mailer": "^6.0.0"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-latest",
+        "barryvdh/laravel-debugbar": "^3.6",
         "barryvdh/laravel-ide-helper": "^2.10",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
@@ -36,7 +36,8 @@
         "nunomaduro/collision": "^5.0",
         "pestphp/pest-plugin-faker": "^1.0",
         "pestphp/pest-plugin-laravel": "^1.1",
-        "phpunit/phpunit": "^9.3.3"
+        "phpunit/phpunit": "^9.3.3",
+        "roave/security-advisories": "dev-latest"
     },
     "config": {
         "optimize-autoloader": true,

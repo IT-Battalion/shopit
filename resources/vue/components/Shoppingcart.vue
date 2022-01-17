@@ -34,7 +34,7 @@
             >
               <div class="w-screen max-w-md">
                 <div
-                  class="flex flex-col h-full overflow-y-scroll bg-white shadow-xl "
+                  class="flex flex-col h-full bg-white shadow-xl "
                 >
                   <div class="flex-1 px-4 py-6 overflow-y-auto sm:px-6">
                     <div class="flex items-start justify-between">
@@ -189,9 +189,9 @@ export default defineComponent({
     return {
       isOpen: false,
       shoppingCart: {} as ShoppingCart,
-      imagesLoading: 0,
+      imageCount: 0,
       metadataLoading: true,
-      isLoading: computed(() => (this.imagesLoading as any) > 0),
+      isLoading: computed(() => (this.imageCount as any) > 0),
     };
   },
   async created() {

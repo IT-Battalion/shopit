@@ -71,13 +71,13 @@ import {
 } from "vue";
 import App from "./App.vue";
 import router from "./router";
-import { createI18n, I18n } from "vue-i18n";
 import { redirectToLogin } from "./util";
 import { Vue3Mq, MqResponsive } from "vue3-mq";
 import { Skeletor } from "vue-skeletor";
 import 'vue-skeletor/dist/vue-skeletor.css';
+import {initLoad} from "./loader";
 
-export const SUPPORT_LOCALES = ['de', 'en'];
+/*export const SUPPORT_LOCALES = ['de', 'en'];
 
 let userLocale = 'en';
 
@@ -101,12 +101,12 @@ export function loadLocale(i18n: I18n, locale: string) {
 }
 const i18n = createI18n({
     locale: userLocale,
-});
+});*/
 
 let createdApp = createApp(App);
 createdApp
     .use(router)
-    .use(i18n)
+//    .use(i18n)
     .use(Vue3Mq, { preset: "tailwind" })
     .component('mq-responsive', MqResponsive)
     .component(Skeletor.name, Skeletor)
@@ -114,4 +114,4 @@ createdApp
 
 createdApp.config.globalProperties.$http = window.axios;
 
-loadLocale(i18n, userLocale);
+//loadLocale(i18n, userLocale);

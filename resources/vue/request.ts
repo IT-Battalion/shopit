@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios"
-import { LoginRequestData, LoginResponseData } from "./types/api"
+import {AddToShoppingCartRequest, LoginRequestData, LoginResponseData, SelectedAttributes} from "./types/api"
 
 export type User = { name: string; username: string }
 export type UserList = Array<User & { password: string }>
@@ -30,4 +30,12 @@ export async function logout(): Promise<void> {
     return window.axios.post('/logout', undefined, {
         baseURL: '/',
     });
+}
+
+export async function addToShoppingCart(name: string, count: number, selectedAttributes: SelectedAttributes) {
+  return window.axios.post<AddToShoppingCartRequest, AxiosResponse<void>>('/user/shopping-cart/add', {
+    name: name,
+    count: count,
+    selected_attributes: selectedAttributes,
+  });
 }

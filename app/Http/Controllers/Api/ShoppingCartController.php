@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AddToShoppingCartRequest;
 use App\Models\Product;
-use App\Models\ProductImage;
 use App\Services\ShoppingCart\ShoppingCartServiceInterface;
 use Illuminate\Http\Request;
 
@@ -28,5 +28,9 @@ class ShoppingCartController extends Controller
         ];
 
         return response()->json($shoppingCart);
+    }
+
+    public function add(AddToShoppingCartRequest $request) {
+        dd($request->validated());
     }
 }

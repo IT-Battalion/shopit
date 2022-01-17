@@ -87,6 +87,13 @@ export type Color = string;
 
 export type Money = string;
 
+export type SelectedAttributes = {
+  [AttributeType.CLOTHING]?: ClothingAttribute,
+  [AttributeType.DIMENSION]?: DimensionAttribute,
+  [AttributeType.VOLUME]?: VolumeAttribute,
+  [AttributeType.COLOR]?: ColorAttribute,
+};
+
 export interface Product {
   id: number,
   name: string,
@@ -111,16 +118,17 @@ export interface Product {
 export interface ShoppingCart {
   products: [{
     product: Product,
-    selected_attributes: {
-      [AttributeType.CLOTHING]?: ClothingAttribute,
-      [AttributeType.DIMENSION]?: DimensionAttribute,
-      [AttributeType.VOLUME]?: VolumeAttribute,
-      [AttributeType.COLOR]?: Color,
-    },
+    selected_attributes: SelectedAttributes,
     count: number,
   }],
   subtotal: string,
   discount: string,
   tax: string,
   total: string,
+}
+
+export interface AddToShoppingCartRequest {
+  name: string,
+  count: number,
+  selected_attributes: SelectedAttributes,
 }

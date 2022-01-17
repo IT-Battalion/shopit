@@ -40,5 +40,12 @@ class OrderProductSeeder extends Seeder
 
             $product->images()->attach($image);
         }
+
+        foreach ($products as $product)
+        {
+            $product->thumbnail_id = $product->images()->first(['order_product_images.id'])->id;
+
+            $product->save();
+        }
     }
 }

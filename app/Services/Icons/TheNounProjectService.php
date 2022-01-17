@@ -180,7 +180,7 @@ class TheNounProjectService implements IconServiceInterface
             switch ($response->status()) {
                 case 404:
                     $exception = $response->toException();
-                    throw new IconNotFoundException(t('error_messages.icon_not_found', ['id' => $id]), 0, $exception);
+                    throw new IconNotFoundException("Ein Icon mit dem Namen oder der Id $id konnte nicht gefunden werden.", 0, $exception);
                 default:
                     $response->throw();
             }
@@ -223,13 +223,15 @@ class TheNounProjectService implements IconServiceInterface
         } else if (array_key_exists('preview_url', $iconData)) {
             $preview_url = $iconData['preview_url'];
         } else {
-            throw new MalformedIconDataException(t('error_messages.no_icon_preview'));
+            throw new MalformedIconDataException('Von den gegebenen Informationen konnte kein Icon erstellt werden.
+Es konnte keine URL für eine Vorschau des Icons gefunden werden.
+Dies ist höchstwahrscheinlich ein Problem mit der API von the Noun Project (Die ist recht inkonsistent, was mich sicherlich keine Stunden gekostet hat🤪)');
         }
 
         $iconData['license'] = match ($iconData['license_description']) {
             'public-domain' => strval(ApiIcon::LICENSE_PUBLIC_DOMAIN),
             'creative-commons-attribution' => strval(ApiIcon::LICENSE_CC_BY_3_0),
-            default => throw new MalformedIconDataException(t('error_messages.no_known_licenses', ['iconName' => $iconData['name']])),
+            default => throw new MalformedIconDataException("Es wurde keine bekannte Lizenz für das Icon {$iconData['name']} gefunden."),
         };
 
         return new ApiIcon(
@@ -258,7 +260,7 @@ class TheNounProjectService implements IconServiceInterface
         if ($response->failed()) {
             switch ($response->status()) {
                 case 404:
-                    throw new IconNotFoundException(t('error_messages.icon_not_found_for_download'));
+                    throw new IconNotFoundException('Das Icon konnte nicht gefunden werden wodurch es nicht heruntergeladen werden konnte.');
                 default:
                     $response->throw();
             }
@@ -279,7 +281,7 @@ class TheNounProjectService implements IconServiceInterface
 
         if (!$icon->save()) {
             Storage::delete($savePath);
-            throw new IconSaveException(t('error_messages.icon_not_saved'), 0);
+            throw new IconSaveException('Das Icon konnte nicht gespeichert werden.', 0);
         }
 
         return $icon;

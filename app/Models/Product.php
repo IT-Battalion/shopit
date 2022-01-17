@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\ConvertableToOrder;
+use App\Traits\TracksModification;
 use App\Types\AttributeType;
 use App\Types\Money;
 use Database\Factories\ProductFactory;
@@ -15,7 +16,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * App\Models\Product
@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Auth;
  * @property string $description
  * @property int|null $thumbnail_id
  * @property Money $price
+ * @property-read Money $gross_price
  * @property string $tax
  * @property int $available
  * @property int $created_by_id
@@ -67,11 +68,10 @@ use Illuminate\Support\Facades\Auth;
  * @property-read int|null $product_dimension_attributes_count
  * @property-read Collection|ProductVolumeAttribute[] $productVolumeAttributes
  * @property-read int|null $product_volume_attributes_count
- * @property-read mixed $main_thumbnail
  */
 class Product extends Model implements ConvertableToOrder
 {
-    use HasFactory;
+    use HasFactory, TracksModification;
 
     /**
      * The attributes that are mass assignable.
@@ -93,37 +93,20 @@ class Product extends Model implements ConvertableToOrder
         'tax' => 'string',
     ];
 
+    protected $with = [
+        'thumbnail',
+        'category',
+        'images',
+        'productClothingAttributes',
+        'productDimensionAttributes',
+        'productVolumeAttributes',
+        'productColorAttributes',
+    ];
+
+    // images
     public function thumbnail(): BelongsTo
     {
         return $this->belongsTo(ProductImage::class, 'thumbnail_id');
-    }
-
-    public function getMainThumbnailAttribute()
-    {
-        return $this->thumbnail ?? $this->images()->first();
-    }
-
-    public function created_by(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'created_by_id');
-    }
-
-    public function createWith(User $user): Product
-    {
-        $this->created_by_id = $user->id;
-        $this->updated_by_id = $user->id;
-        return $this;
-    }
-
-    public function updated_by(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'updated_by_id');
-    }
-
-    public function updateWith(User $user): Product
-    {
-        $this->updated_by_id = $user->id;
-        return $this;
     }
 
     public function images(): HasMany
@@ -131,6 +114,7 @@ class Product extends Model implements ConvertableToOrder
         return $this->hasMany(ProductImage::class);
     }
 
+    // attributes
     public function getProductAttributesAttribute()
     {
         $clothingAttributes = $this->productClothingAttributes;
@@ -197,21 +181,6 @@ class Product extends Model implements ConvertableToOrder
         return $this->belongsTo(ProductCategory::class, 'product_category_id');
     }
 
-    protected static function boot()
-    {
-        parent::boot();
-        static::creating(function (Product $model) {
-            if (!isset($model->created_by)) $model->createWith(Auth::user());
-        });
-        static::updating(function (Product $model) {
-            if (!isset($model->updated_by)) $model->updateWith(Auth::user());
-        });
-        static::deleting(function (Product $model) {
-            $model->images()->delete();
-            $model->productAttributes()->delete();
-        });
-    }
-
     public function scopeAvailable(Builder $query): Builder
     {
         return $query->where('available', '>', '0')->orWhere('available', '=', '-1');
@@ -222,7 +191,7 @@ class Product extends Model implements ConvertableToOrder
         return $query->where('available', '=', '0');
     }
 
-    public function getBruttoPriceAttribute(): Money
+    public function getGrossPriceAttribute(): Money
     {
         return $this->price->mul(bcadd($this->tax, 1));
     }
@@ -252,14 +221,28 @@ class Product extends Model implements ConvertableToOrder
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->name,
-            'price' => $this->brutto_price,
+            'price' => $this->gross_price,
             'tax' => $this->tax,
             'available' => $this->available,
             'thumbnail' => [
-                'id' => $this->main_thumbnail?->id,
+                'id' => $this->thumbnail_id,
             ],
-            'images' => $this->images->map(fn (ProductImage $image) => $image->id),
+            'images' => $this->images->get('id'),
             'attributes' => $this->product_attributes,
         ];
+    }
+
+    public function deleteRelated()
+    {
+        $this->images()->delete();
+        $this->productClothingAttributes()->delete();
+        $this->productDimensionAttributes()->delete();
+        $this->productVolumeAttributes()->delete();
+        $this->productColorAttributes()->delete();
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'name';
     }
 }

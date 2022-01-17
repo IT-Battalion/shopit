@@ -33,7 +33,7 @@ class OrderService implements OrderServiceInterface
 
         $products = $customer->shopping_cart;
 
-        if ($products->count() === 0) throw new ShoppingCartEmptyException(t('error_messages.shopping_cart_empty'));
+        if ($products->count() === 0) throw new ShoppingCartEmptyException('Eine Bestellung kann nicht von einem leeren Einkaufswagen zusammengestellt werden.');
 
         $coupon = $customer->shopping_cart_coupon?->id;
 
@@ -85,7 +85,7 @@ class OrderService implements OrderServiceInterface
     {
         if (!$order->isPaid())
         {
-            throw new OrderNotPaidException(t('error_messages.order_not_paid'));
+            throw new OrderNotPaidException('Die Bestellung wurde noch nicht bezahlt.');
         }
 
         $order->products_ordered_at = now();
@@ -103,7 +103,7 @@ class OrderService implements OrderServiceInterface
     {
         if (!$order->isOrdered())
         {
-            throw new OrderNotOrderedException(t('error_messages.order_not_ordered'));
+            throw new OrderNotOrderedException('Die Bestellung wurde noch nicht von einem Administrator bestellt.');
         }
 
         $order->products_received_at = now();
@@ -121,7 +121,7 @@ class OrderService implements OrderServiceInterface
     {
         if (!$order->isReceived())
         {
-            throw new OrderNotReceivedException(t('error_messages.order_not_received'));
+            throw new OrderNotReceivedException('Die Bestellung wurde noch nicht von einem Administrator erhalten.');
         }
 
         $order->handed_over_at = now();

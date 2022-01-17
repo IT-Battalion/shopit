@@ -8,7 +8,7 @@ class InsufficientPermissionException extends Exception
 {
     public function __construct()
     {
-        parent::__construct(t('error_messages.insufficient_permission'));
+        parent::__construct('Sie haben nicht genügend Rechte für diese Aktion.');
     }
 
     public function render($request)

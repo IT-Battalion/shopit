@@ -24,14 +24,7 @@ class Money implements Castable, JsonSerializable, Jsonable
      */
     public function __construct(mixed $amount)
     {
-        if ($amount instanceof Money) {
-            $amount = $amount->amount;
-        }
-
-        $this->amount = bcadd((string) $amount, '0'); // the add has to be performed to get the number with the
-        // right amount of points after the comma. The string will be
-        // filled up with zeros to the required amount specified
-        // in the shop.php config file.
+        $this->amount = bcadd(self::convertToAmount($amount), '0');
     }
 
     /**
@@ -51,23 +44,36 @@ class Money implements Castable, JsonSerializable, Jsonable
     }
 
     /**
+     * @param Money|string|mixed $value
+     * @return string
+     */
+
+    private static function convertToAmount(mixed $value)
+    {
+        if ($value instanceof Money) {
+            return $value->amount;
+        } else if (is_string($value)) {
+            return $value;
+        } else {
+            return (string) $value;
+        }
+    }
+
+    /**
      * @param Money|string|mixed ...$others
      * @return Money
      */
 
     public function add(mixed ...$others)
     {
+        $amount = $this->amount;
+
         foreach ($others as $other) {
-            if ($other instanceof Money) {
-                $this->amount = bcadd($this->amount, $other->amount);
-            } else if (is_string($other)) {
-                $this->amount = bcadd($this->amount, $other);
-            } else {
-                $this->amount = bcadd($this->amount, strval($other));
-            }
+            $otherAmount = self::convertToAmount($other);
+            $amount = bcadd($amount, $otherAmount);
         }
 
-        return $this;
+        return new Money($amount ?? $this->amount);
     }
 
     /**
@@ -77,17 +83,14 @@ class Money implements Castable, JsonSerializable, Jsonable
 
     public function sub(mixed ...$others)
     {
+        $amount = $this->amount;
+
         foreach ($others as $other) {
-            if ($other instanceof Money) {
-                $this->amount = bcsub($this->amount, $other->amount);
-            } else if (is_string($other)) {
-                $this->amount = bcsub($this->amount, $other);
-            } else {
-                $this->amount = bcsub($this->amount, strval($other));
-            }
+            $otherAmount = self::convertToAmount($other);
+            $amount = bcsub($amount, $otherAmount);
         }
 
-        return $this;
+        return new Money($amount);
     }
 
     /**
@@ -97,17 +100,15 @@ class Money implements Castable, JsonSerializable, Jsonable
 
     public function mul(mixed ...$others)
     {
+        $amount = $this->amount;
+
         foreach ($others as $other) {
-            if ($other instanceof Money) {
-                $this->amount = bcmul($this->amount, $other->amount);
-            } else if (is_string($other)) {
-                $this->amount = bcmul($this->amount, $other);
-            } else {
-                $this->amount = bcmul($this->amount, strval($other));
-            }
+            $otherAmount = self::convertToAmount($other);
+
+            $amount = bcmul($amount, $otherAmount);
         }
 
-        return $this;
+        return new Money($amount);
     }
 
     /**
@@ -117,17 +118,15 @@ class Money implements Castable, JsonSerializable, Jsonable
 
     public function div(mixed ...$others)
     {
+        $amount = $this->amount;
+
         foreach ($others as $other) {
-            if ($other instanceof Money) {
-                $this->amount = bcdiv($this->amount, $other->amount);
-            } else if (is_string($other)) {
-                $this->amount = bcdiv($this->amount, $other);
-            } else {
-                $this->amount = bcdiv($this->amount, strval($other));
-            }
+            $otherAmount = self::convertToAmount($other);
+
+            $amount = bcdiv($amount, $otherAmount);
         }
 
-        return $this;
+        return new Money($amount);
     }
 
     public static function castUsing(array $arguments)

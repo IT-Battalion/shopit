@@ -18,7 +18,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = ProductCategory::whereHas('products')->get()
+        $products = ProductCategory::whereHas('products')->with('products')->get()
             ->mapWithKeys(function (ProductCategory $category) {
                 return [
                     $category->name => $category->products,
@@ -42,14 +42,14 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param string $nameOrId
+     * @param Product $product
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(string $nameOrId)
+    public function show(Product $product)
     {
-        $product = Product::whereId($nameOrId)->first() ?? Product::whereName($nameOrId)->first();
+        //$product = Product::whereId($nameOrId)->first() ?? Product::whereName($nameOrId)->first();
 
-        abort_if(is_null($product), 404);
+        //abort_if(is_null($product), 404);
 
         return response()->json([
             'name' => $product->name,

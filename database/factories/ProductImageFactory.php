@@ -28,9 +28,9 @@ class ProductImageFactory extends Factory
     {
         $product = (Product::doesntHave('images')
             ->inRandomOrder()
-            ->first() ??
+            ->first(['id']) ??
             Product::inRandomOrder()
-                ->first())->id;
+                ->first(['id']))->id;
 
         $admin = Admin::inRandomOrder()
             ->first()
