@@ -147,7 +147,6 @@ export default defineComponent({
       this.isOpen = !this.isOpen;
     },
     setOpen(isOpen: boolean) {
-      console.log(isOpen);
       this.isOpen = isOpen;
     },
   },

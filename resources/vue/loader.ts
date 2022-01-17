@@ -1,38 +1,39 @@
 import {computed, ComputedRef, nextTick, reactive, UnwrapNestedRefs, watchEffect} from "vue";
 
-export const state: UnwrapNestedRefs<{ isLoading: boolean; handlers: ((value: unknown) => void)[]; progressTarget: number; progressCurrent: number; progressPercent: ComputedRef<number>; isProgressing: ComputedRef<boolean> }> = reactive({
-  isLoading: false,
+export const state: UnwrapNestedRefs<{ isLoading: ComputedRef<boolean>; waiting: number; handlers: any[]; progressTarget: number; progressCurrent: number; progressPercent: ComputedRef<number>; isProgressing: ComputedRef<boolean> }> = reactive({
+  waiting: 0,
+  isLoading: computed(() => state.waiting > 0),
   progressTarget: Number.MAX_VALUE,
-  progressCurrent: Number.MAX_VALUE,
+  progressCurrent: Number.MAX_VALUE - 1,
   progressPercent: computed(() => state.isLoading ? 1 : state.progressCurrent/state.progressTarget),
   isProgressing: computed(() => state.progressTarget !== Number.MAX_VALUE && state.progressCurrent !== state.progressTarget),
   handlers: [],
 });
 
 export function initLoad() {
-  console.trace('initLoad');
-  state.isLoading = true;
+  state.waiting += 1;
 }
 
 export function initProgress(target: number) {
-  state.isLoading = false;
-  state.progressTarget = target;
-  state.progressCurrent = 0;
+  if (state.progressTarget === Number.MAX_VALUE) {
+    state.progressTarget = target;
+    state.progressCurrent = 0;
+  } else {
+    state.progressTarget += target;
+  }
 }
 
-export function complete() {
-  state.isLoading = false;
+export function endLoad() {
+  if (state.waiting < 0) {
+    state.waiting = 0;
+    return;
+  }
+  state.waiting -= 1;
+}
+
+function complete() {
   state.progressTarget = Number.MAX_VALUE;
   state.progressCurrent = Number.MAX_VALUE;
-
-  console.log(state);
-
-  nextTick().then(() => {
-    state.handlers.forEach(handler => {
-      handler(undefined);
-    });
-    state.handlers = [];
-  });
 }
 
 export function onLoaded() {
@@ -46,3 +47,15 @@ watchEffect(() => {
     complete();
   }
 });
+
+watchEffect(() => {
+  if (state.waiting <= 0 && state.progressTarget === state.progressCurrent) {
+    state.waiting = 0;
+    nextTick().then(() => {
+      state.handlers.forEach(handler => {
+        handler(undefined);
+      });
+      state.handlers = [];
+    });
+  }
+})

@@ -4,7 +4,7 @@ import Products from "../views/Products.vue";
 import Main from "../views/layout/Main.vue";
 import { user } from "../stores/user";
 import ProductOverview from "../components/ProductOverview.vue";
-import {complete, initLoad, onLoaded} from "../loader";
+import {endLoad as complete, initLoad, onLoaded} from "../loader";
 
 const routes: Array<RouteRecordRaw> = [
   {

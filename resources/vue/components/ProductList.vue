@@ -40,7 +40,7 @@ import ProductCard from "./ProductCard.vue";
 import { AxiosResponse } from "axios";
 import { Product } from "../types/api";
 import { defineComponent } from "@vue/runtime-core";
-import {complete, initLoad, initProgress, state} from "../loader";
+import {endLoad, initLoad, initProgress, state} from "../loader";
 
 export default defineComponent({
   data() {
@@ -66,9 +66,8 @@ export default defineComponent({
       imageCount += this.categories[key].length;
     }
 
-    console.log(imageCount);
-
     initProgress(imageCount);
+    endLoad();
   },
   components: {
     ProductCard,

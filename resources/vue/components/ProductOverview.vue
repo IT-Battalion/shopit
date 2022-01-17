@@ -256,7 +256,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import SwiperCore, { Navigation, Pagination } from "swiper";
-import {initProgress, initLoad, state} from "../loader";
+import {initProgress, initLoad, state, endLoad} from "../loader";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -289,6 +289,7 @@ export default defineComponent({
 
     this.product = response.data;
     initProgress(this.product.images.length);
+    endLoad();
   },
 });
 </script>

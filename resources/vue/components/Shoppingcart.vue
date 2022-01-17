@@ -56,62 +56,107 @@
                     <div class="mt-8">
                       <div class="flow-root">
                         <ul role="list" class="-my-6 divide-y divide-gray-200">
-                          <li
-                            v-for="entry in shoppingCart.products"
-                            :key="entry.product.id"
-                            class="flex py-6"
-                          >
-                            <div
-                              class="flex-shrink-0 w-24 h-24 overflow-hidden border border-gray-200 rounded-md "
+                          <template v-if="!this.isMetadataLoading">
+                            <li
+                              v-for="entry in shoppingCart.products"
+                              :key="entry.product.id"
+                              class="flex py-6"
+                              v-show="!this.isLoading"
                             >
-                              <img
-                                :src="
-                                  '/product-image/' + entry.product.thumbnail.id
-                                "
-                                :alt="entry.product.name"
-                                class="object-cover object-center w-full h-full"
-                              />
-                            </div>
+                              <div
+                                class="flex-shrink-0 w-24 h-24 overflow-hidden border border-gray-200 rounded-md"
+                              >
+                                <img
+                                  :src="
+                                    '/product-image/' + entry.product.thumbnail.id
+                                  "
+                                  :alt="entry.product.name"
+                                  class="object-cover object-center w-full h-full"
+                                  @load="this.imagesLoading--"
+                                  @error="this.imagesLoading--"
+                                  @abort="this.imagesLoading--"
+                                />
+                              </div>
 
-                            <div class="flex flex-col flex-1 ml-4">
-                              <div>
-                                <div
-                                  class="flex justify-between text-base font-medium text-gray-900 "
-                                >
-                                  <h3>
-                                    <router-link
-                                      :to="'/product/' + entry.product.name"
-                                      @click="isOpen = false"
-                                    >
-                                      {{ entry.product.name }}
-                                    </router-link>
-                                  </h3>
-                                  <p class="ml-4">
-                                    {{ entry.product.price }}
+                              <div class="flex flex-col flex-1 ml-4">
+                                <div>
+                                  <div
+                                    class="flex justify-between text-base font-medium text-gray-900 "
+                                  >
+                                    <h3>
+                                      <router-link
+                                        :to="'/product/' + entry.product.name"
+                                        @click="isOpen = false"
+                                      >
+                                        {{ entry.product.name }}
+                                      </router-link>
+                                    </h3>
+                                    <p class="ml-4">
+                                      {{ entry.product.price }}
+                                    </p>
+                                  </div>
+                                  <p class="mt-1 text-sm text-gray-500">
+                                    {{ entry.product.name }}
                                   </p>
                                 </div>
-                                <p class="mt-1 text-sm text-gray-500">
-                                  {{ entry.product.name }}
-                                </p>
-                              </div>
-                              <div
-                                class="flex items-end justify-between flex-1 text-sm "
-                              >
-                                <p class="text-gray-500">
-                                  Qty {{ entry.count }}
-                                </p>
+                                <div
+                                  class="flex items-end justify-between flex-1 text-sm "
+                                >
+                                  <p class="text-gray-500">
+                                    Qty {{ entry.count }}
+                                  </p>
 
-                                <div class="flex">
-                                  <button
-                                    type="button"
-                                    class="font-medium text-indigo-600  hover:text-indigo-500"
-                                  >
-                                    Remove
-                                  </button>
+                                  <div class="flex">
+                                    <button
+                                      type="button"
+                                      class="font-medium text-indigo-600  hover:text-indigo-500"
+                                    >
+                                      Remove
+                                    </button>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          </li>
+                            </li>
+                            <template v-if="this.areImagesLoading">
+                              <li v-for="entry in shoppingCart.products"
+                                :key="entry.product.id"  class="flex py-6">
+                                <div
+                                  class="flex-shrink-0 w-24 h-24 overflow-hidden rounded-md "
+                                >
+                                  <Skeletor
+                                    class="object-cover object-center w-full h-full"
+                                    :pill="false"
+                                    :circle="false"
+                                    size="100%"
+                                  />
+                                </div>
+
+                                <div class="flex flex-col flex-1 ml-4">
+                                  <Skeletor :pill="true" class="mb-4 mt-2" />
+                                  <Skeletor :pill="true" width="80%" />
+                                </div>
+                              </li>
+                            </template>
+                          </template>
+                          <template v-else>
+                            <li v-for="index in 3" :key="index" class="flex py-6">
+                              <div
+                                class="flex-shrink-0 w-24 h-24 overflow-hidden rounded-md "
+                              >
+                                <Skeletor
+                                  class="object-cover object-center w-full h-full"
+                                  :pill="false"
+                                  :circle="false"
+                                  size="100%"
+                                />
+                              </div>
+
+                              <div class="flex flex-col flex-1 ml-4">
+                                <Skeletor :pill="true" class="mb-4 mt-2" />
+                                <Skeletor :pill="true" width="80%" />
+                              </div>
+                            </li>
+                          </template>
                         </ul>
                       </div>
                     </div>
@@ -175,6 +220,7 @@ import {
 import { XIcon } from "@heroicons/vue/outline";
 import { AxiosResponse } from "axios";
 import { ShoppingCart } from "../types/api";
+import {endLoad, initLoad, initProgress, state} from "../loader";
 
 export default defineComponent({
   components: {
@@ -187,11 +233,12 @@ export default defineComponent({
   },
   data() {
     return {
+      isMetadataLoading: true,
+      imagesLoading: -1,
+      areImagesLoading: computed(() => (this.imagesLoading as any) > 0),
+      isLoading: computed(() => this.isMetadataLoading || this.areImagesLoading),
       isOpen: false,
       shoppingCart: {} as ShoppingCart,
-      imageCount: 0,
-      metadataLoading: true,
-      isLoading: computed(() => (this.imageCount as any) > 0),
     };
   },
   async created() {
@@ -200,14 +247,13 @@ export default defineComponent({
     );
     this.shoppingCart = response.data;
     this.imagesLoading = this.shoppingCart.products.length;
-    this.metadataLoading = false;
+    this.isMetadataLoading = false;
   },
   methods: {
     toggleOpen() {
       this.isOpen = !this.isOpen;
     },
     setOpen(isOpen: boolean) {
-      console.log(isOpen);
       this.isOpen = isOpen;
     },
   },
