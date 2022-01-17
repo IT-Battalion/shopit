@@ -1,19 +1,21 @@
 <template>
   <div
-    class="
-      overflow-auto
-      fixed
-      left-0
-      flex flex-col
-      justify-center
-      w-56
-      pl-4
-      m-0
-      text-white
-      sidebar
-      top-32
-      bg-backgroundColor
+    :class="{
+        'overflow-auto': true,
+        'fixed': true,
+        'left-0': true,
+        'flex flex-col': true,
+        'justify-center': center,
+        'w-56': true,
+        'pl-4': true,
+        'm-0': true,
+        'text-white': true,
+        'sidebar': true,
+        'top-32': true,
+        'bg-backgroundColor': true,
+      }
     "
+    ref="sidenav"
   >
     <div
       v-for="category in categories"
@@ -30,13 +32,28 @@
 </template>
 
 <script lang="ts">
-export default {
+import {defineComponent} from "vue";
+
+export default defineComponent({
   data() {
     return {
       categories: window.config.categories,
+      center: true,
     };
   },
-};
+  mounted() {
+    this.checkScroll();
+    window.addEventListener('resize', () => {
+      this.checkScroll();
+    })
+  },
+  methods: {
+    checkScroll() {
+      const elem = this.$refs.sidenav as HTMLDivElement;
+      this.center = elem.scrollHeight <= elem.clientHeight;
+    }
+  }
+});
 </script>
 
 <style>
