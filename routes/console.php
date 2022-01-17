@@ -3,6 +3,7 @@
 use App\Models\Icon;
 use App\Models\OrderProductImage;
 use App\Models\ProductImage;
+use App\Services\Icons\IconServiceInterface;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
@@ -76,5 +77,23 @@ Artisan::command('clean', function () {
 
     foreach ($commands as $command) {
         $this->call($command, []);
+    }
+});
+
+Artisan::command('icon:add {id} {--interactionless}', function (string $id, bool $interactionless, IconServiceInterface $iconService) {
+    $icon = $iconService->findById($id);
+
+    $this->info('Found an icon:');
+    $this->line("Name: $icon->name");
+    $this->line("Author: $icon->artist");
+
+    $continue = $interactionless || $this->confirm('Möchten Sie dieses icon herunterladen? ', true);
+    if ($continue) {
+        $icon = $iconService->add($icon);
+        if ($icon->exists()) {
+            $this->info('Successfully created icon');
+        } else {
+            $this->error('Failed to create icon');
+        }
     }
 });

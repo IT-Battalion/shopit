@@ -214,8 +214,10 @@ class TheNounProjectService implements IconServiceInterface
 
     public static function parseIcon(array $iconData): ApiIcon|bool
     {
-        if (!array_key_exists('icon_url', $iconData)) {
-            return false;
+        if (array_key_exists('icon_url', $iconData)) {
+            $icon_url = $iconData['icon_url'];
+        } else {
+            throw new MalformedIconDataException('Es konnte keine URL für das angegebene icon gefunden werden');
         }
 
         if (array_key_exists('attribution_preview_url', $iconData)) {
@@ -237,7 +239,7 @@ Dies ist höchstwahrscheinlich ein Problem mit der API von the Noun Project (Die
         return new ApiIcon(
             $iconData['id'],
             $iconData['attribution'],
-            $iconData['icon_url'],
+            $icon_url,
             $preview_url,
             $iconData['license'],
             $iconData['term'],
