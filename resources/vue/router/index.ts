@@ -99,7 +99,19 @@ const router = createRouter({
         };
       }
     } else {
-      window.scroll({top: 0, left: 0,});
+      if (savedPosition) {
+        window.scroll(savedPosition);
+      } else if (to.hash) {
+        document.querySelector(to.hash)?.scrollIntoView({
+          behavior: 'smooth',
+        });
+      } else {
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: 'smooth',
+        });
+      }
       return onLoaded().then(() => {
         if (savedPosition) {
           return savedPosition;
