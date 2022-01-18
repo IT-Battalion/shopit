@@ -4,7 +4,7 @@ import Products from "../views/Products.vue";
 import Main from "../views/layout/Main.vue";
 import { user } from "../stores/user";
 import ProductOverview from "../components/ProductOverview.vue";
-import {endLoad as complete, initLoad, onLoaded} from "../loader";
+import { endLoad as complete, initLoad, onLoaded } from "../loader";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -66,6 +66,36 @@ const routes: Array<RouteRecordRaw> = [
             name: "ProfilePage",
             component: () =>
               import("../components/ProfilePage.vue"),
+          },
+          {
+            path: "rechnungen",
+            name: "Rechnungen",
+            component: () =>
+              import("../views/layout/Bills.vue"),
+          },
+          {
+            path: "bestellverlauf",
+            name: "Bestellverlauf",
+            component: () =>
+              import("../views/layout/OrderHistory.vue"),
+          },
+          {
+            path: "bestellungen",
+            name: "Bestellungen",
+            component: () =>
+              import("../views/layout/Orders.vue"),
+          },
+          {
+            path: "userverwaltung",
+            name: "Userverwaltung",
+            component: () =>
+              import("../views/layout/UserManagement.vue"),
+          },
+          {
+            path: "coupons",
+            name: "Coupons",
+            component: () =>
+              import("../views/layout/Coupons.vue"),
           }
         ]
       },

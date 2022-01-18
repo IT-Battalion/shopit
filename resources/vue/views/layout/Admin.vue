@@ -3,16 +3,7 @@
     <mq-responsive target="md+">
       <SidenavAdmin />
     </mq-responsive>
-    <div
-      class="
-        flex flex-col
-        items-center
-        justify-center
-        w-full
-        md:h-full
-        mt-14
-      "
-    >
+    <div class="w-full md:h-full mt-14">
       <router-view />
     </div>
   </div>

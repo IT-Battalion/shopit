@@ -1,8 +1,8 @@
 <template>
-  <form action="GET">
-    <label class="mb-3 mr-3 text-base text-gray-300">{{ labelName }}</label>
+  <form action="GET" class="flex flex-col w-40 my-10">
+    <label class="mb-3 ml-3 text-base text-gray-400">{{ labelName }}</label>
     <input
-      class="px-3 py-2 text-white border rounded shadow appearance-none  bg-elevatedColor text-grey-darker"
+      class="px-3 py-2 text-white bg-gray-900 shadow appearance-none rounded-xl"
     />
   </form>
 </template>

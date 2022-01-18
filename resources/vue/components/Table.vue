@@ -6,30 +6,30 @@
         <div
           class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg"
         >
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
+          <table class="min-w-full divide-y divide-black">
+            <thead class="bg-elevatedDark">
               <tr>
                 <th
                   scope="col"
-                  class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase "
+                  class="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase "
                 >
                   Name
                 </th>
                 <th
                   scope="col"
-                  class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase "
+                  class="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase "
                 >
                   Title
                 </th>
                 <th
                   scope="col"
-                  class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase "
+                  class="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase "
                 >
                   Status
                 </th>
                 <th
                   scope="col"
-                  class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase "
+                  class="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase "
                 >
                   Role
                 </th>
@@ -38,7 +38,7 @@
                 </th>
               </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
+            <tbody class="divide-y divide-gray-700 bg-linecolor">
               <tr v-for="person in people" :key="person.email">
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex items-center">
@@ -50,7 +50,7 @@
                       />
                     </div>
                     <div class="ml-4">
-                      <div class="text-sm font-medium text-gray-900">
+                      <div class="text-sm font-medium text-gray-300">
                         {{ person.name }}
                       </div>
                       <div class="text-sm text-gray-500">
@@ -60,7 +60,7 @@
                   </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">{{ person.title }}</div>
+                  <div class="text-sm text-gray-300">{{ person.title }}</div>
                   <div class="text-sm text-gray-500">
                     {{ person.department }}
                   </div>

@@ -1,11 +1,8 @@
 <template>
   <form method="GET">
-    <div class="text-gray-600 focus-within:text-gray-400">
-      <span class="absolute inset-y-0 left-0 flex items-center pl-2">
-        <button
-          type="submit"
-          class="p-1 focus:outline-none focus:shadow-outline"
-        >
+    <div class="my-10 text-gray-600 focus-within:text-gray-400">
+      <span class="relative inset-y-0 left-0 flex items-center pl-2">
+        <button class="absolute p-1 focus:outline-none focus:shadow-outline">
           <svg
             fill="none"
             stroke="currentColor"

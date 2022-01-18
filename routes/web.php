@@ -24,6 +24,11 @@ Route::view('/', 'home')->name('home');
 Route::view('/login', 'home');
 Route::view('/product/{name}', 'home')->where('name', '[^\/]*');
 Route::view('/admin/', 'home');
+Route::view('/admin/rechnungen', 'home');
+Route::view('/admin/bestellverlauf', 'home');
+Route::view('/admin/bestellungen', 'home');
+Route::view('/admin/userverwaltung', 'home');
+Route::view('/admin/coupons', 'home');
 Route::view('/order/', 'home');
 
 Route::permanentRedirect('/home', url('/'));

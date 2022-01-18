@@ -1,7 +1,9 @@
 <template>
-  <h1>Bestellungen</h1>
-  <Search />
-  <Table class="mt-10" />
+  <div class="w-full h-full pl-0 md:pl-24">
+    <h1 class="text-4xl font-bold text-white">Bestellungen</h1>
+    <Search />
+    <Table class="mt-10" />
+  </div>
 </template>
 
 <script lang="ts">
