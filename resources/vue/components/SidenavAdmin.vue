@@ -1,30 +1,17 @@
 <template>
   <div
-    class="
-      fixed
-      left-0
-      flex flex-col
-      justify-center
-      w-56
-      pl-4
-      m-0
-      text-white
-      sidebar
-      top-32
-      bg-backgroundColor
-      overflow-auto
-    "
+    class="fixed left-0 flex flex-col justify-center w-56 pl-4 m-0 overflow-auto text-white  sidebar top-32 bg-backgroundColor"
   >
     <div
       v-for="category in categories"
       v-bind:key="category.icon_url"
       v-bind:name="category.name"
-      class="flex flex-row my-6 ml-6 hover:bg-sidenavSelected rounded-full"
+      class="flex flex-row my-6 ml-6 rounded-full hover:bg-sidenavSelected"
     >
       <img :src="category.icon_url" class="object-scale-down h-8 mr-4" />
-      <a class="my-1 text-left" :href="'#' + category.name">{{
-        category.name
-      }}</a>
+      <router-link :to="`/admin/${category.name}`">
+        <a class="my-1 text-left">{{ category.name }}</a>
+      </router-link>
     </div>
   </div>
 </template>
