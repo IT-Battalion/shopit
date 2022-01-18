@@ -1,7 +1,8 @@
 <template>
-  <template v-if="isLoading">
+  <template v-if="!isSkeletor">
     <div
       class="w-full overflow-hidden rounded-md  bg-backgroundColor min-h-80 aspect-w-1 group-hover:backgroundOpacity-80 aspect-h-1 lg:h-80 lg:aspect-none"
+      v-show="!isLoading"
     >
       <router-link :to="{ name: 'product', params: { name: product?.name } }">
         <img
@@ -13,7 +14,7 @@
         />
       </router-link>
     </div>
-    <div class="grid grid-cols-2 grid-rows-2 justify-items-start">
+    <div class="grid grid-cols-2 grid-rows-2 justify-items-start" v-show="!isLoading">
       <h3 class="col-span-1 mt-2 text-lg text-white">
         <a>
           {{ product?.name }}
@@ -45,7 +46,7 @@
       </button>
     </div>
   </template>
-  <div v-else>
+  <template v-if="isLoading || isSkeletor">
     <div
       class="w-full overflow-hidden rounded-md  bg-backgroundColor min-h-80 aspect-w-1 group-hover:backgroundOpacity-80 aspect-h-1 lg:h-80 lg:aspect-none"
     >
@@ -80,7 +81,7 @@
         </svg>
       </button>
     </div>
-  </div>
+  </template>
 </template>
 
 <script lang="ts">
@@ -91,6 +92,10 @@ export default defineComponent({
   props: {
     product: Object as () => Product,
     isLoading: Boolean,
+    isSkeletor: {
+      type: Boolean,
+      default: false,
+    }
   },
   emits: ['imageLoaded'],
   methods: {

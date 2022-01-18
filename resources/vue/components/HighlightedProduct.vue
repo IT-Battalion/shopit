@@ -9,6 +9,7 @@
         sm:w-2/3
         w-[calc(100%-1.25rem)]
         rounded-3xl
+        overflow-hidden
         md:left-48
         left-5
         top-12

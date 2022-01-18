@@ -9,7 +9,6 @@
         items-center
         justify-center
         w-full
-        h-screen
         md:h-full
         mt-14
       "

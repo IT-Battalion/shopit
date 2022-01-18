@@ -64,7 +64,7 @@
                   <CollectionIcon
                     class="h-8 w-8 pt-1 mb-1 block mx-auto"
                   ></CollectionIcon>
-                  <span class="block text-xs pb-2">Categories</span>
+                  <span class="block text-xs pb-2">Kategorien</span>
                   <span
                     class="
                       block
@@ -100,7 +100,7 @@
                 <ShoppingCartIcon
                   class="h-8 w-8 pt-1 mb-1 block mx-auto"
                 ></ShoppingCartIcon>
-                <span class="block text-xs pb-2">Shopping Cart</span>
+                <span class="block text-xs pb-2">Korb</span>
                 <span
                   class="
                     block
@@ -133,7 +133,7 @@
               >
                 <span class="block px-1 pt-1 pb-1">
                   <UserIcon class="h-8 w-8 pt-1 mb-1 block mx-auto"></UserIcon>
-                  <span class="block text-xs pb-2">Profile</span>
+                  <span class="block text-xs pb-2">Profil</span>
                   <span
                     class="
                       block

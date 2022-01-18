@@ -15,7 +15,7 @@ class ProductCategoryFactory extends Factory
      */
     protected $model = ProductCategory::class;
 
-    public const categories = ['T-Shirts', 'Hoodies', 'Shirts', 'Bottles', 'Trousers', 'Accessories'];
+    public const categories = ['T-Shirts', 'Hoodies', 'Shirts', 'Flaschen', 'Hosen', 'Accessoires'];
 
     /**
      *

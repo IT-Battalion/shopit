@@ -5,8 +5,11 @@
       class="
         grid
         w-10/12
+        sm:h-[80vh]
+        py-10
+        px-10
         sm:grid-cols-2 sm:grid-rows-1
-        grid-rows-2
+        grid-rows-[auto_1fr]
         place-items-center
         bg-elevatedColor
         login-form__container
@@ -21,6 +24,8 @@
           h-full
           inset-0
           login-form__elevation
+          mb-10
+          sm:mb-0
         "
       >
         <h1
@@ -49,8 +54,6 @@
           gap-2
           md:gap-4
           place-items-center
-          mb-20
-          sm:mb-0
         "
       >
         <label
@@ -124,7 +127,10 @@
         <button
           class="
             px-4
-            py-2
+            py-4
+            w-full
+            md:w-auto
+            md:py-2
             font-bold
             text-white
             bg-gray-800
@@ -204,9 +210,6 @@ export default defineComponent({
       let username = form.username;
       let password = form.password;
 
-      user.error.value = "";
-      form.username = "";
-      form.password = "";
       login(username, password, form.stayLogedIn).then((_) => {
         const next = (route.params.nextUrl as string) || "/";
 
@@ -224,6 +227,13 @@ export default defineComponent({
       isLoading,
     };
   },
+  methods: {
+    clearForm() {
+      this.user.error.value = "";
+      this.form.username = "";
+      this.form.password = "";
+    }
+  }
 });
 </script>
 
@@ -231,10 +241,6 @@ export default defineComponent({
 .login-form__container {
   margin: 10vh 8.33333333%;
   border-radius: 1.5rem;
-  height: 80vh;
   box-shadow: 0 0 3rem 0.8rem rgba(0, 0, 0, 0.2);
-}
-
-.login-form__elevation {
 }
 </style>

@@ -5,18 +5,11 @@
       v-for="(products, categoryName) in categories"
       :key="categoryName"
       :id="categoryName"
-      v-show="!isLoading"
+      v-if="!state.isLoading || state.isProgressing"
     >
-      <div v-if="!isLoading || state.isProgressing">
-        <h2 class="text-2xl font-extrabold tracking-tight text-white">
-          {{ categoryName }}
-        </h2>
-      </div>
-      <div v-else>
-        <h2 class="w-1/4 text-2xl font-extrabold tracking-tight text-white">
-          <Skeletor :pill="true" />
-        </h2>
-      </div>
+      <h2 class="text-2xl font-extrabold tracking-tight text-white">
+        {{ categoryName }}
+      </h2>
       <div
         class="grid grid-cols-1 mt-6  gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8"
       >
@@ -25,13 +18,32 @@
           :key="product.name"
           class="relative group"
         >
-          <ProductCard :product="product" :isLoading="!isLoading || state.isProgressing" @imageLoaded="imageLoaded" />
+          <ProductCard :product="product" :isLoading="state.isProgressing" @imageLoaded="imageLoaded" />
         </div>
       </div>
     </div>
-    <div v-if="isLoading">
-      <Skeletor/>
-    </div>
+    <template v-if="state.isLoading">
+      <div
+        class="max-w-2xl px-4 pt-32 mx-auto sm:px-6 lg:max-w-7xl lg:px-8"
+        v-for="index in 3"
+        :key="index"
+      >
+        <h2 class="w-1/4 text-2xl mb-12 font-extrabold tracking-tight text-white">
+          <Skeletor :pill="true" />
+        </h2>
+        <div
+          class="grid grid-cols-1 mt-6  gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8"
+        >
+          <div
+            v-for="index in 6"
+            :key="index"
+            class="relative group"
+          >
+            <ProductCard :is-skeletor="true" :isLoading="true" />
+          </div>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -48,11 +60,6 @@ export default defineComponent({
       categories: {} as { [key: string]: Product[] },
       state: state,
     };
-  },
-  computed: {
-    isLoading() {
-      return (this as any).state.isLoading || (this as any).state.isProgressing;
-    }
   },
   async created() {
     initLoad();
