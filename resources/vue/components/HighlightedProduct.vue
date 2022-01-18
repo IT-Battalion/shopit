@@ -29,10 +29,11 @@
             class="grid items-center w-full h-full grid-cols-2 grid-rows-4  gap-x-6 justify-items-center"
           >
             <div class="w-full h-full row-span-full">
-              <img
+              <LoadingImage
                 :src="'/product-image/' + highlightedProduct.thumbnail.id"
                 :alt="highlightedProduct.name"
                 class="object-cover w-full h-full"
+                height="100%"
               />
             </div>
             <h3 class="self-end w-5/6 text-sm text-white">
@@ -73,8 +74,8 @@
             <div class="w-full h-full row-span-full">
               <Skeletor
                 :pill="false"
+                :circle="false"
                 as="div"
-                class="vue-skeletor-image"
                 height="100%"
               />
             </div>
@@ -130,6 +131,7 @@ import { Product } from "../types/api";
 import SwiperCore, { Navigation } from "swiper";
 import { defineComponent } from "@vue/runtime-core";
 import {addToShoppingCart} from "../request";
+import LoadingImage from "./LoadingImage.vue";
 
 // install Swiper modules
 SwiperCore.use([Navigation]);
@@ -138,6 +140,7 @@ export default defineComponent({
   components: {
     Swiper,
     SwiperSlide,
+    LoadingImage
   },
   data() {
     return {
@@ -156,9 +159,3 @@ export default defineComponent({
   methods: {},
 });
 </script>
-
-<style>
-.vue-skeletor-image {
-  border-radius: 0;
-}
-</style>
