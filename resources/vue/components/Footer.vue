@@ -15,9 +15,14 @@
         <div class="flex flex-col w-full space-y-4 sm:w-2/5">
           <a class="flex flex-row text-lg font-medium opacity-60">Kontakt</a>
           <a
+            href="mailto:info@shopit.tgm.ac.at"
+            class="flex flex-row underline  opacity-60 hover:opacity-100 decoration-solid"
+            >info@shopit.tgm.ac.at</a
+          >
+          <a
             href="mailto:info@LernenImAufbruch.at"
             class="flex flex-row underline  opacity-60 hover:opacity-100 decoration-solid"
-            >info@LernenImAufbruch.at</a
+          >info@LernenImAufbruch.at</a
           >
         </div>
         <div class="flex flex-col w-full space-y-4 sm:w-1/5">
@@ -43,8 +48,9 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
-import { HomeIcon, ExternalLinkIcon } from "@heroicons/vue/solid";
+import {defineComponent} from "@vue/runtime-core";
+import {ExternalLinkIcon, HomeIcon} from "@heroicons/vue/solid";
+
 export default defineComponent({
   components: {
     HomeIcon,
