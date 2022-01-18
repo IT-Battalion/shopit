@@ -83,19 +83,10 @@ const router = createRouter({
   history: createWebHistory(),
   scrollBehavior: (to, from, savedPosition) => {
     const sameSite = to.path == from.path && (from.hash || Object.entries(from.meta).length);
-    console.log('startScroll');
-    console.log(to, from, savedPosition, sameSite);
     if (sameSite) {
-      console.log('scroll');
       if (savedPosition) {
-        console.log('saved');
         return savedPosition;
       } else if (to.hash) {
-        console.log('element');
-        console.log({
-          el: to.hash,
-          behavior: 'smooth',
-        });
         return {
           el: to.hash,
           behavior: 'smooth',
@@ -110,13 +101,9 @@ const router = createRouter({
     } else {
       window.scroll({top: 0, left: 0,});
       return onLoaded().then(() => {
-        console.log('loaded');
-        console.log('scroll');
         if (savedPosition) {
-          console.log('saved');
           return savedPosition;
         } else if (to.hash) {
-          console.log('element');
           return {
             el: to.hash,
           };

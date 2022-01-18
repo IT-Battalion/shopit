@@ -43,9 +43,10 @@ export default defineComponent({
   },
   mounted() {
     this.checkScroll();
-    window.addEventListener('resize', () => {
-      this.checkScroll();
-    })
+    window.addEventListener('resize', this.checkScroll);
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.checkScroll);
   },
   methods: {
     checkScroll() {

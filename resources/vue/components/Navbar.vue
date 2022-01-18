@@ -76,45 +76,33 @@
                     shadow-lg
                     ring-1 ring-black ring-opacity-5
                     focus:outline-none
+                    bg-elevatedDark
+                    overflow-hidden
                   "
                 >
-                  <div class="py-1 bg-gray-900">
-                    <router-link to="/admin">
-                      <MenuItem
-                        v-slot="{ active }"
-                        class="flex flex-row items-center justify-center"
-                      >
-                        <a
-                          href="#"
-                          :class="[
-                            active ? ' text-gray-400' : 'text-white',
-                            'block px-4 py-2 text-sm',
-                          ]"
-                          ><img
-                            src="/img/profile.svg"
-                            class="object-scale-down mr-7 h-7"
-                          />Profilseite</a
-                        >
-                      </MenuItem>
-                    </router-link>
+                  <router-link to="/admin">
                     <MenuItem
-                      v-slot="{ active }"
-                      class="flex flex-row items-center justify-center"
+                      class="flex flex-row items-center justify-start hover:bg-elevatedColor"
                     >
-                      <a
-                        href="#"
-                        :class="[
-                          active ? ' text-gray-400' : 'text-white',
-                          'block px-4 py-2 text-sm',
-                        ]"
-                        @click="logout()"
+                      <span
+                        class="text-white block px-4 py-3 text-sm"
                         ><img
-                          src="/img/logout.svg"
+                          src="/img/profile.svg"
                           class="object-scale-down mr-4 h-7"
-                        />Abmelden</a
-                      >
+                        />Profilseite</span>
                     </MenuItem>
-                  </div>
+                  </router-link>
+                  <MenuItem
+                    class="flex flex-row items-center justify-start hover:bg-elevatedColor"
+                  >
+                    <span
+                      class="text-white block px-4 py-3 text-sm cursor-pointer"
+                      @click="logout()"
+                      ><img
+                        src="/img/logout.svg"
+                        class="object-scale-down mr-3 ml-1 h-7"
+                      />Abmelden</span>
+                  </MenuItem>
                 </MenuItems>
               </transition>
             </Menu>
