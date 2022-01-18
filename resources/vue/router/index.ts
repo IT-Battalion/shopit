@@ -96,6 +96,12 @@ const routes: Array<RouteRecordRaw> = [
             name: "Coupons",
             component: () =>
               import("../views/layout/Coupons.vue"),
+          },
+          {
+            path: "kategorien",
+            name: "Kategorien",
+            component: () =>
+              import("../components/EditCategories.vue"),
           }
         ]
       },

@@ -29,6 +29,7 @@ Route::view('/admin/bestellverlauf', 'home');
 Route::view('/admin/bestellungen', 'home');
 Route::view('/admin/userverwaltung', 'home');
 Route::view('/admin/coupons', 'home');
+Route::view('/admin/kategorien', 'home');
 Route::view('/order/', 'home');
 
 Route::permanentRedirect('/home', url('/'));
