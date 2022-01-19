@@ -1,6 +1,6 @@
 <template>
-  <img v-show="!isLoading" :src="src" :alt="alt" :class="[this.class]" @load="imageLoaded" @error="imageErrored" @abort="imageAborted" />
-  <Skeletor v-if="isLoading" :pill="false" :circle="false" :height="skeletorHeight" :class="[this.class]"/>
+  <img v-show="!isLoading" :src="src" :alt="alt" :class="[this.class, this.imgClass]" @load="imageLoaded" @error="imageErrored" @abort="imageAborted" />
+  <Skeletor v-if="isLoading" :pill="false" :circle="false" :height="skeletorHeight" :class="[this.class, this.loadingClass]"/>
 </template>
 
 <script lang="ts">
@@ -9,6 +9,12 @@ import {defineComponent} from "vue";
 export default defineComponent({
   props: {
     class: {
+      default: String,
+    },
+    loadingClass: {
+      default: String,
+    },
+    imgClass: {
       default: String,
     },
     src: String,

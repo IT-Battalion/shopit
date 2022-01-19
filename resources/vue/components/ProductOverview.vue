@@ -17,7 +17,9 @@
           <LoadingImage
             :src="'/product-image/' + image.id"
             :alt="'productimage'"
-            class="object-contain w-full max-h-[60vh]"
+            class="object-contain w-full"
+            imgClass="max-h-[60vh]"
+            loadingClass="mx-auto md:w-1/2 rounded-3xl"
             height="60vh"
             @imageFinished="state.progressCurrent++"
           />
