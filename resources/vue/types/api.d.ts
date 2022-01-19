@@ -115,12 +115,14 @@ export interface Product {
   }
 }
 
+export interface ShoppingCartEntry {
+  product: Product,
+  selected_attributes: SelectedAttributes,
+  count: number,
+}
+
 export interface ShoppingCart {
-  products: [{
-    product: Product,
-    selected_attributes: SelectedAttributes,
-    count: number,
-  }],
+  products: [ShoppingCartEntry],
   subtotal: string,
   discount: string,
   tax: string,

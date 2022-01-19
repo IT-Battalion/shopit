@@ -54,7 +54,7 @@
       >
         <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
           <h1
-            class="text-2xl font-extrabold tracking-tight text-white sm:text-3xl"
+            class="text-2xl font-extrabold tracking-tight text-white  sm:text-3xl"
             v-if="!isLoading"
           >
             {{ product.name }}
@@ -121,7 +121,7 @@
                   <h3 class="text-sm font-medium text-white">Size</h3>
                   <a
                     href="#"
-                    class="text-sm font-medium text-gray-400 hover:text-gray-700"
+                    class="text-sm font-medium text-gray-400  hover:text-gray-700"
                     >Size guide</a
                   >
                 </div>
@@ -167,7 +167,7 @@
                         <div
                           v-else
                           aria-hidden="true"
-                          class="absolute border-2 border-gray-200 rounded-md pointer-events-none -inset-px"
+                          class="absolute border-2 border-gray-200 rounded-md pointer-events-none  -inset-px"
                         >
                           <svg
                             class="absolute inset-0 w-full h-full text-gray-200 stroke-2 "
@@ -191,7 +191,7 @@
               </div>
             </div>
             <button
-              class="flex items-center justify-center w-full px-8 py-3 mt-10 text-base font-medium text-gray-900 bg-white row-span-full rounded-3xl hover:bg-gray-300"
+              class="flex items-center justify-center w-full px-8 py-3 mt-10 text-base font-medium text-gray-900 bg-white  row-span-full rounded-3xl hover:bg-gray-300"
               type="button"
             >
               <a class="pr-2">Add to Bag</a>
@@ -216,7 +216,7 @@
         </div>
 
         <div
-          class="py-10 lg:pt-6 lg:pb-16 lg:col-start-1 lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8"
+          class="py-10  lg:pt-6 lg:pb-16 lg:col-start-1 lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8"
         >
           <!-- Description and details -->
           <div>
@@ -248,7 +248,7 @@ import { AxiosResponse } from "axios";
 import { ref } from "vue";
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
 import { Product } from "../types/api";
-import { useRoute } from "vue-router";
+import { RouteLocationNormalizedLoaded, useRoute } from "vue-router";
 import { computed } from "vue";
 import { defineComponent } from "@vue/runtime-core";
 import { Swiper, SwiperSlide } from "swiper/vue";
@@ -256,7 +256,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import SwiperCore, { Navigation, Pagination } from "swiper";
-import {initProgress, initLoad, state, endLoad} from "../loader";
+import { initProgress, initLoad, state, endLoad } from "../loader";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -277,19 +277,32 @@ export default defineComponent({
   computed: {
     isLoading() {
       return (this as any).state.isLoading || (this as any).state.isProgressing;
-    }
+    },
   },
   async created() {
     const route = useRoute();
-    const name = computed(() => route.params.name);
+    const name = route.params.name as string;
 
-    let response: AxiosResponse<Product> = await this.$http.get(
-      "/product/" + name.value
-    );
+    this.loadProduct(name);
+  },
+  methods: {
+    async loadProduct(name: string) {
+      initLoad();
+      let response: AxiosResponse<Product> = await this.$http.get(
+        "/product/" + name
+      );
 
-    this.product = response.data;
-    initProgress(this.product.images.length);
-    endLoad();
+      this.product = response.data;
+      initProgress(this.product.images.length);
+      endLoad();
+    },
+  },
+  watch: {
+    $route(to: RouteLocationNormalizedLoaded, from) {
+      if (to.path.startsWith("/product/")) {
+        this.loadProduct(to.params.name as string);
+      }
+    },
   },
 });
 </script>

@@ -46,9 +46,10 @@ const routes: Array<RouteRecordRaw> = [
           },
           {
             path: "product/:name",
-            name: "product",
+            name: "Product",
             component: ProductOverview,
             meta: {
+              initLoad: false,
               endLoad: false,
             }
           }

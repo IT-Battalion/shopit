@@ -1,11 +1,11 @@
-import {computed, ComputedRef, nextTick, reactive, UnwrapNestedRefs, watchEffect} from "vue";
+import { computed, ComputedRef, nextTick, reactive, UnwrapNestedRefs, watchEffect } from "vue";
 
 export const state: UnwrapNestedRefs<{ isLoading: ComputedRef<boolean>; waiting: number; handlers: any[]; progressTarget: number; progressCurrent: number; progressPercent: ComputedRef<number>; isProgressing: ComputedRef<boolean> }> = reactive({
   waiting: 0,
   isLoading: computed(() => state.waiting > 0),
   progressTarget: Number.MAX_VALUE,
   progressCurrent: Number.MAX_VALUE - 1,
-  progressPercent: computed(() => state.isLoading ? 1 : state.progressCurrent/state.progressTarget),
+  progressPercent: computed(() => state.isLoading ? 1 : state.progressCurrent / state.progressTarget),
   isProgressing: computed(() => state.progressTarget !== Number.MAX_VALUE && state.progressCurrent !== state.progressTarget),
   handlers: [],
 });

@@ -33,13 +33,11 @@
               leave-to="translate-x-full"
             >
               <div class="w-screen max-w-md">
-                <div
-                  class="flex flex-col h-full bg-white shadow-xl "
-                >
+                <div class="flex flex-col h-full bg-white shadow-xl">
                   <div class="flex-1 px-4 py-6 overflow-y-auto sm:px-6">
                     <div class="flex items-start justify-between">
                       <DialogTitle class="text-lg font-medium text-gray-900">
-                        Shopping cart
+                        Einkaufswagen
                       </DialogTitle>
                       <div class="flex items-center ml-3 h-7">
                         <button
@@ -56,95 +54,26 @@
                     <div class="mt-8">
                       <div class="flow-root">
                         <ul role="list" class="-my-6 divide-y divide-gray-200">
-                          <template v-if="!this.isMetadataLoading">
+                          <template v-if="!isMetadataLoading">
                             <li
                               v-for="entry in shoppingCart.products"
                               :key="entry.product.id"
                               class="flex py-6"
-                              v-show="!this.isLoading"
                             >
-                              <div
-                                class="flex-shrink-0 w-24 h-24 overflow-hidden border border-gray-200 rounded-md"
-                              >
-                                <img
-                                  :src="
-                                    '/product-image/' + entry.product.thumbnail.id
-                                  "
-                                  :alt="entry.product.name"
-                                  class="object-cover object-center w-full h-full"
-                                  @load="this.imagesLoading--"
-                                  @error="this.imagesLoading--"
-                                  @abort="this.imagesLoading--"
-                                />
-                              </div>
-
-                              <div class="flex flex-col flex-1 ml-4">
-                                <div>
-                                  <div
-                                    class="flex justify-between text-base font-medium text-gray-900 "
-                                  >
-                                    <h3>
-                                      <router-link
-                                        :to="'/product/' + entry.product.name"
-                                        @click="isOpen = false"
-                                      >
-                                        {{ entry.product.name }}
-                                      </router-link>
-                                    </h3>
-                                    <p class="ml-4">
-                                      {{ entry.product.price }}
-                                    </p>
-                                  </div>
-                                  <p class="mt-1 text-sm text-gray-500">
-                                    {{ entry.product.name }}
-                                  </p>
-                                </div>
-                                <div
-                                  class="flex items-end justify-between flex-1 text-sm "
-                                >
-                                  <p class="text-gray-500">
-                                    Qty {{ entry.count }}
-                                  </p>
-
-                                  <div class="flex">
-                                    <button
-                                      type="button"
-                                      class="font-medium text-indigo-600  hover:text-indigo-500"
-                                    >
-                                      Remove
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
+                              <ShoppingcartItem :shopping-cart-entry="entry" />
                             </li>
-                            <template v-if="this.areImagesLoading">
-                              <li v-for="entry in shoppingCart.products"
-                                :key="entry.product.id"  class="flex py-6">
-                                <div
-                                  class="flex-shrink-0 w-24 h-24 overflow-hidden rounded-md "
-                                >
-                                  <Skeletor
-                                    class="object-cover object-center w-full h-full"
-                                    :pill="false"
-                                    :circle="false"
-                                    size="100%"
-                                  />
-                                </div>
-
-                                <div class="flex flex-col flex-1 ml-4">
-                                  <Skeletor :pill="true" class="mb-4 mt-2" />
-                                  <Skeletor :pill="true" width="80%" />
-                                </div>
-                              </li>
-                            </template>
                           </template>
                           <template v-else>
-                            <li v-for="index in 3" :key="index" class="flex py-6">
+                            <li
+                              v-for="index in 3"
+                              :key="index"
+                              class="flex py-6"
+                            >
                               <div
                                 class="flex-shrink-0 w-24 h-24 overflow-hidden rounded-md "
                               >
                                 <Skeletor
-                                  class="object-cover object-center w-full h-full"
+                                  class="object-cover object-center w-full h-full "
                                   :pill="false"
                                   :circle="false"
                                   size="100%"
@@ -152,7 +81,7 @@
                               </div>
 
                               <div class="flex flex-col flex-1 ml-4">
-                                <Skeletor :pill="true" class="mb-4 mt-2" />
+                                <Skeletor :pill="true" class="mt-2 mb-4" />
                                 <Skeletor :pill="true" width="80%" />
                               </div>
                             </li>
@@ -164,20 +93,32 @@
 
                   <div class="px-4 py-6 border-t border-gray-200 sm:px-6">
                     <div
-                      class="flex justify-between text-base font-medium text-gray-900 "
+                      class="flex justify-between my-2 text-base text-gray-900  font-base"
                     >
-                      <p>Subtotal</p>
+                      <p>Zwischensumme</p>
                       <p>$262.00</p>
                     </div>
-                    <p class="mt-0.5 text-sm text-gray-500">
-                      Shipping and taxes calculated at checkout.
+                    <div
+                      class="flex justify-between my-2 text-base text-gray-900  font-base"
+                    >
+                      <p>Mwst</p>
+                      <p>$0.00</p>
+                    </div>
+                    <div
+                      class="flex justify-between my-2 text-base font-medium text-gray-900 "
+                    >
+                      <p>Gesamt</p>
+                      <p>$262.00</p>
+                    </div>
+                    <p class="mt-3 text-sm text-gray-500">
+                      Coupon Code wird im nächsten Schritt überprüft.
                     </p>
                     <div class="mt-6">
                       <router-link :to="{ name: 'order' }">
                         <a
                           href="#"
                           class="flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm  hover:bg-indigo-700"
-                          >Checkout</a
+                          >Bestellen</a
                         >
                       </router-link>
                     </div>
@@ -185,13 +126,13 @@
                       class="flex justify-center mt-6 text-sm text-center text-gray-500 "
                     >
                       <p>
-                        or
+                        oder
                         <button
                           type="button"
                           class="font-medium text-indigo-600  hover:text-indigo-500"
                           @click="isOpen = false"
                         >
-                          Continue Shopping<span aria-hidden="true">
+                          Weiter Einkaufen<span aria-hidden="true">
                             &rarr;</span
                           >
                         </button>
@@ -220,10 +161,12 @@ import {
 import { XIcon } from "@heroicons/vue/outline";
 import { AxiosResponse } from "axios";
 import { ShoppingCart } from "../types/api";
-import {endLoad, initLoad, initProgress, state} from "../loader";
+import { endLoad, initLoad, initProgress, state } from "../loader";
+import ShoppingcartItem from "./ShoppingcartItem.vue";
 
 export default defineComponent({
   components: {
+    ShoppingcartItem,
     Dialog,
     DialogOverlay,
     DialogTitle,
@@ -236,7 +179,9 @@ export default defineComponent({
       isMetadataLoading: true,
       imagesLoading: -1,
       areImagesLoading: computed(() => (this.imagesLoading as any) > 0),
-      isLoading: computed(() => this.isMetadataLoading || this.areImagesLoading),
+      isLoading: computed(
+        () => this.isMetadataLoading || this.areImagesLoading
+      ),
       isOpen: false,
       shoppingCart: {} as ShoppingCart,
     };
@@ -255,6 +200,11 @@ export default defineComponent({
     },
     setOpen(isOpen: boolean) {
       this.isOpen = isOpen;
+    },
+  },
+  watch: {
+    $route(to, from) {
+      this.isOpen = false;
     },
   },
 });

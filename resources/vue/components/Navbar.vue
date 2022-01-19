@@ -82,18 +82,28 @@
                 >
                   <router-link to="/admin">
                     <MenuItem
-                      class="flex flex-row items-center justify-start hover:bg-elevatedColor"
+                      class="
+                        flex flex-row
+                        items-center
+                        justify-start
+                        hover:bg-elevatedColor
+                      "
                     >
-                      <span
-                        class="text-white block px-4 py-3 text-sm"
+                      <span class="text-white block px-4 py-3 text-sm"
                         ><img
                           src="/img/profile.svg"
                           class="object-scale-down mr-4 h-7"
-                        />Profilseite</span>
+                        />Profilseite</span
+                      >
                     </MenuItem>
                   </router-link>
                   <MenuItem
-                    class="flex flex-row items-center justify-start hover:bg-elevatedColor"
+                    class="
+                      flex flex-row
+                      items-center
+                      justify-start
+                      hover:bg-elevatedColor
+                    "
                   >
                     <span
                       class="text-white block px-4 py-3 text-sm cursor-pointer"
@@ -101,7 +111,8 @@
                       ><img
                         src="/img/logout.svg"
                         class="object-scale-down mr-3 ml-1 h-7"
-                      />Abmelden</span>
+                      />Abmelden</span
+                    >
                   </MenuItem>
                 </MenuItems>
               </transition>
