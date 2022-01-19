@@ -41,7 +41,6 @@ use LdapRecord\Models\Model;
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property int|null $shopping_cart_coupon_id
  * @property string|null $guid
  * @property string|null $domain
  * @property-read Collection|CouponCode[] $coupons_created
@@ -71,7 +70,6 @@ use LdapRecord\Models\Model;
  * @property-read int|null $products_updated_count
  * @property-read Collection|Product[] $shopping_cart
  * @property-read int|null $shopping_cart_count
- * @property-read CouponCode|null $shopping_cart_coupon
  * @method static Builder|User gotBanned()
  * @method static AdminFactory factory(...$parameters)
  * @method static Builder|Admin newModelQuery()
@@ -108,6 +106,7 @@ use LdapRecord\Models\Model;
  * @method static Builder|User banned()
  * @property-read Admin|null $disabled_by
  * @method static Builder|Admin whereIsAdmin($value)
+ * @property-read CouponCode|null $coupon
  */
 class Admin extends User
 {

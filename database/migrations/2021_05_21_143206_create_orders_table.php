@@ -111,17 +111,15 @@ class CreateOrdersTable extends Migration
      */
     public function down(): void
     {
-        if (Schema::hasTable('order_product_images') && Schema::hasColumn('order_product_images', 'order_product_id')) {
-            Schema::table('order_product_images', function (Blueprint $table) {
-                $table->dropForeign('order_product_images_order_product_id_foreign');
-            });
-        }
+        Schema::dropIfExists('order_product_order_product_image');
+
+        Schema::dropIfExists('order_products');
+
         Schema::dropIfExists('order_clothing_attributes');
         Schema::dropIfExists('order_dimension_attributes');
         Schema::dropIfExists('order_volume_attributes');
         Schema::dropIfExists('order_color_attributes');
 
-        Schema::dropIfExists('order_products');
         Schema::dropIfExists('order_product_images');
         Schema::dropIfExists('orders');
         Schema::dropIfExists('coupon_codes');

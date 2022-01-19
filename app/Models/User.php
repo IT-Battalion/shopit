@@ -12,8 +12,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Prunable;
-use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -47,7 +47,6 @@ use LdapRecord\Models\Model;
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property int|null $shopping_cart_coupon_id
  * @property string|null $guid
  * @property string|null $domain
  * @property-read Model|null $ldap
@@ -55,9 +54,8 @@ use LdapRecord\Models\Model;
  * @property-read int|null $notifications_count
  * @property-read Collection|Order[] $orders
  * @property-read int|null $orders_count
- * @property-read Collection|Product[] $shopping_cart
+ * @property-read Collection|ShoppingCartEntry[] $shopping_cart
  * @property-read int|null $shopping_cart_count
- * @property-read CouponCode|null $shopping_cart_coupon
  * @method static Builder|User banned()
  * @method static UserFactory factory(...$parameters)
  * @method static Builder|User newModelQuery()
@@ -92,6 +90,7 @@ use LdapRecord\Models\Model;
  * @method static \Illuminate\Database\Query\Builder|User withoutTrashed()
  * @mixin Eloquent
  * @property-read Admin|null $disabled_by
+ * @property-read CouponCode|null $coupon
  */
 class User extends Authenticatable implements LdapAuthenticatable
 {
@@ -168,7 +167,7 @@ class User extends Authenticatable implements LdapAuthenticatable
             ->using(ShoppingCartEntry::class);
     }
 
-    public function shopping_cart_coupon(): BelongsTo
+    public function coupon(): BelongsTo
     {
         return $this->belongsTo(CouponCode::class, 'shopping_cart_coupon_id');
     }
@@ -231,5 +230,37 @@ class User extends Authenticatable implements LdapAuthenticatable
     public static function gotBanned($callback)
     {
         static::registerModelEvent(UserBannedEvent::class, $callback);
+    }
+
+    public function addProduct(
+        Product|int $product,
+        int $count,
+        ProductClothingAttribute|int $clothingAttribute = null,
+        ProductDimensionAttribute|int $dimensionAttribute = null,
+        ProductVolumeAttribute|int $volumeAttribute = null,
+        ProductColorAttribute|int $colorAttribute = null)
+    {
+        $this->shopping_cart()->create([
+            'count' => $count,
+            'product_id' => getModelId($product),
+            'product_clothing_attribute_id' => getModelId($clothingAttribute),
+            'product_dimension_attribute_id' => getModelId($dimensionAttribute),
+            'product_volume_attribute_id' => getModelId($volumeAttribute),
+            'product_color_attribute_id' => getModelId($colorAttribute),
+        ]);
+    }
+
+    public function addProducts(array|Collection|\Illuminate\Support\Collection $products)
+    {
+        foreach ($products as $entry) {
+            $this->addProduct(
+                $entry['product'],
+                $entry['count'],
+                $entry['clothingAttribute'] ?? null,
+                $entry['dimensionAttribute'] ?? null,
+                $entry['volumeAttribute'] ?? null,
+                $entry['colorAttribute'] ?? null,
+            );
+        }
     }
 }

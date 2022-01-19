@@ -15,8 +15,8 @@ interface Attribute extends JsonSerializable
 
     /**
      * Get the type of this attribute
-     * @return int the attribute type {@link AttributeType}
+     * @return AttributeType the attribute type
      */
 
-    public function getTypeAttribute(): int;
+    public function getTypeAttribute(): AttributeType;
 }

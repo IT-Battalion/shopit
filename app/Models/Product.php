@@ -93,16 +93,6 @@ class Product extends Model implements ConvertableToOrder
         'tax' => 'string',
     ];
 
-    protected $with = [
-        'thumbnail',
-        'category',
-        'images',
-        'productClothingAttributes',
-        'productDimensionAttributes',
-        'productVolumeAttributes',
-        'productColorAttributes',
-    ];
-
     // images
     public function thumbnail(): BelongsTo
     {
@@ -124,10 +114,10 @@ class Product extends Model implements ConvertableToOrder
 
         return
             collect([
-                AttributeType::CLOTHING => $clothingAttributes,
-                AttributeType::DIMENSION => $dimensionAttributes,
-                AttributeType::VOLUME => $volumeAttributes,
-                AttributeType::COLOR => $colorAttributes,
+                AttributeType::CLOTHING->value => $clothingAttributes,
+                AttributeType::DIMENSION->value => $dimensionAttributes,
+                AttributeType::VOLUME->value => $volumeAttributes,
+                AttributeType::COLOR->value => $colorAttributes,
             ]);
     }
 
@@ -154,10 +144,10 @@ class Product extends Model implements ConvertableToOrder
     public function isAttributeAvailable(int $attributeType, $attribute): bool
     {
         $attributes = match ($attributeType) {
-            AttributeType::CLOTHING => $this->productClothingAttributes(),
-            AttributeType::DIMENSION => $this->productDimensionAttributes(),
-            AttributeType::VOLUME => $this->productVolumeAttributes(),
-            AttributeType::COLOR => $this->productColorAttributes(),
+            AttributeType::CLOTHING->value => $this->productClothingAttributes(),
+            AttributeType::DIMENSION->value => $this->productDimensionAttributes(),
+            AttributeType::VOLUME->value => $this->productVolumeAttributes(),
+            AttributeType::COLOR->value => $this->productColorAttributes(),
             default => null,
         };
 

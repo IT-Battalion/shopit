@@ -3,7 +3,6 @@
 use App\Models\Admin;
 use App\Models\CouponCode;
 use App\Models\HighlightedProduct;
-use App\Models\Icon;
 use App\Models\Order;
 use App\Models\OrderClothingAttribute;
 use App\Models\OrderColorAttribute;
@@ -23,9 +22,8 @@ use App\Types\AttributeType;
 use Illuminate\Support\Collection;
 
 beforeEach(function () {
-    $icon = Icon::factory()->create();
     Admin::factory()->create();
-    ProductCategory::factory()->create(['name' => 'Test', 'icon_id' => $icon->id]);
+    ProductCategory::factory()->create(['name' => 'Test']);
     CouponCode::factory()->create();
 });
 
@@ -107,12 +105,16 @@ test('admin relation to no products in the shopping cart', function () {
 test('admin relation to products in the shopping cart', function () {
     $admin = Admin::factory()->create();
 
-    $products = Product::factory()->count(2)->create();
-    $admin->shopping_cart()->attach($products, ['count' => 2, 'values_chosen' => '[]']);
+    $expectedProducts = Product::factory()->count(2)->create();
+    $admin->shopping_cart()->attach($expectedProducts, ['count' => 2]);
 
     $products = $admin->shopping_cart->all();
 
-    expect($products)->toEqual($products);
+    foreach ($products as $index=>$product) {
+        expect($product->is($expectedProducts[$index]))->toBeTrue();
+        expect($product->pivot->count)->toBe(2);
+        expect($product)->exists();
+    }
 });
 
 test('admin relation to no orders', function () {
@@ -155,12 +157,16 @@ test('user relation to no products in the shopping cart', function () {
 test('user relation to products in the shopping cart', function () {
     $user = User::factory()->create();
 
-    $products = Product::factory()->count(2)->create();
-    $user->shopping_cart()->attach($products, ['count' => 2, 'values_chosen' => '[]']);
+    $expectedProducts = Product::factory()->count(2)->create();
+    $user->shopping_cart()->attach($expectedProducts, ['count' => 2]);
 
     $products = $user->shopping_cart->all();
 
-    expect($products)->toEqual($products);
+    foreach ($products as $index=>$product) {
+        expect($product->is($expectedProducts[$index]))->toBeTrue();
+        expect($product->pivot->count)->toBe(2);
+        expect($product)->exists();
+    }
 });
 
 test('user relation to no orders', function () {
@@ -630,10 +636,10 @@ test('Product to attributes', function () {
 
     $expectedAttributes =
         collect([
-            AttributeType::CLOTHING => $expectedClothingAttributes,
-            AttributeType::DIMENSION => $expectedDimensionAttributes,
-            AttributeType::VOLUME => $expectedVolumeAttributes,
-            AttributeType::COLOR => $expectedColorAttributes,
+            AttributeType::CLOTHING->value => $expectedClothingAttributes,
+            AttributeType::DIMENSION->value => $expectedDimensionAttributes,
+            AttributeType::VOLUME->value => $expectedVolumeAttributes,
+            AttributeType::COLOR->value => $expectedColorAttributes,
         ])
         ->map(fn (Collection $attributes) => $attributes->map(fn ($attribute) => $attribute->id))
         ->all();
@@ -651,10 +657,10 @@ test('Product to no attributes', function () {
     $product = Product::factory()->create();
 
     $expectedAttributes = [
-        AttributeType::CLOTHING => [],
-        AttributeType::DIMENSION => [],
-        AttributeType::VOLUME => [],
-        AttributeType::COLOR => [],
+        AttributeType::CLOTHING->value => [],
+        AttributeType::DIMENSION->value => [],
+        AttributeType::VOLUME->value => [],
+        AttributeType::COLOR->value => [],
     ];
 
     $attributes = $product->productAttributes
@@ -667,7 +673,7 @@ test('Product to no attributes', function () {
 test('Product to category', function () {
     $admin = Admin::factory()->create();
     $this->actingAs($admin);
-    $category = ProductCategory::factory()->create(['name' => 'Test2', 'icon_id' => Icon::first()->id]);
+    $category = ProductCategory::factory()->create(['name' => 'Test2']);
     $product = Product::factory()->create([
         'product_category_id' => $category->id,
     ]);

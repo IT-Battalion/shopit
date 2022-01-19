@@ -35,7 +35,7 @@ class OrderService implements OrderServiceInterface
 
         if ($products->count() === 0) throw new ShoppingCartEmptyException('Eine Bestellung kann nicht von einem leeren Einkaufswagen zusammengestellt werden.');
 
-        $coupon = $customer->shopping_cart_coupon?->id;
+        $coupon = $customer->coupon?->id;
 
         $order = Order::create([
             'customer_id' => $customer->id,

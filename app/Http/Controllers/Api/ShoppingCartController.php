@@ -11,13 +11,22 @@ use Illuminate\Http\Request;
 class ShoppingCartController extends Controller
 {
     public function all(Request $request, ShoppingCartServiceInterface $shoppingCartService) {
-        $shoppingCartProducts = $request->user()->shopping_cart->map(function (Product $product) {
-            return [
-                'product' => $product,
-                'count' => $product->pivot->count,
-                'selected_attributes' => $product->pivot->productAttributes,
-            ];
-        });
+        start_measure('user', 'load user');
+        $user = $request->user();
+        stop_measure('user');
+        start_measure('shopping_cart', 'load the shopping cart');
+        $shoppingCart = $user->shopping_cart;
+        stop_measure('shopping_cart');
+        start_measure('map_product', 'map the shopping cart products');
+        $shoppingCartProducts = $shoppingCart
+            ->map(function (Product $product) {
+                return [
+                    'product' => $product,
+                    'count' => $product->pivot->count,
+                    'selected_attributes' => $product->pivot->productAttributes,
+                ];
+            });
+        stop_measure('map_product');
 
         $shoppingCart = [
             'products' => $shoppingCartProducts,

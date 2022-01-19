@@ -2,33 +2,29 @@
 
 namespace App\Types;
 
-use BenSampo\Enum\Enum;
+use App\Traits\GetRandomEnumCase;
 
-/**
- * @method static CLOTHING_SIZE()
- * @method static DIMENSIONS()
- * @method static VOLUME()
- * @method static COLOR()
- */
-final class AttributeType extends Enum
+enum AttributeType: int
 {
+    use GetRandomEnumCase;
+
     /*
      * Clothing size
      */
-    public const CLOTHING = 0;
+    case CLOTHING = 0;
 
     /*
      * Product dimensions
      */
-    public const DIMENSION = 1;
+    case DIMENSION = 1;
 
     /*
      * Volume in l
      */
-    public const VOLUME = 2;
+    case VOLUME = 2;
 
     /*
      * Product color
      */
-    public const COLOR = 3;
+    case COLOR = 3;
 }

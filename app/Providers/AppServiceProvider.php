@@ -73,10 +73,10 @@ class AppServiceProvider extends ServiceProvider
         ini_set('precision', config('shop.money.decimal_points') * 2);
 
         Relation::enforceMorphMap([
-            AttributeType::CLOTHING => ProductClothingAttribute::class,
-            AttributeType::DIMENSION => ProductDimensionAttribute::class,
-            AttributeType::VOLUME => ProductVolumeAttribute::class,
-            AttributeType::COLOR => ProductColorAttribute::class,
+            AttributeType::CLOTHING->value => ProductClothingAttribute::class,
+            AttributeType::DIMENSION->value => ProductDimensionAttribute::class,
+            AttributeType::VOLUME->value => ProductVolumeAttribute::class,
+            AttributeType::COLOR->value => ProductColorAttribute::class,
             'user' => User::class,
             'admin' => Admin::class,
         ]);

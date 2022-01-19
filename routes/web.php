@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
-use App\Models\Icon;
 use App\Models\OrderProductImage;
 use App\Models\ProductImage;
 use Illuminate\Support\Facades\Broadcast;
@@ -45,7 +44,7 @@ Route::namespace('Auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/icon/{icon}', function (Icon $icon) {
+    /*Route::get('/icon/{icon}', function (Icon $icon) {
         $path = Storage::path($icon->path);
 
         if (!File::exists($path)) {
@@ -55,7 +54,7 @@ Route::middleware('auth')->group(function () {
         return response()->file($path);
     })
         ->middleware('auth')
-        ->name('icon');
+        ->name('icon');*/
 
     Route::get('/product-image/{image}', function (ProductImage $image) {
         $path = Storage::path($image->path);

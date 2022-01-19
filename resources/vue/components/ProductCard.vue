@@ -48,7 +48,7 @@
   </template>
   <template v-else>
     <div
-      class="w-full overflow-hidden rounded-md  bg-backgroundColor min-h-80 aspect-w-1 group-hover:backgroundOpacity-80 aspect-h-1 lg:h-80 lg:aspect-none"
+      class="w-full overflow-hidden rounded-md  bg-backgroundColor min-h-80 group-hover:backgroundOpacity-80 aspect-h-1 h-80 lg:aspect-none"
     >
       <Skeletor :pill="false" as="div" height="100%" />
     </div>

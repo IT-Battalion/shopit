@@ -31,15 +31,15 @@ export default defineComponent({
       (this as any).isLoading = false;
     },
     imageLoaded() {
-      console.log('imageLoaded');
+      this.$emit('imageLoaded');
       this.imageFinished();
     },
     imageErrored() {
-      console.log('imageLoaded');
+      this.$emit('imageLoaded');
       this.imageFinished();
     },
     imageAborted() {
-      console.log('imageLoaded');
+      this.$emit('imageLoaded');
       this.imageFinished();
     }
   },

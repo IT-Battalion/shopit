@@ -1,9 +1,7 @@
 <?php
 
-use App\Models\Icon;
 use App\Models\OrderProductImage;
 use App\Models\ProductImage;
-use App\Services\Icons\IconServiceInterface;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
@@ -23,7 +21,7 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->describe('Display an inspiring quote');
 
-Artisan::command('clean:icons', function () {
+/*Artisan::command('clean:icons', function () {
     $dbIcons = Icon::all()->map(fn (Icon $icon) => $icon->path);
     $unnecessaryFiles = collect(Storage::files('icons', true))->diff($dbIcons);
     $fileCount = $unnecessaryFiles->count();
@@ -37,7 +35,7 @@ Artisan::command('clean:icons', function () {
     if (!Storage::delete($unnecessaryFiles->all())) {
         $this->error('Failed to delete the images');
     }
-})->describe('Cleanup icon image files that aren\'t in the database');
+})->describe('Cleanup icon image files that aren\'t in the database');*/
 
 Artisan::command('clean:productImages', function () {
     $dbIcons = ProductImage::all()->map(fn (ProductImage $image) => $image->path);
@@ -80,7 +78,7 @@ Artisan::command('clean', function () {
     }
 });
 
-Artisan::command('icon:add {id} {--interactionless}', function (string $id, bool $interactionless, IconServiceInterface $iconService) {
+/*Artisan::command('icon:add {id} {--interactionless}', function (string $id, bool $interactionless, IconServiceInterface $iconService) {
     $icon = $iconService->findById($id);
 
     $this->info('Found an icon:');
@@ -96,4 +94,4 @@ Artisan::command('icon:add {id} {--interactionless}', function (string $id, bool
             $this->error('Failed to create icon');
         }
     }
-});
+});*/

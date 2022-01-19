@@ -48,12 +48,16 @@ use Illuminate\Support\Collection;
  * @property-read mixed $has_product_dimension_attribute
  * @property-read mixed $has_product_volume_attribute
  * @property-read mixed $product_attributes
+ * @property-read Product $product
+ * @property-read User $user
  */
 class ShoppingCartEntry extends Pivot
 {
     protected $table = 'shopping_cart';
 
     protected $fillable = [
+        'user_id',
+        'product_id',
         'count',
         'product_clothing_attribute_id',
         'product_dimension_attribute_id',
@@ -61,26 +65,19 @@ class ShoppingCartEntry extends Pivot
         'product_color_attribute_id',
     ];
 
-    protected $with = [
-        'productClothingAttribute',
-        'productDimensionAttribute',
-        'productVolumeAttribute',
-        'productColorAttribute',
-    ];
-
     public function getProductAttributesAttribute()
     {
-        $clothingAttribute = $this->productClothingAttribute()->with('productClothingAttribute');
-        $dimensionAttribute = $this->productDimensionAttribute()->with('productDimensionAttribute');
-        $volumeAttribute = $this->productVolumeAttribute()->with('productVolumeAttribute');
-        $colorAttribute = $this->productColorAttribute()->with('productColorAttribute');
+        $clothingAttribute = $this->productClothingAttribute;
+        $dimensionAttribute = $this->productDimensionAttribute;
+        $volumeAttribute = $this->productVolumeAttribute;
+        $colorAttribute = $this->productColorAttribute;
 
         return
             collect([
-                AttributeType::CLOTHING => $clothingAttribute,
-                AttributeType::DIMENSION => $dimensionAttribute,
-                AttributeType::VOLUME => $volumeAttribute,
-                AttributeType::COLOR => $colorAttribute,
+                AttributeType::CLOTHING->value => $clothingAttribute,
+                AttributeType::DIMENSION->value => $dimensionAttribute,
+                AttributeType::VOLUME->value => $volumeAttribute,
+                AttributeType::COLOR->value => $colorAttribute,
             ])
             ->filter(fn ($attribute) => isset($attribute));
     }

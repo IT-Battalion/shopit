@@ -6,7 +6,6 @@ use App\Exceptions\OrderNotReceivedException;
 use App\Exceptions\ShoppingCartEmptyException;
 use App\Models\Admin;
 use App\Models\CouponCode;
-use App\Models\Icon;
 use App\Models\OrderProduct;
 use App\Models\OrderProductImage;
 use App\Models\ProductCategory;
@@ -15,9 +14,8 @@ use App\Services\Orders\OrderServiceInterface;
 use function Pest\Laravel\actingAs;
 
 beforeEach(function () {
-    $icon = Icon::factory()->create();
     Admin::factory()->create();
-    ProductCategory::factory()->create(['name' => 'Test', 'icon_id' => $icon->id]);
+    ProductCategory::factory()->create(['name' => 'Test']);
     CouponCode::factory()->create();
 });
 

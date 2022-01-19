@@ -13,7 +13,7 @@ class CreateIcons extends Migration
      */
     public function up()
     {
-        Schema::create('icons', function (Blueprint $table) {
+        /*Schema::create('icons', function (Blueprint $table) {
             $table->id();
             $table->string('original_id')->unique();
             $table->string('name');
@@ -27,7 +27,7 @@ class CreateIcons extends Migration
 
         Schema::table('product_categories', function (Blueprint $table) {
             $table->foreignId('icon_id')->after('name')->constrained()->onDelete('cascade');
-        });
+        });*/
     }
 
     /**
@@ -37,11 +37,11 @@ class CreateIcons extends Migration
      */
     public function down()
     {
-        Schema::table('product_categories', function (Blueprint $table) {
+        /*Schema::table('product_categories', function (Blueprint $table) {
             $table->dropForeign('product_categories_icon_id_foreign');
             $table->dropColumn('icon_id');
         });
 
-        Schema::dropIfExists('icons');
+        Schema::dropIfExists('icons');*/
     }
 }

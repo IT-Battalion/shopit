@@ -29,6 +29,12 @@ export function endLoad() {
     return;
   }
   state.waiting -= 1;
+  nextTick().then(() => {
+    state.handlers.forEach(handler => {
+      handler(undefined);
+    });
+    state.handlers = [];
+  });
 }
 
 function complete() {
@@ -47,15 +53,3 @@ watchEffect(() => {
     complete();
   }
 });
-
-watchEffect(() => {
-  if (state.waiting <= 0 && state.progressTarget === state.progressCurrent) {
-    state.waiting = 0;
-    nextTick().then(() => {
-      state.handlers.forEach(handler => {
-        handler(undefined);
-      });
-      state.handlers = [];
-    });
-  }
-})

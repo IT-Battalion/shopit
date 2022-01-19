@@ -20,7 +20,6 @@ use Illuminate\Support\Carbon;
  * @property int $icon_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Icon|null $icon
  * @property-read Collection|Product[] $products
  * @property-read int|null $products_count
  * @method static ProductCategoryFactory factory(...$parameters)
@@ -52,10 +51,10 @@ class ProductCategory extends Model
         return $this->hasMany(Product::class);
     }
 
-    public function icon(): BelongsTo
-    {
-        return $this->belongsTo(Icon::class);
-    }
+//    public function icon(): BelongsTo
+//    {
+//        return $this->belongsTo(Icon::class);
+//    }
 
     public function jsonSerialize()
     {

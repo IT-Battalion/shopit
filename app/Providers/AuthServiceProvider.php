@@ -26,7 +26,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         // Add new testing Auth Provider
-        if (app()->environment('local')) {
+        if (app()->environment('local', 'testing')) {
             Auth::provider('test', function ($app, array $config) {
                 return new TestUserProvider($this->app['hash'], $config['model']);
             });

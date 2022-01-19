@@ -133,16 +133,16 @@ class OrderProduct extends Model
         foreach ($attributes as $type => $attribute)
         {
             switch ($type) {
-                case AttributeType::CLOTHING:
+                case AttributeType::CLOTHING->value:
                     $this->order_clothing_attribute_id = $attribute->id;
                     break;
-                case AttributeType::DIMENSION:
+                case AttributeType::DIMENSION->value:
                     $this->order_dimension_attribute_id = $attribute->id;
                     break;
-                case AttributeType::VOLUME:
+                case AttributeType::VOLUME->value:
                     $this->order_volume_attribute_id = $attribute->id;
                     break;
-                case AttributeType::COLOR:
+                case AttributeType::COLOR->value:
                     $this->order_color_attribute_id = $attribute->id;
                     break;
             }

@@ -26,6 +26,8 @@
             ];
         }
 
+		$categoryColors = config('shop.category.colors');
+
         echo str_replace(
             '"',
             '\\"',
@@ -33,14 +35,11 @@
                 [
                     'categories' => ProductCategory::whereHas('products')
                         ->get()
-                        ->map(function (ProductCategory $category) {
-                            $icon = $category->icon;
-
+                        ->map(function (ProductCategory $category, int $key) use ($categoryColors) {
                             return [
                                 'id' => $category->id,
                                 'name' => $category->name,
-                                'icon_name' => $icon->name,
-                                'icon_url' => route('icon', $icon->id),
+                                'color' => $categoryColors[$key % sizeof($categoryColors)],
                             ];
                         }),
                     'user' => $userData,

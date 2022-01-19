@@ -19,12 +19,11 @@
   >
     <div
       v-for="category in categories"
-      v-bind:key="category.icon_url"
-      v-bind:name="category.name"
+      v-bind:key="category.name"
       class="my-6 ml-6 rounded-full"
     >
       <router-link class="flex flex-row items-center my-1 text-left" :to="'/#' + category.name">
-        <img :src="category.icon_url" class="object-scale-down h-8 mr-4" />
+        <span class="object-scale-down h-8 w-8 mr-4 rounded" :style="'background-color:#'+category.color"></span>
         {{category.name}}
       </router-link>
     </div>

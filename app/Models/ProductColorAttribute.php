@@ -56,7 +56,7 @@ class ProductColorAttribute extends Model implements ProductAttributeToOrder
         return $this->hasMany(ShoppingCartEntry::class);
     }
 
-    public function getTypeAttribute(): int
+    public function getTypeAttribute(): AttributeType
     {
         return AttributeType::COLOR;
     }

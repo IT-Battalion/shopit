@@ -45,7 +45,7 @@ class OrderClothingAttribute extends Model implements OrderProductAttribute
         return $this->hasMany(OrderProduct::class);
     }
 
-    public function getTypeAttribute(): int
+    public function getTypeAttribute(): AttributeType
     {
         return AttributeType::CLOTHING;
     }

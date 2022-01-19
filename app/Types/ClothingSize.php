@@ -2,13 +2,16 @@
 
 namespace App\Types;
 
-use BenSampo\Enum\Enum;
 
-class ClothingSize extends Enum
+use App\Traits\GetRandomEnumCase;
+
+enum ClothingSize: int
 {
-    public const XS = 0;
-    public const S = 1;
-    public const M = 2;
-    public const L = 3;
-    public const XL = 4;
+    use GetRandomEnumCase;
+
+    case XS = 0;
+    case S = 1;
+    case M = 2;
+    case L = 3;
+    case XL = 4;
 }

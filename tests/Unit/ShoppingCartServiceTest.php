@@ -1,8 +1,8 @@
 <?php
 
+use App\Exceptions\IllegalArgumentException;
 use App\Models\Admin;
 use App\Models\CouponCode;
-use App\Models\Icon;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductClothingAttribute;
@@ -13,12 +13,10 @@ use App\Models\User;
 use App\Services\ShoppingCart\ShoppingCartServiceInterface;
 use App\Types\AttributeType;
 use App\Types\Money;
-use DASPRiD\Enum\Exception\IllegalArgumentException;
 
 beforeEach(function () {
-    $icon = Icon::factory()->create();
     Admin::factory()->create();
-    ProductCategory::factory()->create(['name' => 'Test', 'icon_id' => $icon->id]);
+    ProductCategory::factory()->create(['name' => 'Test']);
     CouponCode::factory()->create();
 });
 
@@ -71,10 +69,10 @@ test('add product with attributes to shopping cart', function () {
     $colorAttribute = ProductColorAttribute::factory()->create();
 
     $attributes = collect([
-        AttributeType::CLOTHING => $clothingAttribute->id,
-        AttributeType::DIMENSION => $dimensionAttribute->id,
-        AttributeType::VOLUME => $volumeAttribute->id,
-        AttributeType::COLOR => $colorAttribute->id,
+        AttributeType::CLOTHING->value => $clothingAttribute->id,
+        AttributeType::DIMENSION->value => $dimensionAttribute->id,
+        AttributeType::VOLUME->value => $volumeAttribute->id,
+        AttributeType::COLOR->value => $colorAttribute->id,
     ]);
 
     $product = Product::factory()->create(['name' => 'TestProduct']);
@@ -102,10 +100,10 @@ test('add two products with attributes to shopping cart', function () {
     $colorAttribute = ProductColorAttribute::factory()->create();
 
     $attributes = collect([
-        AttributeType::CLOTHING => $clothingAttribute->id,
-        AttributeType::DIMENSION => $dimensionAttribute->id,
-        AttributeType::VOLUME => $volumeAttribute->id,
-        AttributeType::COLOR => $colorAttribute->id,
+        AttributeType::CLOTHING->value => $clothingAttribute->id,
+        AttributeType::DIMENSION->value => $dimensionAttribute->id,
+        AttributeType::VOLUME->value => $volumeAttribute->id,
+        AttributeType::COLOR->value => $colorAttribute->id,
     ]);
 
     $product = Product::factory()->create(['name' => 'TestProduct']);
@@ -204,25 +202,25 @@ test('remove a product with attributes from the shopping cart', function () {
     $product->productColorAttributes()->attach($colorAttribute);
 
     $service->addProduct($product, collect([
-        AttributeType::CLOTHING => $clothingAttribute->id,
-        AttributeType::DIMENSION => $dimensionAttribute->id,
-        AttributeType::VOLUME => $volumeAttribute->id,
-        AttributeType::COLOR => $colorAttribute->id,
+        AttributeType::CLOTHING->value => $clothingAttribute->id,
+        AttributeType::DIMENSION->value => $dimensionAttribute->id,
+        AttributeType::VOLUME->value => $volumeAttribute->id,
+        AttributeType::COLOR->value => $colorAttribute->id,
     ]), 2);
     $service->addProduct($product, collect([]));
 
     $service->removeProduct($product, collect([
-        AttributeType::CLOTHING => $clothingAttribute->id,
-        AttributeType::DIMENSION => $dimensionAttribute->id,
-        AttributeType::VOLUME => $volumeAttribute->id,
-        AttributeType::COLOR => $colorAttribute->id,
+        AttributeType::CLOTHING->value => $clothingAttribute->id,
+        AttributeType::DIMENSION->value => $dimensionAttribute->id,
+        AttributeType::VOLUME->value => $volumeAttribute->id,
+        AttributeType::COLOR->value => $colorAttribute->id,
     ]));
 
     expect($service->hasProductInShoppingCart($product, collect([
-        AttributeType::CLOTHING => $clothingAttribute->id,
-        AttributeType::DIMENSION => $dimensionAttribute->id,
-        AttributeType::VOLUME => $volumeAttribute->id,
-        AttributeType::COLOR => $colorAttribute->id,
+        AttributeType::CLOTHING->value => $clothingAttribute->id,
+        AttributeType::DIMENSION->value => $dimensionAttribute->id,
+        AttributeType::VOLUME->value => $volumeAttribute->id,
+        AttributeType::COLOR->value => $colorAttribute->id,
     ])))->toBeFalse();
     expect($service->hasProductInShoppingCart($product, collect([])))->toBeTrue();
     expect($user->shopping_cart->count())->toBe(1);
@@ -255,14 +253,14 @@ test('remove all items from the shopping cart', function () {
     $product->productClothingAttributes()->attach($clothingAttribute);
 
     $service->addProduct($product, collect([
-        AttributeType::CLOTHING => $clothingAttribute->id,
+        AttributeType::CLOTHING->value => $clothingAttribute->id,
     ]));
 
     $service->removeProduct($product, collect([]), 2);
 
     expect($service->hasProductInShoppingCart($product, collect([])))->toBeFalse();
     expect($service->hasProductInShoppingCart($product, collect([
-        AttributeType::CLOTHING => $clothingAttribute->id,
+        AttributeType::CLOTHING->value => $clothingAttribute->id,
     ])))->toBetrue();
 });
 
@@ -278,14 +276,14 @@ test('remove no items from the shopping cart', function () {
     $product->productClothingAttributes()->attach($clothingAttribute);
 
     $service->addProduct($product, collect([
-        AttributeType::CLOTHING => $clothingAttribute->id,
+        AttributeType::CLOTHING->value => $clothingAttribute->id,
     ]));
 
     $service->removeProduct($product, collect([]), 0);
 
     expect($service->hasProductInShoppingCart($product, collect([]), 2))->toBeTrue();
     expect($service->hasProductInShoppingCart($product, collect([
-        AttributeType::CLOTHING => $clothingAttribute->id,
+        AttributeType::CLOTHING->value => $clothingAttribute->id,
     ])))->toBeTrue;
 });
 
@@ -353,13 +351,13 @@ test('set the amount of an product that isn\'t in the shopping cart to 0', funct
     $product->productClothingAttributes()->attach($clothingAttribute);
 
     $service->addProduct($product, collect([
-        AttributeType::CLOTHING => $clothingAttribute->id,
+        AttributeType::CLOTHING->value => $clothingAttribute->id,
     ]));
     $service->setProductAmount($product, collect([]), 0);
 
     expect($service->hasProductInShoppingCart($product, collect([])))->toBeFalse();
     expect($service->hasProductInShoppingCart($product, collect([
-        AttributeType::CLOTHING => $clothingAttribute->id,
+        AttributeType::CLOTHING->value => $clothingAttribute->id,
     ])))->toBeTrue();
 });
 
@@ -376,7 +374,7 @@ test('set the amount of an product that is in the shopping cart', function () {
 
     $service->addProduct($product, collect([]));
     $service->addProduct($product, collect([
-        AttributeType::CLOTHING => $clothingAttribute->id,
+        AttributeType::CLOTHING->value => $clothingAttribute->id,
     ]), 2);
 
     $service->setProductAmount($product, collect([]), 4);
@@ -384,7 +382,7 @@ test('set the amount of an product that is in the shopping cart', function () {
     expect($service->hasProductInShoppingCart($product, collect([]), 2))->toBeFalse()
     ->and($service->hasProductInShoppingCart($product, collect([]), 4))->toBeTrue();
     expect($service->hasProductInShoppingCart($product, collect([
-        AttributeType::CLOTHING => $clothingAttribute->id,
+        AttributeType::CLOTHING->value => $clothingAttribute->id,
     ]), 2))->toBeTrue();
 });
 
@@ -401,7 +399,7 @@ test('set the amount of an product that is in the shopping cart to 0', function 
 
     $service->addProduct($product, collect([]), 2);
     $service->addProduct($product, collect([
-        AttributeType::CLOTHING => $clothingAttribute->id,
+        AttributeType::CLOTHING->value => $clothingAttribute->id,
     ]), 2);
 
     $service->setProductAmount($product, collect([]), 0);
@@ -409,7 +407,7 @@ test('set the amount of an product that is in the shopping cart to 0', function 
     expect($service->hasProductInShoppingCart($product, collect([]), 2))->toBeFalse()
         ->and($service->hasProductInShoppingCart($product, collect([])))->toBeFalse();
     expect($service->hasProductInShoppingCart($product, collect([
-        AttributeType::CLOTHING => $clothingAttribute->id,
+        AttributeType::CLOTHING->value => $clothingAttribute->id,
     ]), 2))->toBeTrue();
 });
 
@@ -791,7 +789,7 @@ test('check if product is not in the shopping cart', function () {
     $product->productClothingAttributes()->attach($clothingAttribute);
 
     $service->addProduct($product, collect([
-        AttributeType::CLOTHING => $clothingAttribute->id,
+        AttributeType::CLOTHING->value => $clothingAttribute->id,
     ]), 3);
 
     $isInShoppingCart = $service->hasProductInShoppingCart($product, collect([]));
@@ -812,7 +810,7 @@ test('check if a specified amount of a product is in the shopping cart', functio
 
     $service->addProduct($product, collect([]), 2);
     $service->addProduct($product, collect([
-        AttributeType::CLOTHING => $clothingAttribute->id,
+        AttributeType::CLOTHING->value => $clothingAttribute->id,
     ]), 3);
 
     $isInShoppingCart = $service->hasProductInShoppingCart($product, collect([]), 2);
@@ -833,7 +831,7 @@ test('check if a specified amount of a product isn\'t in the shopping cart', fun
 
     $service->addProduct($product, collect([]), 2);
     $service->addProduct($product, collect([
-        AttributeType::CLOTHING => $clothingAttribute->id,
+        AttributeType::CLOTHING->value => $clothingAttribute->id,
     ]), 1);
 
     $isInShoppingCart = $service->hasProductInShoppingCart($product, collect([]), 1);

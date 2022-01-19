@@ -43,4 +43,8 @@ return [
         'max_digits' => 8,
         'currency' => '€',
     ],
+
+    'category' => [
+        'colors' => ['ff7651', '31a8e2', '6c5fcf'],
+    ],
 ];

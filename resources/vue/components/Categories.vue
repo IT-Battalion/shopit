@@ -90,15 +90,11 @@
                     >
                       <div
                         v-for="category in categories"
-                        v-bind:key="category.icon_url"
-                        v-bind:name="category.name"
+                        v-bind:key="category.name"
                         class="flex flex-row my-6 ml-6 hover:text-gray-500"
                         @click="isOpen = false"
                       >
-                        <img
-                          :src="category.icon_url"
-                          class="object-scale-down h-8 mr-4"
-                        />
+                        <span class="object-scale-down h-8 w-8 mr-4 rounded" :style="'background-color:#'+category.color"></span>
                         <router-link
                           class="my-1 text-left"
                           :to="'/#' + category.name"

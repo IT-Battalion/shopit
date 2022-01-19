@@ -2,12 +2,12 @@
 
 namespace App\Services\ShoppingCart;
 
+use App\Exceptions\IllegalArgumentException;
 use App\Exceptions\InvalidAttributeException;
 use App\Models\Product;
 use App\Models\User;
 use App\Types\AttributeType;
 use App\Types\Money;
-use DASPRiD\Enum\Exception\IllegalArgumentException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -134,7 +134,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     {
         $user = $user ?? Auth::user();
 
-        $coupon = $user->shopping_cart_coupon;
+        $coupon = $user->coupon;
         $discount = $coupon?->discount ?? '0';
 
         $price = $user->shopping_cart
@@ -148,11 +148,6 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                     return $carry->add($netto->mul($amount));
                 }, new Money('0'));
 
-                if ($includeCoupon)
-                {
-                    $price = $price->mul(bcsub('1', $discount));
-                }
-
                 if ($includeTax)
                 {
                     $price = $price->mul(bcadd('1', $tax));
@@ -161,6 +156,11 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                 return $carry->add($price);
             }, new Money('0'));
 
+        if ($includeCoupon)
+        {
+            $price = $price->mul(bcsub('1', $discount));
+        }
+
         return $price;
     }
 
@@ -168,7 +168,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     {
         $user = $user ?? Auth::user();
 
-        $coupon = $user->shopping_cart_coupon;
+        $coupon = $user->coupon;
         $discount = $coupon->discount ?? '0';
 
         $taxPrice = $user->shopping_cart
@@ -196,7 +196,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     {
         $user = $user ?? Auth::user();
 
-        $coupon = $user->shopping_cart_coupon;
+        $coupon = $user->coupon;
         $discount = $coupon->discount ?? '0';
 
         $discountPrice = $user->shopping_cart
@@ -216,7 +216,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         $product_price = $product->price;
         $product_amount_in_shopping_cart = $this->getAmountOfProduct($product, $attributes);
         $tax = $includeTaxes ? $product->tax : '0';
-        $discount = $includeCoupon ? $user->shopping_cart_coupon->discount ?? '0' : '0';
+        $discount = $includeCoupon ? $user->coupon->discount ?? '0' : '0';
         return $product_price->mul($product_amount_in_shopping_cart, bcsub(1, $discount), bcadd(1, $tax));
     }
 
@@ -264,10 +264,9 @@ class ShoppingCartService implements ShoppingCartServiceInterface
 
         $shopping_cart = $user->shopping_cart();
 
-        foreach (AttributeType::getValues() as $type) {
-            $type = new AttributeType($type);
+        foreach (AttributeType::cases() as $type) {
             $shopping_cart = $shopping_cart
-                ->wherePivot('product_' . strtolower($type->key) . '_attribute_id', $attributes->get($type->value));
+                ->wherePivot('product_' . strtolower($type->name) . '_attribute_id', $attributes->get($type->value));
         }
 
         return $shopping_cart
@@ -291,13 +290,12 @@ class ShoppingCartService implements ShoppingCartServiceInterface
 
         $newAttributes = ['count' => $newAmount];
 
-        foreach (AttributeType::getValues() as $type) {
-            if ( ! $attributes->has($type)) {
+        foreach (AttributeType::cases() as $type) {
+            if ( ! $attributes->has($type->value)) {
                 continue;
             }
 
-            $type = new AttributeType($type);
-            $newAttributes['product_' . strtolower($type->key) . '_attribute_id'] = $attributes->get($type->value);
+            $newAttributes['product_' . strtolower($type->name) . '_attribute_id'] = $attributes->get($type->value);
         }
 
         $user->shopping_cart()

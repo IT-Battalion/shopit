@@ -9,6 +9,7 @@ class UtilProvider extends ServiceProvider
     public array $helpers = [
         'Util/translation.php',
         'Util/math.php',
+        'Util/model.php',
     ];
 
     /**
