@@ -62,6 +62,7 @@
         "vue-class-component": "^8.0.0-rc.1",
         "vue-router": "^4.0.12",
         "vue-skeletor": "^1.0.6",
+        "vue-upload-drop-images": "^1.0.7",
         "vue3-mq": "^3.0.1"
     }
 }

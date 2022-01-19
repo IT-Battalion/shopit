@@ -35,7 +35,7 @@
             <MenuItems
               class="absolute right-0 w-40 mt-2 overflow-hidden origin-top-right rounded-md shadow-lg  ring-1 ring-black ring-opacity-5 focus:outline-none bg-elevatedDark"
             >
-              <router-link to="/produkte/hinzufuegen">
+              <router-link to="/admin/produkte/hinzufuegen">
                 <MenuItem
                   class="flex flex-row items-center justify-start  hover:bg-elevatedColor"
                 >

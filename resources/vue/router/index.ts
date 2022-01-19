@@ -109,7 +109,21 @@ const routes: Array<RouteRecordRaw> = [
             name: "ProdukteBearbeiten",
             component: () =>
               import("../components/ProductListAdmin.vue"),
-          }
+          },
+          {
+            path: "produkte/hinzufuegen/",
+            name: "ProdukteHinzufuegen",
+            component: () =>
+              import("../components/UploadProductImages.vue"),
+            children: [
+              {
+                path: "preisUndTitel",
+                name: "PreisUndTitel",
+                component: () =>
+                  import("../components/UploadProductImages.vue"),
+              }
+            ]
+          },
         ]
       },
       {

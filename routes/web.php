@@ -30,6 +30,8 @@ Route::view('/admin/userverwaltung', 'home');
 Route::view('/admin/coupons', 'home');
 Route::view('/admin/kategorien', 'home');
 Route::view('/admin/produkte/bearbeiten', 'home');
+Route::view('/admin/produkte/hinzufuegen', 'home');
+Route::view('/admin/produkte/hinzufuegen/preisUndTitel', 'home');
 Route::view('/order/', 'home');
 
 Route::permanentRedirect('/home', url('/'));
