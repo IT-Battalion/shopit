@@ -6,31 +6,29 @@
         :pagination="{
           dynamicBullets: true,
         }"
-        v-show="!isLoading"
+        v-show="!state.isLoading"
         class="w-full h-full"
       >
-        <template v-if="!isLoading || state.isProgressing">
-          <swiper-slide
-            class="object-cover w-full h-full"
-            v-for="image in product.images"
-            :key="image.id"
-          >
-            <img
-              :src="'/product-image/' + image.id"
-              :alt="'productimage'"
-              @load="state.progressCurrent++"
-              @error="state.progressCurrent++"
-              class="object-contain w-full max-h-[60vh]"
-            />
-          </swiper-slide>
-        </template>
+        <swiper-slide
+          class="object-cover w-full h-full"
+          v-for="image in product.images"
+          :key="image.id"
+        >
+          <LoadingImage
+            :src="'/product-image/' + image.id"
+            :alt="'productimage'"
+            class="object-contain w-full max-h-[60vh]"
+            height="60vh"
+            @imageFinished="state.progressCurrent++"
+          />
+        </swiper-slide>
       </swiper>
       <Skeletor
         :pill="false"
         as="div"
         height="60vh"
         class="object-contain w-full mx-auto md:w-1/2 rounded-3xl"
-        v-if="isLoading"
+        v-if="state.isLoading"
       />
 
       <!-- Product info -->
@@ -55,7 +53,7 @@
         <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
           <h1
             class="text-2xl font-extrabold tracking-tight text-white  sm:text-3xl"
-            v-if="!isLoading"
+            v-if="!state.isLoading"
           >
             {{ product.name }}
           </h1>
@@ -66,7 +64,7 @@
 
         <!-- Options -->
         <div class="mt-4 lg:mt-0 lg:row-span-3">
-          <p class="text-3xl text-white" v-if="!isLoading">
+          <p class="text-3xl text-white" v-if="!state.isLoading">
             {{ product.price }}
           </p>
           <div class="text-3xl" v-else>
@@ -221,7 +219,7 @@
           <!-- Description and details -->
           <div>
             <div class="space-y-6">
-              <p class="text-base text-white" v-if="!isLoading">
+              <p class="text-base text-white" v-if="!state.isLoading">
                 {{ product.description }}
               </p>
               <div v-else>
@@ -257,11 +255,13 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import SwiperCore, { Navigation, Pagination } from "swiper";
 import { initProgress, initLoad, state, endLoad } from "../loader";
+import LoadingImage from "./LoadingImage.vue";
 
 SwiperCore.use([Navigation, Pagination]);
 
 export default defineComponent({
   components: {
+    LoadingImage,
     RadioGroup,
     RadioGroupLabel,
     RadioGroupOption,
@@ -274,16 +274,11 @@ export default defineComponent({
       product: [] as any as Product,
     };
   },
-  computed: {
-    isLoading() {
-      return (this as any).state.isLoading || (this as any).state.isProgressing;
-    },
-  },
   async created() {
     const route = useRoute();
     const name = route.params.name as string;
 
-    this.loadProduct(name);
+    await this.loadProduct(name);
   },
   methods: {
     async loadProduct(name: string) {

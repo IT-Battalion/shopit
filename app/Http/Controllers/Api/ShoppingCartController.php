@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddToShoppingCartRequest;
 use App\Models\Product;
-use App\Models\ShoppingCartEntry;
 use App\Services\ShoppingCart\ShoppingCartServiceInterface;
 use Illuminate\Http\Request;
 
