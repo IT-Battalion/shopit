@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import {createRouter, createWebHistory, RouteRecordRaw, useRoute} from "vue-router";
 import Login from "../views/Login.vue";
 import Products from "../views/Products.vue";
 import Main from "../views/layout/Main.vue";

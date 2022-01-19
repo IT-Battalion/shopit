@@ -4,7 +4,11 @@
       <Sidenav />
     </mq-responsive>
     <div class="flex flex-col items-center w-full">
-      <router-view />
+      <router-view v-slot="{ Component }">
+        <keep-alive include="Products">
+          <component :is="Component" />
+        </keep-alive>
+      </router-view>
     </div>
   </div>
 </template>
