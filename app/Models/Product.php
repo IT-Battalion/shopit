@@ -27,7 +27,6 @@ use Illuminate\Support\Carbon;
  * @property Money $price
  * @property-read Money $gross_price
  * @property string $tax
- * @property int $available
  * @property int $created_by_id
  * @property int $updated_by_id
  * @property Carbon|null $created_at
@@ -46,7 +45,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Product newQuery()
  * @method static Builder|Product query()
  * @method static Builder|Product unavailable()
- * @method static Builder|Product whereAvailable($value)
  * @method static Builder|Product whereCreatedAt($value)
  * @method static Builder|Product whereCreatedById($value)
  * @method static Builder|Product whereDescription($value)
@@ -82,7 +80,6 @@ class Product extends Model implements ConvertableToOrder
         'name',
         'description',
         'price',
-        'available',
         'tax',
         'product_category_id',
         'thumbnail_id',
@@ -213,12 +210,24 @@ class Product extends Model implements ConvertableToOrder
             'description' => $this->name,
             'price' => $this->gross_price,
             'tax' => $this->tax,
-            'available' => $this->available,
             'thumbnail' => [
                 'id' => $this->thumbnail_id,
             ],
             'images' => $this->images->get('id'),
             'attributes' => $this->product_attributes,
+        ];
+    }
+
+    public function jsonPreview()
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'price' => $this->gross_price,
+            'tax' => $this->tax,
+            'thumbnail' => [
+                'id' => $this->thumbnail_id,
+            ],
         ];
     }
 

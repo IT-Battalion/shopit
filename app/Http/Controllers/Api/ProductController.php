@@ -18,10 +18,12 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = ProductCategory::whereHas('products')->with('products')->get()
+        $products = ProductCategory::whereHas('products')
+            ->with('products')
+            ->get()
             ->mapWithKeys(function (ProductCategory $category) {
                 return [
-                    $category->name => $category->products,
+                    $category->name => $category->products->map(fn (Product $product) => $product->jsonPreview()),
                 ];
             });
 

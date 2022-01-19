@@ -62,9 +62,10 @@ require('jszip');
 require('pdfmake');
 
 // Init csrf
-window.axios.get('/sanctum/csrf-cookie').catch(_ => {
-    console.error("CSRF couldn't be fetched");
-});
+// window.axios.get('/sanctum/csrf-cookie').catch(_ => {
+//     console.error("CSRF couldn't be fetched");
+// });
+// didn't appear to be necessary
 
 import {
     createApp

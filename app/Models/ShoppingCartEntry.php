@@ -65,6 +65,13 @@ class ShoppingCartEntry extends Pivot
         'product_color_attribute_id',
     ];
 
+    protected $with = [
+        'productClothingAttribute',
+        'productDimensionAttribute',
+        'productVolumeAttribute',
+        'productColorAttribute',
+    ];
+
     public function getProductAttributesAttribute()
     {
         $clothingAttribute = $this->productClothingAttribute;

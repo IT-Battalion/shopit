@@ -18,7 +18,7 @@ class HighlightedProductController extends Controller
     public function all()
     {
         $products = HighlightedProduct::with('product')->get()
-            ->map(fn (HighlightedProduct $product) => $product->product);
+            ->map(fn (HighlightedProduct $product) => $product->product->jsonPreview());
 
         return response()->json($products);
     }
