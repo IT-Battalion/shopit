@@ -18,7 +18,7 @@
           :key="product.name"
           class="relative group"
         >
-          <ProductCard
+          <EditProductsCards
             :product="product"
             :isLoading="state.isProgressing"
             @imageLoaded="imageLoaded"
@@ -38,10 +38,10 @@
           <Skeletor :pill="true" />
         </h2>
         <div
-          class="grid grid-cols-1 mt-6  gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-14"
+          class="grid grid-cols-1 mt-6  gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8"
         >
           <div v-for="index in 6" :key="index" class="relative group">
-            <ProductCard :is-skeletor="true" :isLoading="true" />
+            <EditProductsCards :is-skeletor="true" :isLoading="true" />
           </div>
         </div>
       </div>
@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import ProductCard from "./ProductCard.vue";
+import EditProductsCards from "./EditProductsCard.vue";
 import { AxiosResponse } from "axios";
 import { Product } from "../types/api";
 import { defineComponent } from "@vue/runtime-core";
@@ -78,7 +78,7 @@ export default defineComponent({
     endLoad();
   },
   components: {
-    ProductCard,
+    EditProductsCards,
   },
   methods: {
     imageLoaded() {

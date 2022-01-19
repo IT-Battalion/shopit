@@ -103,6 +103,12 @@ const routes: Array<RouteRecordRaw> = [
             name: "Kategorien",
             component: () =>
               import("../components/EditCategories.vue"),
+          },
+          {
+            path: "produkte/bearbeiten",
+            name: "ProdukteBearbeiten",
+            component: () =>
+              import("../components/ProductListAdmin.vue"),
           }
         ]
       },
