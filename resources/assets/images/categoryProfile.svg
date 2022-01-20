@@ -1,0 +1,28 @@
+<svg id="Group_837" data-name="Group 837" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40.667" height="40.667" viewBox="0 0 40.667 40.667">
+  <defs>
+    <style>
+      .cls-1, .cls-4 {
+        fill: #fff;
+      }
+
+      .cls-1 {
+        stroke: #707070;
+      }
+
+      .cls-2 {
+        fill: #6c5fcf;
+      }
+
+      .cls-3 {
+        clip-path: url(#clip-path);
+      }
+    </style>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_27" data-name="Rectangle 27" class="cls-1" width="31.333" height="31.333"/>
+    </clipPath>
+  </defs>
+  <rect id="Rectangle_26" data-name="Rectangle 26" class="cls-2" width="40.667" height="40.667" rx="7"/>
+  <g id="Mask_Group_4" data-name="Mask Group 4" class="cls-3" transform="translate(4.666 4.666)">
+    <path id="np_account_1688912_FFFFFF" class="cls-4" d="M15.667,0A15.667,15.667,0,1,0,26.745,4.589,15.667,15.667,0,0,0,15.667,0Zm0,7.181a4.567,4.567,0,1,1-3.231,1.338,4.569,4.569,0,0,1,3.231-1.338Zm7.246,15.98a10.447,10.447,0,0,1-14.505,0,.667.667,0,0,1-.1-.783c1.1-2.011,3.969-3.447,7.363-3.447s6.267,1.436,7.363,3.447a.667.667,0,0,1-.118.783Z"/>
+  </g>
+</svg>
