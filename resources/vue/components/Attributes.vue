@@ -1,14 +1,21 @@
 <template>
   <div
     :class="[this.class]"
-    class="grid grid-cols-1 text-xs text-gray-400 grid-rows-"
+    class="
+      grid grid-cols-1
+      text-xs
+      font-light
+      text-gray-400
+      grid-rows-3
+      items-center
+    "
   >
     <div v-if="attributes['0']">Kleidergröße: {{ attributes[0].id }}</div>
     <div
       v-if="attributes['1']"
-      class="grid grid-cols-2 grid-rows-3 place-items-center"
+      class="grid grid-cols-2 grid-rows-3 place-items-start w-36"
     >
-      <a class="row-span-3 cols-span-1">Dimension: </a
+      <a class="row-span-3 cols-span-1 self-start">Dimension: </a
       ><a class="row-span-1 cols-span-1"
         >{{ attributes[1].width.value }}{{ attributes[1].width.unit }} x</a
       >
@@ -22,7 +29,13 @@
     <div v-if="attributes['2']">
       Volumen: {{ attributes[2].volume.value }}{{ attributes[2].volume.unit }}
     </div>
-    <div v-if="attributes['3']">Farbe: {{ attributes[3].name }}</div>
+    <div v-if="attributes['3']" class="flex flex-row">
+      <a>Farbe: {{ attributes[3].name }}</a>
+      <div
+        class="rounded-full h-3 w-3 ml-3"
+        :style="'background-color: #' + attributes[3].color"
+      />
+    </div>
   </div>
 </template>
 

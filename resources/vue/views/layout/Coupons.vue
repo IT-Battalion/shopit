@@ -25,24 +25,97 @@
         </g>
       </svg>
     </button>
-    <Search />
-    <Table class="mt-10" />
+    <vue-good-table
+      class="mt-10"
+      :columns="columns"
+      :rows="rows"
+      max-height="400px"
+      :search-options="{
+        enabled: true,
+        trigger: 'enter',
+        placeholder: 'Search this table',
+      }"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
-import Search from "@/components/Search.vue";
-import Table from "@/components/Table.vue";
 import InputField from "@/components/InputField.vue";
 import InputFieldIcon from "@/components/InputFieldIcon.vue";
+import "vue-good-table-next/dist/vue-good-table-next.css";
 
 export default defineComponent({
   components: {
-    Table,
-    Search,
     InputField,
     InputFieldIcon,
+    "vue-good-table": require("vue-good-table-next").VueGoodTable,
+  },
+  data() {
+    return {
+      columns: [
+        {
+          label: "ID",
+          field: "id",
+          type: "number",
+        },
+        {
+          label: "Rabatt",
+          field: "discount",
+          type: "percentage",
+        },
+        {
+          label: "Status",
+          field: "status",
+          type: "boolean",
+        },
+        {
+          label: "Datum",
+          field: "createdAt",
+          type: "date",
+          dateInputFormat: "yyyy-MM-dd",
+          dateOutputFormat: "MMM do yy",
+        },
+      ],
+      rows: [
+        {
+          id: 1,
+          discount: "0.033",
+          status: "false",
+          createdAt: "2011-10-31",
+        },
+        {
+          id: 2,
+          discount: "0.033",
+          status: "false",
+          createdAt: "2011-10-31",
+        },
+        {
+          id: 3,
+          discount: "0.033",
+          status: "false",
+          createdAt: "2011-10-31",
+        },
+        {
+          id: 4,
+          discount: "0.033",
+          status: "false",
+          createdAt: "2011-10-31",
+        },
+        {
+          id: 5,
+          discount: "0.033",
+          status: "false",
+          createdAt: "2011-10-31",
+        },
+        {
+          id: 6,
+          discount: "0.033",
+          status: "false",
+          createdAt: "2011-10-31",
+        },
+      ],
+    };
   },
 });
 </script>
