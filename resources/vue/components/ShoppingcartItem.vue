@@ -1,6 +1,13 @@
 <template>
   <div
-    class="flex-shrink-0 w-24 h-28 overflow-hidden border border-gray-200 rounded-md "
+    class="
+      flex-shrink-0
+      w-24
+      h-28
+      overflow-hidden
+      border border-gray-200
+      rounded-md
+    "
   >
     <router-link :to="'/product/' + entry.product.name">
       <LoadingImage
@@ -23,7 +30,10 @@
           {{ entry.price }}
         </p>
       </div>
-      <Attributes :selected-attributes="entry.selected_attributes" class="flex" />
+      <Attributes
+        :selected-attributes="entry.selected_attributes"
+        class="flex"
+      />
     </div>
     <div class="flex items-end justify-between flex-1 text-sm">
       <p class="text-gray-500">{{ count }} Stück</p>
@@ -44,7 +54,11 @@
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
 import { PropType } from "vue";
-import {SelectedAttributes, ShoppingCartDescriptor, ShoppingCartEntry} from "../types/api";
+import {
+  SelectedAttributes,
+  ShoppingCartDescriptor,
+  ShoppingCartEntry,
+} from "../types/api";
 import LoadingImage from "./LoadingImage.vue";
 import Attributes from "./Attributes.vue";
 
@@ -57,7 +71,7 @@ export default defineComponent({
     index: {
       type: Number,
       required: true,
-    }
+    },
   },
   data() {
     return {
@@ -72,15 +86,15 @@ export default defineComponent({
         selected_attributes: this.entry.selected_attributes,
         count: this.count,
       };
-      this.$globalBus.emit('shopping-cart.load');
+      this.$globalBus.emit("shopping-cart.load");
       try {
-        await this.$http.post('/user/shopping-cart/remove', descriptor);
-        this.$globalBus.emit('shopping-cart.remove');
+        await this.$http.post("/user/shopping-cart/remove", descriptor);
+        this.$globalBus.emit("shopping-cart.remove");
       } catch (e) {
         console.error(e);
       }
     },
   },
-  components: {Attributes, LoadingImage },
+  components: { Attributes, LoadingImage },
 });
 </script>

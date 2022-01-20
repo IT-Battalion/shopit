@@ -10,7 +10,9 @@
       items-center
     "
   >
-    <div v-if="attributes['0']">Kleidergröße: {{ attributes[0].id }}</div>
+    <div v-if="attributes['0']">
+      Kleidergröße: {{ clothingSizeValues[attributes["0"].size] }}
+    </div>
     <div
       v-if="attributes['1']"
       class="grid grid-cols-2 grid-rows-3 place-items-start w-36"
@@ -42,6 +44,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import { SelectedAttributes } from "../types/api";
+import { AttributeType, clothingSizeLabels } from "../types/api-values";
 
 export default defineComponent({
   props: {
@@ -57,6 +60,7 @@ export default defineComponent({
   data() {
     return {
       attributes: this.selectedAttributes,
+      clothingSizeValues: clothingSizeLabels,
     };
   },
 });

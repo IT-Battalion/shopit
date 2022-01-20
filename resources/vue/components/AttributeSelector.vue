@@ -114,7 +114,7 @@
               :class="[
                 'shadow-sm text-gray-300 cursor-pointer',
                 active ? 'ring-2 ring-highlighted' : '',
-                'group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm text-center font-medium hover:bg-gray-400 focus:outline-none sm:flex-1 sm:py-6',
+                'group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm text-center font-medium hover:bg-gray-400 focus:outline-none sm:flex-1 sm:py-6 w-20',
               ]"
             >
               <RadioGroupLabel as="p">
@@ -188,7 +188,7 @@
 import { defineComponent } from "@vue/runtime-core";
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
 import { Attributes, SelectedAttributes } from "../types/api";
-import {AttributeType, clothingSizeLabels} from "../types/api-values";
+import { AttributeType, clothingSizeLabels } from "../types/api-values";
 
 export default defineComponent({
   components: {
