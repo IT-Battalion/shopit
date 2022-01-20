@@ -77,7 +77,10 @@
             <AttributeSelector
               v-if="!state.isLoading"
               :productattributes="product.attributes"
+              ref="selected"
             />
+
+            <InputField labelName="Anzahl" value="1" ref="amount" />
 
             <button
               class="flex items-center justify-center w-full px-8 py-3 mt-10 text-base font-medium text-gray-900 bg-white  row-span-full rounded-3xl hover:bg-gray-300"
@@ -134,12 +137,14 @@
 
 <script lang="ts">
 import { AxiosResponse } from "axios";
-import { ref } from "vue";
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
-import { Product } from "../types/api";
+import {
+  Product,
+  ShoppingCartDescriptor,
+  ShoppingCartEntry,
+} from "../types/api";
 import { RouteLocationNormalizedLoaded, useRoute } from "vue-router";
-import { computed } from "vue";
-import { defineComponent, PropType } from "@vue/runtime-core";
+import { defineComponent } from "@vue/runtime-core";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -148,6 +153,7 @@ import SwiperCore, { Navigation, Pagination } from "swiper";
 import { initProgress, initLoad, state, endLoad } from "../loader";
 import LoadingImage from "./LoadingImage.vue";
 import AttributeSelector from "./AttributeSelector.vue";
+import InputField from "./InputField.vue";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -160,6 +166,7 @@ export default defineComponent({
     Swiper,
     SwiperSlide,
     AttributeSelector,
+    InputField,
   },
   data() {
     return {
@@ -184,6 +191,16 @@ export default defineComponent({
       console.log(this.product.attributes);
       initProgress(this.product.images.length);
       endLoad();
+    },
+    async addProduct() {
+      let entry: ShoppingCartDescriptor = {
+        name: this.product.name,
+        selected_attributes: (
+          this.$refs.selectedAttributes as typeof AttributeSelector
+        ).getSelected(),
+        count: (this.$refs.amount as typeof InputField).getValue(),
+      };
+      console.log(entry);
     },
   },
   watch: {

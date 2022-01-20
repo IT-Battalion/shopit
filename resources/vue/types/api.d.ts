@@ -117,6 +117,12 @@ export interface Product {
   attributes: Attributes,
 }
 
+export interface ShoppingCartDescriptor {
+  name: string,
+  selected_attributes: SelectedAttributes,
+  count: number,
+}
+
 export interface ShoppingCartEntry {
   product: Product,
   selected_attributes: SelectedAttributes,

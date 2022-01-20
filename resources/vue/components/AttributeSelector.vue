@@ -13,9 +13,6 @@
             :value="index"
             v-slot="{ active, checked }"
           >
-            <!-- v-slot="{ active, checked }" -->
-            <!--  active && checked ? 'ring ring-offset-1' : '',
-                !active && checked ? 'ring-2' : ''," -->
             <div
               :class="[
                 selectedColor,
@@ -30,7 +27,13 @@
               </RadioGroupLabel>
               <span
                 aria-hidden="true"
-                class="w-8 h-8 border border-white rounded-full  border-opacity-10"
+                class="
+                  w-8
+                  h-8
+                  border border-white
+                  rounded-full
+                  border-opacity-10
+                "
                 :style="'background-color: #' + color.color"
               />
             </div>
@@ -180,8 +183,8 @@
 
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
-import { Attributes } from "../types/api";
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
+import { Attributes, SelectedAttributes, AttributeType } from "../types/api";
 
 export default defineComponent({
   components: {
@@ -200,6 +203,38 @@ export default defineComponent({
       selectedVolume: 0,
       attributes: this.productattributes,
     };
+  },
+  computed: {
+    selectedAttributes() {
+      let selectedAttributes: SelectedAttributes = {};
+      if (this.selectedColor in this.productattributes[AttributeType.COLOR]) {
+        selectedAttributes[AttributeType.COLOR] =
+          this.productattributes[AttributeType.COLOR][this.selectedColor];
+      }
+      if (this.selectedSize in this.productattributes[AttributeType.CLOTHING]) {
+        selectedAttributes[AttributeType.CLOTHING] =
+          this.productattributes[AttributeType.CLOTHING][this.selectedSize];
+      }
+      if (
+        this.selectedDimension in
+        this.productattributes[AttributeType.DIMENSION]
+      ) {
+        selectedAttributes[AttributeType.DIMENSION] =
+          this.productattributes[AttributeType.DIMENSION][
+            this.selectedDimension
+          ];
+      }
+      if (this.selectedVolume in this.productattributes[AttributeType.VOLUME]) {
+        selectedAttributes[AttributeType.VOLUME] =
+          this.productattributes[AttributeType.VOLUME][this.selectedVolume];
+      }
+      return selectedAttributes;
+    },
+  },
+  methods: {
+    getSelected() {
+      return this.selectedAttributes;
+    },
   },
 });
 </script>
