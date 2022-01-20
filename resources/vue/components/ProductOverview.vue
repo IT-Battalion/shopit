@@ -74,122 +74,11 @@
           </div>
 
           <form class="mt-10">
-            <!-- Colors -->
-            <div v-for="attribute in product.attributes" :key="attribute">
-              <div v-if="attribute.type == 3">
-                <h3 class="text-sm font-medium text-white">Color</h3>
+            <AttributeSelector
+              v-if="!state.isLoading"
+              :productattributes="product.attributes"
+            />
 
-                <RadioGroup v-model="selectedColor" class="mt-4">
-                  <RadioGroupLabel class="sr-only">
-                    Choose a color
-                  </RadioGroupLabel>
-                  <div class="flex items-center space-x-3">
-                    <RadioGroupOption
-                      as="template"
-                      v-for="color in attribute"
-                      :key="color.name"
-                      :value="color"
-                      v-slot="{ active, checked }"
-                    >
-                      <div
-                        :class="[
-                          color.selectedClass,
-                          active && checked ? 'ring ring-offset-1' : '',
-                          !active && checked ? 'ring-2' : '',
-                          '-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none',
-                        ]"
-                      >
-                        <RadioGroupLabel as="p" class="sr-only">
-                          {{ color.name }}
-                        </RadioGroupLabel>
-                        <span
-                          aria-hidden="true"
-                          :class="[
-                            color.class,
-                            'h-8 w-8 border border-white border-opacity-10 rounded-full',
-                          ]"
-                        />
-                      </div>
-                    </RadioGroupOption>
-                  </div>
-                </RadioGroup>
-              </div>
-
-              <!-- Sizes -->
-              <div class="mt-10" v-if="attribute.type == 0">
-                <div class="flex items-center justify-between">
-                  <h3 class="text-sm font-medium text-white">Size</h3>
-                  <a
-                    href="#"
-                    class="text-sm font-medium text-gray-400  hover:text-gray-700"
-                    >Size guide</a
-                  >
-                </div>
-
-                <RadioGroup v-model="selectedSize" class="mt-4">
-                  <RadioGroupLabel class="sr-only">
-                    Choose a size
-                  </RadioGroupLabel>
-                  <div
-                    class="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4"
-                  >
-                    <RadioGroupOption
-                      as="template"
-                      v-for="size in attribute"
-                      :key="size.name"
-                      :value="size"
-                      :disabled="!size.inStock"
-                      v-slot="{ active, checked }"
-                    >
-                      <div
-                        :class="[
-                          size.inStock
-                            ? 'shadow-sm text-gray-300 cursor-pointer'
-                            : 'text-gray-900 cursor-not-allowed',
-                          active ? 'ring-2 ring-white' : '',
-                          'group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-400 focus:outline-none sm:flex-1 sm:py-6',
-                        ]"
-                      >
-                        <RadioGroupLabel as="p">
-                          {{ size.name }}
-                        </RadioGroupLabel>
-                        <div
-                          v-if="size.inStock"
-                          :class="[
-                            active ? 'border' : 'border-2',
-                            checked
-                              ? 'border-indigo-500'
-                              : 'border-transparent',
-                            'absolute -inset-px rounded-md pointer-events-none',
-                          ]"
-                          aria-hidden="true"
-                        />
-                        <div
-                          v-else
-                          aria-hidden="true"
-                          class="absolute border-2 border-gray-200 rounded-md pointer-events-none  -inset-px"
-                        >
-                          <svg
-                            class="absolute inset-0 w-full h-full text-gray-200 stroke-2 "
-                            viewBox="0 0 100 100"
-                            preserveAspectRatio="none"
-                            stroke="currentColor"
-                          >
-                            <line
-                              x1="0"
-                              y1="100"
-                              x2="100"
-                              y2="0"
-                              vector-effect="non-scaling-stroke"
-                            />
-                          </svg>
-                        </div>
-                      </div>
-                    </RadioGroupOption>
-                  </div>
-                </RadioGroup>
-              </div>
-            </div>
             <button
               class="flex items-center justify-center w-full px-8 py-3 mt-10 text-base font-medium text-gray-900 bg-white  row-span-full rounded-3xl hover:bg-gray-300"
               type="button"
@@ -250,7 +139,7 @@ import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
 import { Product } from "../types/api";
 import { RouteLocationNormalizedLoaded, useRoute } from "vue-router";
 import { computed } from "vue";
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent, PropType } from "@vue/runtime-core";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -258,6 +147,7 @@ import "swiper/css/pagination";
 import SwiperCore, { Navigation, Pagination } from "swiper";
 import { initProgress, initLoad, state, endLoad } from "../loader";
 import LoadingImage from "./LoadingImage.vue";
+import AttributeSelector from "./AttributeSelector.vue";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -269,11 +159,12 @@ export default defineComponent({
     RadioGroupOption,
     Swiper,
     SwiperSlide,
+    AttributeSelector,
   },
   data() {
     return {
       state: state,
-      product: [] as any as Product,
+      product: Object as any as Product,
     };
   },
   async created() {
@@ -290,6 +181,7 @@ export default defineComponent({
       );
 
       this.product = response.data;
+      console.log(this.product.attributes);
       initProgress(this.product.images.length);
       endLoad();
     },

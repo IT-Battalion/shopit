@@ -94,6 +94,13 @@ export type SelectedAttributes = {
   [AttributeType.COLOR]?: ColorAttribute,
 };
 
+export type Attributes = {
+  [AttributeType.CLOTHING]: [ClothingAttribute],
+  [AttributeType.DIMENSION]: [DimensionAttribute],
+  [AttributeType.VOLUME]: [VolumeAttribute],
+  [AttributeType.COLOR]: [ColorAttribute],
+}
+
 export interface Product {
   id: number,
   name: string,
@@ -107,12 +114,7 @@ export interface Product {
   images: [{
     id: number,
   }],
-  attributes: {
-    [AttributeType.CLOTHING]: [ClothingAttribute],
-    [AttributeType.DIMENSION]: [DimensionAttribute],
-    [AttributeType.VOLUME]: [VolumeAttribute],
-    [AttributeType.COLOR]: [ColorAttribute],
-  }
+  attributes: Attributes,
 }
 
 export interface ShoppingCartEntry {

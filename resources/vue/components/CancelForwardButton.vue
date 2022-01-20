@@ -1,6 +1,8 @@
 <template>
-  <div class="grid grid-cols-2 grid-rows-1 my-5 mr-0 gap-x-5">
-    <router-link :to="next" class="col-span-1 col-start-2 justify-self-end">
+  <div
+    class="grid w-48 grid-cols-2 grid-rows-1 my-5 ml-auto mr-20  place-items-center gap-x-5"
+  >
+    <router-link :to="next" class="col-span-1">
       <button
         class="w-20 h-10 py-1 my-auto bg-white  row-span-full rounded-3xl hover:bg-gray-300 justify-self-end"
         type="button"
@@ -23,7 +25,7 @@
         </svg>
       </button>
     </router-link>
-    <router-link :to="cancel" class="col-span-1 col-start-2 justify-self-end">
+    <router-link :to="cancel" class="col-span-1">
       <button
         class="w-20 h-10 py-1 my-auto bg-white  row-span-full rounded-3xl hover:bg-gray-300 justify-self-end"
         type="button"
