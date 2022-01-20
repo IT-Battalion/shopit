@@ -77,6 +77,7 @@ import { Vue3Mq, MqResponsive } from "vue3-mq";
 import { Skeletor } from "vue-skeletor";
 import 'vue-skeletor/dist/vue-skeletor.css';
 import {initLoad} from "./loader";
+import mitt from "mitt";
 
 /*export const SUPPORT_LOCALES = ['de', 'en'];
 
@@ -104,6 +105,8 @@ const i18n = createI18n({
     locale: userLocale,
 });*/
 
+const bus = mitt();
+
 let createdApp = createApp(App);
 createdApp
     .use(router)
@@ -114,5 +117,6 @@ createdApp
     .mount("#app");
 
 createdApp.config.globalProperties.$http = window.axios;
+createdApp.config.globalProperties.$globalBus = bus;
 
 //loadLocale(i18n, userLocale);

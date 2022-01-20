@@ -95,20 +95,27 @@
                     <div
                       class="flex justify-between my-2 text-base text-gray-900  font-base"
                     >
-                      <p>Zwischensumme</p>
-                      <p>$262.00</p>
+                      <p>Zwischensumme (Netto)</p>
+                      <p>{{ shoppingCart.subtotal }}</p>
+                    </div>
+                    <div
+                      class="flex justify-between my-2 text-base text-gray-900  font-base"
+                      v-if="shoppingCart.discount !== '0,-€'"
+                    >
+                      <p>Rabatt (Coupon)</p>
+                      <p>-{{ shoppingCart.discount }}</p>
                     </div>
                     <div
                       class="flex justify-between my-2 text-base text-gray-900  font-base"
                     >
-                      <p>Mwst</p>
-                      <p>$0.00</p>
+                      <p>USt</p>
+                      <p>{{ shoppingCart.tax }}</p>
                     </div>
                     <div
                       class="flex justify-between my-2 text-base font-medium text-gray-900 "
                     >
                       <p>Gesamt</p>
-                      <p>$262.00</p>
+                      <p>{{ shoppingCart.total }}</p>
                     </div>
                     <p class="mt-3 text-sm text-gray-500">
                       Coupon Code wird im nächsten Schritt überprüft.
@@ -160,8 +167,7 @@ import {
 } from "@headlessui/vue";
 import { XIcon } from "@heroicons/vue/outline";
 import { AxiosResponse } from "axios";
-import { ShoppingCart } from "../types/api";
-import { endLoad, initLoad, initProgress, state } from "../loader";
+import {ShoppingCart, ShoppingCartDescriptor} from "../types/api";
 import ShoppingcartItem from "./ShoppingcartItem.vue";
 
 export default defineComponent({
@@ -186,13 +192,14 @@ export default defineComponent({
       shoppingCart: {} as ShoppingCart,
     };
   },
-  async created() {
-    let response: AxiosResponse<ShoppingCart> = await this.$http.get(
-      "/user/shopping-cart"
-    );
-    this.shoppingCart = response.data;
-    this.imagesLoading = this.shoppingCart.products.length;
-    this.isMetadataLoading = false;
+  async beforeMount() {
+    this.$globalBus.on('shopping-cart.add', this.loadCart);
+    this.$globalBus.on('shopping-cart.remove', this.loadCart);
+    await this.loadCart();
+  },
+  async unmounted() {
+    this.$globalBus.off('shopping-cart.add', this.loadCart);
+    this.$globalBus.off('shopping-cart.remove', this.loadCart);
   },
   methods: {
     toggleOpen() {
@@ -201,6 +208,18 @@ export default defineComponent({
     setOpen(isOpen: boolean) {
       this.isOpen = isOpen;
     },
+    async loadCart() {
+      this.isMetadataLoading = true;
+      let response: AxiosResponse<ShoppingCart> = await this.$http.get(
+        "/user/shopping-cart"
+      );
+      this.shoppingCart = response.data;
+      this.imagesLoading = this.shoppingCart.products.length;
+      this.isMetadataLoading = false;
+    },
+    removeProduct(product: ShoppingCartDescriptor) {
+
+    }
   },
   watch: {
     $route(to, from) {

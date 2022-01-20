@@ -58,6 +58,7 @@
         "@types/lodash": "^4.14.177",
         "@vue-hero-icons/solid": "^1.7.2",
         "gridjs": "^5.0.2",
+        "mitt": "^3.0.0",
         "swiper": "^7.3.1",
         "vue": "^3.2.21",
         "vue-class-component": "^8.0.0-rc.1",

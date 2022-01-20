@@ -254,7 +254,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         }
 
         return $productInShoppingCart
-            ->get()->first()
+            ->first()
             ->pivot->count;
     }
 

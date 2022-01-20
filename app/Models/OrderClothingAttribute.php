@@ -53,6 +53,7 @@ class OrderClothingAttribute extends Model implements OrderProductAttribute
     public function jsonSerialize()
     {
         return [
+            'id' => $this->id,
             'type' => $this->type,
             'size' => $this->size,
         ];

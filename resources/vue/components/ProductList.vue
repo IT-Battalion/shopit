@@ -63,7 +63,7 @@ export default defineComponent({
       state: state,
     };
   },
-  async created() {
+  async beforeMount() {
     initLoad();
     let response: AxiosResponse<{ [key: string]: Product[] }> =
       await this.$http.get("/product");

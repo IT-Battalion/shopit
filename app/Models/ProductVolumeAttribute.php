@@ -79,6 +79,7 @@ class ProductVolumeAttribute extends Model implements ProductAttributeToOrder
     public function jsonSerialize()
     {
         return [
+            'id' => $this->id,
             'type' => $this->type,
             'volume' => $this->volume,
         ];

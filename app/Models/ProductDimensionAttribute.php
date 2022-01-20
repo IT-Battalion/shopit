@@ -92,6 +92,7 @@ class ProductDimensionAttribute extends Model implements ProductAttributeToOrder
     public function jsonSerialize()
     {
         return [
+            'id' => $this->id,
             'type' => $this->type,
             'width' => $this->width,
             'height' => $this->height,
