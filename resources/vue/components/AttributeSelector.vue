@@ -184,7 +184,8 @@
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
-import { Attributes, SelectedAttributes, AttributeType } from "../types/api";
+import { Attributes, SelectedAttributes } from "../types/api";
+import {AttributeType} from "../types/api-values";
 
 export default defineComponent({
   components: {
