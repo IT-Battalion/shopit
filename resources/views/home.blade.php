@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('head-content')
     <script>
-        window.config = JSON.parse("@php
+        window.initialConfig = JSON.parse("@php
         use App\Models\ProductCategory;
         use Illuminate\Support\Facades\Auth;
 

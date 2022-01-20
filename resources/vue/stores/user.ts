@@ -4,16 +4,16 @@ import {redirectToLogin} from "../util";
 import {endLoad, initLoad} from "../loader";
 
 export const user = reactive({
-  username: window.config.user.username ?? '',
-  name: window.config.user.name ?? '',
-  firstname: window.config.user.firstname ?? '',
-  lastname: window.config.user.lastname ?? '',
-  email: window.config.user.email ?? '',
-  employeeType: window.config.user.employeeType ?? '',
-  class: window.config.user.class ?? '',
-  lang: window.config.user.lang ?? '',
-  isAdmin: window.config.user.isAdmin ?? false,
-  isLoggedIn: window.config.user.isLoggedIn ?? false,
+  username: window.initialConfig.user.username ?? '',
+  name: window.initialConfig.user.name ?? '',
+  firstname: window.initialConfig.user.firstname ?? '',
+  lastname: window.initialConfig.user.lastname ?? '',
+  email: window.initialConfig.user.email ?? '',
+  employeeType: window.initialConfig.user.employeeType ?? '',
+  class: window.initialConfig.user.class ?? '',
+  lang: window.initialConfig.user.lang ?? '',
+  isAdmin: window.initialConfig.user.isAdmin ?? false,
+  isLoggedIn: window.initialConfig.user.isLoggedIn ?? false,
 
   error: ''
 })

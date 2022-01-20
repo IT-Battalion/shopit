@@ -32,6 +32,7 @@
         <button
           type="button"
           class="font-medium text-indigo-600 hover:text-indigo-500"
+          @click="remove"
         >
           Entfernen
         </button>
@@ -43,7 +44,7 @@
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
 import { PropType } from "vue";
-import { ShoppingCartEntry } from "../types/api";
+import {SelectedAttributes, ShoppingCartDescriptor, ShoppingCartEntry} from "../types/api";
 import LoadingImage from "./LoadingImage.vue";
 import Attributes from "./Attributes.vue";
 
@@ -53,12 +54,32 @@ export default defineComponent({
       type: Object as PropType<ShoppingCartEntry>,
       required: true,
     },
+    index: {
+      type: Number,
+      required: true,
+    }
   },
   data() {
     return {
       entry: this.shoppingCartEntry,
       count: this.shoppingCartEntry.count,
     };
+  },
+  methods: {
+    async remove() {
+      let descriptor: ShoppingCartDescriptor = {
+        name: this.entry.product.name,
+        selected_attributes: this.entry.selected_attributes,
+        count: this.count,
+      };
+      this.$globalBus.emit('shopping-cart.load');
+      try {
+        await this.$http.post('/user/shopping-cart/remove', descriptor);
+        this.$globalBus.emit('shopping-cart.remove');
+      } catch (e) {
+        console.error(e);
+      }
+    },
   },
   components: {Attributes, LoadingImage },
 });

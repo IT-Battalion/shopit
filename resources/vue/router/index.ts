@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory, RouteRecordRaw, useRoute} from "vue-router";
+import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
 import Login from "../views/Login.vue";
 import Products from "../views/Products.vue";
 import Main from "../views/layout/Main.vue";
@@ -60,6 +60,9 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin",
         component: () =>
           import("../views/layout/Admin.vue"),
+        meta: {
+          requiresAdmin: true,
+        },
 
         children: [
           {
@@ -198,25 +201,24 @@ router.beforeEach((to, from, next) => {
       return;
     }
 
-    if (to.matched.some(record => record.meta.is_admin)) {
+    if (to.matched.some(record => record.meta.requiresAdmin)) {
       if (user.isAdmin) {
         next();
       } else {
         next(from);
       }
-    } else {
-      next();
     }
-  } else {
-    if (to.matched.some(record => record.meta.redirectWhenAuthenticated)
+  }
+  if (to.matched.some(record => record.meta.redirectWhenAuthenticated)
       && user.isLoggedIn) {
+    if (user.isLoggedIn) {
       next({
         name: to.meta.redirectTo as string,
       });
       return;
     }
-    next();
   }
+  next();
 });
 
 router.beforeEach((to, from, next) => {

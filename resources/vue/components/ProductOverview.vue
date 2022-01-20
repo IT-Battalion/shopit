@@ -210,6 +210,7 @@ export default defineComponent({
         count: (this.$refs.amount as typeof InputField).getValue(),
       };
 
+      this.$globalBus.emit('shopping-cart.load');
       try {
         let response = await this.$http.post('/user/shopping-cart/add', entry);
         this.$globalBus.emit('shopping-cart.add');

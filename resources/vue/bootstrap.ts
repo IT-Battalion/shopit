@@ -1,14 +1,17 @@
 import { AxiosInstance, default as axios } from "axios";
 
 declare global {
-    interface Window {
-        axios: AxiosInstance,
-        _: LoDashStatic,
-        pusher: Pusher,
-        echo: Echo,
-        config: GlobalConfig,
-    }
+  interface Window {
+    axios: AxiosInstance,
+    _: LoDashStatic,
+    pusher: Pusher,
+    echo: Echo,
+    initialConfig: GlobalConfig,
+    config: UnwrapNestedRefs<GlobalConfig>,
+  }
 }
+
+window.config = reactive(window.initialConfig);
 
 window._ = require('lodash');
 
@@ -68,7 +71,7 @@ require('pdfmake');
 // didn't appear to be necessary
 
 import {
-    createApp
+  createApp, reactive
 } from "vue";
 import App from "./App.vue";
 import router from "./router";
@@ -78,6 +81,7 @@ import { Skeletor } from "vue-skeletor";
 import 'vue-skeletor/dist/vue-skeletor.css';
 import {initLoad} from "./loader";
 import mitt from "mitt";
+import {UnwrapNestedRefs} from "@vue/reactivity";
 
 /*export const SUPPORT_LOCALES = ['de', 'en'];
 

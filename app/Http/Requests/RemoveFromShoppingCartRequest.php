@@ -26,24 +26,20 @@ class RemoveFromShoppingCartRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'exists:products'],
-            'count' => ['required', 'integer', 'numeric', 'gt:0'],
+            'count' => ['required', 'numeric', 'gte:-1'],
             'selected_attributes' => ['required', 'array'],
-            'selected_attributes.*.type' => ['required', 'integer', 'numeric', 'between:0,3'],
-            'selected_attributes.0.size' => ['required', 'integer', 'numeric', 'between:0,4'],
-            'selected_attributes.1.width' => ['required', 'integer', 'numeric', 'gt:0'],
-            'selected_attributes.1.height' => ['required', 'integer', 'numeric', 'gt:0'],
-            'selected_attributes.1.depth' => ['required', 'integer', 'numeric', 'gt:0'],
-            'selected_attributes.2.volume' => ['required', 'integer', 'numeric', 'gt:0'],
-            'selected_attributes.3.name' => ['required', 'string'],
-            'selected_attributes.3.color' => ['required', 'string'],
+            'selected_attributes.*.id' => ['numeric'],
+            'selected_attributes.*.type' => ['numeric', 'between:0,3'],
         ];
     }
 
-    protected function prepareForValidation()
+    public function getSelectedAttributes()
     {
-        $this->merge([
-            'selected_attributes' => json_decode($this->selected_attributes, true),
-        ]);
+        return collect($this['selected_attributes'])
+            ->mapWithKeys(function ($selectedAttribute) {
+                return [
+                    $selectedAttribute['type'] => $selectedAttribute['id'],
+                ];
+            });
     }
-
 }

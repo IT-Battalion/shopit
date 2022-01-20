@@ -54,7 +54,17 @@ class ShoppingCartController extends Controller
         $shoppingCart->addProduct($product, $selectedAttributes, $request['count']);
     }
 
-    public function remove(RemoveFromShoppingCartRequest $request) {
-        dd($request->validated());
+    public function remove(RemoveFromShoppingCartRequest $request, ShoppingCartServiceInterface $shoppingCart) {
+        $data = $request->validated();
+
+        $product = Product::whereName($data['name'])->first();
+        if ($product === null)
+        {
+            abort(404);
+        }
+
+        $selectedAttributes = $request->getSelectedAttributes();
+
+        $shoppingCart->removeProduct($product, $selectedAttributes, $request['count']);
     }
 }
