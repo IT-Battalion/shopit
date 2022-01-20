@@ -66,6 +66,7 @@ require('pdfmake');
 //     console.error("CSRF couldn't be fetched");
 // });
 // didn't appear to be necessary
+
 import {
     createApp
 } from "vue";
@@ -75,7 +76,8 @@ import { redirectToLogin } from "./util";
 import { Vue3Mq, MqResponsive } from "vue3-mq";
 import { Skeletor } from "vue-skeletor";
 import 'vue-skeletor/dist/vue-skeletor.css';
-import { initLoad } from "./loader";
+import {initLoad} from "./loader";
+import mitt from "mitt";
 
 /*export const SUPPORT_LOCALES = ['de', 'en'];
 
@@ -103,15 +105,18 @@ const i18n = createI18n({
     locale: userLocale,
 });*/
 
+const bus = mitt();
+
 let createdApp = createApp(App);
 createdApp
     .use(router)
-    //    .use(i18n)
+//    .use(i18n)
     .use(Vue3Mq, { preset: "tailwind" })
     .component('mq-responsive', MqResponsive)
     .component(Skeletor.name, Skeletor)
     .mount("#app");
 
 createdApp.config.globalProperties.$http = window.axios;
+createdApp.config.globalProperties.$globalBus = bus;
 
 //loadLocale(i18n, userLocale);

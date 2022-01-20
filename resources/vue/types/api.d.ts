@@ -40,24 +40,28 @@ export interface ProductCategory {
   },
 }
 
-export interface ClothingAttribute {
+export interface ProductAttribute {
+  id: number,
+}
+
+export interface ClothingAttribute extends ProductAttribute{
   type: AttributeType.CLOTHING,
   size: ClothingSize,
 }
 
-export interface DimensionAttribute {
+export interface DimensionAttribute extends ProductAttribute {
   type: AttributeType.DIMENSION,
   width: Meter,
   height: Meter,
   depth: Meter,
 }
 
-export interface VolumeAttribute {
+export interface VolumeAttribute extends ProductAttribute {
   type: AttributeType.VOLUME,
   volume: Liter,
 }
 
-export interface ColorAttribute {
+export interface ColorAttribute extends ProductAttribute {
   type: AttributeType.COLOR,
   name: string,
   color: Color,
@@ -114,6 +118,7 @@ export interface ShoppingCartEntry {
   product: Product,
   selected_attributes: SelectedAttributes,
   count: number,
+  price: Money,
 }
 
 export interface ShoppingCart {

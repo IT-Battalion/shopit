@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 /**
  * App\Models\Product
@@ -140,17 +141,10 @@ class Product extends Model implements ConvertableToOrder
 
     public function isAttributeAvailable(int $attributeType, $attribute): bool
     {
-        $attributes = match ($attributeType) {
-            AttributeType::CLOTHING->value => $this->productClothingAttributes(),
-            AttributeType::DIMENSION->value => $this->productDimensionAttributes(),
-            AttributeType::VOLUME->value => $this->productVolumeAttributes(),
-            AttributeType::COLOR->value => $this->productColorAttributes(),
-            default => null,
-        };
-
-        return !is_null($attributes) && $attributes
-            ->wherePivot('product_attribute_id', $attribute)
-            ->count() !== 0;
+        return DB::table('product_attributes')
+            ->where('product_attributes.product_attribute_type', $attributeType)
+            ->where('product_attributes.product_attribute_id', getModelId($attribute))
+            ->exists();
     }
 
     public function areAttributesAvailable(\Illuminate\Support\Collection $attributes): bool
@@ -209,7 +203,7 @@ class Product extends Model implements ConvertableToOrder
             'name' => $this->name,
             'description' => $this->name,
             'price' => $this->gross_price,
-            'tax' => $this->tax,
+            'tax' => str_replace('.', ',', bcround(bcmul($this->tax, '100'))),
             'thumbnail' => [
                 'id' => $this->thumbnail_id,
             ],

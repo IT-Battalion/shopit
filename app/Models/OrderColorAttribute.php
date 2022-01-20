@@ -55,6 +55,7 @@ class OrderColorAttribute extends Model implements OrderProductAttribute
     public function jsonSerialize()
     {
         return [
+            'id' => $this->id,
             'type' => $this->type,
             'name' => $this->name,
             'color' => $this->color,

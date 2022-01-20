@@ -12,3 +12,11 @@ export enum ClothingSize {
   L = 3,
   XL = 4,
 }
+
+export const clothingSizeLabels = [
+  'XS',
+  'S',
+  'M',
+  'L',
+  'XL',
+];

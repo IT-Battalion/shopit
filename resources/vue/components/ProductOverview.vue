@@ -77,14 +77,15 @@
             <AttributeSelector
               v-if="!state.isLoading"
               :productattributes="product.attributes"
-              ref="selected"
+              ref="selectedAttributes"
             />
 
-            <InputField labelName="Anzahl" value="1" ref="amount" />
+            <InputField labelName="Anzahl" value="1" ref="amount" type="number" v-if="!state.isLoading" />
 
             <button
               class="flex items-center justify-center w-full px-8 py-3 mt-10 text-base font-medium text-gray-900 bg-white  row-span-full rounded-3xl hover:bg-gray-300"
               type="button"
+              @click="addProduct"
             >
               <a class="pr-2">Add to Bag</a>
               <svg
@@ -136,24 +137,21 @@
 </template>
 
 <script lang="ts">
-import { AxiosResponse } from "axios";
-import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
-import {
-  Product,
-  ShoppingCartDescriptor,
-  ShoppingCartEntry,
-} from "../types/api";
-import { RouteLocationNormalizedLoaded, useRoute } from "vue-router";
-import { defineComponent } from "@vue/runtime-core";
-import { Swiper, SwiperSlide } from "swiper/vue";
+import {AxiosResponse} from "axios";
+import {RadioGroup, RadioGroupLabel, RadioGroupOption} from "@headlessui/vue";
+import {Product, ShoppingCartDescriptor,} from "../types/api";
+import {RouteLocationNormalizedLoaded, useRoute} from "vue-router";
+import {defineComponent} from "@vue/runtime-core";
+import {Swiper, SwiperSlide} from "swiper/vue";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import SwiperCore, { Navigation, Pagination } from "swiper";
-import { initProgress, initLoad, state, endLoad } from "../loader";
+import SwiperCore, {Navigation, Pagination} from "swiper";
+import {endLoad, initLoad, initProgress, state} from "../loader";
 import LoadingImage from "./LoadingImage.vue";
 import AttributeSelector from "./AttributeSelector.vue";
 import InputField from "./InputField.vue";
+import {AttributeType} from "../types/api-values";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -174,7 +172,7 @@ export default defineComponent({
       product: Object as any as Product,
     };
   },
-  async created() {
+  async beforeMount() {
     const route = useRoute();
     const name = route.params.name as string;
 
@@ -193,14 +191,32 @@ export default defineComponent({
       endLoad();
     },
     async addProduct() {
+      let selectedAttributes = (
+        this.$refs.selectedAttributes as typeof AttributeSelector
+      ).getSelected();
+
+      Object.keys(AttributeType)
+        .filter((type) => selectedAttributes[type])
+        .forEach(type => {
+        selectedAttributes[type] = {
+          id: selectedAttributes[type].id,
+          type: selectedAttributes[type].type,
+        };
+      });
+
       let entry: ShoppingCartDescriptor = {
         name: this.product.name,
-        selected_attributes: (
-          this.$refs.selectedAttributes as typeof AttributeSelector
-        ).getSelected(),
+        selected_attributes: selectedAttributes,
         count: (this.$refs.amount as typeof InputField).getValue(),
       };
-      console.log(entry);
+
+      try {
+        let response = await this.$http.post('/user/shopping-cart/add', entry);
+        this.$globalBus.emit('shopping-cart.add');
+        console.log(response);
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
   watch: {

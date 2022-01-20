@@ -18,14 +18,15 @@
                 selectedColor,
                 active && checked ? 'ring ring-offset-1' : '',
                 !active && checked ? 'ring-2' : '',
-                '-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none',
+                '-m-0.5 relative p-0.5 rounded-xl flex items-center justify-center cursor-pointer focus:outline-none w-8 h-8',
               ]"
               :style="'background-color: #' + color.color"
+              :title="color.name"
             >
               <RadioGroupLabel as="p" class="sr-only">
                 {{ color.name }}
               </RadioGroupLabel>
-              <span
+              <!--span
                 aria-hidden="true"
                 class="
                   w-8
@@ -35,7 +36,7 @@
                   border-opacity-10
                 "
                 :style="'background-color: #' + color.color"
-              />
+              /-->
             </div>
           </RadioGroupOption>
         </div>
@@ -62,6 +63,7 @@
             :key="size.size"
             :value="index"
             v-slot="{ active, checked }"
+            :title="clothingSizeValues[size.size]"
           >
             <div
               :class="[
@@ -71,7 +73,7 @@
               ]"
             >
               <RadioGroupLabel as="p">
-                {{ size.size }}
+                {{ clothingSizeValues[size.size] }}
               </RadioGroupLabel>
               <div
                 :class="[
@@ -154,6 +156,7 @@
             :key="volume.type"
             :value="index"
             v-slot="{ active, checked }"
+            :title="volume.volume.value + volume.volume.unit"
           >
             <div
               :class="[
@@ -185,7 +188,7 @@
 import { defineComponent } from "@vue/runtime-core";
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
 import { Attributes, SelectedAttributes } from "../types/api";
-import {AttributeType} from "../types/api-values";
+import {AttributeType, clothingSizeLabels} from "../types/api-values";
 
 export default defineComponent({
   components: {
@@ -203,6 +206,7 @@ export default defineComponent({
       selectedDimension: 0,
       selectedVolume: 0,
       attributes: this.productattributes,
+      clothingSizeValues: clothingSizeLabels,
     };
   },
   computed: {

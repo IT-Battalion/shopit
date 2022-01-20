@@ -148,7 +148,7 @@ export default defineComponent({
       highlightedProducts: [] as any as Product[],
     };
   },
-  async created() {
+  async beforeMount() {
     let response: AxiosResponse<Product[]> = await this.$http.get(
       "/highlighted"
     );
