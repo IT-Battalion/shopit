@@ -58,7 +58,7 @@ class ProductDimensionAttribute extends Model implements ProductAttributeToOrder
     ];
 
     public function products() {
-        return $this->morphToMany(Product::class, 'product_attribute');
+        return $this->belongsToMany(Product::class, 'dimension_attribute');
     }
 
     public function shoppingCartEntries()

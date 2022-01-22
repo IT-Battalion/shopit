@@ -27,4 +27,5 @@ mix
     .css('node_modules/vue-skeletor/dist/vue-skeletor.css', 'public/css/vendor.css' )
     .sass('resources/assets/scss/vue-good-tables.sass', 'public/css/vue-good-tables.css')
     .sass('resources/scss/shopit.scss', 'public/css/shopit.css')
+    .sourceMaps()
     .browserSync('localhost:80');

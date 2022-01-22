@@ -224,7 +224,8 @@ export default defineComponent({
       );
       this.shoppingCart = response.data;
       this.isLoading = false;
-      (this.$refs.entryList as HTMLUListElement).scrollTo(this.scrollBeforeLoad);
+      if (this.isOpen)
+        (this.$refs.entryList as HTMLUListElement).scrollTo(this.scrollBeforeLoad);
     },
   },
   watch: {

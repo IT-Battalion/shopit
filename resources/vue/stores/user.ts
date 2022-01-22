@@ -31,7 +31,7 @@ const actions = {
       user.employeeType = responseUser.employeeType;
       user.class = responseUser.class;
       user.lang = responseUser.lang;
-      user.isAdmin = responseUser.isAdmin;
+      user.isAdmin = responseUser.is_admin;
 
       return true;
     }).catch(err => {

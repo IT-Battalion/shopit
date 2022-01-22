@@ -37,14 +37,6 @@ class CreateProductsTable extends Migration
             $table->foreignId('product_id')->constrained('products');
         });
 
-        Schema::create('product_attributes', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('product_id')->constrained('products');
-            $table->integer('product_attribute_id', unsigned: true);
-            $table->string('product_attribute_type');
-            $table->timestamps();
-        });
-
         Schema::create('product_clothing_attributes', function (Blueprint $table) {
             $table->id();
             $table->integer('size', unsigned: true); // enum clothing size
@@ -70,6 +62,30 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('color', 6);
             $table->timestamps();
+        });
+
+        Schema::create('clothing_attribute', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('product_id');
+            $table->foreignId('product_clothing_attribute_id')->constrained();
+        });
+
+        Schema::create('dimension_attribute', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('product_id');
+            $table->foreignId('product_dimension_attribute_id')->constrained();
+        });
+
+        Schema::create('volume_attribute', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('product_id');
+            $table->foreignId('product_volume_attribute_id')->constrained();
+        });
+
+        Schema::create('color_attribute', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('product_id');
+            $table->foreignId('product_color_attribute_id')->constrained();
         });
     }
 

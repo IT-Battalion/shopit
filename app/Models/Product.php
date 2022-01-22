@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
 use App\Contracts\ConvertableToOrder;
 use App\Traits\TracksModification;
 use App\Types\AttributeType;
@@ -13,8 +14,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -70,7 +71,7 @@ use Illuminate\Support\Facades\DB;
  */
 class Product extends Model implements ConvertableToOrder
 {
-    use HasFactory, TracksModification;
+    use HasFactory, TracksModification, EagerLoadPivotTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -119,31 +120,34 @@ class Product extends Model implements ConvertableToOrder
             ]);
     }
 
-    public function productClothingAttributes(): MorphToMany
+    public function productClothingAttributes(): BelongsToMany
     {
-        return $this->morphedByMany(ProductClothingAttribute::class, 'product_attribute');
+        return $this->belongsToMany(ProductClothingAttribute::class, 'clothing_attribute');
     }
 
-    public function productDimensionAttributes(): MorphToMany
+    public function productDimensionAttributes(): BelongsToMany
     {
-        return $this->morphedByMany(ProductDimensionAttribute::class, 'product_attribute');
+        return $this->belongsToMany(ProductDimensionAttribute::class, 'dimension_attribute');
     }
 
-    public function productVolumeAttributes(): MorphToMany
+    public function productVolumeAttributes(): BelongsToMany
     {
-        return $this->morphedByMany(ProductVolumeAttribute::class, 'product_attribute');
+        return $this->belongsToMany(ProductVolumeAttribute::class, 'volume_attribute');
     }
 
-    public function productColorAttributes(): MorphToMany
+    public function productColorAttributes(): BelongsToMany
     {
-        return $this->morphedByMany(ProductColorAttribute::class, 'product_attribute');
+        return $this->belongsToMany(ProductColorAttribute::class, 'color_attribute');
     }
 
-    public function isAttributeAvailable(int $attributeType, $attribute): bool
+    public function isAttributeAvailable(AttributeType|int $attributeType, $attribute): bool
     {
-        return DB::table('product_attributes')
-            ->where('product_attributes.product_attribute_type', $attributeType)
-            ->where('product_attributes.product_attribute_id', getModelId($attribute))
+        if (is_int($attributeType)) {
+            $attributeType = AttributeType::from($attributeType);
+        }
+        return DB::table(strtolower($attributeType->name) . '_attribute')
+            ->where('product_id', $this->id)
+            ->where('product_' . strtolower($attributeType->name) . '_attribute_id', getModelId($attribute))
             ->exists();
     }
 

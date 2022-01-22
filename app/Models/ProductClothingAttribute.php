@@ -47,7 +47,7 @@ class ProductClothingAttribute extends Model implements ProductAttributeToOrder
 
     public function products()
     {
-        return $this->morphToMany(Product::class, 'product_attribute');
+        return $this->belongsToMany(Product::class, 'clothing_attribute');
     }
 
     public function shoppingCartEntries()

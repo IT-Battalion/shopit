@@ -38,8 +38,13 @@ export function endLoad() {
 }
 
 function complete() {
-  state.progressTarget = Number.MAX_VALUE;
-  state.progressCurrent = Number.MAX_VALUE;
+  state.progressTarget = state.progressCurrent = Number.MAX_VALUE;
+}
+
+export function reset() {
+  state.waiting = 0;
+  state.progressCurrent = state.progressTarget;
+  complete();
 }
 
 export function onLoaded() {

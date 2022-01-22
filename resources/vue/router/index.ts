@@ -4,7 +4,7 @@ import Products from "../views/Products.vue";
 import Main from "../views/layout/Main.vue";
 import { user } from "../stores/user";
 import ProductOverview from "../components/ProductOverview.vue";
-import { endLoad as complete, initLoad, onLoaded } from "../loader";
+import {endLoad, endLoad as complete, initLoad, onLoaded, reset} from "../loader";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -142,7 +142,7 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHistory(),
   scrollBehavior: (to, from, savedPosition) => {
-    const sameSite = to.path == from.path && (from.hash || Object.entries(from.meta).length);
+    const sameSite = to.path == from.path && from.hash && Object.entries(from.meta).length;
     if (sameSite) {
       if (savedPosition) {
         return savedPosition;
@@ -201,27 +201,23 @@ router.beforeEach((to, from, next) => {
       return;
     }
 
-    if (to.matched.some(record => record.meta.requiresAdmin)) {
-      if (user.isAdmin) {
-        next();
-      } else {
-        next(from);
-      }
+    if (to.matched.some(record => record.meta.requiresAdmin) && !user.isAdmin) {
+      next(false);
+      return;
     }
   }
   if (to.matched.some(record => record.meta.redirectWhenAuthenticated)
       && user.isLoggedIn) {
-    if (user.isLoggedIn) {
-      next({
-        name: to.meta.redirectTo as string,
-      });
-      return;
-    }
+    next({
+      name: to.meta.redirectTo as string,
+    });
+    return;
   }
   next();
 });
 
 router.beforeEach((to, from, next) => {
+  reset();
   const showLoader = 'initLoad' in to.meta ? to.meta.initLoad : true;
   if (showLoader) {
     initLoad();

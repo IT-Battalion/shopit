@@ -186,10 +186,10 @@ export default defineComponent({
   },
   methods: {
     setOpen(isOpen: boolean) {
-      (this.$refs as any).shoppingCart.setOpen(isOpen);
+      (this.$refs.shoppingCart as typeof Shoppingcart).setOpen(isOpen);
     },
     setOpenCategories(isOpen: boolean) {
-      (this.$refs as any).categories.setOpen(isOpen);
+      (this.$refs.categories as typeof Categories).setOpen(isOpen);
     },
   },
 });

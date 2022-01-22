@@ -186,7 +186,6 @@ export default defineComponent({
       );
 
       this.product = response.data;
-      console.log(this.product.attributes);
       initProgress(this.product.images.length);
       endLoad();
     },
@@ -214,7 +213,6 @@ export default defineComponent({
       try {
         let response = await this.$http.post('/user/shopping-cart/add', entry);
         this.$globalBus.emit('shopping-cart.add');
-        console.log(response);
       } catch (e) {
         console.log(e);
       }

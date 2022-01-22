@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
 use App\Events\UserBannedEvent;
 use App\Events\UserBanningEvent;
 use App\Events\UserUnbannedEvent;

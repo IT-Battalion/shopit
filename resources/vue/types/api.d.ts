@@ -16,7 +16,7 @@ export interface LoginResponseData {
   employeeType: string,
   class: string,
   lang: string,
-  isAdmin: boolean,
+  is_admin: boolean,
 }
 
 export interface User {
@@ -44,7 +44,7 @@ export interface ProductAttribute {
   id: number,
 }
 
-export interface ClothingAttribute extends ProductAttribute{
+export interface ClothingAttribute extends ProductAttribute {
   type: AttributeType.CLOTHING,
   size: ClothingSize,
 }

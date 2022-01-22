@@ -50,7 +50,7 @@ class ProductVolumeAttribute extends Model implements ProductAttributeToOrder
     ];
 
     public function products() {
-        return $this->morphToMany(Product::class, 'product_attribute');
+        return $this->belongsToMany(Product::class, 'volume_attribute');
     }
 
     public function shoppingCartEntries()
