@@ -1,10 +1,9 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
 import Login from "../views/Login.vue";
-import Products from "../views/Products.vue";
 import Main from "../views/layout/Main.vue";
 import {user} from "../stores/user";
-import ProductOverview from "../components/ProductOverview.vue";
 import {endLoad, endLoad as complete, initLoad, onLoaded, reset} from "../loader";
+import Home from "../views/layout/Home.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -13,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
     component: Login,
     meta: {
       redirectWhenAuthenticated: true,
-      redirectTo: 'Home',
+      redirectTo: "Home",
     }
   },
   {
@@ -32,27 +31,43 @@ const routes: Array<RouteRecordRaw> = [
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
         component: () =>
-          import("../views/layout/Home.vue"),
+          Home,
 
         children: [
           {
             path: "",
             name: "Products",
-            component: Products,
+            component: () =>
+              import("../views/Products.vue"),
             meta: {
               initLoad: false,
               endLoad: false,
             }
           },
           {
-            path: "product/:name",
+            path: "produkte/:name",
             name: "Product",
-            component: ProductOverview,
+            component: () =>
+              import("../components/ProductOverview.vue"),
             meta: {
               initLoad: false,
               endLoad: false,
             }
           }
+        ]
+      },
+      {
+        path: "/user/",
+        name: "user",
+        component: () =>
+          import("../components/ProfilePage.vue"),
+        children: [
+          {
+            path: "bestellverlauf",
+            name: "Bestellverlauf",
+            component: () =>
+              import("../views/layout/OrderHistory.vue"),
+          },
         ]
       },
       {
@@ -66,39 +81,16 @@ const routes: Array<RouteRecordRaw> = [
 
         children: [
           {
-            path: "",
-            name: "ProfilePage",
-            component: () =>
-              import("../components/ProfilePage.vue"),
-          },
-          {
             path: "rechnungen",
             name: "Rechnungen",
             component: () =>
               import("../views/layout/Bills.vue"),
           },
           {
-            path: "bestellverlauf",
-            name: "Bestellverlauf",
-            component: () =>
-              import("../views/layout/OrderHistory.vue"),
-          },
-          {
             path: "bestellungen",
             name: "Bestellungen",
             component: () =>
               import("../views/layout/Orders.vue"),
-          },
-          {
-            path: "userverwaltung/",
-            name: "Userverwaltung",
-            component: () =>
-              import("../views/layout/UserManagement.vue"),
-            children: [{
-              path: "user/:id",
-              name: "User detail",
-              component: () => import('../views/layout/UserManagementDetail.vue'),
-            }],
           },
           {
             path: "coupons",
@@ -111,6 +103,17 @@ const routes: Array<RouteRecordRaw> = [
             name: "Kategorien",
             component: () =>
               import("../components/EditCategories.vue"),
+          },
+          {
+            path: "users/",
+            name: "Userverwaltung",
+            component: () =>
+              import("../views/layout/UserManagement.vue"),
+            children: [{
+              path: "users/:id",
+              name: "User detail",
+              component: () => import("../views/layout/UserManagementDetail.vue"),
+            }],
           },
           {
             path: "produkte/bearbeiten",
@@ -154,13 +157,13 @@ const router = createRouter({
       } else if (to.hash) {
         return {
           el: to.hash,
-          behavior: 'smooth',
+          behavior: "smooth",
         };
       } else {
         return {
           top: 0,
           left: 0,
-          behavior: 'smooth',
+          behavior: "smooth",
         };
       }
     } else {
@@ -168,13 +171,13 @@ const router = createRouter({
         window.scroll(savedPosition);
       } else if (to.hash) {
         document.querySelector(to.hash)?.scrollIntoView({
-          behavior: 'smooth',
+          behavior: "smooth",
         });
       } else {
         window.scroll({
           top: 0,
           left: 0,
-          behavior: 'smooth',
+          behavior: "smooth",
         });
       }
       return onLoaded().then(() => {
@@ -200,7 +203,7 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (!user.isLoggedIn) {
       next({
-        name: 'Login',
+        name: "Login",
         params: {nextUrl: to.fullPath}
       });
       return;
@@ -223,7 +226,7 @@ router.beforeEach((to, from, next) => {
 
 router.beforeEach((to, from, next) => {
   reset();
-  const showLoader = 'initLoad' in to.meta ? to.meta.initLoad : true;
+  const showLoader = "initLoad" in to.meta ? to.meta.initLoad : true;
   if (showLoader) {
     initLoad();
   }
@@ -232,8 +235,8 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach(route => {
-  const showLoader = 'initLoad' in route.meta ? route.meta.initLoad : true;
-  const endLoad = showLoader && ('endLoad' in route.meta ? route.meta.endLoad : true);
+  const showLoader = "initLoad" in route.meta ? route.meta.initLoad : true;
+  const endLoad = showLoader && ("endLoad" in route.meta ? route.meta.endLoad : true);
   if (endLoad) {
     complete();
   }

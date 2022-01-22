@@ -59,7 +59,7 @@
         <label
           for="username"
           class="block mt-2 text-sm font-bold text-left text-inputLabel"
-          >Benutzername</label
+        >Benutzername</label
         >
         <div>
           <input
@@ -86,7 +86,7 @@
         <label
           for="user-password"
           class="block mt-2 text-sm font-bold text-inputLabel"
-          >Passwort</label
+        >Passwort</label
         >
         <div>
           <input
@@ -187,18 +187,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
-import { useRoute } from "vue-router";
-import router from "../router";
+import {defineComponent, reactive} from "vue";
+import {useRoute, useRouter} from "vue-router";
 import useUser from "../stores/user";
 import userStore from "../stores/user";
-import {initLoad} from "../loader";
 
 export default defineComponent({
   setup() {
     let isLoading = false;
     const route = useRoute();
-    const { user, login } = useUser();
+    const {user, login} = useUser();
+    const router = useRouter();
 
     const form = reactive({
       username: "",

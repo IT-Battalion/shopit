@@ -19,21 +19,50 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'home')->name('home');
-Route::view('/login', 'home');
-Route::view('/product/{name}', 'home')->where('name', '[^\/]*');
-Route::view('/admin/', 'home');
-Route::view('/admin/rechnungen', 'home');
-Route::view('/admin/bestellverlauf', 'home');
-Route::view('/admin/bestellungen', 'home');
-Route::view('/admin/userverwaltung', 'home');
-Route::view('/admin/userverwaltung/users/{id}', 'home');
-Route::view('/admin/coupons', 'home');
-Route::view('/admin/kategorien', 'home');
-Route::view('/admin/produkte/bearbeiten', 'home');
-Route::view('/admin/produkte/hinzufuegen', 'home');
-Route::view('/admin/produkte/hinzufuegen/preisUndTitel', 'home');
-Route::view('/order/', 'home');
+// Auth
+Route::view('/login', 'vue');
+
+// Main Content
+Route::view('/', 'vue')->name('home');
+Route::view('/produkte/{name}', 'vue')->name('products.show');
+
+// User profile
+Route::prefix('user')->name('user.')->group(function () {
+    Route::view('/', 'vue')->name('profile');
+    Route::view('/bestellverlauf', 'vue')->name('orders.index');
+});
+
+// Admin Page
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::view('/rechnungen', 'vue')->name('invoices.index');
+    Route::view('/bestellungen', 'vue')->name('orders.index');
+    Route::view('/coupons', 'vue')->name('coupons.index');
+    Route::view('/kategorien', 'vue')->name('categories.index');
+
+    // Usermanagement
+    Route::prefix('users')->name('users.')->group(function () {
+        Route::view('/', 'vue')->name('users.index');
+        Route::view('/{id}', 'vue')->name('users.show');
+    });
+
+    // Products
+    Route::prefix('produkte')->name('products.')->group(function () {
+        Route::view('/bearbeiten', 'vue')->name('edit');
+        Route::view('/hinzufuegen', 'vue')->name('store');
+        Route::view('/hinzufuegen/preisUndTitel', 'vue')->name('store.meta');
+    });
+
+    // User
+    Route::prefix('user')->name('users.')->group(function () {
+        Route::view('/', 'vue')->name('list');
+        Route::view('/{id}', 'vue')->name('show');
+    });
+});
+
+// Order
+Route::prefix('order')->name('order.')->group(function () {
+    Route::view('/', 'vue')->name('index');
+});
 
 Route::permanentRedirect('/home', url('/'));
 
@@ -44,7 +73,7 @@ Broadcast::routes();
 Route::namespace('Auth')->group(function () {
     Route::post('/login', [LoginController::class, 'login']);
     Route::post('/logout', [LogoutController::class, 'logout'])->middleware('auth');
-    Route::view('/login', 'home')->name('login');
+    Route::view('/login', 'vue')->name('login');
 });
 
 Route::middleware('auth')->group(function () {
