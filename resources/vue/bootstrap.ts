@@ -1,14 +1,14 @@
 import { AxiosInstance, default as axios } from "axios";
 
 declare global {
-  interface Window {
-    axios: AxiosInstance,
-    _: LoDashStatic,
-    pusher: Pusher,
-    echo: Echo,
-    initialConfig: GlobalConfig,
-    config: UnwrapNestedRefs<GlobalConfig>,
-  }
+    interface Window {
+        axios: AxiosInstance,
+        _: LoDashStatic,
+        pusher: Pusher,
+        echo: Echo,
+        initialConfig: GlobalConfig,
+        config: UnwrapNestedRefs<GlobalConfig>,
+    }
 }
 
 window.config = reactive(window.initialConfig);
@@ -65,13 +65,12 @@ require('jszip');
 require('pdfmake');
 
 // Init csrf
-// window.axios.get('/sanctum/csrf-cookie').catch(_ => {
-//     console.error("CSRF couldn't be fetched");
-// });
-// didn't appear to be necessary
+window.axios.get('/sanctum/csrf-cookie', { baseURL: '' }).catch(_ => {
+    console.error("CSRF couldn't be fetched");
+});
 
 import {
-  createApp, reactive
+    createApp, reactive
 } from "vue";
 import App from "./App.vue";
 import router from "./router";
@@ -79,9 +78,9 @@ import { redirectToLogin } from "./util";
 import { Vue3Mq, MqResponsive } from "vue3-mq";
 import { Skeletor } from "vue-skeletor";
 import 'vue-skeletor/dist/vue-skeletor.css';
-import {initLoad} from "./loader";
+import { initLoad } from "./loader";
 import mitt from "mitt";
-import {UnwrapNestedRefs} from "@vue/reactivity";
+import { UnwrapNestedRefs } from "@vue/reactivity";
 
 /*export const SUPPORT_LOCALES = ['de', 'en'];
 
@@ -114,7 +113,7 @@ const bus = mitt();
 let createdApp = createApp(App);
 createdApp
     .use(router)
-//    .use(i18n)
+    //    .use(i18n)
     .use(Vue3Mq, { preset: "tailwind" })
     .component('mq-responsive', MqResponsive)
     .component(Skeletor.name, Skeletor)

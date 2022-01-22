@@ -41,7 +41,7 @@ export default defineComponent({
   setup() {
     const { user, logout } = useUser();
     const profilePicture =
-      "https://avatars.dicebear.com/api/micah/:" + user.username.value + ".svg";
+      "https://avatars.dicebear.com/api/micah/" + user.username.value + ".svg";
     const email = user.email.value.slice(
       user.email.value.lastIndexOf("@"),
       user.email.value.length
