@@ -1,4 +1,4 @@
-import { AttributeType, ClothingSize } from "./api-values";
+import {AttributeType, ClothingSize} from "./api-values";
 
 export interface LoginRequestData {
   username: string,
@@ -33,6 +33,7 @@ export interface User {
 }
 
 export interface UserManagementUser {
+  id?: number,
   username?: string,
   firstname?: string,
   lastname?: string,

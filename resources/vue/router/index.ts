@@ -2,7 +2,7 @@ import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
 import Login from "../views/Login.vue";
 import Products from "../views/Products.vue";
 import Main from "../views/layout/Main.vue";
-import { user } from "../stores/user";
+import {user} from "../stores/user";
 import ProductOverview from "../components/ProductOverview.vue";
 import {endLoad, endLoad as complete, initLoad, onLoaded, reset} from "../loader";
 
@@ -90,10 +90,15 @@ const routes: Array<RouteRecordRaw> = [
               import("../views/layout/Orders.vue"),
           },
           {
-            path: "userverwaltung",
+            path: "userverwaltung/",
             name: "Userverwaltung",
             component: () =>
               import("../views/layout/UserManagement.vue"),
+            children: [{
+              path: "user/:id",
+              name: "User detail",
+              component: () => import('../views/layout/UserManagementDetail.vue'),
+            }],
           },
           {
             path: "coupons",
@@ -196,7 +201,7 @@ router.beforeEach((to, from, next) => {
     if (!user.isLoggedIn) {
       next({
         name: 'Login',
-        params: { nextUrl: to.fullPath }
+        params: {nextUrl: to.fullPath}
       });
       return;
     }
@@ -207,7 +212,7 @@ router.beforeEach((to, from, next) => {
     }
   }
   if (to.matched.some(record => record.meta.redirectWhenAuthenticated)
-      && user.isLoggedIn) {
+    && user.isLoggedIn) {
     next({
       name: to.meta.redirectTo as string,
     });

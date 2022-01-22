@@ -27,6 +27,7 @@ Route::view('/admin/rechnungen', 'home');
 Route::view('/admin/bestellverlauf', 'home');
 Route::view('/admin/bestellungen', 'home');
 Route::view('/admin/userverwaltung', 'home');
+Route::view('/admin/userverwaltung/users/{id}', 'home');
 Route::view('/admin/coupons', 'home');
 Route::view('/admin/kategorien', 'home');
 Route::view('/admin/produkte/bearbeiten', 'home');
