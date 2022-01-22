@@ -32,6 +32,15 @@ export interface User {
   isLoggedIn?: boolean,
 }
 
+export interface UserManagementUser {
+  username?: string,
+  firstname?: string,
+  lastname?: string,
+  email?: string,
+  isAdmin?: boolean,
+  detail?: string,
+}
+
 export interface ProductCategory {
   id: number,
   name: string,

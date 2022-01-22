@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\HighlightedProductController;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\ShoppingCartController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -36,3 +37,6 @@ Route::apiResource('product', ProductController::class);
 
 // Admin/Invoice routes
 Route::get('/admin/invoices', [InvoiceController::class, 'all']);
+
+// Admin/User routes
+Route::get('/admin/users', [UserController::class, 'all']);

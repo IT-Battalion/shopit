@@ -23,6 +23,9 @@
 <script lang="ts">
 import {defineComponent} from "@vue/runtime-core";
 import "vue-good-table-next/dist/vue-good-table-next.css";
+import {endLoad, initLoad} from "../../loader";
+import {AxiosResponse} from "axios";
+import {UserManagementUser} from "../../types/api"
 
 export default defineComponent({
   components: {
@@ -30,6 +33,7 @@ export default defineComponent({
   },
   data() {
     return {
+      users: [] as any as UserManagementUser[],
       columns: [
         {
           label: "ID",
@@ -38,7 +42,7 @@ export default defineComponent({
         },
         {
           label: "Name",
-          field: "name",
+          field: "username",
         },
         {
           label: "Vorname",
@@ -58,57 +62,22 @@ export default defineComponent({
           html: true,
         },
       ],
-      rows: [
-        {
-          id: 1,
-          name: "userTest",
-          firstname: "Max",
-          lastname: "Mustermann",
-          email: "test@example.at",
-          detail: "<button><img src='/img/info-white.svg' class='object-scale-down h-7'/></button>",
-        },
-        {
-          id: 2,
-          name: "userTest",
-          firstname: "Max",
-          lastname: "Mustermann",
-          email: "test@example.at",
-          detail: "i",
-        },
-        {
-          id: 3,
-          name: "userTest",
-          firstname: "Max",
-          lastname: "Mustermann",
-          email: "test@example.at",
-          detail: "i",
-        },
-        {
-          id: 4,
-          name: "userTest",
-          firstname: "Max",
-          lastname: "Mustermann",
-          email: "test@example.at",
-          detail: "i",
-        },
-        {
-          id: 5,
-          name: "userTest",
-          firstname: "Max",
-          lastname: "Mustermann",
-          email: "test@example.at",
-          detail: "i",
-        },
-        {
-          id: 6,
-          name: "userTest",
-          firstname: "Max",
-          lastname: "Mustermann",
-          email: "test@example.at",
-          detail: "i",
-        },
-      ],
+      rows: this.users,
     };
   },
+  async beforeMount() {
+    await this.loadUsers();
+  },
+  methods: {
+    async loadUsers() {
+      initLoad();
+      let response: AxiosResponse<UserManagementUser[]> = await this.$http.get('/admin/users');
+      this.users = response.data;
+      this.users.forEach(function (user) {
+        user.detail = "<button><img src='/img/info-white.svg' class='h-7'/></button>";
+      });
+      endLoad();//
+    }
+  }
 });
 </script>
