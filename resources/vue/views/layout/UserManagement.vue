@@ -5,7 +5,11 @@
       class="mt-10"
       :columns="columns"
       :rows="rows"
+      theme="shopit"
       max-height="400px"
+      :pagination-options="{
+      enabled: true
+      }"
       :search-options="{
         enabled: true,
         trigger: 'enter',
@@ -16,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
+import {defineComponent} from "@vue/runtime-core";
 import "vue-good-table-next/dist/vue-good-table-next.css";
 
 export default defineComponent({

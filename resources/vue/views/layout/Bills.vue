@@ -6,6 +6,10 @@
       :columns="columns"
       :rows="rows"
       max-height="400px"
+      theme="shopit"
+      :pagination-options="{
+    enabled: true
+  }"
       :search-options="{
         enabled: true,
         trigger: 'enter',
@@ -16,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
+import {defineComponent} from "@vue/runtime-core";
 import Search from "@/components/Search.vue";
 import Table from "@/components/Table.vue";
 import "vue-good-table-next/dist/vue-good-table-next.css";
