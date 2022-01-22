@@ -8,7 +8,8 @@
       theme="shopit"
       max-height="400px"
       :pagination-options="{
-      enabled: true
+      enabled: true,
+      perPage: 5 //TODO add to other tables aswell
       }"
       :search-options="{
         enabled: true,
@@ -54,6 +55,7 @@ export default defineComponent({
         {
           label: "Detail",
           field: "detail",
+          html: true,
         },
       ],
       rows: [
@@ -63,7 +65,7 @@ export default defineComponent({
           firstname: "Max",
           lastname: "Mustermann",
           email: "test@example.at",
-          detail: "i",
+          detail: "<button><img src='/img/info-white.svg' class='object-scale-down h-7'/></button>",
         },
         {
           id: 2,
