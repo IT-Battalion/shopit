@@ -159,7 +159,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent} from "vue";
 import {
   Dialog,
   DialogOverlay,
@@ -169,7 +169,7 @@ import {
 } from "@headlessui/vue";
 import { XIcon } from "@heroicons/vue/outline";
 import { AxiosResponse } from "axios";
-import {ShoppingCart, ShoppingCartDescriptor} from "../types/api";
+import {ShoppingCart} from "../types/api";
 import ShoppingcartItem from "./ShoppingcartItem.vue";
 
 export default defineComponent({
@@ -212,10 +212,11 @@ export default defineComponent({
     },
     showLoading() {
       this.isLoading = true;
-      this.scrollBeforeLoad = {
-        top: (this.$refs.entryList as HTMLUListElement).scrollTop,
-        left: (this.$refs.entryList as HTMLUListElement).scrollLeft,
-      }
+      if (this.isOpen)
+        this.scrollBeforeLoad = {
+          top: (this.$refs.entryList as HTMLUListElement).scrollTop,
+          left: (this.$refs.entryList as HTMLUListElement).scrollLeft,
+        }
     },
     async loadCart() {
       this.isLoading = true;
@@ -229,7 +230,7 @@ export default defineComponent({
     },
   },
   watch: {
-    $route(to, from) {
+    $route(_a, _b) {
       this.isOpen = false;
     },
   },
