@@ -5,7 +5,15 @@
         class="flex flex-col justify-start w-full pt-12 space-y-2 sm:flex-row"
       >
         <div
-          class="grid w-full grid-cols-3 grid-rows-1 gap-1 pr-6 space-y-4  sm:w-2/5"
+          class="
+            grid
+            w-full
+            grid-cols-3 grid-rows-1
+            gap-1
+            pr-6
+            space-y-4
+            sm:w-2/5
+          "
         >
           <img src="/img/lernenImAufbruch.svg" class="w-16 h-16" />
           <p class="flex flex-row opacity-60">
@@ -16,13 +24,25 @@
           <a class="flex flex-row text-lg font-medium opacity-60">Kontakt</a>
           <a
             href="mailto:info@shopit.tgm.ac.at"
-            class="flex flex-row underline  opacity-60 hover:opacity-100 decoration-solid"
+            class="
+              flex flex-row
+              underline
+              opacity-60
+              hover:opacity-100
+              decoration-solid
+            "
             >info@shopit.tgm.ac.at</a
           >
           <a
             href="mailto:info@LernenImAufbruch.at"
-            class="flex flex-row underline  opacity-60 hover:opacity-100 decoration-solid"
-          >info@LernenImAufbruch.at</a
+            class="
+              flex flex-row
+              underline
+              opacity-60
+              hover:opacity-100
+              decoration-solid
+            "
+            >info@LernenImAufbruch.at</a
           >
         </div>
         <div class="flex flex-col w-full space-y-4 sm:w-1/5">
@@ -31,14 +51,33 @@
           >
           <a
             href="https://www.tgm.ac.at/tagesschule/"
-            class="flex flex-row underline  opacity-60 hover:opacity-100 decoration-solid"
+            class="
+              flex flex-row
+              underline
+              opacity-60
+              hover:opacity-100
+              decoration-solid
+            "
             >TGM HIT<ExternalLinkIcon class="w-5 h-5 pl-1"
           /></a>
           <a
             href="https://lernenimaufbruch.at/impressum.html"
-            class="flex flex-row underline  opacity-60 hover:opacity-100 decoration-solid"
+            class="
+              flex flex-row
+              underline
+              opacity-60
+              hover:opacity-100
+              decoration-solid
+            "
             >Impressum<ExternalLinkIcon class="w-5 h-5 pl-1"
           /></a>
+          <router-link :to="/credits/" class="flex flex-row underline">
+            <span
+              href="https://lernenimaufbruch.at/impressum.html"
+              class="opacity-60 hover:opacity-100 decoration-solid"
+              >Impressum<ExternalLinkIcon class="w-5 h-5 pl-1"
+            /></span>
+          </router-link>
         </div>
       </div>
       <div class="pt-2 opacity-60">
@@ -48,8 +87,8 @@
   </div>
 </template>
 <script lang="ts">
-import {defineComponent} from "@vue/runtime-core";
-import {ExternalLinkIcon, HomeIcon} from "@heroicons/vue/solid";
+import { defineComponent } from "@vue/runtime-core";
+import { ExternalLinkIcon, HomeIcon } from "@heroicons/vue/solid";
 
 export default defineComponent({
   components: {

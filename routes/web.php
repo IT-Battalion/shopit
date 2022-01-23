@@ -66,6 +66,9 @@ Route::prefix('order')->name('order.')->group(function () {
     Route::view('/', 'vue')->name('index');
 });
 
+// Credits
+
+
 Route::permanentRedirect('/home', url('/'));
 
 // custom login/logout Routes because we have the auth middleware installed on the whole 'web' route domain

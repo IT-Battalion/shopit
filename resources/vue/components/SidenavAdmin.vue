@@ -1,6 +1,19 @@
 <template>
   <div
-    class="fixed left-0 flex flex-col justify-center w-56 pl-4 m-0 overflow-auto text-white  sidebar top-32 bg-backgroundColor"
+    class="
+      fixed
+      left-0
+      flex flex-col
+      justify-center
+      w-56
+      pl-4
+      m-0
+      overflow-auto
+      text-white
+      sidebar
+      top-32
+      bg-backgroundColor
+    "
   >
     <div
       v-for="category in categories"
@@ -18,7 +31,20 @@
         <Menu as="div" class="relative inline-block text-left">
           <div>
             <MenuButton
-              class="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white rounded-md shadow-sm  focus:outline-none focus:ring-2 focus:ring-highlighted"
+              class="
+                inline-flex
+                items-center
+                justify-center
+                w-full
+                px-4
+                py-2
+                text-sm
+                font-medium
+                text-white
+                rounded-md
+                shadow-sm
+                focus:outline-none focus:ring-2 focus:ring-highlighted
+              "
             >
               Produkte
             </MenuButton>
@@ -33,15 +59,32 @@
             leave-to-class="transform scale-95 opacity-0"
           >
             <MenuItems
-              class="absolute right-0 w-40 mt-2 overflow-hidden origin-top-right rounded-md shadow-lg  ring-1 ring-black ring-opacity-5 focus:outline-none bg-elevatedDark"
+              class="
+                absolute
+                right-0
+                w-40
+                mt-2
+                overflow-hidden
+                origin-top-right
+                rounded-md
+                shadow-lg
+                ring-1 ring-black ring-opacity-5
+                focus:outline-none
+                bg-elevatedDark
+              "
             >
               <router-link :to="{name:'Add Product'}">
                 <MenuItem
-                  class="flex flex-row items-center justify-start  hover:bg-elevatedColor"
+                  class="
+                    flex flex-row
+                    items-center
+                    justify-start
+                    hover:bg-elevatedColor
+                  "
                 >
                   <span class="block px-4 py-3 text-sm text-white"
                     ><img
-                      src="/img/profile.svg"
+                      src="/img/add.svg"
                       class="object-scale-down mr-4 h-7"
                     />Hinzufügen</span
                   >
@@ -49,11 +92,16 @@
               </router-link>
               <router-link :to="{name:'Edit Product'}">
                 <MenuItem
-                  class="flex flex-row items-center justify-start  hover:bg-elevatedColor"
+                  class="
+                    flex flex-row
+                    items-center
+                    justify-start
+                    hover:bg-elevatedColor
+                  "
                 >
                   <span class="block px-4 py-3 text-sm text-white"
                     ><img
-                      src="/img/profile.svg"
+                      src="/img/editBlockAttributes.svg"
                       class="object-scale-down mr-4 h-7"
                     />Bearbeiten</span
                   >
@@ -68,8 +116,8 @@
 </template>
 
 <script lang="ts">
-import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
-import {defineComponent} from "@vue/runtime-core";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
+import { defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
   components: {

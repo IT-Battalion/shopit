@@ -1,8 +1,8 @@
-import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Login from "../views/Login.vue";
 import Main from "../views/layout/Main.vue";
-import {user} from "../stores/user";
-import {endLoad, endLoad as complete, initLoad, onLoaded, reset} from "../loader";
+import { user } from "../stores/user";
+import { endLoad, endLoad as complete, initLoad, onLoaded, reset } from "../loader";
 import Home from "../views/layout/Home.vue";
 
 const routes: Array<RouteRecordRaw> = [
@@ -166,7 +166,13 @@ const routes: Array<RouteRecordRaw> = [
         name: "order",
         component: () =>
           import("../views/layout/Order.vue"),
-      }
+      },
+      {
+        path: "/credits/",
+        name: "credits",
+        component: () =>
+          import("../components/Credits.vue"),
+      },
     ],
   },
 ];
@@ -228,7 +234,7 @@ router.beforeEach((to, from, next) => {
     if (!user.isLoggedIn) {
       next({
         name: "Login",
-        params: {nextUrl: to.fullPath}
+        params: { nextUrl: to.fullPath }
       });
       return;
     }

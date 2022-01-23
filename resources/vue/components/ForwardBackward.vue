@@ -1,12 +1,34 @@
 <template>
   <div class="flex justify-end mt-10 sm:mr-20">
     <button
-      class="flex items-center px-6 py-4 mr-2 font-bold text-teal-500 border border-teal-500 rounded-full  hover:bg-teal-500 hover:text-white"
+      class="
+        flex
+        items-center
+        px-6
+        py-4
+        mr-2
+        font-bold
+        text-teal-500
+        border border-teal-500
+        rounded-full
+        hover:bg-teal-500 hover:text-white
+      "
     >
       Abbrechen
     </button>
     <button
-      class="flex items-center px-6 py-4 mx-2 font-bold text-teal-500 border border-teal-500 rounded-full  hover:bg-teal-500 hover:text-white"
+      class="
+        flex
+        items-center
+        px-6
+        py-4
+        mx-2
+        font-bold
+        text-teal-500
+        border border-teal-500
+        rounded-full
+        hover:bg-teal-500 hover:text-white
+      "
     >
       <svg
         class="w-5 h-5 mr-2 fill-current"
@@ -28,7 +50,18 @@
       Vorherige Seite
     </button>
     <button
-      class="flex items-center px-6 py-4 ml-2 font-bold text-white bg-teal-500 border border-teal-500 rounded-full "
+      class="
+        flex
+        items-center
+        px-6
+        py-4
+        ml-2
+        font-bold
+        text-white
+        bg-teal-500
+        border border-teal-500
+        rounded-full
+      "
     >
       Nächste Seite
       <svg
@@ -62,6 +95,7 @@ import { RouteLocation } from "vue-router";
 export default defineComponent({
   props: {
     next: Object as PropType<RouteLocation | string>,
+    last: Object as PropType<RouteLocation | string>,
     cancel: Object as PropType<RouteLocation | string>,
   },
 });
