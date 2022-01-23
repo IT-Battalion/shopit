@@ -42,7 +42,7 @@ Route::get('/admin/invoices', [InvoiceController::class, 'all']);
 
 // Admin/User routes
 Route::get('/admin/users', [UserController::class, 'all']);
-
+//test
 // Admin/Coupon routes
 Route::get('/admin/coupons', [CouponController::class, 'all']);
 
