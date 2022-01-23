@@ -97,6 +97,23 @@
                       >
                     </MenuItem>
                   </router-link>
+                  <router-link :to="{ name: 'Admin' }" v-if="user.isAdmin">
+                    <MenuItem
+                      class="
+                        flex flex-row
+                        items-center
+                        justify-start
+                        hover:bg-elevatedColor
+                      "
+                    >
+                      <span class="text-white block px-4 py-3 text-sm"
+                      ><img
+                        src="/img/profile.svg"
+                        class="object-scale-down mr-4 h-7"
+                      />Adminseite</span
+                      >
+                    </MenuItem>
+                  </router-link>
                   <MenuItem
                     class="
                       flex flex-row

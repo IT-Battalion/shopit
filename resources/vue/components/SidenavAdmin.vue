@@ -82,7 +82,7 @@ export default defineComponent({
     const categories = [
       {
         name: "Profil",
-        routerLink: {name:"Profile"},
+        routerLink: {name:"Admin"},
         icon_url: "/img/categoryProfile.svg",
       },
       {
