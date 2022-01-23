@@ -1,43 +1,16 @@
 <template>
   <div>
     <AddProductProcess />
-    <div class="w-full my-16 grid grid-cols-1 grid-rows-5 place-items-center">
-      <div class="w-72 top-16 z-20">
+    <div class="grid w-full grid-cols-1 grid-rows-5 my-16 place-items-center">
+      <div class="z-20 w-72 top-16">
         <Listbox v-model="selectedCategory">
           <div class="relative mt-1">
             <ListboxButton
-              class="
-                relative
-                w-full
-                py-2
-                pl-3
-                pr-10
-                text-left
-                bg-white
-                rounded-lg
-                shadow-md
-                cursor-default
-                focus:outline-none
-                focus-visible:ring-2
-                focus-visible:ring-opacity-75
-                focus-visible:ring-white
-                focus-visible:ring-offset-orange-300
-                focus-visible:ring-offset-2
-                focus-visible:border-indigo-500
-                sm:text-sm
-              "
+              class="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-md cursor-default  focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm"
             >
               <span class="block truncate">{{ selectedCategory.name }}</span>
               <span
-                class="
-                  absolute
-                  inset-y-0
-                  right-0
-                  flex
-                  items-center
-                  pr-2
-                  pointer-events-none
-                "
+                class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none "
               >
                 <SelectorIcon
                   class="w-5 h-5 text-gray-400"
@@ -52,21 +25,7 @@
               leave-to-class="opacity-0"
             >
               <ListboxOptions
-                class="
-                  absolute
-                  w-full
-                  py-1
-                  mt-1
-                  overflow-auto
-                  text-base
-                  bg-white
-                  rounded-md
-                  shadow-lg
-                  max-h-60
-                  ring-1 ring-black ring-opacity-5
-                  focus:outline-none
-                  sm:text-sm
-                "
+                class="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg  max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
               >
                 <ListboxOption
                   v-slot="{ active, selected }"
@@ -90,15 +49,7 @@
                     >
                     <span
                       v-if="selected"
-                      class="
-                        absolute
-                        inset-y-0
-                        left-0
-                        flex
-                        items-center
-                        pl-3
-                        text-amber-600
-                      "
+                      class="absolute inset-y-0 left-0 flex items-center pl-3  text-amber-600"
                     >
                       <CheckIcon class="w-5 h-5" aria-hidden="true" />
                     </span>
@@ -112,96 +63,64 @@
       <section class="p-10">
         <label
           for="clothingSizes"
-          class="relative flex-inline items-center isolate p-4 rounded-2xl"
+          class="relative items-center p-4 flex-inline isolate rounded-2xl"
         >
           <input
             id="clothingSizes"
             type="checkbox"
-            class="relative peer z-20 text-purple-600 rounded-md focus:ring-0"
+            class="relative z-20 text-purple-600 rounded-md peer focus:ring-0"
           />
-          <span class="ml-2 relative z-20">Checkbox clothingSizes</span>
+          <span class="relative z-20 ml-2">Checkbox clothingSizes</span>
           <div
-            class="
-              absolute
-              inset-0
-              bg-white
-              peer-checked:bg-purple-50 peer-checked:border-purple-300
-              z-10
-              border
-              rounded-2xl
-            "
+            class="absolute inset-0 z-10 bg-white border  peer-checked:bg-purple-50 peer-checked:border-purple-300 rounded-2xl"
           ></div>
         </label>
       </section>
       <section class="p-10">
         <label
           for="dimensions"
-          class="relative flex-inline items-center isolate p-4 rounded-2xl"
+          class="relative items-center p-4 flex-inline isolate rounded-2xl"
         >
           <input
             id="dimensions"
             type="checkbox"
-            class="relative peer z-20 text-purple-600 rounded-md focus:ring-0"
+            class="relative z-20 text-purple-600 rounded-md peer focus:ring-0"
           />
-          <span class="ml-2 relative z-20">Checkbox dimensions</span>
+          <span class="relative z-20 ml-2">Checkbox dimensions</span>
           <div
-            class="
-              absolute
-              inset-0
-              bg-white
-              peer-checked:bg-purple-50 peer-checked:border-purple-300
-              z-10
-              border
-              rounded-2xl
-            "
+            class="absolute inset-0 z-10 bg-white border  peer-checked:bg-purple-50 peer-checked:border-purple-300 rounded-2xl"
           ></div>
         </label>
       </section>
       <section class="p-10">
         <label
           for="volumes"
-          class="relative flex-inline items-center isolate p-4 rounded-2xl"
+          class="relative items-center p-4 flex-inline isolate rounded-2xl"
         >
           <input
             id="volumes"
             type="checkbox"
-            class="relative peer z-20 text-purple-600 rounded-md focus:ring-0"
+            class="relative z-20 text-purple-600 rounded-md peer focus:ring-0"
           />
-          <span class="ml-2 relative z-20">Checkbox volumes</span>
+          <span class="relative z-20 ml-2">Checkbox volumes</span>
           <div
-            class="
-              absolute
-              inset-0
-              bg-white
-              peer-checked:bg-purple-50 peer-checked:border-purple-300
-              z-10
-              border
-              rounded-2xl
-            "
+            class="absolute inset-0 z-10 bg-white border  peer-checked:bg-purple-50 peer-checked:border-purple-300 rounded-2xl"
           ></div>
         </label>
       </section>
       <section class="p-10">
         <label
           for="colors"
-          class="relative flex-inline items-center isolate p-4 rounded-2xl"
+          class="relative items-center p-4 flex-inline isolate rounded-2xl"
         >
           <input
             id="colors"
             type="checkbox"
-            class="relative peer z-20 text-purple-600 rounded-md focus:ring-0"
+            class="relative z-20 text-purple-600 rounded-md peer focus:ring-0"
           />
-          <span class="ml-2 relative z-20">Checkbox colors</span>
+          <span class="relative z-20 ml-2"> Text </span>
           <div
-            class="
-              absolute
-              inset-0
-              bg-white
-              peer-checked:bg-purple-50 peer-checked:border-purple-300
-              z-10
-              border
-              rounded-2xl
-            "
+            class="absolute inset-0 z-10 bg-white border  peer-checked:bg-purple-50 peer-checked:border-purple-300 rounded-2xl"
           ></div>
         </label>
       </section>
@@ -211,6 +130,7 @@
       :last="{ name: 'Add Product images' }"
       :cancel="{ name: 'Admin' }"
     />
+    <ColorPicker />
   </div>
 </template>
 
@@ -227,6 +147,7 @@ import {
   ListboxOption,
 } from "@headlessui/vue";
 import { CheckIcon, SelectorIcon } from "@heroicons/vue/solid";
+import ColorPicker from "../components/ColorPicker.vue";
 
 export default defineComponent({
   components: {
@@ -239,6 +160,7 @@ export default defineComponent({
     ListboxOption,
     CheckIcon,
     SelectorIcon,
+    ColorPicker,
   },
   setup() {
     const categories = window.config.categories;
