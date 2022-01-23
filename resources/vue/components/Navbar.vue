@@ -90,10 +90,10 @@
                       "
                     >
                       <span class="text-white block px-4 py-3 text-sm"
-                        ><img
-                          src="/img/profile.svg"
-                          class="object-scale-down mr-4 h-7"
-                        />Profilseite</span
+                      ><img
+                        src="/img/profile.svg"
+                        class="object-scale-down mr-4 h-7"
+                      />Profil</span
                       >
                     </MenuItem>
                   </router-link>
@@ -108,9 +108,9 @@
                     >
                       <span class="text-white block px-4 py-3 text-sm"
                       ><img
-                        src="/img/profile.svg"
+                        src="/img/wheel-chair.svg"
                         class="object-scale-down mr-4 h-7"
-                      />Adminseite</span
+                      />Admin Panel</span
                       >
                     </MenuItem>
                   </router-link>
@@ -152,8 +152,8 @@
 </template>
 
 <script lang="ts">
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
-import { defineComponent } from "@vue/runtime-core";
+import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
+import {defineComponent} from "@vue/runtime-core";
 import useUser from "../stores/user";
 import Shoppingcart from "./Shoppingcart.vue";
 
