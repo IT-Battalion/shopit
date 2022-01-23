@@ -89,7 +89,7 @@ const routes: Array<RouteRecordRaw> = [
             path: "",
             name: "Admin",
             component: () =>
-              import("../views/ProfilePage.vue"),
+              import("../views/Dashboard.vue"),
           },
           {
             path: "invoices/",

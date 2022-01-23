@@ -116,8 +116,8 @@
 </template>
 
 <script lang="ts">
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
-import { defineComponent } from "@vue/runtime-core";
+import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
+import {defineComponent} from "@vue/runtime-core";
 
 export default defineComponent({
   components: {
@@ -129,9 +129,9 @@ export default defineComponent({
   setup() {
     const categories = [
       {
-        name: "Profil",
-        routerLink: {name:"Admin"},
-        icon_url: "/img/categoryProfile.svg",
+        name: "Dashboard",
+        routerLink: {name: "Admin"},
+        icon_url: "/img/categoryDashboard.svg",
       },
       {
         name: "Rechnungen",
