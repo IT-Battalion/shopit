@@ -141,3 +141,12 @@ export interface AddToShoppingCartRequest {
   count: number,
   selected_attributes: SelectedAttributes,
 }
+
+export interface Coupon {
+  id: number,
+  discount: number,
+  enabled: boolean,
+  code: string,
+  created_at: string,
+  enabled_until: string,
+}

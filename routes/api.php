@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CouponController;
 use App\Http\Controllers\Api\HighlightedProductController;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\ShoppingCartController;
@@ -40,3 +41,6 @@ Route::get('/admin/invoices', [InvoiceController::class, 'all']);
 
 // Admin/User routes
 Route::get('/admin/users', [UserController::class, 'all']);
+
+// Admin/Coupon routes
+Route::get('/admin/coupons', [CouponController::class, 'all']);

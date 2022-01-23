@@ -41,7 +41,7 @@
           Willkommen zurück!
         </h1>
         <p class="text-md text-center text-gray-400 sm:text-md lg:text-2xl">
-          Der Fanshop der HIT-Abteilung
+          Der Online Shop der Abteilung für Informationstechnologie
         </p>
       </div>
       <form
@@ -191,6 +191,7 @@ import {defineComponent, reactive} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import useUser from "../stores/user";
 import userStore from "../stores/user";
+import {initLoad} from "../loader";
 
 export default defineComponent({
   setup() {

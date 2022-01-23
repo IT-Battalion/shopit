@@ -1,9 +1,9 @@
 <template>
   <div class="w-full h-full pl-0 md:pl-24">
     <h1 class="text-4xl font-bold text-white">Coupons</h1>
-    <InputField labelName="Rabattcode" />
-    <InputField labelName="Rabatt" />
-    <InputField labelName="Erhältlich bis" iconName="calender" />
+    <InputField labelName="Rabattcode"/>
+    <InputField labelName="Rabatt"/>
+    <InputField labelName="Erhältlich bis" iconName="calender"/>
     <button
       class="w-24 row-span-2 px-4 py-1 bg-white rounded-3xl hover:bg-gray-300"
       type="button"
@@ -32,14 +32,24 @@
       max-height="400px"
       theme="shopit"
       :pagination-options="{
-    enabled: true
+    enabled: true,
+    perPage: 5
   }"
       :search-options="{
         enabled: true,
         trigger: 'enter',
         placeholder: 'Search this table',
       }"
-    />
+    >
+      <template #table-row="data">
+        <span v-if="data.column.field === 'enabled' && data.formattedRow['enabled'] === false">
+          <img src="/img/red-x.svg" class='object-scale-down h-7'/>
+        </span>
+        <span v-if="data.column.field === 'enabled' && data.formattedRow['enabled'] === true">
+          <img src="/img/green-checkmark.svg" class='object-scale-down h-7'/>
+        </span>
+      </template>
+    </vue-good-table>
   </div>
 </template>
 
@@ -48,6 +58,9 @@ import {defineComponent} from "@vue/runtime-core";
 import InputField from "@/components/InputField.vue";
 import InputFieldIcon from "@/components/InputFieldIcon.vue";
 import "vue-good-table-next/dist/vue-good-table-next.css";
+import {AxiosResponse} from "axios";
+import {Coupon} from "../../types/api";
+import {endLoad, initLoad} from "../../loader";
 
 export default defineComponent({
   components: {
@@ -57,11 +70,17 @@ export default defineComponent({
   },
   data() {
     return {
+      rows: [] as Coupon[],
       columns: [
         {
           label: "ID",
           field: "id",
           type: "number",
+        },
+        {
+          label: "Code",
+          field: "code",
+          type: "string"
         },
         {
           label: "Rabatt",
@@ -70,56 +89,36 @@ export default defineComponent({
         },
         {
           label: "Status",
-          field: "status",
+          field: "enabled",
           type: "boolean",
         },
         {
-          label: "Datum",
-          field: "createdAt",
+          label: "Erstellt",
+          field: "created_at",
+          type: "string",
+          dateInputFormat: "yyyy-MM-ddThh:mm:ss.SSSZ",
+          dateOutputFormat: "MM-dd-yyyy hh:mm",
+        },
+        {
+          label: "Ablauf",
+          field: "enabled_until",
           type: "date",
-          dateInputFormat: "yyyy-MM-dd",
-          dateOutputFormat: "MMM do yy",
-        },
-      ],
-      rows: [
-        {
-          id: 1,
-          discount: "0.033",
-          status: "false",
-          createdAt: "2011-10-31",
-        },
-        {
-          id: 2,
-          discount: "0.033",
-          status: "false",
-          createdAt: "2011-10-31",
-        },
-        {
-          id: 3,
-          discount: "0.033",
-          status: "false",
-          createdAt: "2011-10-31",
-        },
-        {
-          id: 4,
-          discount: "0.033",
-          status: "false",
-          createdAt: "2011-10-31",
-        },
-        {
-          id: 5,
-          discount: "0.033",
-          status: "false",
-          createdAt: "2011-10-31",
-        },
-        {
-          id: 6,
-          discount: "0.033",
-          status: "false",
-          createdAt: "2011-10-31",
-        },
+          dateInputFormat: "yyyy-MM-dd hh:mm:ss.SSS",
+          dateOutputFormat: "MM-dd-yyyy hh:mm",
+        }
       ],
     };
+  },
+  async beforeMount() {
+    await this.loadCoupons();
+  },
+  methods: {
+    async loadCoupons() {
+      initLoad();
+      let response: AxiosResponse<Coupon[]> = await this.$http.get('/admin/coupons');
+      this.rows = response.data;
+      endLoad();
+    }
   },
 });
 </script>
