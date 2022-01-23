@@ -1,8 +1,8 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
 import Login from "../views/Login.vue";
 import Main from "../views/layout/Main.vue";
-import { user } from "../stores/user";
-import { endLoad, endLoad as complete, initLoad, onLoaded, reset } from "../loader";
+import {user} from "../stores/user";
+import {endLoad, endLoad as complete, initLoad, onLoaded, reset} from "../loader";
 import Home from "../views/layout/Home.vue";
 
 const routes: Array<RouteRecordRaw> = [
@@ -102,13 +102,12 @@ const routes: Array<RouteRecordRaw> = [
             name: "Invoices",
             component: () =>
               import("../views/Bills.vue"),
-            children: [
-              {
-                path: ":id",
-                name: "Invoice detail",
-                component: () => import("../views/Bills.vue")
-              },
-            ]
+            children: []
+          },
+          {
+            path: "invoices/:id",
+            name: "Invoice detail",
+            component: () => import("../views/Bills.vue")
           },
           {
             path: "orders",
@@ -139,11 +138,12 @@ const routes: Array<RouteRecordRaw> = [
             name: "UserManagement",
             component: () =>
               import("../views/UserManagement.vue"),
-            children: [{
-              path: ":id",
-              name: "User detail",
-              component: () => import("../views/UserManagementDetail.vue"),
-            }],
+            children: [],
+          },
+          {
+            path: "users/:id",
+            name: "User detail",
+            component: () => import("../views/UserManagementDetail.vue"),
           },
           {
             path: "products/edit",
