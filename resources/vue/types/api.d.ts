@@ -150,3 +150,10 @@ export interface Coupon {
   created_at: string,
   enabled_until: string,
 }
+
+export interface Order {
+  id: number,
+  status: string,
+  created_at: string,
+  price: number,
+}

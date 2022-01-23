@@ -93,6 +93,12 @@ const routes: Array<RouteRecordRaw> = [
               import("../views/layout/Orders.vue"),
           },
           {
+            path: "order/:id",
+            name: "Order detail",
+            component: () =>
+              import("../views/layout/Order.vue")
+          },
+          {
             path: "coupons",
             name: "Coupons",
             component: () =>
@@ -109,11 +115,11 @@ const routes: Array<RouteRecordRaw> = [
             name: "Userverwaltung",
             component: () =>
               import("../views/layout/UserManagement.vue"),
-            children: [{
-              path: "users/:id",
-              name: "User detail",
-              component: () => import("../views/layout/UserManagementDetail.vue"),
-            }],
+          },
+          {
+            path: "users/:id",
+            name: "User detail",
+            component: () => import("../views/layout/UserManagementDetail.vue"),
           },
           {
             path: "produkte/bearbeiten",

@@ -68,8 +68,9 @@
 </template>
 
 <script lang="ts">
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
-import { defineComponent } from "@vue/runtime-core";
+import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
+import {defineComponent} from "@vue/runtime-core";
+
 export default defineComponent({
   components: {
     Menu,
@@ -111,7 +112,7 @@ export default defineComponent({
       },
       {
         name: "Userverwaltung",
-        routerLink: "userverwaltung",
+        routerLink: "users",
         icon_url: "/img/categoryUser.svg",
       },
       {

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\CouponController;
 use App\Http\Controllers\Api\HighlightedProductController;
 use App\Http\Controllers\Api\InvoiceController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ShoppingCartController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -44,3 +45,6 @@ Route::get('/admin/users', [UserController::class, 'all']);
 
 // Admin/Coupon routes
 Route::get('/admin/coupons', [CouponController::class, 'all']);
+
+// Admin/Orders routes
+Route::get('/admin/orders', [OrderController::class, 'all']);
