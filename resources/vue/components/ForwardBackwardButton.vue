@@ -96,7 +96,7 @@
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
 import { PropType } from "vue";
-import { RouteLocation, RouteLocationRaw } from "vue-router";
+import { RouteLocationRaw } from "vue-router";
 
 export default defineComponent({
   props: {
