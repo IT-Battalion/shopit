@@ -152,10 +152,10 @@ const routes: Array<RouteRecordRaw> = [
               import("../views/UploadProductImages.vue"),
             children: [
               {
-                path: "images",
-                name: "Add Product Images",
+                path: "categoriesAttributes",
+                name: "categoriesAttributes",
                 component: () =>
-                  import("../views/UploadProductImages.vue"),
+                  import("../components/CategoriesAttributes.vue"),
               }
             ]
           },

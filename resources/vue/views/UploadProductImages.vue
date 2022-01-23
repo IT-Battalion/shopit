@@ -5,9 +5,9 @@
       <UploadImages @change="handleImages" />
     </div>
     <CancelForwardButton
-      next="/admin/products/add/images"
-      last="/admin"
-      cancel="/admin/"
+      next="categoriesAttributes"
+      last="Admin"
+      cancel="Admin"
     />
   </div>
 </template>
