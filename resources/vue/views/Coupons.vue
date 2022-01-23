@@ -42,12 +42,12 @@
       }"
     >
       <template #table-row="data">
-        <span v-if="data.column.field === 'enabled' && data.formattedRow['enabled'] === false">
-          <img src="/img/red-x.svg" class='object-scale-down h-7'/>
-        </span>
-        <span v-if="data.column.field === 'enabled' && data.formattedRow['enabled'] === true">
-          <img src="/img/green-checkmark.svg" class='object-scale-down h-7'/>
-        </span>
+        <img v-if="data.column.field === 'enabled' && data.formattedRow['enabled'] === false"
+             class='object-scale-down h-7 w-full'
+             src="/img/red-x.svg"/>
+        <img v-if="data.column.field === 'enabled' && data.formattedRow['enabled'] === true"
+             class='object-scale-down h-7 w-full'
+             src="/img/green-checkmark.svg"/>
       </template>
     </vue-good-table>
   </div>

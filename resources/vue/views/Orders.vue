@@ -20,7 +20,7 @@
       <template #table-row="detail">
         <router-link :to="{name: 'Order detail', params: {id: detail.formattedRow['id']}}"
                      v-if="detail.column.field === 'detail'"><img src='/img/info-white.svg'
-                                                                  class='object-scale-down h-7'/></router-link>
+                                                                  class='object-scale-down h-7 w-full'/></router-link>
       </template>
     </vue-good-table>
   </div>
@@ -55,8 +55,8 @@ export default defineComponent({
           label: "Datum",
           field: "created_at",
           type: "date",
-          dateInputFormat: "yyyy-MM-dd",
-          dateOutputFormat: "MMM do yy",
+          dateInputFormat: "yyyy-MM-dd'T'kk:mm:ss.SSSSSS'Z'",
+          dateOutputFormat: "dd.MM.yyyy kk:mm",
         },
         {
           label: "Status",

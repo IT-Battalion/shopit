@@ -24,7 +24,7 @@
             name: 'Invoice detail',
             params: { id: download.formattedRow['id'] },
           }"
-          ><img class="object-scale-down h-7" src="/img/info-white.svg"
+        ><img class="object-scale-down h-7 w-full" src="/img/info-white.svg"
         /></router-link>
       </template>
     </vue-good-table>
@@ -32,12 +32,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
+import {defineComponent} from "@vue/runtime-core";
 import Table from "@/components/Table.vue";
 import "vue-good-table-next/dist/vue-good-table-next.css";
-import { Invoice } from "../types/api";
-import { AxiosResponse } from "axios";
-import { endLoad, initLoad } from "../loader";
+import {Invoice} from "../types/api";
+import {AxiosResponse} from "axios";
+import {endLoad, initLoad} from "../loader";
 
 export default defineComponent({
   name: "Bills",
@@ -67,8 +67,8 @@ export default defineComponent({
           label: "Erstellt",
           field: "created_at",
           type: "date",
-          dateInputFormat: "yyyy-MM-dd",
-          dateOutputFormat: "MMM do yy",
+          dateInputFormat: "yyyy-MM-dd'T'kk:mm:ss.SSSSSS'Z'",
+          dateOutputFormat: "dd.MM.yyyy kk:mm",
         },
         {
           label: "Detail",
