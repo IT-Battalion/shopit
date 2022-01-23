@@ -17,11 +17,14 @@
         placeholder: 'Search this table',
       }"
     >
-      <template #table-row="detail">
-        <router-link v-if="detail.column.field === 'detail'"
-                     :to="{name: 'Order detail', params: {id: detail.formattedRow['id']}}" target="_blank"><img
+      <template #table-row="props">
+        <router-link v-if="props.column.field === 'detail'"
+                     :to="{name: 'Order detail', params: {id: props.formattedRow['id']}}" target="_blank"><img
           class='object-scale-down h-7 w-full'
           src='/img/info-white.svg'/></router-link>
+        <span v-if="props.column.field === 'status'">
+          {{ statusLables[props.formattedRow[props.column.field]] }}
+        </span>
       </template>
     </vue-good-table>
   </div>
@@ -31,8 +34,9 @@
 import {defineComponent} from "@vue/runtime-core";
 import "vue-good-table-next/dist/vue-good-table-next.css";
 import {Order} from "../types/api";
-import {initLoad} from "../loader";
+import {endLoad, initLoad} from "../loader";
 import {AxiosResponse} from "axios";
+import {OrderStatusLables} from "../types/api-values";
 
 export default defineComponent({
   components: {
@@ -48,7 +52,7 @@ export default defineComponent({
         },
         {
           label: "Preis",
-          field: "price",
+          field: "total",
           type: "number",
         },
         {
@@ -70,6 +74,7 @@ export default defineComponent({
         },
       ],
       rows: [] as Order[],
+      statusLables: OrderStatusLables,
     };
   },
   async beforeMount() {
@@ -80,6 +85,7 @@ export default defineComponent({
       initLoad();
       let response: AxiosResponse<Order[]> = await this.$http.get('/user/orders');
       this.rows = response.data;
+      endLoad();
     }
   }
 });

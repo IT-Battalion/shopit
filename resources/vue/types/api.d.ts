@@ -1,4 +1,4 @@
-import {AttributeType, ClothingSize} from "./api-values";
+import {AttributeType, ClothingSize, OrderStatus} from "./api-values";
 
 export interface LoginRequestData {
   username: string,
@@ -154,9 +154,8 @@ export interface Coupon {
 
 export interface Order {
   id?: number,
-  status?: string,
+  status?: OrderStatus,
   created_at?: string,
-  price?: number,
   paid_at?: string,
   products_ordered_at?: string,
   products_received_at?: string,
@@ -167,6 +166,10 @@ export interface Order {
   transaction_confirmed?: User,//TOOD backend stuff
   customer?: User, //TOOD backend stuff
   coupon?: Coupon, //TODO backend stuff
+  subtotal?: Money,
+  discount?: Money,
+  tax?: Money,
+  total?: Money,
 }
 
 export interface Invoice {

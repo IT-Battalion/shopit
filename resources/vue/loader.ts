@@ -24,11 +24,11 @@ export function initProgress(target: number) {
 }
 
 export function endLoad() {
-  if (state.waiting < 0) {
-    state.waiting = 0;
+  state.waiting -= 1;
+  if (state.waiting > 0) {
     return;
   }
-  state.waiting -= 1;
+  state.waiting = 0;
   nextTick().then(() => {
     state.handlers.forEach(handler => {
       handler(undefined);
