@@ -157,3 +157,10 @@ export interface Order {
   created_at: string,
   price: number,
 }
+
+export interface Invoice {
+  id: number,
+  status: string,
+  price: number,
+  created_at: string
+}
