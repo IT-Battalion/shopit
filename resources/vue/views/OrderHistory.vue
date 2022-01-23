@@ -55,8 +55,8 @@ export default defineComponent({
           label: "Erstellt",
           field: "created_at",
           type: "date",
-          dateInputFormat: "yyyy-MM-dd",
-          dateOutputFormat: "MMM do yy",
+          dateInputFormat: "yyyy-MM-dd'T'kk:mm:ss.SSSSSS'Z'",
+          dateOutputFormat: "dd.MM.yyyy kk:mm",
         },
         {
           label: "Status",
