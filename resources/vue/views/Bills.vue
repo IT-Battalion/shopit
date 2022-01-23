@@ -32,9 +32,9 @@ import {defineComponent} from "@vue/runtime-core";
 import Search from "@/components/Search.vue";
 import Table from "@/components/Table.vue";
 import "vue-good-table-next/dist/vue-good-table-next.css";
-import {Invoice} from "../../types/api";
+import {Invoice} from "../types/api";
 import {AxiosResponse} from "axios";
-import {endLoad, initLoad} from "../../loader";
+import {endLoad, initLoad} from "../loader";
 
 export default defineComponent({
   name: "Bills",
