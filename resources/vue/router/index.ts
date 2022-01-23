@@ -171,7 +171,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/credits/",
         name: "credits",
         component: () =>
-          import("../components/Credits.vue"),
+          import("../views/Credits.vue"),
       },
     ],
   },
