@@ -3,6 +3,12 @@
     <AddProductProcess />
     <div class="mx-5 mt-20 md:mx-20">
       <UploadImages @change="handleImages" />
+      <ButtonField
+        :acceptName="true"
+        name="Hochladen"
+        iconSrc="/img/uploadBlack.svg"
+        class="my-10 mx-auto"
+      />
     </div>
     <ForwardBackwardButton
       :next="{ name: 'Add Product attributes' }"
@@ -17,12 +23,14 @@ import { defineComponent } from "@vue/runtime-core";
 import UploadImages from "vue-upload-drop-images";
 import AddProductProcess from "../components/AddProductProcess.vue";
 import ForwardBackwardButton from "../components/ForwardBackwardButton.vue";
+import ButtonField from "../components/ButtonField.vue";
 
 export default defineComponent({
   components: {
     UploadImages,
     AddProductProcess,
     ForwardBackwardButton,
+    ButtonField,
   },
   methods: {
     handleImages(files: any) {

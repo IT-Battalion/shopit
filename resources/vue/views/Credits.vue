@@ -225,6 +225,12 @@ export default defineComponent({
         creator: "Gregor Cresnar",
         creatorLink: "https://thenounproject.com/grega.cresnar/",
       },
+      {
+        iconName: "Upload",
+        iconLink: "https://thenounproject.com/icon/upload-4526942/",
+        creator: "Widyatmoko",
+        creatorLink: "https://thenounproject.com/yogs144/",
+      },
     ];
     return { credits };
   },
