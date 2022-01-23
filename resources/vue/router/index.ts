@@ -1,8 +1,8 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
 import Login from "../views/Login.vue";
 import Main from "../views/layout/Main.vue";
-import { user } from "../stores/user";
-import { endLoad, endLoad as complete, initLoad, onLoaded, reset } from "../loader";
+import {user} from "../stores/user";
+import {endLoad, endLoad as complete, initLoad, onLoaded, reset} from "../loader";
 import Home from "../views/layout/Home.vue";
 
 const routes: Array<RouteRecordRaw> = [
@@ -173,6 +173,11 @@ const routes: Array<RouteRecordRaw> = [
         component: () =>
           import("../views/Credits.vue"),
       },
+      {
+        path: "/contributors/",
+        name: "contributors",
+        component: () => import("../components/Contributors.vue")
+      }
     ],
   },
 ];
