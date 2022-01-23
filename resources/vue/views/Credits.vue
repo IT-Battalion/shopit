@@ -219,6 +219,12 @@ export default defineComponent({
         creator: "shashank singh",
         creatorLink: "https://thenounproject.com/rshashank19/",
       },
+      {
+        iconName: "edit",
+        iconLink: "https://thenounproject.com/icon/edit-4518321/",
+        creator: "Gregor Cresnar",
+        creatorLink: "https://thenounproject.com/grega.cresnar/",
+      },
     ];
     return { credits };
   },
