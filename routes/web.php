@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 // Auth
 Route::view('/login', 'vue');
+Route::get('/credits', '');
 
 // Main Content
 Route::view('/', 'vue')->name('home');
