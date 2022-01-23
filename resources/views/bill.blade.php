@@ -1,4 +1,5 @@
-<template>
+@extends('layouts.invoice')
+@section('main-content')
     <div class="flex flex-col">
         <div class="flex flex-col">
             <h1>Rechnung</h1>
@@ -49,4 +50,4 @@
             </tr>
         </table>
     </div>
-</template>
+@endsection

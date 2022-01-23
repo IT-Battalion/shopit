@@ -19,6 +19,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// TEST ROUTES! PLEASE REMOVE AFTER USE
+Route::view('/bill', 'bill');
+Route::view('/voucher', 'voucher');
+
 // Auth
 Route::view('/login', 'vue');
 

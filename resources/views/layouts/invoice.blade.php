@@ -32,8 +32,8 @@
             <p>Kundennummer 2312414</p>
             <p>Bestellnummer: 3522333</p>
         </div>
-        <h2>Seite 1 von 1</h2>
     </div>
+    @yield('main-content')
     <footer>
         <span class="w-5 bg-black rounded-full"/>
         <p>Ihre Bestellung wird von Lernen im Aufbruch abgewickelt und ist ihr Vertragspartner</p>

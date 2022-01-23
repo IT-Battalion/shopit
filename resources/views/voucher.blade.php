@@ -1,4 +1,5 @@
-<template>
+@extends('layouts.invoice')
+@section('main-content')
     <div>
         <div>
             <h3 class="underline decoration-solid">Zahlung</h3>
@@ -24,4 +25,4 @@
                 </section>
         </div>
     </div>
-</template>
+@endsection
