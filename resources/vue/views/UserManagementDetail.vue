@@ -16,7 +16,10 @@
     class="mt-10"
     max-height="400px"
     theme="shopit">
-    <template #table-row="data">
+    <template #table-row="props">
+      <span v-if="props.column.field === 'status'">
+          {{ statusLables[props.formattedRow[props.column.field]] }}
+        </span>
     </template>
   </vue-good-table>
   <h1 class="text-3xl text-white font-bold">Benutzer ent/sperren</h1>
@@ -35,6 +38,7 @@ import TextArea from "@/components/TextArea.vue";
 import {Order, User} from "../types/api";
 import {endLoad, initLoad} from "../loader";
 import {AxiosResponse} from "axios";
+import {OrderStatusLables} from "../types/api-values";
 
 export default defineComponent({
   components: {
@@ -43,6 +47,7 @@ export default defineComponent({
   },
   data() {
     return {
+      statusLables: OrderStatusLables,
       userOrderColumns: [
         {
           label: 'ID',
@@ -70,7 +75,7 @@ export default defineComponent({
           label: 'Bezahlt am',
           field: 'paid_at',
           type: 'date',
-          dateInputFormat: "yyyy-MM-dd'T'kk:mm:ss.SSSSSS'Z'",
+          dateInputFormat: "yyyy-MM-dd kk:mm:ss",
           dateOutputFormat: "dd.MM.yyyy kk:mm",
         },
         {
@@ -82,7 +87,7 @@ export default defineComponent({
           label: 'Produkte bestellt am',
           field: 'products_ordered_at',
           type: 'date',
-          dateInputFormat: "yyyy-MM-dd'T'kk:mm:ss.SSSSSS'Z'",
+          dateInputFormat: "yyyy-MM-dd kk:mm:ss",
           dateOutputFormat: "dd.MM.yyyy kk:mm",
         },
         {
@@ -94,7 +99,7 @@ export default defineComponent({
           label: 'Produkte erhalen am',
           field: 'products_received_at',
           type: 'date',
-          dateInputFormat: "yyyy-MM-dd'T'kk:mm:ss.SSSSSS'Z'",
+          dateInputFormat: "yyyy-MM-dd kk:mm:ss",
           dateOutputFormat: "dd.MM.yyyy kk:mm",
         },
         {
@@ -106,7 +111,7 @@ export default defineComponent({
           label: 'Produkte abgegeben am',
           field: 'handed_over_at',
           type: 'date',
-          dateInputFormat: "yyyy-MM-dd'T'kk:mm:ss.SSSSSS'Z'",
+          dateInputFormat: "yyyy-MM-dd kk:mm:ss",
           dateOutputFormat: "dd.MM.yyyy kk:mm",
         },
         {
@@ -125,7 +130,7 @@ export default defineComponent({
   methods: {
     async loadOrders() {
       initLoad();
-      let response: AxiosResponse<Order[]> = await this.$http.get('/admin/user/' + 1 + '/orders');
+      let response: AxiosResponse<Order[]> = await this.$http.get('/admin/user/' + this.$route.params.id + '/orders');
       this.userOrderRows = response.data;
       endLoad();
     },
