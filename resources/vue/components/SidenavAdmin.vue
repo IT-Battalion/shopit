@@ -87,7 +87,7 @@ export default defineComponent({
       },
       {
         name: "Rechnungen",
-        routerLink: {name:"Bills"},
+        routerLink: {name: "Invoices"},
         icon_url: "/img/categoryBills.svg",
       },
       {

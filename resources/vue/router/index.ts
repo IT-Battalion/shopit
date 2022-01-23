@@ -92,15 +92,17 @@ const routes: Array<RouteRecordRaw> = [
               import("../views/ProfilePage.vue"),
           },
           {
-            path: "bills",
-            name: "Bills",
+            path: "invoices/",
+            name: "Invoices",
             component: () =>
               import("../views/Bills.vue"),
-          },
-          {
-            path: "bills/:id",
-            name: "Bill detail",
-            component: () => import("../views/Bills.vue")
+            children: [
+              {
+                path: ":id",
+                name: "Invoice detail",
+                component: () => import("../views/Bills.vue")
+              },
+            ]
           },
           {
             path: "orders",
