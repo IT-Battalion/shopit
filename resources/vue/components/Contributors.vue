@@ -12,10 +12,10 @@
   <h2 class="text-1xl font-bold text-white">Christoph Roschger</h2>
   <p class="text-gray-200">Für die Hilfe und Unterstützung bei Sicherheitsfragen sowie das versenden von Mails.</p>
   <br>
-  <h2 class="text-1xl font-bold text-white">Walter Raffainer-Magor</h2>
+  <h2 class="text-1xl font-bold text-white">Walter Rafeiner-Magor</h2>
   <p class="text-gray-200">Für das Überprüfen und bestätigen diverser Dokumente wie Rechnungen, ..</p>
   <br>
-  <h2 class="text-1xl font-bold text-white">Eva-Marie Kriechbaum</h2>
+  <h2 class="text-1xl font-bold text-white">Eva-Maria Kriechbaum</h2>
   <p class="text-gray-200">Für die Unterstützung bei der Klärung rechtlicher Fragen.</p>
   <br>
   <h2 class="text-1xl font-bold text-white">Monika Reichart</h2>

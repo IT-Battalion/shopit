@@ -51,6 +51,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     // Coupon routes
     Route::get('/coupons', [CouponController::class, 'all']);
+    Route::post('/coupon/create', [CouponController::class, 'store']);
 
     // Orders routes
     Route::get('/orders', [OrderController::class, 'all']);
