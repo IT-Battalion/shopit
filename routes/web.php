@@ -21,7 +21,10 @@ use Illuminate\Support\Facades\Route;
 
 // Auth
 Route::view('/login', 'vue');
-//Route::get('/credits', '');
+
+//Credits
+Route::view('/credits', 'vue');
+Route::view('/contributors', 'vue');
 
 // Main Content
 Route::view('/', 'vue')->name('home');
