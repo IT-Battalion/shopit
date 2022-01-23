@@ -105,17 +105,34 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { ref } from "vue";
-import { Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
-import { ChevronDownIcon } from "@heroicons/vue/solid";
+import {defineComponent} from "vue";
+import {Popover, PopoverButton, PopoverPanel} from "@headlessui/vue";
+import {ChevronDownIcon} from "@heroicons/vue/solid";
+import {endLoad, initLoad} from "../loader";
 
 export default defineComponent({
-  components: { Popover, PopoverButton, PopoverPanel, ChevronDownIcon },
+  components: {Popover, PopoverButton, PopoverPanel, ChevronDownIcon},
   data() {
     return {
       categories: window.config.categories,
     };
+  },
+  methods: {
+    async editCategory() {
+      initLoad();
+      await this.$http.put('/admin/category/edit'); //TODO implement correct way of api resource
+      endLoad();
+    },
+    async deleteCategory() {
+      initLoad();
+      await this.$http.delete('/admin/category/');
+      endLoad();
+    },
+    async createCategory() {
+      initLoad();
+      await this.$http.post('/admin/category');
+      endLoad();
+    },
   },
 });
 </script>
