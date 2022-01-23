@@ -1,5 +1,17 @@
 <template>
-  <div class="z-20 w-full mt-10 mb-24 text-white left-52 sm:mt-48 sm:mb-0">
+  <div
+    class="
+      z-20
+      h-full
+      content-end
+      w-full
+      mt-[calc(2.5rem+auto)]
+      mb-24
+      text-white
+      left-52
+      sm:mt-48 sm:mb-0
+    "
+  >
     <div class="px-5 pb-12 xl:px-30 lg:px-15 md:px-5 sm:px-0">
       <div
         class="flex flex-col justify-start w-full pt-12 space-y-2 sm:flex-row"

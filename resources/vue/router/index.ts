@@ -1,8 +1,8 @@
-import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Login from "../views/Login.vue";
 import Main from "../views/layout/Main.vue";
-import {user} from "../stores/user";
-import {endLoad, endLoad as complete, initLoad, onLoaded, reset} from "../loader";
+import { user } from "../stores/user";
+import { endLoad, endLoad as complete, initLoad, onLoaded, reset } from "../loader";
 import Home from "../views/layout/Home.vue";
 
 const routes: Array<RouteRecordRaw> = [
@@ -52,7 +52,13 @@ const routes: Array<RouteRecordRaw> = [
               initLoad: false,
               endLoad: false,
             }
-          }
+          },
+          {
+            path: "/order/",
+            name: "order",
+            component: () =>
+              import("../views/layout/Order.vue"),
+          },
         ]
       },
       {
@@ -149,23 +155,27 @@ const routes: Array<RouteRecordRaw> = [
             path: "products/add/",
             name: "Add Product",
             component: () =>
-              import("../views/UploadProductImages.vue"),
-            children: [
-              {
-                path: "categoriesAttributes",
-                name: "categoriesAttributes",
-                component: () =>
-                  import("../components/CategoriesAttributes.vue"),
-              }
-            ]
+              import("../views/AddProductMeta.vue"),
           },
+          {
+            path: "products/add/images",
+            name: "Add Product images",
+            component: () =>
+              import("../views/UploadProductImages.vue"),
+          },
+          {
+            path: "products/add/attributes",
+            name: "Add Product attributes",
+            component: () =>
+              import("../views/CategoriesAttributes.vue"),
+          },
+          {
+            path: "products/add/description",
+            name: "Add Product description",
+            component: () =>
+              import("../views/Description.vue"),
+          }
         ]
-      },
-      {
-        path: "/order/",
-        name: "order",
-        component: () =>
-          import("../views/layout/Order.vue"),
       },
       {
         path: "/credits/",

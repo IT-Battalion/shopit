@@ -10,10 +10,9 @@
         py-4
         mr-2
         font-bold
-        text-teal-500
-        border border-teal-500
+        text-gray-400
         rounded-full
-        hover:bg-teal-500 hover:text-white
+        hover:bg-elevatedColor hover:text-white
       "
     >
       Abbrechen
@@ -28,10 +27,10 @@
         py-4
         mx-2
         font-bold
-        text-teal-500
-        border border-teal-500
+        text-white
+        border border-white
         rounded-full
-        hover:bg-teal-500 hover:text-white
+        hover:bg-elevatedColor hover:border-backgroundColor hover:text-white
       "
     >
       <svg
@@ -63,10 +62,11 @@
         py-4
         ml-2
         font-bold
-        text-white
-        bg-teal-500
-        border border-teal-500
+        text-elevatedColor
+        bg-white
+        border border-white
         rounded-full
+        hover:bg-elevatedColor hover:border-backgroundColor hover:text-white
       "
     >
       Nächste Seite
@@ -96,13 +96,13 @@
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
 import { PropType } from "vue";
-import { RouteLocation } from "vue-router";
+import { RouteLocation, RouteLocationRaw } from "vue-router";
 
 export default defineComponent({
   props: {
-    next: Object as PropType<RouteLocation | string>,
-    last: Object as PropType<RouteLocation | string>,
-    cancel: Object as PropType<RouteLocation | string>,
+    next: Object as PropType<RouteLocationRaw>,
+    last: Object as PropType<RouteLocationRaw>,
+    cancel: Object as PropType<RouteLocationRaw>,
   },
 });
 </script>

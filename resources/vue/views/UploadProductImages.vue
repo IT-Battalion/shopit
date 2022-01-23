@@ -5,9 +5,9 @@
       <UploadImages @change="handleImages" />
     </div>
     <ForwardBackwardButton
-      next="categoriesAttributes"
-      last="Admin"
-      cancel="Admin"
+      :next="{ name: 'Add Product attributes' }"
+      :last="{ name: 'Add Product' }"
+      :cancel="{ name: 'Admin' }"
     />
   </div>
 </template>

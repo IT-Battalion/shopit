@@ -3,10 +3,10 @@
     <div class="flex flex-row items-center justify-center w-full gap-5">
       <template v-for="process in orderProcess" :key="process.name">
         <div class="flex flex-col items-center">
-          <img :src="process.icon_url" :alt="process.name" />
-          <a class="mt-3 text-base text-center text-white">{{
+          <img :src="process.icon_url" :alt="process.name" class="h-10 w-10" />
+          <span class="mt-3 text-base text-center text-white">{{
             process.name
-          }}</a>
+          }}</span>
         </div>
         <span
           class="w-20 h-2 bg-white rounded-full"
@@ -18,7 +18,7 @@
   <mq-responsive target="md-">
     <div class="flex flex-col items-center gap-5 ml-auto mr-0">
       <template v-for="process in orderProcess" :key="process.name">
-        <img :src="process.icon_url" :alt="process.name" class="h-[3vh]" />
+        <img :src="process.icon_url" :alt="process.name" class="h-10 w-10" />
         <span
           class="w-1 h-10 bg-white rounded-full"
           v-if="process.name !== 'Beschreibung'"
@@ -35,20 +35,20 @@ export default defineComponent({
   setup() {
     const orderProcess = [
       {
-        name: "Bilddatein",
-        icon_url: "/img/orderOrdered.svg",
+        name: "Preis & Titel",
+        icon_url: "/img/titelPrice.svg",
       },
       {
-        name: "Preis & Titel",
-        icon_url: "/img/orderPayed.svg",
+        name: "Bilddatein",
+        icon_url: "/img/images.svg",
       },
       {
         name: "Kategorien & Attribute",
-        icon_url: "/img/orderWaiting.svg",
+        icon_url: "/img/editBlockAttributes.svg",
       },
       {
         name: "Beschreibung",
-        icon_url: "/img/orderCollect.svg",
+        icon_url: "/img/description.svg",
       },
     ];
     return { orderProcess };

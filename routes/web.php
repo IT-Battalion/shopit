@@ -59,6 +59,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::view('/edit', 'vue')->name('edit');
         Route::view('/add', 'vue')->name('store');
         Route::view('/add/meta', 'vue')->name('store.meta');
+        Route::view('/add/images', 'vue')->name('store.images');
+        Route::view('/add/attributes', 'vue')->name('store.attributes');
+        Route::view('/add/description', 'vue')->name('store.description');
     });
 
     // User

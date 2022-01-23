@@ -29,7 +29,7 @@ window.axios = axios.create({
 });
 
 window.axios.interceptors.response.use(res => res, err => {
-    if (err.response.status === 401) {
+    if ("response" in err && err.response.status === 401) {
         redirectToLogin().then(r => console.log(r));
         return Promise.reject(err);
     }

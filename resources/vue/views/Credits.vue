@@ -1,14 +1,21 @@
 <template>
+  <h1 class="my-10 w-full text-white text-center text-5xl font-bold uppercase">
+    Credits
+  </h1>
   <div
     v-for="credit in credits"
     :key="credit.iconLink"
     :name="credit.iconName"
-    class="w-full flex flex-col justify-center"
+    class="w-full flex flex-col justify-items-center text-center"
   >
     <div class="my-5 text-white">
-      "<a :href="credit.iconLink">{{ credit.iconName }}</a
-      >" icon by <a :href="credit.creatorLink">{{ credit.creator }}</a> from
-      <a href="https://thenounproject.com/">the Noun Project</a>.
+      "<a :href="credit.iconLink" class="underline">{{ credit.iconName }}</a
+      >" icon by
+      <a :href="credit.creatorLink" class="underline">{{ credit.creator }}</a>
+      from
+      <a href="https://thenounproject.com/" class="underline"
+        >the Noun Project</a
+      >.
     </div>
   </div>
 </template>
@@ -205,6 +212,12 @@ export default defineComponent({
         iconLink: "https://thenounproject.com/icon/add-2419031/",
         creator: "vectlab",
         creatorLink: "https://thenounproject.com/vectlabmail/",
+      },
+      {
+        iconName: "dashboard",
+        iconLink: "https://thenounproject.com/icon/dashboard-2077912/",
+        creator: "shashank singh",
+        creatorLink: "https://thenounproject.com/rshashank19/",
       },
     ];
     return { credits };

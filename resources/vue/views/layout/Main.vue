@@ -2,7 +2,7 @@
   <mq-responsive target="md+">
     <Navbar />
   </mq-responsive>
-  <div class="md:mt-32 md:ml-56 mt-10 mx-10">
+  <div class="md:mt-32 md:ml-56 mt-10 mx-10 min-h-screen">
     <main class="w-full">
       <router-view />
     </main>
