@@ -96,15 +96,15 @@ export default defineComponent({
           label: "Erstellt",
           field: "created_at",
           type: "date",
-          dateInputFormat: "yyyy-MM-dd hh:mm:ss.SSS",
-          dateOutputFormat: "MM-dd-yyyy hh:mm",
+          dateInputFormat: "yyyy-MM-dd'T'kk:mm:ss.SSSSSS'Z'",
+          dateOutputFormat: "dd.MM.yyyy kk:mm",
         },
         {
           label: "Ablauf",
           field: "enabled_until",
           type: "date",
-          dateInputFormat: "yyyy-MM-dd hh:mm:ss.SSS",
-          dateOutputFormat: "MM-dd-yyyy hh:mm",
+          dateInputFormat: "yyyy-MM-dd kk:mm:ss",
+          dateOutputFormat: "dd.MM.yyyy kk:mm",
         }
       ],
     };
