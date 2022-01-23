@@ -4,13 +4,21 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use Auth;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
 
-    public function all() {
+    public function all()
+    {
         $orders = Order::all();
+        return $orders;
+    }
+
+    public function userAll()
+    {
+        $orders = Order::where('customer_id', Auth::user()->id)->get();
         return $orders;
     }
 

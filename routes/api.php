@@ -48,3 +48,4 @@ Route::get('/admin/coupons', [CouponController::class, 'all']);
 
 // Admin/Orders routes
 Route::get('/admin/orders', [OrderController::class, 'all']);
+Route::get('/user/orders', [OrderController::class, 'userAll']);
