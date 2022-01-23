@@ -9,7 +9,7 @@
       max-height="400px"
       :pagination-options="{
       enabled: true,
-      perPage: 5 //TODO add to other tables aswell
+      perPage: 5
       }"
       :search-options="{
         enabled: true,

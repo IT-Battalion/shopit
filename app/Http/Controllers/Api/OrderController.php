@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-use App\Models\OrderProduct;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -61,7 +60,8 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        //
+        $orders = Order::where('customer_id', $id)->get();
+        return $orders;
     }
 
     /**

@@ -43,6 +43,8 @@ Route::prefix('user')->name('user.')->group(function () {
 Route::prefix('admin')->name('admin.')->group(function () {
     // Invoice routes
     Route::get('/invoices', [InvoiceController::class, 'all']);
+    // Admin/User routes
+    Route::get('/user/:id', [UserController::class, 'show']);
 
     // User routes
     Route::get('/users', [UserController::class, 'all']);
@@ -52,6 +54,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     // Orders routes
     Route::get('/orders', [OrderController::class, 'all']);
+    Route::get('/user/:id/orders', [OrderController::class, 'show']);
 });
 
 Route::get('/user/orders', [OrderController::class, 'userAll']);
