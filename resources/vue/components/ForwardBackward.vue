@@ -1,6 +1,8 @@
 <template>
   <div class="flex justify-end mt-10 sm:mr-20">
-    <button
+    <router-link
+      :to="cancel"
+      tag="button"
       class="
         flex
         items-center
@@ -15,8 +17,10 @@
       "
     >
       Abbrechen
-    </button>
-    <button
+    </router-link>
+    <router-link
+      :to="last"
+      tag="button"
       class="
         flex
         items-center
@@ -48,8 +52,10 @@
         ></path>
       </svg>
       Vorherige Seite
-    </button>
-    <button
+    </router-link>
+    <router-link
+      :to="next"
+      tag="button"
       class="
         flex
         items-center
@@ -83,7 +89,7 @@
             c-9.763,9.763-9.763,25.592,0,35.355l72.822,72.822H-24c-13.808,0-25,11.193-25,25S-37.808,422-24,422z"
         />
       </svg>
-    </button>
+    </router-link>
   </div>
 </template>
 

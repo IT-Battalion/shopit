@@ -5,7 +5,8 @@
       <UploadImages @change="handleImages" />
     </div>
     <CancelForwardButton
-      next="/admin/produkte/hinzufuegen/preisUndTitel"
+      next="/admin/products/add/images"
+      last="/admin"
       cancel="/admin/"
     />
   </div>
