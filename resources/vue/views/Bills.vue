@@ -23,7 +23,7 @@
           :to="{
             name: 'Invoice detail',
             params: { id: download.formattedRow['id'] },
-          }"
+          }" target="_blank"
         ><img class="object-scale-down h-7 w-full" src="/img/info-white.svg"
         /></router-link>
       </template>

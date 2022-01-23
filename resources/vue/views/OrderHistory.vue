@@ -19,7 +19,7 @@
     >
       <template #table-row="detail">
         <router-link v-if="detail.column.field === 'detail'"
-                     :to="{name: 'Order detail', params: {id: detail.formattedRow['id']}}"><img
+                     :to="{name: 'Order detail', params: {id: detail.formattedRow['id']}}" target="_blank"><img
           class='object-scale-down h-7'
           src='/img/info-white.svg'/></router-link>
       </template>

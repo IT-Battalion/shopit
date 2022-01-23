@@ -19,8 +19,9 @@
     >
       <template #table-row="detail">
         <router-link :to="{name: 'Order detail', params: {id: detail.formattedRow['id']}}"
-                     v-if="detail.column.field === 'detail'"><img src='/img/info-white.svg'
-                                                                  class='object-scale-down h-7 w-full'/></router-link>
+                     v-if="detail.column.field === 'detail'" target="_blank"><img src='/img/info-white.svg'
+                                                                                  class='object-scale-down h-7 w-full'/>
+        </router-link>
       </template>
     </vue-good-table>
   </div>
