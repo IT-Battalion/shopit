@@ -28,6 +28,14 @@
           sm:mb-0
         "
       >
+        <div class="flex flex-row">
+          <img
+            src="/img/logo.svg"
+            alt="ShopIT Logo"
+            class="w-1/4 mb-10 sm:mr-5"
+          />
+          <img src="/img/IT_Logo.png" alt="IT Logo" class="w-3/4 mb-10" />
+        </div>
         <h1
           class="
             text-xl
@@ -59,7 +67,7 @@
         <label
           for="username"
           class="block mt-2 text-sm font-bold text-left text-inputLabel"
-        >Benutzername</label
+          >Benutzername</label
         >
         <div>
           <input
@@ -86,7 +94,7 @@
         <label
           for="user-password"
           class="block mt-2 text-sm font-bold text-inputLabel"
-        >Passwort</label
+          >Passwort</label
         >
         <div>
           <input
@@ -129,8 +137,7 @@
             px-4
             py-4
             w-full
-            md:w-auto
-            md:py-2
+            md:w-auto md:py-2
             font-bold
             text-white
             bg-gray-800
@@ -187,17 +194,17 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive} from "vue";
-import {useRoute, useRouter} from "vue-router";
+import { defineComponent, reactive } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import useUser from "../stores/user";
 import userStore from "../stores/user";
-import {initLoad} from "../loader";
+import { initLoad } from "../loader";
 
 export default defineComponent({
   setup() {
     let isLoading = false;
     const route = useRoute();
-    const {user, login} = useUser();
+    const { user, login } = useUser();
     const router = useRouter();
 
     const form = reactive({
@@ -232,8 +239,8 @@ export default defineComponent({
       this.user.error.value = "";
       this.form.username = "";
       this.form.password = "";
-    }
-  }
+    },
+  },
 });
 </script>
 
