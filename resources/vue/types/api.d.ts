@@ -148,19 +148,30 @@ export interface Coupon {
   enabled: boolean,
   code: string,
   created_at: string,
+  creator: string, //TOOD backend stuff
   enabled_until: string,
 }
 
 export interface Order {
-  id: number,
-  status: string,
-  created_at: string,
-  price: number,
+  id?: number,
+  status?: string,
+  created_at?: string,
+  price?: number,
+  paid_at?: string,
+  products_ordered_at?: string,
+  products_received_at?: string,
+  handed_over_at?: string,
+  handed_over?: string, //TOOD backend stuff
+  products_received?: string, //TOOD backend stuff
+  products_ordered?: string, //TOOD backend stuff
+  transaction_confirmed?: string,//TOOD backend stuff
+  customer?: string, //TOOD backend stuff
+  coupon?: string, //TODO backend stuff
 }
 
 export interface Invoice {
-  id: number,
-  status: string,
-  price: number,
-  created_at: string
+  id?: number,
+  status?: string,
+  price?: number,
+  created_at?: string
 }
