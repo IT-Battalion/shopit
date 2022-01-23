@@ -852,3 +852,30 @@ test('check if 0 of a product is still in the shopping cart', function () {
 
     expect($isInShoppingCart)->toBeFalse();
 });
+
+test('total shopping cart price', function () {
+    $shoppingCart = $this->app->make(ShoppingCartServiceInterface::class);
+
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    generateShoppingCartCoupon($user);
+
+    saturateShoppingCart($user);
+
+    $subtotal = $shoppingCart->calculatePrice(false, false);
+    $totalDiscount = $shoppingCart->calculateDiscount();
+    $totalTax = $shoppingCart->calculateTax();
+    $total = $shoppingCart->calculatePrice(true, true);
+
+    $realPrice = [
+        'subtotal' => $subtotal,
+        'discount' => $totalDiscount,
+        'tax' => $totalTax,
+        'total' => $total,
+    ];
+
+    $grouped = $shoppingCart->calculateShoppingCartPrice();
+
+    expect($grouped)->toEqual($realPrice);
+});

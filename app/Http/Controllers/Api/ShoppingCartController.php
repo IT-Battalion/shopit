@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\ProductAddedToShoppingCartEvent;
+use App\Events\ProductRemovedFromShoppingCartEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddToShoppingCartRequest;
 use App\Http\Requests\RemoveFromShoppingCartRequest;
 use App\Models\Product;
 use App\Models\User;
 use App\Services\ShoppingCart\ShoppingCartServiceInterface;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ShoppingCartController extends Controller
 {
-    public function all(ShoppingCartServiceInterface $shoppingCartService) {
+    public function all(ShoppingCartServiceInterface $shoppingCartService)
+    {
         $user = User::with([
             'shopping_cart.pivot.productClothingAttribute',
             'shopping_cart.pivot.productDimensionAttribute',
@@ -30,49 +32,59 @@ class ShoppingCartController extends Controller
                     'selected_attributes' => $product->pivot->productAttributes,
                 ];
             });
-        stop_measure('map');
+
+        $prices = $shoppingCartService->calculateShoppingCartPrice();
 
         $shoppingCart = [
             'products' => $shoppingCartProducts,
-            'subtotal' => $shoppingCartService->calculatePrice(false, false, $user),
-            'tax' => $shoppingCartService->calculateTax($user),
-            'discount' => $shoppingCartService->calculateDiscount($user),
-            'total' => $shoppingCartService->calculatePrice(user: $user),
+            ...$prices,
         ];
 
         return response()->json($shoppingCart);
     }
 
-    public function add(AddToShoppingCartRequest $request, ShoppingCartServiceInterface $shoppingCart) {
+    public function add(AddToShoppingCartRequest $request, ShoppingCartServiceInterface $shoppingCart)
+    {
         $data = $request->validated();
 
         $product = Product::whereName($data['name'])->first();
-        if ($product === null)
-        {
-            abort(404);
-        }
-
-        $selectedAttributes = collect($data['selected_attributes'])
-            ->mapWithKeys(function ($selectedAttribute) {
-                return [
-                    $selectedAttribute['type'] => $selectedAttribute['id'],
-                ];
-            });
-
-        $shoppingCart->addProduct($product, $selectedAttributes, $request['count']);
-    }
-
-    public function remove(RemoveFromShoppingCartRequest $request, ShoppingCartServiceInterface $shoppingCart) {
-        $data = $request->validated();
-
-        $product = Product::whereName($data['name'])->first();
-        if ($product === null)
-        {
+        if ($product === null) {
             abort(404);
         }
 
         $selectedAttributes = $request->getSelectedAttributes();
 
-        $shoppingCart->removeProduct($product, $selectedAttributes, $request['count']);
+        $count = $request['count'];
+
+        $shoppingCart->addProduct($product, $selectedAttributes, $count);
+
+        $prices = $shoppingCart->calculateShoppingCartPrice();
+
+        broadcast(
+            new ProductAddedToShoppingCartEvent($product, $count, $selectedAttributes, $prices['subtotal'], $prices['discount'], $prices['tax'], $prices['total'])
+        )->toOthers();
+
+        return response()->json($prices);
+    }
+
+    public function remove(RemoveFromShoppingCartRequest $request, ShoppingCartServiceInterface $shoppingCart)
+    {
+        $data = $request->validated();
+
+        $product = Product::whereName($data['name'])->first();
+        if ($product === null) {
+            abort(404);
+        }
+
+        $selectedAttributes = $request->getSelectedAttributes();
+        $count = $request['count'];
+
+        $shoppingCart->removeProduct($product, $selectedAttributes, $count);
+
+        $prices = $shoppingCart->calculateShoppingCartPrice();
+
+        broadcast(new ProductRemovedFromShoppingCartEvent($product, $selectedAttributes, $prices['subtotal'], $prices['discount'], $prices['tax'], $prices['total']));
+
+        return response()->json($prices);
     }
 }

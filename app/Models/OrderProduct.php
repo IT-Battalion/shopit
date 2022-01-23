@@ -73,7 +73,7 @@ use Illuminate\Support\Facades\Auth;
  */
 class OrderProduct extends Model
 {
-    use HasFactory, TracksModification;
+    use HasFactory;
 
     protected $table = 'order_products';
 

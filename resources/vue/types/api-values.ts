@@ -20,3 +20,19 @@ export const clothingSizeLabels = [
   'L',
   'XL',
 ];
+
+export enum OrderStatus {
+  CREATED = 0,
+  PAID = 1,
+  ORDERED = 2,
+  RECEIVED = 3,
+  HANDED_OVER = 4,
+}
+
+export const OrderStatusLables = [
+  'erstellt',
+  'bezahlt',
+  'bestellt',
+  'erhalten',
+  'übergeben',
+];

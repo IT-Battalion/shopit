@@ -47,7 +47,7 @@ use Illuminate\Support\Carbon;
  */
 class OrderProductImage extends Model
 {
-    use HasFactory, TracksModification;
+    use HasFactory;
 
     protected $table = 'order_product_images';
 

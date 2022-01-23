@@ -15,7 +15,7 @@ class ProductClothingAttributeFactory extends Factory
     public function definition()
     {
         return [
-            'size' => ClothingSize::getRandomValue(),
+            'size' => ClothingSize::getRandomCase(),
         ];
     }
 }

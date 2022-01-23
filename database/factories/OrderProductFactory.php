@@ -28,10 +28,6 @@ class OrderProductFactory extends Factory
      */
     public function definition()
     {
-        $admin = Admin::inRandomOrder()
-            ->first()
-            ->id;
-
         $order = Order::doesntHave('products')->inRandomOrder()->first() ?? Order::inRandomOrder()->first();
 
         return [
@@ -45,8 +41,6 @@ class OrderProductFactory extends Factory
             'order_dimension_attribute_id' => mt_rand(0, 1) ? OrderDimensionAttribute::inRandomOrder()->first()->id : null,
             'order_volume_attribute_id' => mt_rand(0, 1) ? OrderVolumeAttribute::inRandomOrder()->first()->id : null,
             'order_color_attribute_id' => mt_rand(0, 1) ? OrderColorAttribute::inRandomOrder()->first()->id : null,
-            'created_by_id' => $admin,
-            'updated_by_id' => $admin,
         ];
     }
 }

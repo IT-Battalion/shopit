@@ -13,15 +13,13 @@ use App\Exceptions\ShoppingCartEmptyException;
 use App\Models\Order;
 use App\Models\User;
 use App\Services\ShoppingCart\ShoppingCartServiceInterface;
+use App\Types\OrderStatus;
 use Illuminate\Support\Facades\Auth;
 
 class OrderService implements OrderServiceInterface
 {
-    private ShoppingCartServiceInterface $shoppingCartService;
-
-    public function __construct(ShoppingCartServiceInterface $shoppingCartService)
+    public function __construct(private ShoppingCartServiceInterface $shoppingCartService)
     {
-        $this->shoppingCartService = $shoppingCartService;
     }
 
     /**
@@ -37,9 +35,16 @@ class OrderService implements OrderServiceInterface
 
         $coupon = $customer->coupon?->id;
 
+        $prices = $this->shoppingCartService->calculateShoppingCartPrice($customer);
+
         $order = Order::create([
             'customer_id' => $customer->id,
             'coupon_code_id' => $coupon,
+            'status' => OrderStatus::CREATED,
+            'totalGross' => $prices['subtotal'],
+            'totalDiscount' => $prices['discount'],
+            'totalTax' => $prices['tax'],
+            'total' => $prices['total'],
         ]);
 
         foreach ($products as $product) {
@@ -73,6 +78,7 @@ class OrderService implements OrderServiceInterface
     {
         $order->paid_at = now();
         $order->transaction_confirmed_by_id = Auth::user()->id;
+        $order->status = OrderStatus::PAID;
         $order->save();
         event(new OrderPayingEvent($order));
         return $order;
@@ -90,6 +96,7 @@ class OrderService implements OrderServiceInterface
 
         $order->products_ordered_at = now();
         $order->products_ordered_by_id = Auth::user()->id;
+        $order->status = OrderStatus::ORDERED;
         $order->save();
 
         event(new OrderOrderingEvent($order));
@@ -108,6 +115,7 @@ class OrderService implements OrderServiceInterface
 
         $order->products_received_at = now();
         $order->products_received_by_id = Auth::user()->id;
+        $order->status = OrderStatus::RECEIVED;
         $order->save();
 
         event(new OrderReceivingEvent($order));
@@ -126,6 +134,7 @@ class OrderService implements OrderServiceInterface
 
         $order->handed_over_at = now();
         $order->handed_over_by_id = Auth::user()->id;
+        $order->status = OrderStatus::HANDED_OVER;
         $order->save();
 
         event(new OrderDeliveringEvent($order));

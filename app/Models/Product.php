@@ -188,7 +188,6 @@ class Product extends Model implements ConvertableToOrder
             'description' => $this->description,
             'count' => $attributes['count'],
             'created_at' => $this->created_at,
-            'created_by_id' => $this->created_by->id,
             'order_id' => $attributes['order_id'],
             'price' => $this->price,
             'tax' => $this->tax,

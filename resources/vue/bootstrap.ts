@@ -1,14 +1,28 @@
-import { AxiosInstance, default as axios } from "axios";
+import {AxiosInstance, default as axios} from "axios";
+import Echo from 'laravel-echo';
+import {LoDashStatic} from "lodash";
+import Pusher from "pusher-js";
+import {GlobalConfig} from "./types/config";
+import {createApp, reactive} from "vue";
+import App from "./App.vue";
+import router from "./router";
+import {redirectToLogin} from "./util";
+import {MqResponsive, Vue3Mq} from "vue3-mq";
+import {Skeletor} from "vue-skeletor";
+import 'vue-skeletor/dist/vue-skeletor.css';
+import mitt from "mitt";
+import {UnwrapNestedRefs} from "@vue/reactivity";
 
 declare global {
-    interface Window {
-        axios: AxiosInstance,
-        _: LoDashStatic,
-        pusher: Pusher,
-        echo: Echo,
-        initialConfig: GlobalConfig,
-        config: UnwrapNestedRefs<GlobalConfig>,
-    }
+  interface Window {
+    axios: AxiosInstance,
+    _: LoDashStatic,
+    pusher: Pusher,
+    echo: Echo,
+    initialConfig: GlobalConfig,
+    // @ts-ignore
+    config: UnwrapNestedRefs<GlobalConfig>,
+  }
 }
 
 window.config = reactive(window.initialConfig);
@@ -43,11 +57,6 @@ window.axios.interceptors.response.use(res => res, err => {
  * allows your team to easily build robust real-time web applications.
  */
 
-import Echo from 'laravel-echo';
-import { LoDashStatic } from "lodash";
-import Pusher from "pusher-js";
-import { GlobalConfig } from "./types/config";
-
 window.pusher = require('pusher-js');
 
 window.echo = new Echo({
@@ -68,19 +77,6 @@ require('pdfmake');
 window.axios.get('/sanctum/csrf-cookie', { baseURL: '' }).catch(_ => {
     console.error("CSRF couldn't be fetched");
 });
-
-import {
-    createApp, reactive
-} from "vue";
-import App from "./App.vue";
-import router from "./router";
-import { redirectToLogin } from "./util";
-import { Vue3Mq, MqResponsive } from "vue3-mq";
-import { Skeletor } from "vue-skeletor";
-import 'vue-skeletor/dist/vue-skeletor.css';
-import { initLoad } from "./loader";
-import mitt from "mitt";
-import { UnwrapNestedRefs } from "@vue/reactivity";
 
 /*export const SUPPORT_LOCALES = ['de', 'en'];
 
@@ -121,5 +117,6 @@ createdApp
 
 createdApp.config.globalProperties.$http = window.axios;
 createdApp.config.globalProperties.$globalBus = bus;
+createdApp.config.globalProperties.$echo = window.echo;
 
 //loadLocale(i18n, userLocale);

@@ -81,8 +81,6 @@ class ProductImage extends Model implements ConvertableToOrder
             'path' => $orderPath,
             'type' => $this->type,
             'hash' => $hash,
-            'created_by_id' => $this->created_by_id,
-            'updated_by_id' => $this->updated_by_id,
         ]);
     }
 

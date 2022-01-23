@@ -11,6 +11,7 @@ use App\Types\Money;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use JetBrains\PhpStorm\ArrayShape;
 
 class ShoppingCartService implements ShoppingCartServiceInterface
 {
@@ -208,6 +209,45 @@ class ShoppingCartService implements ShoppingCartServiceInterface
 
         return $discountPrice;
     }
+
+    /**
+     * @param User|null $user
+     * @return array
+     */
+    #[ArrayShape(['subtotal' => "\App\Types\Money", 'tax' => "\App\Types\Money", 'discount' => "\App\Types\Money", 'total' => "\App\Types\Money"])]
+    public function calculateShoppingCartPrice(User $user = null): array
+    {
+        $user = $user ?? Auth::user();
+        $discount = $user?->coupon->discount ?? '0';
+
+        $taxPrices = $user->shopping_cart()->lazy()->reduce(function (array $carry, Product $product) {
+            if (!isset($carry[$product->tax])) {
+                $carry[$product->tax] = new Money('0');
+            }
+            $carry[$product->tax] = $carry[$product->tax]->add($product->price->mul($product->pivot->count));
+            return $carry;
+        }, []);
+
+        $subtotal = new Money('0');
+        $totalTax = new Money('0');
+
+        foreach ($taxPrices as $tax => $price) {
+            $subtotal = $subtotal->add($price);
+            $totalTax = $totalTax->add($price->mul($tax,'1'));
+        }
+
+        $totalDiscount = $subtotal->mul($discount);
+        $totalTax = $totalTax->mul(bcsub('1', $discount));
+        $total = $subtotal->sub($totalDiscount)->add($totalTax);
+
+        return [
+            'subtotal' => $subtotal,
+            'tax' => $totalTax,
+            'discount' => $totalDiscount,
+            'total' => $total,
+        ];
+    }
+
 
     public function calculatePriceOfProduct(Product $product, Collection $attributes, bool $includeTaxes, bool $includeCoupon, User $user = null): Money
     {

@@ -33,4 +33,14 @@ class AddToShoppingCartRequest extends FormRequest
         ];
     }
 
+    public function getSelectedAttributes()
+    {
+        return collect($this['selected_attributes'])
+            ->mapWithKeys(function ($selectedAttribute) {
+                return [
+                    $selectedAttribute['type'] => $selectedAttribute['id'],
+                ];
+            });
+    }
+
 }

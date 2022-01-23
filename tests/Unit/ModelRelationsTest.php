@@ -365,26 +365,6 @@ test('OrderProduct to thumbnail', function () {
     expect($orderProduct->thumbnail->id)->toBe($orderProductImage->id);
 });
 
-test('OrderProduct to creator', function () {
-    $admin = Admin::factory()->create();
-    Order::factory()->create();
-    $product = OrderProduct::factory()->create([
-        'created_by_id' => $admin->id,
-    ]);
-
-    expect($product->created_by->id)->toBe($admin->id);
-});
-
-test('OrderProduct to updater', function () {
-    $admin = Admin::factory()->create();
-    Order::factory()->create();
-    $product = OrderProduct::factory()->create([
-        'updated_by_id' => $admin->id,
-    ]);
-
-    expect($product->updated_by->id)->toBe($admin->id);
-});
-
 test('OrderProduct to images', function () {
     Order::factory()->create();
     $product = OrderProduct::factory()->create();
@@ -530,28 +510,6 @@ test('OrderProductImage to OrderProduct', function () {
 
     expect($image->products->first()->id)->toBe($product->id);
     expect($image->products->count())->toBe(1);
-});
-
-test('OrderProductImage to creator', function () {
-    $admin = Admin::factory()->create();
-    Order::factory()->create();
-    OrderProduct::factory()->create();
-    $image = OrderProductImage::factory()->create([
-        'created_by_id' => $admin->id,
-    ]);
-
-    expect($image->created_by->id)->toBe($admin->id);
-});
-
-test('OrderProductImage to updater', function () {
-    $admin = Admin::factory()->create();
-    Order::factory()->create();
-    OrderProduct::factory()->create();
-    $image = OrderProductImage::factory()->create([
-        'updated_by_id' => $admin->id,
-    ]);
-
-    expect($image->updated_by->id)->toBe($admin->id);
 });
 
 test('Product to creator', function () {

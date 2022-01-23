@@ -25,8 +25,11 @@ class CreateOrdersTable extends Migration
 
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+
             $table->foreignId('customer_id')->constrained('users');
             $table->foreignId('coupon_code_id')->nullable()->constrained();
+
+            $table->integer('status')->default(0);
             $table->timestamp('paid_at')->nullable();
             $table->foreignId('transaction_confirmed_by_id')->nullable()->constrained('users');
             $table->timestamp('products_ordered_at')->nullable(); // user order timestamp is the "created_at" column added by
@@ -36,6 +39,13 @@ class CreateOrdersTable extends Migration
             $table->foreignId('products_received_by_id')->nullable()->constrained('users');
             $table->timestamp('handed_over_at')->nullable();
             $table->foreignId('handed_over_by_id')->nullable()->constrained('users');
+
+            //prices
+            $table->string('totalGross');
+            $table->string('totalDiscount');
+            $table->string('totalTax');
+            $table->string('total');
+
             $table->timestamps();
         });
 
@@ -44,7 +54,6 @@ class CreateOrdersTable extends Migration
             $table->text('path');
             $table->string('type');
             $table->string('hash')->index();
-            $table->user();
             $table->timestamps();
         });
 
@@ -92,7 +101,6 @@ class CreateOrdersTable extends Migration
             $table->foreignId('order_dimension_attribute_id')->nullable()->constrained();
             $table->foreignId('order_volume_attribute_id')->nullable()->constrained();
             $table->foreignId('order_color_attribute_id')->nullable()->constrained();
-            $table->user();
 
             $table->timestamps();
         });

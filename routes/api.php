@@ -22,30 +22,36 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-});
-
-// Shopping Cart routes
-Route::get('/user/shopping-cart', [ShoppingCartController::class, 'all']);
-Route::post('/user/shopping-cart', [ShoppingCartController::class, 'add']);
-Route::post('/user/shopping-cart/remove', [ShoppingCartController::class, 'remove']);
-
 // Highlighted Products
 Route::get('/highlighted', [HighlightedProductController::class, 'all']);
 
 // Product routes
 Route::apiResource('product', ProductController::class);
 
-// Admin/Invoice routes
-Route::get('/admin/invoices', [InvoiceController::class, 'all']);
+Route::prefix('user')->name('user.')->group(function () {
+    Route::get('/', function (Request $request) {
+        return $request->user();
+    });
 
-// Admin/User routes
-Route::get('/admin/users', [UserController::class, 'all']);
+    // Shopping Cart routes
+    Route::get('/shopping-cart', [ShoppingCartController::class, 'all']);
+    Route::post('/shopping-cart', [ShoppingCartController::class, 'add']);
+    Route::post('/shopping-cart/remove', [ShoppingCartController::class, 'remove']);
+});
 
-// Admin/Coupon routes
-Route::get('/admin/coupons', [CouponController::class, 'all']);
+// Admin routes
+Route::prefix('admin')->name('admin.')->group(function () {
+    // Invoice routes
+    Route::get('/invoices', [InvoiceController::class, 'all']);
 
-// Admin/Orders routes
-Route::get('/admin/orders', [OrderController::class, 'all']);
+    // User routes
+    Route::get('/users', [UserController::class, 'all']);
+
+    // Coupon routes
+    Route::get('/coupons', [CouponController::class, 'all']);
+
+    // Orders routes
+    Route::get('/orders', [OrderController::class, 'all']);
+});
+
 Route::get('/user/orders', [OrderController::class, 'userAll']);

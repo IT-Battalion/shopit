@@ -4,7 +4,7 @@ namespace App\Traits;
 
 trait GetRandomEnumCase
 {
-    public static function getRandomValue() {
+    public static function getRandomCase() {
         $cases = self::cases();
         return $cases[array_rand($cases)];
     }

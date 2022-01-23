@@ -13,40 +13,12 @@ class OrderController extends Controller
 
     public function all()
     {
-        $orders = Order::all();
-        $orders->map(function (Order $order) {
-            $products = OrderProduct::where('order_id', $order->id)->get();
-            $prize = 0;
-            foreach ($products as $op) {
-                $prize += $op->price->getAmount();
-            }
-            $order->price = $prize . ' EUR';
-            $order->status = "Warte auf Zahlung";
-            if ($order->isPaid()) $order->status = 'Bezahlt';
-            if ($order->isOrdered()) $order->status = 'Bestellt';
-            if ($order->isReceived()) $order->status = 'Erhalten';
-            if ($order->isHandedOver()) $order->status = 'Abgeholt';
-        });
-        return $orders;
+        return Order::all();
     }
 
-    //TODO damianik refactor
     public function userAll()
     {
         $orders = Order::where('customer_id', Auth::user()->id)->get();
-        $orders->map(function (Order $order) {
-            $products = OrderProduct::where('order_id', $order->id)->get();
-            $prize = 0;
-            foreach ($products as $op) {
-                $prize += $op->price->getAmount();
-            }
-            $order->price = $prize . ' EUR';
-            $order->status = "Warte auf Zahlung";
-            if ($order->isPaid()) $order->status = 'Bezahlt';
-            if ($order->isOrdered()) $order->status = 'Bestellt';
-            if ($order->isReceived()) $order->status = 'Erhalten';
-            if ($order->isHandedOver()) $order->status = 'Abgeholt';
-        });
         return $orders;
     }
 

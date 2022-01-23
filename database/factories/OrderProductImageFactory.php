@@ -26,10 +26,6 @@ class OrderProductImageFactory extends Factory
      */
     public function definition(): array
     {
-        $admin = Admin::inRandomOrder()
-            ->first()
-            ->id;
-
         $id = $this->faker->unique()->randomNumber(5, false);
         $source = fopen(resource_path(collect(self::PATHS)->random()), 'r');
         $path = "order/product/images/$id.png";
@@ -39,8 +35,6 @@ class OrderProductImageFactory extends Factory
             'path' => $path,
             'type' => 'image/png',
             'hash' => $this->faker->unique()->sha256(),
-            'created_by_id' => $admin,
-            'updated_by_id' => $admin,
         ];
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\User;
 use App\Types\Money;
 use Illuminate\Support\Collection;
+use JetBrains\PhpStorm\ArrayShape;
 
 interface ShoppingCartServiceInterface
 {
@@ -56,6 +57,19 @@ interface ShoppingCartServiceInterface
      * @return Money the discount in EUR
      */
     public function calculateDiscount(User $user = null): Money;
+
+    /**
+     * Calculates various prices for a shopping cart including:
+     *  - [type (name)]
+     *  - gross price (subtotal)
+     *  - discount (discount)
+     *  - tax (tax)
+     *  - total with discount and tax (total)
+     * @param User|null $user
+     * @return array
+     */
+    #[ArrayShape(['subtotal' => "\App\Types\Money", 'tax' => "\App\Types\Money", 'discount' => "\App\Types\Money", 'total' => "\App\Types\Money"])]
+    public function calculateShoppingCartPrice(User $user = null): array;
 
     /**
      * Calculates the total Price of a Product from the Shopping Cart (usually more than one)

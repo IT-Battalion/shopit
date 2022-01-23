@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Types\Money;
+use App\Types\OrderStatus;
 use Barryvdh\LaravelIdeHelper\Eloquent;
 use Database\Factories\OrderFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -68,9 +70,10 @@ class Order extends Model
     protected $table = 'orders';
 
     protected $fillable = [
-        'price',
         'customer_id',
-        'coupon_code_id',
+        'order_coupon_code_id',
+        'status',
+
         'authorizing_admin',
         'products_received_at',
         'products_received_by_id',
@@ -78,9 +81,20 @@ class Order extends Model
         'transaction_confirmed_by_id',
         'handed_over_at',
         'handed_over_by_id',
+
+        'totalGross',
+        'totalDiscount',
+        'totalTax',
+        'total',
     ];
 
-    protected $casts = [];
+    protected $casts = [
+        'status' => OrderStatus::class,
+        'totalGross' => Money::class,
+        'totalDiscount' => Money::class,
+        'totalTax' => Money::class,
+        'total' => Money::class,
+    ];
 
     public function coupon_code(): BelongsTo
     {
@@ -114,22 +128,22 @@ class Order extends Model
 
     public function isPaid()
     {
-        return isset($this->paid_at);
+        return $this->status === OrderStatus::PAID;
     }
 
     public function isOrdered()
     {
-        return isset($this->products_ordered_at);
+        return $this->status === OrderStatus::ORDERED;
     }
 
     public function isReceived()
     {
-        return isset($this->products_received_at);
+        return $this->status === OrderStatus::RECEIVED;
     }
 
     public function isHandedOver()
     {
-        return isset($this->handed_over_at);
+        return $this->status === OrderStatus::HANDED_OVER;
     }
 
     public function products(): HasMany
@@ -159,22 +173,22 @@ class Order extends Model
 
     public function scopeHandedOver(Builder $query): Builder
     {
-        return $query->whereNotNull('handed_over_at');
+        return $query->where('status', OrderStatus::HANDED_OVER);
     }
 
     public function scopeTransactionConfirmed(Builder $query): Builder
     {
-        return $query->whereNotNull('paid_at');
+        return $query->where('status', OrderStatus::PAID);
     }
 
     public function scopeReceived(Builder $query): Builder
     {
-        return $query->whereNotNull('products_received_at');
+        return $query->where('status', OrderStatus::RECEIVED);
     }
 
     public function scopeOrdered(Builder $query): Builder
     {
-        return $query->whereNotNull('products_ordered_at');
+        return $query->where('status', OrderStatus::ORDERED);
     }
 
     protected static function boot()
