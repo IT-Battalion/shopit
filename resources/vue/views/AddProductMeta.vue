@@ -3,7 +3,7 @@
     <AddProductProcess />
     <div class="w-full grid grid-rows-2 grid-cols-1 place-items-center my-16">
       <InputField labelName="Produktname" />
-      <InputField labelName="Preis" />
+      <InputField labelName="Preis" type="number" />
     </div>
     <ForwardBackwardButton
       :next="{ name: 'Add Product images' }"

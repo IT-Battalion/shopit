@@ -1,30 +1,10 @@
 <template>
   <div class="w-full h-full pl-0 md:pl-24">
     <h1 class="text-4xl font-bold text-white">Coupons</h1>
-    <InputField labelName="Rabattcode"/>
-    <InputField labelName="Rabatt"/>
-    <InputField labelName="Erhältlich bis" iconName="calender"/>
-    <button
-      class="w-24 row-span-2 px-4 py-1 bg-white rounded-3xl hover:bg-gray-300"
-      type="button"
-    >
-      <svg
-        fill="#000"
-        version="1.1"
-        viewBox="0 0 100 100"
-        xmlns="http://www.w3.org/2000/svg"
-        class="object-scale-down h-8 mx-auto"
-      >
-        <g>
-          <path
-            d="m48.359 42.656c-0.09375-0.89062-0.15625-1.7969-0.15625-2.7188s0.046875-1.8438 0.15625-2.75h-25.078l-2.125-8.0625c-0.3125-1.2031-1.4062-2.0312-2.6406-2.0312h-9.5312c-1.5156 0-2.7344 1.2188-2.7344 2.7344s1.2188 2.7344 2.7344 2.7344h7.4219l2.125 8.0625s0 0.015625 0.015625 0.015625l6.6406 25.609c0.3125 1.2031 1.4062 2.0312 2.6562 2.0312h0.32812c-0.39062 0.98438-0.60938 2.0469-0.60938 3.1719 0 4.75 3.875 8.625 8.625 8.625s8.625-3.875 8.625-8.625c0-1.125-0.21875-2.1875-0.60938-3.1719h6.5c-0.39062 0.98438-0.60938 2.0469-0.60938 3.1719 0 4.75 3.875 8.625 8.625 8.625s8.625-3.875 8.625-8.625c0-1.125-0.21875-2.1875-0.60938-3.1719h0.32812c1.25 0 2.3438-0.82812 2.6562-2.0312l0.28125-1.1094c-2.6562-0.375-5.1719-1.1875-7.4844-2.3281-7.7031-3.75-13.219-11.281-14.156-20.156zm-9.0156 28.812c0 1.7344-1.4062 3.1562-3.1562 3.1562-1.7344 0-3.1562-1.4219-3.1562-3.1562 0-1.75 1.4219-3.1719 3.1562-3.1719 1.75 0 3.1562 1.4219 3.1562 3.1719zm22.516 0c0 1.7344-1.4219 3.1562-3.1562 3.1562-1.75 0-3.1562-1.4219-3.1562-3.1562 0-1.75 1.4062-3.1719 3.1562-3.1719 1.7344 0 3.1562 1.4219 3.1562 3.1719z"
-          />
-          <path
-            d="m73.703 19.906c-11.047 0-20.031 9-20.031 20.047s8.9844 20.031 20.031 20.031c11.062 0 20.031-8.9844 20.031-20.031 0-11.062-8.9688-20.047-20.031-20.047zm5.9531 22.766h-3.2188v3.2188c0 1.5-1.2188 2.7344-2.7344 2.7344-1.5 0-2.7344-1.2344-2.7344-2.7344v-3.2188h-3.2031c-1.5156 0-2.7344-1.2344-2.7344-2.7344 0-1.5156 1.2188-2.7344 2.7344-2.7344h3.2031v-3.2188c0-1.5156 1.2344-2.7344 2.7344-2.7344 1.5156 0 2.7344 1.2188 2.7344 2.7344v3.2188h3.2188c1.5156 0 2.7344 1.2188 2.7344 2.7344-0.015625 1.5-1.2188 2.7344-2.7344 2.7344z"
-          />
-        </g>
-      </svg>
-    </button>
+    <InputField labelName="Rabattcode" />
+    <InputField labelName="Rabatt" type="number" placeholder="0.33 => 33%" />
+    <InputField labelName="Erhältlich bis" iconName="calender" type="date" />
+    <ButtonField iconSrc="/img/addBlack.svg" />
     <vue-good-table
       class="mt-10"
       :columns="columns"
@@ -32,9 +12,9 @@
       max-height="400px"
       theme="shopit"
       :pagination-options="{
-    enabled: true,
-    perPage: 5
-  }"
+        enabled: true,
+        perPage: 5,
+      }"
       :search-options="{
         enabled: true,
         trigger: 'enter',
@@ -42,29 +22,41 @@
       }"
     >
       <template #table-row="data">
-        <img v-if="data.column.field === 'enabled' && data.formattedRow['enabled'] === false"
-             class='object-scale-down h-7 w-full'
-             src="/img/red-x.svg"/>
-        <img v-if="data.column.field === 'enabled' && data.formattedRow['enabled'] === true"
-             class='object-scale-down h-7 w-full'
-             src="/img/green-checkmark.svg"/>
+        <img
+          v-if="
+            data.column.field === 'enabled' &&
+            data.formattedRow['enabled'] === false
+          "
+          class="object-scale-down h-7 w-full"
+          src="/img/red-x.svg"
+        />
+        <img
+          v-if="
+            data.column.field === 'enabled' &&
+            data.formattedRow['enabled'] === true
+          "
+          class="object-scale-down h-7 w-full"
+          src="/img/green-checkmark.svg"
+        />
       </template>
     </vue-good-table>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent} from "@vue/runtime-core";
+import { defineComponent } from "@vue/runtime-core";
 import InputField from "@/components/InputField.vue";
 import InputFieldIcon from "@/components/InputFieldIcon.vue";
 import "vue-good-table-next/dist/vue-good-table-next.css";
-import {AxiosResponse} from "axios";
-import {Coupon} from "../types/api";
-import {endLoad, initLoad} from "../loader";
+import { AxiosResponse } from "axios";
+import { Coupon } from "../types/api";
+import { endLoad, initLoad } from "../loader";
+import ButtonField from "../components/ButtonField.vue";
 
 export default defineComponent({
   components: {
     InputField,
+    ButtonField,
     InputFieldIcon,
     "vue-good-table": require("vue-good-table-next").VueGoodTable,
   },
@@ -80,7 +72,7 @@ export default defineComponent({
         {
           label: "Code",
           field: "code",
-          type: "string"
+          type: "string",
         },
         {
           label: "Rabatt",
@@ -105,7 +97,7 @@ export default defineComponent({
           type: "date",
           dateInputFormat: "yyyy-MM-dd kk:mm:ss",
           dateOutputFormat: "dd.MM.yyyy kk:mm",
-        }
+        },
       ],
     };
   },
@@ -115,10 +107,12 @@ export default defineComponent({
   methods: {
     async loadCoupons() {
       initLoad();
-      let response: AxiosResponse<Coupon[]> = await this.$http.get('/admin/coupons');
+      let response: AxiosResponse<Coupon[]> = await this.$http.get(
+        "/admin/coupons"
+      );
       this.rows = response.data;
       endLoad();
-    }
+    },
   },
 });
 </script>

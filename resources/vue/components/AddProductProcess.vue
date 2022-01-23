@@ -2,12 +2,12 @@
   <mq-responsive target="lg+">
     <div class="flex flex-row items-center justify-center w-full gap-5">
       <template v-for="process in orderProcess" :key="process.name">
-        <div class="flex flex-col items-center">
+        <router-link :to="process.link" class="flex flex-col items-center">
           <img :src="process.icon_url" :alt="process.name" class="h-10 w-10" />
           <span class="mt-3 text-base text-center text-white">{{
             process.name
           }}</span>
-        </div>
+        </router-link>
         <span
           class="w-20 h-2 bg-white rounded-full"
           v-if="process.name !== 'Beschreibung'"
@@ -37,18 +37,22 @@ export default defineComponent({
       {
         name: "Preis & Titel",
         icon_url: "/img/titelPrice.svg",
+        link: { name: "Add Product" },
       },
       {
         name: "Bilddatein",
         icon_url: "/img/images.svg",
+        link: { name: "Add Product images" },
       },
       {
         name: "Kategorien & Attribute",
         icon_url: "/img/editBlockAttributes.svg",
+        link: { name: "Add Product attributes" },
       },
       {
         name: "Beschreibung",
         icon_url: "/img/description.svg",
+        link: { name: "Add Product description" },
       },
     ];
     return { orderProcess };
