@@ -61,11 +61,6 @@
                   'group flex rounded-md items-center w-full px-2 py-2 text-sm',
                 ]"
               >
-                <EditIcon
-                  :active="active"
-                  class="w-5 h-5 mr-2 text-violet-400"
-                  aria-hidden="true"
-                />
                 Edit
               </button>
             </MenuItem>
@@ -79,21 +74,19 @@
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
 import AddProductProcess from "../components/AddProductProcess.vue";
-import CancelForwardButton from "../components/CancelForwardButton.vue";
+import ForwardBackwardButton from "../components/ForwardBackwardButton.vue";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 import { ChevronDownIcon } from "@heroicons/vue/solid";
-import EditIcon from "./edit-icon.vue";
 
 export default defineComponent({
   components: {
     AddProductProcess,
-    CancelForwardButton,
+    ForwardBackwardButton,
     Menu,
     MenuButton,
     MenuItems,
     MenuItem,
     ChevronDownIcon,
-    EditIcon,
   },
 });
 </script>

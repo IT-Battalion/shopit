@@ -4,7 +4,7 @@
     <div class="mx-5 mt-20 md:mx-20">
       <UploadImages @change="handleImages" />
     </div>
-    <CancelForwardButton
+    <ForwardBackwardButton
       next="categoriesAttributes"
       last="Admin"
       cancel="Admin"
@@ -16,13 +16,13 @@
 import { defineComponent } from "@vue/runtime-core";
 import UploadImages from "vue-upload-drop-images";
 import AddProductProcess from "../components/AddProductProcess.vue";
-import CancelForwardButton from "../components/CancelForwardButton.vue";
+import ForwardBackwardButton from "../components/ForwardBackwardButton.vue";
 
 export default defineComponent({
   components: {
     UploadImages,
     AddProductProcess,
-    CancelForwardButton,
+    ForwardBackwardButton,
   },
   methods: {
     handleImages(files: any) {

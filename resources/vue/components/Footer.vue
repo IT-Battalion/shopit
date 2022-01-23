@@ -15,9 +15,9 @@
             sm:w-1/4
           "
         >
-          <img class="w-16 h-16" src="/img/lernenImAufbruch.svg"/>
+          <img class="w-16 h-16" src="/img/lernenImAufbruch.svg" />
           <p class="flex flex-row opacity-60">
-            <HomeIcon class="w-5 h-5 pr-1"/>
+            <HomeIcon class="w-5 h-5 pr-1" />
             Wexstraße 19-23 1200 Wien
           </p>
         </div>
@@ -32,7 +32,7 @@
               hover:opacity-100
               decoration-solid
             "
-          >info@shopit.tgm.ac.at</a
+            >info@shopit.tgm.ac.at</a
           >
           <a
             href="mailto:info@LernenImAufbruch.at"
@@ -43,12 +43,12 @@
               hover:opacity-100
               decoration-solid
             "
-          >info@LernenImAufbruch.at</a
+            >info@LernenImAufbruch.at</a
           >
         </div>
         <div class="flex flex-col w-full space-y-4 sm:w-1/5">
           <a class="flex flex-row mt-4 text-lg font-medium opacity-60 sm:mt-0"
-          >Links</a
+            >Links</a
           >
           <a
             href="https://www.tgm.ac.at/tagesschule/"
@@ -59,9 +59,8 @@
               hover:opacity-100
               decoration-solid
             "
-          >TGM HIT
-            <ExternalLinkIcon class="w-5 h-5 pl-1"
-            />
+            >TGM HIT
+            <ExternalLinkIcon class="w-5 h-5 pl-1" />
           </a>
           <a
             href="https://lernenimaufbruch.at/impressum.html"
@@ -72,26 +71,17 @@
               hover:opacity-100
               decoration-solid
             "
-          >Impressum
-            <ExternalLinkIcon class="w-5 h-5 pl-1"
-            />
+            >Impressum
+            <ExternalLinkIcon class="w-5 h-5 pl-1" />
           </a>
         </div>
         <div class="flex flex-col w-full space-y-4 sm:w-1/5">
           <a class="flex flex-row mt-4 text-lg font-medium opacity-60 sm:mt-0"
-          >Mentions</a
+            >Mentions</a
           >
-          <router-link :to="{name: 'credits'}" class="flex flex-row
-              underline
-              opacity-60
-              hover:opacity-100
-              decoration-solid">
-            Icon Credits
-            <ExternalLinkIcon class="w-5 h-5 pl-1"
-            />
-          </router-link>
           <router-link
-            :to="{name: 'contributors'}"
+            :to="{ name: 'credits' }"
+            tag="button"
             class="
               flex flex-row
               underline
@@ -99,9 +89,21 @@
               hover:opacity-100
               decoration-solid
             "
-          >Contributors
-            <ExternalLinkIcon class="w-5 h-5 pl-1"
-            />
+          >
+            Icon Credits
+            <ExternalLinkIcon class="w-5 h-5 pl-1" />
+          </router-link>
+          <router-link
+            :to="{ name: 'contributors' }"
+            class="
+              flex flex-row
+              underline
+              opacity-60
+              hover:opacity-100
+              decoration-solid
+            "
+            >Contributors
+            <ExternalLinkIcon class="w-5 h-5 pl-1" />
           </router-link>
         </div>
       </div>
@@ -112,8 +114,8 @@
   </div>
 </template>
 <script lang="ts">
-import {defineComponent} from "@vue/runtime-core";
-import {ExternalLinkIcon, HomeIcon} from "@heroicons/vue/solid";
+import { defineComponent } from "@vue/runtime-core";
+import { ExternalLinkIcon, HomeIcon } from "@heroicons/vue/solid";
 
 export default defineComponent({
   components: {

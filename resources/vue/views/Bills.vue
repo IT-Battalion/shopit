@@ -8,9 +8,9 @@
       max-height="400px"
       theme="shopit"
       :pagination-options="{
-    enabled: true,
-    perPage: 5,
-  }"
+        enabled: true,
+        perPage: 5,
+      }"
       :search-options="{
         enabled: true,
         trigger: 'enter',
@@ -18,29 +18,31 @@
       }"
     >
       <template #table-row="download">
-        <router-link v-if="download.column.field === 'download'"
-                     :to="{name: 'Invoice detail', params: {id: download.formattedRow['id']}}"><img
-          class='object-scale-down h-7'
-          src='/img/info-white.svg'/></router-link>
+        <router-link
+          v-if="download.column.field === 'download'"
+          :to="{
+            name: 'Invoice detail',
+            params: { id: download.formattedRow['id'] },
+          }"
+          ><img class="object-scale-down h-7" src="/img/info-white.svg"
+        /></router-link>
       </template>
     </vue-good-table>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent} from "@vue/runtime-core";
-import Search from "@/components/Search.vue";
+import { defineComponent } from "@vue/runtime-core";
 import Table from "@/components/Table.vue";
 import "vue-good-table-next/dist/vue-good-table-next.css";
-import {Invoice} from "../types/api";
-import {AxiosResponse} from "axios";
-import {endLoad, initLoad} from "../loader";
+import { Invoice } from "../types/api";
+import { AxiosResponse } from "axios";
+import { endLoad, initLoad } from "../loader";
 
 export default defineComponent({
   name: "Bills",
   components: {
     Table,
-    Search,
     "vue-good-table": require("vue-good-table-next").VueGoodTable,
   },
   data() {
@@ -83,10 +85,12 @@ export default defineComponent({
   methods: {
     async loadInvoices() {
       initLoad();
-      let response: AxiosResponse<Invoice[]> = await this.$http.get("/admin/invoices");
+      let response: AxiosResponse<Invoice[]> = await this.$http.get(
+        "/admin/invoices"
+      );
       this.rows = response.data;
       endLoad();
-    }
-  }
+    },
+  },
 });
 </script>
