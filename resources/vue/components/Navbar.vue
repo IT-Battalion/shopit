@@ -80,7 +80,7 @@
                     overflow-hidden
                   "
                 >
-                  <router-link to="/admin">
+                  <router-link :to="{ name: 'Profile' }">
                     <MenuItem
                       class="
                         flex flex-row

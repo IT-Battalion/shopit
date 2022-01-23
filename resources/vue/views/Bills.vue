@@ -19,7 +19,7 @@
     >
       <template #table-row="detail">
         <router-link v-if="detail.column.field === 'detail'"
-                     :to="{name: 'Invoice detail', params: {id: detail.formattedRow['id']}}"><img
+                     :to="{name: 'Bill detail', params: {id: detail.formattedRow['id']}}"><img
           class='object-scale-down h-7'
           src='/img/info-white.svg'/></router-link>
       </template>
@@ -32,6 +32,9 @@ import {defineComponent} from "@vue/runtime-core";
 import Search from "@/components/Search.vue";
 import Table from "@/components/Table.vue";
 import "vue-good-table-next/dist/vue-good-table-next.css";
+import { Invoice } from "../types/api";
+import {endLoad, initLoad } from "../loader";
+import { AxiosResponse } from "axios";
 
 export default defineComponent({
   name: "Bills",
@@ -80,7 +83,7 @@ export default defineComponent({
   methods: {
     async loadInvoices() {
       initLoad();
-      let response: AxiosResponse<Invoice[]> = this.$http.get("/admin/invoices");
+      let response: AxiosResponse<Invoice[]> = await this.$http.get("/admin/invoices");
       this.rows = response.data;
       endLoad();
     }

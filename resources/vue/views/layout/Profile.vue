@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-row">
     <mq-responsive target="md+">
-      <SidenavAdmin />
+      <SidenavProfile />
     </mq-responsive>
     <div class="w-full md:h-full mt-14">
       <router-view />
@@ -12,9 +12,11 @@
 <script lang="ts">
 import SidenavAdmin from "@/components/SidenavAdmin.vue";
 import {defineComponent} from "vue";
+import SidenavProfile from "../../components/SidenavProfile.vue";
 export default defineComponent({
-  name: "Admin Layout",
+  name: "Profile Layout",
   components: {
+    SidenavProfile,
     SidenavAdmin,
   },
 });

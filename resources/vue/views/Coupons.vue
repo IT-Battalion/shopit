@@ -59,8 +59,8 @@ import InputField from "@/components/InputField.vue";
 import InputFieldIcon from "@/components/InputFieldIcon.vue";
 import "vue-good-table-next/dist/vue-good-table-next.css";
 import {AxiosResponse} from "axios";
-import {Coupon} from "../../types/api";
-import {endLoad, initLoad} from "../../loader";
+import {Coupon} from "../types/api";
+import {endLoad, initLoad} from "../loader";
 
 export default defineComponent({
   components: {

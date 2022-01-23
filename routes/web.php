@@ -24,20 +24,21 @@ Route::view('/login', 'vue');
 
 // Main Content
 Route::view('/', 'vue')->name('home');
-Route::view('/produkte/{name}', 'vue')->name('products.show');
+Route::view('/products/{name}', 'vue')->name('products.show');
 
 // User profile
-Route::prefix('user')->name('user.')->group(function () {
+Route::prefix('profile')->name('profil.')->group(function () {
     Route::view('/', 'vue')->name('profile');
-    Route::view('/bestellverlauf', 'vue')->name('orders.index');
+    Route::view('/order-history', 'vue')->name('orders.index');
 });
 
 // Admin Page
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::view('/rechnungen', 'vue')->name('invoices.index');
-    Route::view('/bestellungen', 'vue')->name('orders.index');
+    Route::view('/', 'vue')->name('profile');
+    Route::view('/bills', 'vue')->name('invoices.index');
+    Route::view('/orders', 'vue')->name('orders.index');
     Route::view('/coupons', 'vue')->name('coupons.index');
-    Route::view('/kategorien', 'vue')->name('categories.index');
+    Route::view('/categories', 'vue')->name('categories.index');
 
     // Usermanagement
     Route::prefix('users')->name('users.')->group(function () {
@@ -46,10 +47,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     // Products
-    Route::prefix('produkte')->name('products.')->group(function () {
-        Route::view('/bearbeiten', 'vue')->name('edit');
-        Route::view('/hinzufuegen', 'vue')->name('store');
-        Route::view('/hinzufuegen/preisUndTitel', 'vue')->name('store.meta');
+    Route::prefix('products')->name('products.')->group(function () {
+        Route::view('/edit', 'vue')->name('edit');
+        Route::view('/add', 'vue')->name('store');
+        Route::view('/add/meta', 'vue')->name('store.meta');
     });
 
     // User

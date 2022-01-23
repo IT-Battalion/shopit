@@ -9,7 +9,7 @@
       rounded-md
     "
   >
-    <router-link :to="'/product/' + entry.product.name">
+    <router-link :to="{name: 'Product', params: {name: entry.product.name}}">
       <LoadingImage
         :src="'/product-image/' + entry.product.thumbnail.id"
         :alt="entry.product.name"
@@ -21,7 +21,7 @@
   <div class="flex flex-col flex-1 ml-4">
     <div>
       <div class="flex justify-between text-base font-medium text-gray-900">
-        <router-link :to="'/product/' + entry.product.name">
+        <router-link :to="{name: 'Product', params: {name: entry.product.name}}">
           <h3>
             {{ entry.product.name }}
           </h3>

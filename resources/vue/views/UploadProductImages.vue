@@ -14,8 +14,8 @@
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
 import UploadImages from "vue-upload-drop-images";
-import AddProductProcess from "./AddProductProcess.vue";
-import CancelForwardButton from "./CancelForwardButton.vue";
+import AddProductProcess from "../components/AddProductProcess.vue";
+import CancelForwardButton from "../components/CancelForwardButton.vue";
 
 export default defineComponent({
   components: {

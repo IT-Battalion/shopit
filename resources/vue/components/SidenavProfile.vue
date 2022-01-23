@@ -35,7 +35,7 @@
             <MenuItems
               class="absolute right-0 w-40 mt-2 overflow-hidden origin-top-right rounded-md shadow-lg  ring-1 ring-black ring-opacity-5 focus:outline-none bg-elevatedDark"
             >
-              <router-link :to="{name:'Add Product'}">
+              <router-link to="/admin/produkte/hinzufuegen">
                 <MenuItem
                   class="flex flex-row items-center justify-start  hover:bg-elevatedColor"
                 >
@@ -47,7 +47,7 @@
                   >
                 </MenuItem>
               </router-link>
-              <router-link :to="{name:'Edit Product'}">
+              <router-link to="/admin/produkte/bearbeiten">
                 <MenuItem
                   class="flex flex-row items-center justify-start  hover:bg-elevatedColor"
                 >
@@ -68,9 +68,8 @@
 </template>
 
 <script lang="ts">
-import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
-import {defineComponent} from "@vue/runtime-core";
-
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
+import { defineComponent } from "@vue/runtime-core";
 export default defineComponent({
   components: {
     Menu,
@@ -86,34 +85,9 @@ export default defineComponent({
         icon_url: "/img/categoryProfile.svg",
       },
       {
-        name: "Rechnungen",
-        routerLink: {name:"Bills"},
-        icon_url: "/img/categoryBills.svg",
-      },
-      {
-        name: "Produkte",
-        routerLink: {name:"ProductManagement"},
-        icon_url: "/img/categoryProducts.svg",
-      },
-      {
-        name: "Kategorien",
-        routerLink: {name:"CategoryManagement"},
-        icon_url: "/img/categoryCategories.svg",
-      },
-      {
         name: "Bestellungen",
-        routerLink: {name:"Orders"},
-        icon_url: "/img/categoryOrders.svg",
-      },
-      {
-        name: "Userverwaltung",
-        routerLink: {name:"UserManagement"},
-        icon_url: "/img/categoryUser.svg",
-      },
-      {
-        name: "Coupons",
-        routerLink: {name: "Coupons"},
-        icon_url: "/img/categoryCoupon.svg",
+        routerLink: {name:"OrderHistory"},
+        icon_url: "/img/categoryBills.svg",
       },
     ];
     return { categories };

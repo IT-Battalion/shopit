@@ -30,8 +30,7 @@ const routes: Array<RouteRecordRaw> = [
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        component: () =>
-          Home,
+        component: Home,
 
         children: [
           {
@@ -45,10 +44,10 @@ const routes: Array<RouteRecordRaw> = [
             }
           },
           {
-            path: "produkte/:name",
+            path: "products/:name",
             name: "Product",
             component: () =>
-              import("../components/ProductOverview.vue"),
+              import("../views/ProductOverview.vue"),
             meta: {
               initLoad: false,
               endLoad: false,
@@ -57,16 +56,22 @@ const routes: Array<RouteRecordRaw> = [
         ]
       },
       {
-        path: "/user/",
-        name: "user",
+        path: "/profile/",
+        name: "profile",
         component: () =>
-          import("../components/ProfilePage.vue"),
+          import("../views/layout/Profile.vue"),
         children: [
           {
-            path: "bestellverlauf",
-            name: "Bestellverlauf",
+            path: "",
+            name: "Profile",
             component: () =>
-              import("../views/layout/OrderHistory.vue"),
+              import("../views/ProfilePage.vue"),
+          },
+          {
+            path: "order-history",
+            name: "OrderHistory",
+            component: () =>
+              import("../views/OrderHistory.vue"),
           },
         ]
       },
@@ -81,24 +86,30 @@ const routes: Array<RouteRecordRaw> = [
 
         children: [
           {
-            path: "rechnungen",
-            name: "Rechnungen",
+            path: "",
+            name: "Admin",
             component: () =>
-              import("../views/layout/Bills.vue"),
+              import("../views/ProfilePage.vue"),
           },
           {
-            path: "invoice/:id",
-            name: "Invoice detail",
-            component: () => import("../views/layout/Bills.vue")
-          },
-          {
-            path: "bestellungen",
-            name: "Bestellungen",
+            path: "bills",
+            name: "Bills",
             component: () =>
-              import("../views/layout/Orders.vue"),
+              import("../views/Bills.vue"),
           },
           {
-            path: "order/:id",
+            path: "bills/:id",
+            name: "Bill detail",
+            component: () => import("../views/Bills.vue")
+          },
+          {
+            path: "orders",
+            name: "Orders",
+            component: () =>
+              import("../views/Orders.vue"),
+          },
+          {
+            path: "orders/:id",
             name: "Order detail",
             component: () =>
               import("../views/layout/Order.vue")
@@ -107,42 +118,42 @@ const routes: Array<RouteRecordRaw> = [
             path: "coupons",
             name: "Coupons",
             component: () =>
-              import("../views/layout/Coupons.vue"),
+              import("../views/Coupons.vue"),
           },
           {
-            path: "kategorien",
-            name: "Kategorien",
+            path: "categories",
+            name: "CategoryManagement",
             component: () =>
-              import("../components/EditCategories.vue"),
+              import("../views/EditCategories.vue"),
           },
           {
             path: "users/",
-            name: "Userverwaltung",
+            name: "UserManagement",
             component: () =>
-              import("../views/layout/UserManagement.vue"),
+              import("../views/UserManagement.vue"),
+            children: [{
+              path: ":id",
+              name: "User detail",
+              component: () => import("../views/UserManagementDetail.vue"),
+            }],
           },
           {
-            path: "users/:id",
-            name: "User detail",
-            component: () => import("../views/layout/UserManagementDetail.vue"),
+            path: "products/edit",
+            name: "Edit Product",
+            component: () =>
+              import("../views/ProductListAdmin.vue"),
           },
           {
-            path: "produkte/bearbeiten",
-            name: "ProdukteBearbeiten",
+            path: "products/add/",
+            name: "Add Product",
             component: () =>
-              import("../components/ProductListAdmin.vue"),
-          },
-          {
-            path: "produkte/hinzufuegen/",
-            name: "ProdukteHinzufuegen",
-            component: () =>
-              import("../components/UploadProductImages.vue"),
+              import("../views/UploadProductImages.vue"),
             children: [
               {
-                path: "preisUndTitel",
-                name: "PreisUndTitel",
+                path: "images",
+                name: "Add Product Images",
                 component: () =>
-                  import("../components/UploadProductImages.vue"),
+                  import("../views/UploadProductImages.vue"),
               }
             ]
           },

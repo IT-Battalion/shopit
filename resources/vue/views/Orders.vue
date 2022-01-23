@@ -30,8 +30,8 @@
 import {defineComponent} from "@vue/runtime-core";
 import {AxiosResponse} from "axios";
 import "vue-good-table-next/dist/vue-good-table-next.css";
-import {endLoad, initLoad} from "../../loader";
-import {Order} from "../../types/api";
+import {endLoad, initLoad} from "../loader";
+import {Order} from "../types/api";
 
 
 export default defineComponent({

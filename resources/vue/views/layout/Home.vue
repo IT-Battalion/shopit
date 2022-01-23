@@ -15,9 +15,11 @@
 
 <script lang="ts">
 import Sidenav from "@/components/Sidenav.vue";
-export default {
+import {defineComponent} from "vue";
+export default defineComponent({
+  name: 'Home',
   components: {
     Sidenav,
   },
-};
+});
 </script>

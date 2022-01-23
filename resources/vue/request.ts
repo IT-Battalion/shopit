@@ -24,7 +24,7 @@ export async function logout(): Promise<void> {
 }
 
 export async function addToShoppingCart(name: string, count: number, selectedAttributes: SelectedAttributes) {
-  return window.axios.post<AddToShoppingCartRequest, AxiosResponse<void>>('/user/shopping-cart/add', {
+  return window.axios.post<AddToShoppingCartRequest, AxiosResponse<void>>('/user/shopping-cart', {
     name: name,
     count: count,
     selected_attributes: selectedAttributes,

@@ -148,10 +148,11 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import SwiperCore, {Navigation, Pagination} from "swiper";
 import {endLoad, initLoad, initProgress, state} from "../loader";
-import LoadingImage from "./LoadingImage.vue";
-import AttributeSelector from "./AttributeSelector.vue";
-import InputField from "./InputField.vue";
+import LoadingImage from "../components/LoadingImage.vue";
+import AttributeSelector from "../components/AttributeSelector.vue";
+import InputField from "../components/InputField.vue";
 import {AttributeType} from "../types/api-values";
+import {addToShoppingCart} from "../request";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -203,15 +204,11 @@ export default defineComponent({
         };
       });
 
-      let entry: ShoppingCartDescriptor = {
-        name: this.product.name,
-        selected_attributes: selectedAttributes,
-        count: (this.$refs.amount as typeof InputField).getValue(),
-      };
+      const count = (this.$refs.amount as typeof InputField).getValue();
 
       this.$globalBus.emit('shopping-cart.load');
       try {
-        let response = await this.$http.post('/user/shopping-cart/add', entry);
+        let response = await addToShoppingCart(this.product.name, count, selectedAttributes);
         this.$globalBus.emit('shopping-cart.add');
       } catch (e) {
         console.log(e);

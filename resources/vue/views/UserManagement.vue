@@ -28,9 +28,9 @@
 <script lang="ts">
 import {defineComponent} from "@vue/runtime-core";
 import "vue-good-table-next/dist/vue-good-table-next.css";
-import {endLoad, initLoad} from "../../loader";
+import {endLoad, initLoad} from "../loader";
 import {AxiosResponse} from "axios";
-import {UserManagementUser} from "../../types/api";
+import {UserManagementUser} from "../types/api";
 
 export default defineComponent({
   components: {

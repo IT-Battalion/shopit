@@ -130,7 +130,6 @@ import { Product } from "../types/api";
 // import Swiper core and required modules
 import SwiperCore, { Navigation } from "swiper";
 import { defineComponent } from "@vue/runtime-core";
-import {addToShoppingCart} from "../request";
 import LoadingImage from "./LoadingImage.vue";
 
 // install Swiper modules

@@ -114,7 +114,7 @@
               </span>
             </div>
           </Shoppingcart>
-          <router-link to="/admin" class="flex-1 group">
+          <router-link :to="{name: 'Profile'}" class="flex-1 group">
             <div>
               <a
                 href="#"

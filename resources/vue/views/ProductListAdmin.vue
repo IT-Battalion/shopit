@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import EditProductsCards from "./EditProductsCard.vue";
+import EditProductsCards from "../components/EditProductsCard.vue";
 import { AxiosResponse } from "axios";
 import { Product } from "../types/api";
 import { defineComponent } from "@vue/runtime-core";

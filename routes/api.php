@@ -28,7 +28,7 @@ Route::get('/user', function (Request $request) {
 
 // Shopping Cart routes
 Route::get('/user/shopping-cart', [ShoppingCartController::class, 'all']);
-Route::post('/user/shopping-cart/add', [ShoppingCartController::class, 'add']);
+Route::post('/user/shopping-cart', [ShoppingCartController::class, 'add']);
 Route::post('/user/shopping-cart/remove', [ShoppingCartController::class, 'remove']);
 
 // Highlighted Products
