@@ -14,6 +14,19 @@ class OrderController extends Controller
     public function all()
     {
         $orders = Order::all();
+        $orders->map(function (Order $order) {
+            $products = OrderProduct::where('order_id', $order->id)->get();
+            $prize = 0;
+            foreach ($products as $op) {
+                $prize += $op->price->getAmount();
+            }
+            $order->price = $prize . ' EUR';
+            $order->status = "Warte auf Zahlung";
+            if ($order->isPaid()) $order->status = 'Bezahlt';
+            if ($order->isOrdered()) $order->status = 'Bestellt';
+            if ($order->isReceived()) $order->status = 'Erhalten';
+            if ($order->isHandedOver()) $order->status = 'Abgeholt';
+        });
         return $orders;
     }
 
@@ -27,7 +40,12 @@ class OrderController extends Controller
             foreach ($products as $op) {
                 $prize += $op->price->getAmount();
             }
-            $order->price = $prize;
+            $order->price = $prize . ' EUR';
+            $order->status = "Warte auf Zahlung";
+            if ($order->isPaid()) $order->status = 'Bezahlt';
+            if ($order->isOrdered()) $order->status = 'Bestellt';
+            if ($order->isReceived()) $order->status = 'Erhalten';
+            if ($order->isHandedOver()) $order->status = 'Abgeholt';
         });
         return $orders;
     }
@@ -77,7 +95,7 @@ class OrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
