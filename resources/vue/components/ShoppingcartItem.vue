@@ -9,7 +9,7 @@
       rounded-md
     "
   >
-    <router-link :to="{name: 'Product', params: {name: entry.product.name}}">
+    <router-link :to="{name: 'Product', params: {name: entry.product.name}}" @click="clickedLink">
       <LoadingImage
         :src="'/product-image/' + entry.product.thumbnail.id"
         :alt="entry.product.name"
@@ -21,7 +21,7 @@
   <div class="flex flex-col flex-1 ml-4">
     <div>
       <div class="flex justify-between text-base font-medium text-gray-900">
-        <router-link :to="{name: 'Product', params: {name: entry.product.name}}">
+        <router-link :to="{name: 'Product', params: {name: entry.product.name}}" @click="clickedLink">
           <h3>
             {{ entry.product.name }}
           </h3>
@@ -32,7 +32,6 @@
       </div>
       <Attributes
         :selected-attributes="entry.selected_attributes"
-        class="flex"
       />
     </div>
     <div class="flex items-end justify-between flex-1 text-sm">
@@ -61,6 +60,7 @@ import {
 } from "../types/api";
 import LoadingImage from "./LoadingImage.vue";
 import Attributes from "./Attributes.vue";
+import {removeFromShoppingCart} from "../request";
 
 export default defineComponent({
   props: {
@@ -73,6 +73,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ['linkClick'],
   data() {
     return {
       entry: this.shoppingCartEntry,
@@ -88,12 +89,19 @@ export default defineComponent({
       };
       this.$globalBus.emit("shopping-cart.load");
       try {
-        await this.$http.post("/user/shopping-cart/remove", descriptor);
-        this.$globalBus.emit("shopping-cart.remove");
+        const response = await removeFromShoppingCart(descriptor.name, descriptor.count, descriptor.selected_attributes);
+        let data = response.data;
+        this.$globalBus.emit("shopping-cart.remove", {
+          index: this.index,
+          ...data,
+        });
       } catch (e) {
         console.error(e);
       }
     },
+    clickedLink() {
+      this.$emit('linkClick');
+    }
   },
   components: { Attributes, LoadingImage },
 });

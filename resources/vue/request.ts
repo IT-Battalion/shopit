@@ -1,5 +1,11 @@
 import {AxiosResponse} from "axios"
-import {AddToShoppingCartRequest, LoginRequestData, LoginResponseData, SelectedAttributes} from "./types/api"
+import {
+  AddToShoppingCartRequest,
+  AddToShoppingCartResponse,
+  LoginRequestData,
+  LoginResponseData, RemoveFromShoppingCartRequest, RemoveFromShoppingCartResponse,
+  SelectedAttributes
+} from "./types/api"
 
 export async function login(username: string, password: string, stayLoggedIn: boolean): Promise<LoginResponseData> {
   return new Promise<LoginResponseData>((res, rej) => {
@@ -24,9 +30,17 @@ export async function logout(): Promise<void> {
 }
 
 export async function addToShoppingCart(name: string, count: number, selectedAttributes: SelectedAttributes) {
-  return window.axios.post<AddToShoppingCartRequest, AxiosResponse<void>>('/user/shopping-cart', {
+  return window.axios.post<AddToShoppingCartRequest, AxiosResponse<AddToShoppingCartResponse>>('/user/shopping-cart', {
     name: name,
     count: count,
+    selected_attributes: selectedAttributes,
+  });
+}
+
+export async function removeFromShoppingCart(name: string, count: number, selectedAttributes: SelectedAttributes) {
+  return window.axios.post<RemoveFromShoppingCartRequest, AxiosResponse<RemoveFromShoppingCartResponse>>('/user/shopping-cart/remove', {
+    name,
+    count,
     selected_attributes: selectedAttributes,
   });
 }

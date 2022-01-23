@@ -56,6 +56,7 @@ class ProductController extends Controller
         return response()->json([
             'name' => $product->name,
             'description' => $product->description,
+            'thumbnail' => ['id' => $product->thumbnail_id],
             'price' => $product->price,
             'tax' => $product->tax,
             'available' => $product->available,

@@ -56,9 +56,10 @@ class ShoppingCartController extends Controller
 
         $count = $request['count'];
 
-        $shoppingCart->addProduct($product, $selectedAttributes, $count);
+        $newAmount = $shoppingCart->addProduct($product, $selectedAttributes, $count);
 
         $prices = $shoppingCart->calculateShoppingCartPrice();
+        $prices['price'] = $product->gross_price->mul($newAmount);
 
         broadcast(
             new ProductAddedToShoppingCartEvent($product, $count, $selectedAttributes, $prices['subtotal'], $prices['discount'], $prices['tax'], $prices['total'])

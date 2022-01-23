@@ -20,11 +20,11 @@ class ShoppingCartService implements ShoppingCartServiceInterface
      * @throws IllegalArgumentException
      * @throws InvalidAttributeException
      */
-    public function addProduct(Product $product, Collection $attributes, int $amount = 1, User $user = null): void
+    public function addProduct(Product $product, Collection $attributes, int $amount = 1, User $user = null): int
     {
         if ($amount === 0)
         {
-            return;
+            return 0;
         }
 
         if ( ! $product->areAttributesAvailable($attributes))
@@ -49,26 +49,27 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         } else {
             self::addProductToShoppingCart($newAmount, $attributes, $user, $product);
         }
+        return $newAmount;
     }
 
     /**
      * @throws IllegalArgumentException
      */
-    public function removeProduct(Product $product, Collection $attributes, int $amount = -1, User $user = null): void
+    public function removeProduct(Product $product, Collection $attributes, int $amount = -1, User $user = null): int
     {
         if ($amount === 0) {
-            return;
+            return 0;
         }
 
         if ( ! $product->areAttributesAvailable($attributes))
         {
-            return;
+            return 0;
         }
 
         $user = $user ?? Auth::user();
 
         if ( ! $this->hasProductInShoppingCart($product, $attributes, user: $user)) {
-            return;
+            return 0;
         }
 
         if ($amount < -1) {
@@ -77,7 +78,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
 
         if ($amount === -1) {
             self::getProductInShoppingCartQuery($product, $attributes, $user)->detach($product);
-            return;
+            return 0;
         }
 
         $previousAmount = $this->getAmountOfProduct($product, $attributes, user: $user);
@@ -93,6 +94,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         } else {
             self::getProductInShoppingCartQuery($product, $attributes, $user)->updateExistingPivot($product, ['count' => $newAmount]);
         }
+        return $newAmount;
     }
 
     /**

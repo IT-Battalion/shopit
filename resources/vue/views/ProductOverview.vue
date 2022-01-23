@@ -139,7 +139,7 @@
 <script lang="ts">
 import {AxiosResponse} from "axios";
 import {RadioGroup, RadioGroupLabel, RadioGroupOption} from "@headlessui/vue";
-import {Product, ShoppingCartDescriptor,} from "../types/api";
+import {AddToShoppingCartRequest, Product, SelectedAttributes, ShoppingCartDescriptor,} from "../types/api";
 import {RouteLocationNormalizedLoaded, useRoute} from "vue-router";
 import {defineComponent} from "@vue/runtime-core";
 import {Swiper, SwiperSlide} from "swiper/vue";
@@ -153,6 +153,7 @@ import AttributeSelector from "../components/AttributeSelector.vue";
 import InputField from "../components/InputField.vue";
 import {AttributeType} from "../types/api-values";
 import {addToShoppingCart} from "../request";
+import {convertProxyValue} from "../util";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -191,25 +192,33 @@ export default defineComponent({
       endLoad();
     },
     async addProduct() {
-      let selectedAttributes = (
+      let selectedAttributes: SelectedAttributes = (
         this.$refs.selectedAttributes as typeof AttributeSelector
       ).getSelected();
+      let attributes: SelectedAttributes = convertProxyValue(Object.assign({},selectedAttributes));
 
       Object.keys(AttributeType)
-        .filter((type) => selectedAttributes[type])
+        .filter((type) => (selectedAttributes as any)[type])
         .forEach(type => {
-        selectedAttributes[type] = {
-          id: selectedAttributes[type].id,
-          type: selectedAttributes[type].type,
+          (selectedAttributes as any)[type] = {
+          id: (selectedAttributes as any)[type].id,
+          type: (selectedAttributes as any)[type].type,
         };
       });
 
       const count = (this.$refs.amount as typeof InputField).getValue();
 
-      this.$globalBus.emit('shopping-cart.load');
+      this.$globalBus.emit('shopping-cart.load', true);
       try {
-        let response = await addToShoppingCart(this.product.name, count, selectedAttributes);
-        this.$globalBus.emit('shopping-cart.add');
+        const response = await addToShoppingCart(this.product.name, count, selectedAttributes);
+        const newPrices = response.data;
+
+        this.$globalBus.emit('shopping-cart.add', {
+          product: convertProxyValue(this.product),
+          count,
+          selectedAttributes: attributes,
+          ...newPrices
+        });
       } catch (e) {
         console.log(e);
       }

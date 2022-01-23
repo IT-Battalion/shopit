@@ -59,7 +59,7 @@
                             :key="entry.product.id"
                             class="flex py-6"
                           >
-                            <ShoppingcartItem :shopping-cart-entry="entry" :index="index" />
+                            <ShoppingcartItem :shopping-cart-entry="entry" :index="index" @linkClick="this.isOpen = false" />
                           </li>
                         </template>
                         <template v-else>
@@ -159,7 +159,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent} from "vue";
+import {defineComponent, nextTick} from "vue";
 import {
   Dialog,
   DialogOverlay,
@@ -169,8 +169,10 @@ import {
 } from "@headlessui/vue";
 import { XIcon } from "@heroicons/vue/outline";
 import { AxiosResponse } from "axios";
-import {ShoppingCart} from "../types/api";
+import {Money, Product, SelectedAttributes, ShoppingCart} from "../types/api";
 import ShoppingcartItem from "./ShoppingcartItem.vue";
+import {convertProxyValue, objectEquals} from "../util";
+import {isBoolean} from "lodash";
 
 export default defineComponent({
   components: {
@@ -191,16 +193,16 @@ export default defineComponent({
     };
   },
   async beforeMount() {
-    this.$globalBus.on('shopping-cart.add', this.loadCart);
-    this.$globalBus.on('shopping-cart.remove', this.loadCart);
+    this.$globalBus.on('shopping-cart.add', this.addToCart);
+    this.$globalBus.on('shopping-cart.remove', this.removeFromCart);
     this.$globalBus.on('shopping-cart.load', this.showLoading);
   },
   async mounted() {
     await this.loadCart();
   },
   async unmounted() {
-    this.$globalBus.off('shopping-cart.add', this.loadCart);
-    this.$globalBus.off('shopping-cart.remove', this.loadCart);
+    this.$globalBus.off('shopping-cart.add', this.addToCart);
+    this.$globalBus.off('shopping-cart.remove', this.removeFromCart);
     this.$globalBus.off('shopping-cart.load', this.showLoading);
   },
   methods: {
@@ -210,13 +212,73 @@ export default defineComponent({
     setOpen(isOpen: boolean) {
       this.isOpen = isOpen;
     },
-    showLoading() {
+    showLoading(open?: boolean) {
       this.isLoading = true;
       if (this.isOpen)
         this.scrollBeforeLoad = {
           top: (this.$refs.entryList as HTMLUListElement).scrollTop,
           left: (this.$refs.entryList as HTMLUListElement).scrollLeft,
         }
+      if (isBoolean(open))
+        this.isOpen = open;
+    },
+    async addToCart(event: {
+      product: Product,
+      count: number,
+      selectedAttributes: SelectedAttributes,
+      subtotal: Money,
+      discount: Money,
+      tax: Money,
+      total: Money,
+      price: Money}) {
+      const {product, count, selectedAttributes, subtotal, discount, tax, total, price} = event;
+
+      let found = false;
+      for (let entry of this.shoppingCart.products) {
+        if (entry.product.name === product.name &&
+            objectEquals(convertProxyValue(entry.selected_attributes), selectedAttributes))
+        {
+          found = true;
+          entry.price = price;
+          entry.count = count;
+        }
+      }
+      if (!found)
+        this.shoppingCart.products.push({
+          product: product,
+          count: count,
+          selected_attributes: selectedAttributes,
+          price: price,
+        });
+
+      this.shoppingCart.subtotal = subtotal;
+      this.shoppingCart.discount = discount;
+      this.shoppingCart.tax = tax;
+      this.shoppingCart.total = total;
+      this.isLoading = false;
+
+      // next tick doesn't work
+      // setTimeout(() => {
+      //   if (this.isOpen)
+      //     (this.$refs.entryList as HTMLUListElement).scrollTo(this.scrollBeforeLoad);
+      // }, 250);
+    },
+    async removeFromCart(event: {index: number, subtotal: Money, discount: Money, tax: Money, total: Money}) {
+      const {index, subtotal, discount, tax, total} = event;
+
+      this.shoppingCart.products.splice(index, 1);
+
+      this.shoppingCart.subtotal = subtotal;
+      this.shoppingCart.discount = discount;
+      this.shoppingCart.tax = tax;
+      this.shoppingCart.total = total;
+      this.isLoading = false;
+
+      // next tick doesn't work
+      setTimeout(() => {
+        if (this.isOpen)
+          (this.$refs.entryList as HTMLUListElement).scrollTo(this.scrollBeforeLoad);
+      }, 250);
     },
     async loadCart() {
       this.isLoading = true;

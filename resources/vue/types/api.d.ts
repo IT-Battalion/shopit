@@ -142,6 +142,27 @@ export interface AddToShoppingCartRequest {
   selected_attributes: SelectedAttributes,
 }
 
+export interface AddToShoppingCartResponse {
+  subtotal: Money,
+  discount: Money,
+  tax: Money,
+  total: Money,
+  price: Money,
+}
+
+export interface RemoveFromShoppingCartRequest {
+  name: string,
+  count: number,
+  selected_attributes: SelectedAttributes,
+}
+
+export interface RemoveFromShoppingCartResponse {
+  subtotal: Money,
+  discount: Money,
+  tax: Money,
+  total: Money,
+}
+
 export interface Coupon {
   id: number,
   discount: number,

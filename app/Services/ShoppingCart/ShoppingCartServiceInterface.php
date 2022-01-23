@@ -16,8 +16,9 @@ interface ShoppingCartServiceInterface
      * @param Collection $attributes the product's attributes (color, size, ...)
      * @param int $amount The Amount which should be added to the Shopping Cart.
      * @param User|null $user the shopping cart's owner
+     * @return int new amount
      */
-    public function addProduct(Product $product, Collection $attributes, int $amount = 1, User $user = null): void;
+    public function addProduct(Product $product, Collection $attributes, int $amount = 1, User $user = null): int;
 
     /**
      * Removes products from the shopping cart of a user.
@@ -26,8 +27,9 @@ interface ShoppingCartServiceInterface
      * @param Collection $attributes the product's attributes (color, size, ...)
      * @param int $amount The Amount which should be removed from the Shopping Cart. If -1 all will be removed.
      * @param User|null $user the shopping cart's owner
+     * @return int new amount or 0 if no products would be removed
      */
-    public function removeProduct(Product $product, Collection $attributes, int $amount = -1, User $user = null): void;
+    public function removeProduct(Product $product, Collection $attributes, int $amount = -1, User $user = null): int;
 
     /**
      * Sets the amount of a product in the shopping cart
