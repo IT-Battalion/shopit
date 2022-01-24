@@ -8,7 +8,7 @@
         <h2 class="w-full mb-5 text-2xl font-bold text-center text-white">
           Kategorie
         </h2>
-        <div class="z-20 z-50 w-72 top-16">
+        <div class="z-50 w-72 top-16">
           <Listbox v-model="selectedCategory">
             <div class="relative mt-1">
               <ListboxButton
