@@ -97,7 +97,7 @@
                       >
                     </MenuItem>
                   </router-link>
-                  <router-link :to="{ name: 'Admin' }" v-if="user.isAdmin">
+                  <router-link :to="{ name: 'Admin' }" v-if="this.user.isAdmin.value">
                     <MenuItem
                       class="
                         flex flex-row
@@ -156,9 +156,11 @@ import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
 import {defineComponent} from "@vue/runtime-core";
 import useUser from "../stores/user";
 import Shoppingcart from "./Shoppingcart.vue";
+import Log from "./Log.vue";
 
 export default defineComponent({
   components: {
+    Log,
     Menu,
     MenuButton,
     MenuItem,
@@ -166,11 +168,13 @@ export default defineComponent({
     Shoppingcart,
   },
   setup() {
-    const { user, logout } = useUser();
-    const profilePicture =
-      "https://avatars.dicebear.com/api/micah/" + user.username.value + ".svg";
-
-    return { user, logout, profilePicture };
+    let { user, logout } = useUser();
+    return { user, logout };
+  },
+  computed: {
+    profilePicture() {
+      return `https://avatars.dicebear.com/api/micah/${(this as any).user.username.value}.svg`;
+    },
   },
   methods: {
     setOpen(isOpen: boolean) {
