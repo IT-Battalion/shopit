@@ -35,6 +35,8 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::get('/shopping-cart', [ShoppingCartController::class, 'all']);
     Route::post('/shopping-cart', [ShoppingCartController::class, 'add']);
     Route::post('/shopping-cart/remove', [ShoppingCartController::class, 'remove']);
+    Route::post('/shopping-cart/coupon', [ShoppingCartController::class, 'applyCoupon']);
+    Route::post('/shopping-cart/coupon/reset', [ShoppingCartController::class, 'resetCoupon']);
 });
 
 // Admin routes

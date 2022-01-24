@@ -68,6 +68,8 @@ use Illuminate\Support\Facades\DB;
  * @property-read int|null $product_dimension_attributes_count
  * @property-read Collection|ProductVolumeAttribute[] $productVolumeAttributes
  * @property-read int|null $product_volume_attributes_count
+ * @property int $available
+ * @method static \AjCastro\EagerLoadPivotRelations\EagerLoadPivotBuilder|Product whereAvailable($value)
  */
 class Product extends Model implements ConvertableToOrder
 {

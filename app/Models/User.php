@@ -92,6 +92,7 @@ use LdapRecord\Models\Model;
  * @mixin Eloquent
  * @property-read Admin|null $disabled_by
  * @property-read CouponCode|null $coupon
+ * @property int|null $shopping_cart_coupon_id
  */
 class User extends Authenticatable implements LdapAuthenticatable
 {

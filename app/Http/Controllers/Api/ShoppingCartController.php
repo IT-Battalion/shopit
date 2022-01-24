@@ -7,9 +7,11 @@ use App\Events\ProductRemovedFromShoppingCartEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddToShoppingCartRequest;
 use App\Http\Requests\RemoveFromShoppingCartRequest;
+use App\Models\CouponCode;
 use App\Models\Product;
 use App\Models\User;
 use App\Services\ShoppingCart\ShoppingCartServiceInterface;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ShoppingCartController extends Controller
@@ -87,5 +89,20 @@ class ShoppingCartController extends Controller
         broadcast(new ProductRemovedFromShoppingCartEvent($product, $selectedAttributes, $prices['subtotal'], $prices['discount'], $prices['tax'], $prices['total']));
 
         return response()->json($prices);
+    }
+
+    public function applyCoupon(Request $request, ShoppingCartServiceInterface $shoppingCart) {
+        $data = $request->validate([
+            'code' => 'required|min:6|string',
+        ]);
+        $couponCode = CouponCode::where('code', $data['code'])->firstOrFail();
+
+        Auth::user()->shopping_cart_coupon_id = $couponCode->id;
+        return response()->json($shoppingCart->calculateShoppingCartPrice());
+    }
+
+    public function resetCoupon(ShoppingCartServiceInterface $shoppingCart) {
+        Auth::user()->shopping_cart_coupon_id = null;
+        return response()->json($shoppingCart->calculateShoppingCartPrice());
     }
 }

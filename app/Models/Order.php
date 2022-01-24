@@ -62,6 +62,16 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|Order whereTransactionConfirmedById($value)
  * @method static Builder|Order whereUpdatedAt($value)
  * @mixin Eloquent
+ * @property OrderStatus $status
+ * @property Money $totalGross
+ * @property Money $totalDiscount
+ * @property Money $totalTax
+ * @property Money $total
+ * @method static Builder|Order whereStatus($value)
+ * @method static Builder|Order whereTotal($value)
+ * @method static Builder|Order whereTotalDiscount($value)
+ * @method static Builder|Order whereTotalGross($value)
+ * @method static Builder|Order whereTotalTax($value)
  */
 class Order extends Model
 {

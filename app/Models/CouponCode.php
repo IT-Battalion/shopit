@@ -36,6 +36,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|CouponCode newModelQuery()
  * @method static Builder|CouponCode newQuery()
  * @method static Builder|CouponCode query()
+ * @method static Builder|CouponCode where($column, $value)
  * @method static Builder|CouponCode whereCode($value)
  * @method static Builder|CouponCode whereCreatedAt($value)
  * @method static Builder|CouponCode whereCreatedById($value)

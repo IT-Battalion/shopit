@@ -107,6 +107,7 @@ use LdapRecord\Models\Model;
  * @property-read Admin|null $disabled_by
  * @method static Builder|Admin whereIsAdmin($value)
  * @property-read CouponCode|null $coupon
+ * @property int|null $shopping_cart_coupon_id
  */
 class Admin extends User
 {
