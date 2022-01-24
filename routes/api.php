@@ -1,11 +1,9 @@
 <?php
 
-use App\Http\Controllers\Api\CouponController;
 use App\Http\Controllers\Api\HighlightedProductController;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ShoppingCartController;
-use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -43,22 +41,19 @@ Route::prefix('user')->name('user.')->group(function () {
 Route::prefix('admin')->name('admin.')->group(function () {
     // Invoice routes
     Route::get('/invoices', [InvoiceController::class, 'all']);
-    // Admin/User routes
-    Route::get('/user/{id}', [UserController::class, 'show']);
 
     // User routes
-    Route::get('/users', [UserController::class, 'all']);
+    Route::apiResource('/users', 'UserController')->only(['index', 'show']);
 
     // Coupon routes
-    Route::get('/coupons', [CouponController::class, 'all']);
-    Route::post('/coupon/create', [CouponController::class, 'store']);
+    Route::apiResource('/coupons', 'CouponController')->only(['index', 'store']);
 
     // Orders routes
     Route::get('/orders', [OrderController::class, 'all']);
-    Route::get('/user/{id}/orders', [OrderController::class, 'show']);
+    Route::get('/users/{id}/orders', [OrderController::class, 'show']);
 
     // Category Routes
-    Route::apiResource('category', CategoryController::class);
+    Route::apiResource('category', 'CategoryController');
 });
 
 Route::get('/user/orders', [OrderController::class, 'userAll']);

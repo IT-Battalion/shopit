@@ -1,6 +1,6 @@
 <template>
-  <h1 class="text-3xl font-bold text-white">User Detail</h1>
-  <h1 class="text-3xl font-bold text-white">Bestellungen</h1>
+  <Profile v-if="!state.isLoading" :user="user"/>
+  <h2 class="text-3xl mt-10 mb-6 text-white font-bold">Bestellungen</h2>
   <vue-good-table
     :columns="userOrderColumns"
     :pagination-options="{
@@ -13,7 +13,6 @@
       trigger: 'enter',
       placeholder: 'Search this table',
     }"
-    class="mt-10"
     max-height="400px"
     theme="shopit"
   >
@@ -23,9 +22,9 @@
       </span>
     </template>
   </vue-good-table>
-  <h1 class="my-10 text-3xl font-bold text-white">Benutzer ent/sperren</h1>
+  <h2 class="text-3xl mt-10 mb-6 text-white font-bold">Benutzer ent/sperren</h2>
   <div class="w-1/2 bg-white">
-    <QuillEditor theme="snow" toolbar="minimal" />
+    <QuillEditor theme="snow" toolbar="minimal"/>
   </div>
   <ButtonField
     name="ent/sperren"
@@ -36,22 +35,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
-import { Order, User } from "../types/api";
-import { endLoad, initLoad } from "../loader";
-import { AxiosResponse } from "axios";
-import { OrderStatusLables } from "../types/api-values";
+import {defineComponent} from "@vue/runtime-core";
+import {Order, User} from "../types/api";
+import {endLoad, initLoad, state} from "../loader";
+import {AxiosResponse} from "axios";
+import {OrderStatusLables} from "../types/api-values";
+import Profile from "../components/Profile.vue";
 import ButtonField from "../components/ButtonField.vue";
-import { QuillEditor } from "@vueup/vue-quill";
+import {QuillEditor} from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 
 export default defineComponent({
   components: {
+    Profile,
     ButtonField,
     QuillEditor,
     "vue-good-table": require("vue-good-table-next").VueGoodTable,
   },
-  data() {
+  setup() {
     return {
       statusLables: OrderStatusLables,
       userOrderColumns: [
@@ -126,28 +127,29 @@ export default defineComponent({
           type: "number",
         },
       ],
+      state,
+    };
+  },
+  data() {
+    return {
       userOrderRows: [] as Order[],
-      //user: Object as User,
+      user: Object as User,
     };
   },
   async beforeMount() {
-    await this.loadOrders();
+    await Promise.all([this.loadOrders(), this.loadUser()]);
   },
   methods: {
     async loadOrders() {
       initLoad();
-      let response: AxiosResponse<Order[]> = await this.$http.get(
-        "/admin/user/" + this.$route.params.id + "/orders"
-      );
+      let response: AxiosResponse<Order[]> = await this.$http.get(`/admin/users/${this.$route.params.id}/orders`);
       this.userOrderRows = response.data;
       endLoad();
     },
     async loadUser() {
       initLoad();
-      let response: AxiosResponse<User> = await this.$http.get(
-        "/admin/user/" + this.$route.params.id
-      );
-      //this.user = response.data;
+      let response: AxiosResponse<User> = await this.$http.get('/admin/users/' + this.$route.params.id);
+      this.user = response.data;
       endLoad();
     },
   },

@@ -2,8 +2,8 @@
   <div class="w-full h-full pl-0 md:pl-24">
     <h1 class="text-4xl font-bold text-white">Coupons</h1>
     <InputField ref="code" labelName="Rabattcode" required/>
-    <InputField ref="discount" labelName="Rabatt" placeholder="0.33 => 33%" required type="number"/>
-    <InputField ref="enabled_until" iconName="calender" labelName="Erhältlich bis" required type="date"/>
+    <InputField ref="discount" labelName="Rabatt" placeholder="%" required type="number" />
+    <InputField ref="enabled_until" iconName="calender" labelName="Erhältlich bis" required type="datetime-local"/>
     <ButtonField iconSrc="/img/addBlack.svg" @click="createCoupon"/>
     <vue-good-table
       class="mt-10"
@@ -49,7 +49,7 @@ import InputField from "@/components/InputField.vue";
 import InputFieldIcon from "@/components/InputFieldIcon.vue";
 import "vue-good-table-next/dist/vue-good-table-next.css";
 import {AxiosResponse} from "axios";
-import {Coupon} from "../types/api";
+import {Coupon, CreateCouponRequest} from "../types/api";
 import {endLoad, initLoad} from "../loader";
 import ButtonField from "../components/ButtonField.vue";
 
@@ -119,8 +119,12 @@ export default defineComponent({
       let discount = (this.$refs.discount as typeof InputField).getValue();
       let enabled_until = (this.$refs.enabled_until as typeof InputField).getValue();
       console.log(enabled_until);
-      await this.$http.post('/admin/coupon/create', [code, discount, enabled_until]);
-      await this.loadCoupons();
+      let newCoupon = await this.$http.post<CreateCouponRequest, AxiosResponse<Coupon>>('/admin/coupons', {
+        code,
+        discount,
+        enabled_until,
+      });
+      this.rows.push(newCoupon.data);
       endLoad();
     }
   },

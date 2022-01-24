@@ -37,7 +37,7 @@ const routes: Array<RouteRecordRaw> = [
             path: "",
             name: "Products",
             component: () =>
-              import("../views/Products.vue"),
+              import(/* webpackChunkName: "products" */ "../views/Products.vue"),
             meta: {
               initLoad: false,
               endLoad: false,
@@ -47,7 +47,7 @@ const routes: Array<RouteRecordRaw> = [
             path: "products/:name",
             name: "Product",
             component: () =>
-              import("../views/ProductOverview.vue"),
+              import(/* webpackChunkName: "products" */ "../views/ProductOverview.vue"),
             meta: {
               initLoad: false,
               endLoad: false,
@@ -57,7 +57,7 @@ const routes: Array<RouteRecordRaw> = [
             path: "/order/",
             name: "order",
             component: () =>
-              import("../views/layout/Order.vue"),
+              import(/* webpackChunkName: "orders" */ "../views/layout/Order.vue"),
           },
         ]
       },
@@ -65,19 +65,19 @@ const routes: Array<RouteRecordRaw> = [
         path: "/profile/",
         name: "profile",
         component: () =>
-          import("../views/layout/Profile.vue"),
+          import(/* webpackChunkName: "profile" */ "../views/layout/Profile.vue"),
         children: [
           {
             path: "",
             name: "Profile",
             component: () =>
-              import("../views/ProfilePage.vue"),
+              import(/* webpackChunkName: "profile" */ "../views/ProfilePage.vue"),
           },
           {
             path: "order-history",
             name: "OrderHistory",
             component: () =>
-              import("../views/OrderHistory.vue"),
+              import(/* webpackChunkName: "profile" */ "../views/OrderHistory.vue"),
           },
         ]
       },
@@ -85,7 +85,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/admin/",
         name: "admin",
         component: () =>
-          import("../views/layout/Admin.vue"),
+          import(/* webpackChunkName: "admin" */ "../views/layout/Admin.vue"),
         meta: {
           requiresAdmin: true,
         },
@@ -95,85 +95,87 @@ const routes: Array<RouteRecordRaw> = [
             path: "",
             name: "Admin",
             component: () =>
-              import("../views/Dashboard.vue"),
+              import(/* webpackChunkName: "admin" */ "../views/Dashboard.vue"),
           },
           {
             path: "invoices/",
             name: "Invoices",
             component: () =>
-              import("../views/Bills.vue"),
+              import(/* webpackChunkName: "admin" */ "../views/Bills.vue"),
             children: []
           },
           {
             path: "invoices/:id",
             name: "Invoice detail",
-            component: () => import("../views/Bills.vue")
+            component: () =>
+              import(/* webpackChunkName: "admin" */ "../views/Bills.vue")
           },
           {
             path: "orders",
             name: "Orders",
             component: () =>
-              import("../views/Orders.vue"),
+              import(/* webpackChunkName: "admin" */ "../views/Orders.vue"),
           },
           {
             path: "orders/:id",
             name: "Order detail",
             component: () =>
-              import("../views/layout/Order.vue")
+              import(/* webpackChunkName: "admin" */ "../views/layout/Order.vue")
           },
           {
             path: "coupons",
             name: "Coupons",
             component: () =>
-              import("../views/Coupons.vue"),
+              import(/* webpackChunkName: "admin" */ "../views/Coupons.vue"),
           },
           {
             path: "categories",
             name: "CategoryManagement",
             component: () =>
-              import("../views/EditCategories.vue"),
+              import(/* webpackChunkName: "admin" */ "../views/EditCategories.vue"),
           },
           {
             path: "users/",
             name: "UserManagement",
             component: () =>
-              import("../views/UserManagement.vue"),
+              import(/* webpackChunkName: "admin" */ "../views/UserManagement.vue"),
             children: [],
           },
           {
             path: "users/:id",
             name: "User detail",
-            component: () => import("../views/UserManagementDetail.vue"),
+            component: () =>
+              import(/* webpackChunkName: "admin" */ "../views/UserManagementDetail.vue"),
           },
           {
             path: "products/edit",
             name: "Edit Product",
             component: () =>
-              import("../views/ProductListAdmin.vue"),
+              import(/* webpackChunkName: "admin" */ "../views/ProductListAdmin.vue"),
           },
           {
             path: "products/add/",
             name: "Add Product",
             component: () =>
-              import("../views/AddProductMeta.vue"),
+              import(/* webpackChunkName: "admin" */ "../views/AddProductMeta.vue"),
           },
           {
             path: "products/add/images",
             name: "Add Product images",
             component: () =>
-              import("../views/UploadProductImages.vue"),
+              import(/* webpackChunkName: "admin" */ "../views/UploadProductImages.vue"),
           },
           {
             path: "products/add/attributes",
             name: "Add Product attributes",
             component: () =>
-              import("../views/CategoriesAttributes.vue"),
+              import(/* webpackChunkName: "admin" */ "../views/CategoriesAttributes.vue"),
           },
           {
             path: "products/add/description",
             name: "Add Product description",
             component: () =>
-              import("../views/Description.vue"),
+              import(/* webpackChunkName: "admin" */ "../views/Description.vue"),
           }
         ]
       },
@@ -181,12 +183,12 @@ const routes: Array<RouteRecordRaw> = [
         path: "/credits/",
         name: "credits",
         component: () =>
-          import("../views/Credits.vue"),
+          import(/* webpackChunkName: "credits" */ "../views/Credits.vue"),
       },
       {
         path: "/contributors/",
         name: "contributors",
-        component: () => import("../components/Contributors.vue")
+        component: () => import(/* webpackChunkName: "credits" */ "../components/Contributors.vue")
       }
     ],
   },

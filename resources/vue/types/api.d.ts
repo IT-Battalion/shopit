@@ -199,3 +199,9 @@ export interface Invoice {
   price?: number,
   created_at?: string
 }
+
+export interface CreateCouponRequest {
+  code: string,
+  discount: number,
+  enabled_until: string,
+}
