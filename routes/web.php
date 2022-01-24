@@ -44,9 +44,14 @@ Route::prefix('profile')->name('profil.')->group(function () {
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::view('/', 'vue')->name('profile');
     Route::view('/bills', 'vue')->name('invoices.index');
-    Route::view('/orders', 'vue')->name('orders.index');
     Route::view('/coupons', 'vue')->name('coupons.index');
     Route::view('/categories', 'vue')->name('categories.index');
+
+    //Order Management
+    Route::prefix('/orders')->name('orders.')->group(function () {
+        Route::view('/orders', 'view')->name('orders.index');
+        Route::view('/orders/{id}', 'view')->name('orders.show');
+    });
 
     // Usermanagement
     Route::prefix('users')->name('users.')->group(function () {
@@ -79,6 +84,7 @@ Route::prefix('order')->name('order.')->group(function () {
     Route::view('{id}/ordered', 'vue')->name('ordered');
     Route::view('{id}/receive', 'vue')->name('receive');
     Route::view('{id}/handed-over', 'vue')->name('handed-over');
+    Route::view('{id}', 'vue')->name('show');
 });
 
 // Credits
