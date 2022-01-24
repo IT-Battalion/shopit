@@ -9,10 +9,10 @@ interface OrderServiceInterface
 {
     /**
      * Creates a new Order. Step 1.
-     * @param User $customer The Customer of the Order.
+     * @param User|null $customer The Customer of the Order.
      * @return Order The Order created.
      */
-    public function createOrder(User $customer): Order;
+    public function createOrder(User $customer = null): Order;
 
     /**
      * Mark an Order as paid. Step 2

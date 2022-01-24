@@ -73,7 +73,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 // Order
 Route::prefix('order')->name('order.')->group(function () {
-    Route::view('/', 'vue')->name('index');
+    Route::view('/', 'vue')->name('create');
+    Route::view('{id}/created', 'vue')->name('created');
+    Route::view('{id}/pay', 'vue')->name('pay');
+    Route::view('{id}/ordered', 'vue')->name('ordered');
+    Route::view('{id}/receive', 'vue')->name('receive');
+    Route::view('{id}/handed-over', 'vue')->name('handed-over');
 });
 
 // Credits

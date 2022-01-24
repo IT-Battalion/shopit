@@ -37,6 +37,11 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::post('/shopping-cart/remove', [ShoppingCartController::class, 'remove']);
     Route::post('/shopping-cart/coupon', [ShoppingCartController::class, 'applyCoupon']);
     Route::post('/shopping-cart/coupon/reset', [ShoppingCartController::class, 'resetCoupon']);
+
+    // Order routes
+    Route::get('/orders', [OrderController::class, 'userAll']);
+    Route::post('/orders', [OrderController::class, 'store']);
+    Route::get('/orders/{id}', [OrderController::class, 'show']);
 });
 
 // Admin routes
@@ -57,6 +62,3 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Category Routes
     Route::apiResource('category', 'CategoryController');
 });
-
-Route::get('/user/orders', [OrderController::class, 'userAll']);
-Route::get('/user/orders/{id}', [OrderController::class, 'show']);

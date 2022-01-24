@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\User;
+use App\Services\Orders\OrderServiceInterface;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -49,9 +50,11 @@ class OrderController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(OrderServiceInterface $orderService)
     {
-        //
+        $order = $orderService->createOrder();
+        $order = $order->refresh();
+        return response()->json($order);
     }
 
     /**

@@ -95,10 +95,10 @@ const routes: Array<RouteRecordRaw> = [
                   import(/* webpackChunkName: "orders" */ "../components/OrderOrdered.vue"),
               },
               {
-                path: "/receive",
+                path: "/received",
                 name: "Order Receive",
                 component: () =>
-                  import(/* webpackChunkName: "orders" */ "../components/OrderReceive.vue"),
+                  import(/* webpackChunkName: "orders" */ "../components/OrderReceived.vue"),
               },
               {
                 path: "/handed-over",
