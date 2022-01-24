@@ -7,6 +7,7 @@
       :value="value"
       :type="type"
       :placeholder="placeholder"
+      :step="step"
     />
   </div>
 </template>
@@ -23,6 +24,7 @@ export default defineComponent({
       type: String,
       default: "text",
     },
+    step: Number,
   },
   methods: {
     getValue() {

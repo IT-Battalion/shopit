@@ -66,6 +66,7 @@
         "vue-good-table-next": "^0.1.0",
         "vue-router": "^4.0.12",
         "vue-skeletor": "^1.0.6",
+        "vue-toastification": "^2.0.0-rc.5",
         "vue-upload-drop-images": "^1.0.7",
         "vue3-mq": "^3.0.1",
         "vuesax": "^4.0.1-alpha.25"
