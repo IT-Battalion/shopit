@@ -1,16 +1,7 @@
 <template>
   <div class="grid justify-center h-full">
     <div
-      class="
-        flex flex-col
-        justify-center
-        w-full
-        mx-auto
-        my-auto
-        text-white
-        justify-items-center
-        bg-backgroundColor
-      "
+      class="flex flex-col justify-center w-full mx-auto my-auto text-white  justify-items-center bg-backgroundColor"
     >
       <h1 class="mb-10 text-4xl font-bold text-center text-white">
         Kategorien
@@ -26,36 +17,12 @@
             <Popover v-slot="{ open }" class="relative">
               <PopoverButton
                 :class="open ? '' : 'text-opacity-90'"
-                class="
-                  inline-flex
-                  items-center
-                  px-3
-                  py-2
-                  text-base
-                  font-medium
-                  text-white
-                  rounded-md
-                  group
-                  hover:text-opacity-100
-                  focus:outline-none
-                  focus-visible:ring-2
-                  focus-visible:ring-white
-                  focus-visible:ring-opacity-75
-                "
+                class="inline-flex items-center px-3 py-2 text-base font-medium text-white rounded-md  group hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
               >
                 <span>{{ category.name }}</span>
                 <ChevronDownIcon
                   :class="open ? '' : 'text-opacity-70'"
-                  class="
-                    w-5
-                    h-5
-                    ml-2
-                    text-gray-400
-                    transition
-                    duration-150
-                    ease-in-out
-                    group-hover:text-opacity-80
-                  "
+                  class="w-5 h-5 ml-2 text-gray-400 transition duration-150 ease-in-out  group-hover:text-opacity-80"
                   aria-hidden="true"
                 />
               </PopoverButton>
@@ -69,26 +36,14 @@
                 leave-to-class="translate-y-1 opacity-0"
               >
                 <PopoverPanel
-                  class="
-                    absolute
-                    z-10
-                    max-w-sm
-                    px-4
-                    mt-3
-                    transform
-                    -translate-x-1/2
-                    left-full
-                    sm:px-0
-                    lg:max-w-3xl
-                    flex flex-row
-                  "
+                  class="absolute z-10 flex flex-row max-w-sm px-4 mt-3 transform -translate-x-1/2  left-full sm:px-0 lg:max-w-3xl"
                 >
                   <input
                     type="text"
                     :placeholder="category.name"
                     class="bg-elevatedDark rounded-2xl"
                   />
-                  <button class="ml-5 w-8 h-8 my-auto">
+                  <button class="w-8 h-8 my-auto ml-5">
                     <img src="/img/check.svg" alt="check" class="w-8 h-8" />
                   </button>
                 </PopoverPanel>
@@ -109,9 +64,17 @@ import {defineComponent} from "vue";
 import {Popover, PopoverButton, PopoverPanel} from "@headlessui/vue";
 import {ChevronDownIcon} from "@heroicons/vue/solid";
 import {endLoad, initLoad} from "../loader";
+import { ref } from "vue";
+import ButtonField from "../components/ButtonField.vue";
 
 export default defineComponent({
-  components: {Popover, PopoverButton, PopoverPanel, ChevronDownIcon},
+  components: {
+    Popover,
+    PopoverButton,
+    PopoverPanel,
+    ChevronDownIcon,
+    ButtonField,
+  },
   data() {
     return {
       categories: window.config.categories,

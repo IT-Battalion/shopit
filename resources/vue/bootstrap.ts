@@ -1,28 +1,28 @@
-import {AxiosInstance, default as axios} from "axios";
+import { AxiosInstance, default as axios } from "axios";
 import Echo from 'laravel-echo';
-import {LoDashStatic} from "lodash";
+import { LoDashStatic } from "lodash";
 import Pusher from "pusher-js";
-import {GlobalConfig} from "./types/config";
-import {createApp, reactive} from "vue";
+import { GlobalConfig } from "./types/config";
+import { createApp, reactive } from "vue";
 import App from "./App.vue";
 import router from "./router";
-import {redirectToLogin} from "./util";
-import {MqResponsive, Vue3Mq} from "vue3-mq";
-import {Skeletor} from "vue-skeletor";
+import { redirectToLogin } from "./util";
+import { MqResponsive, Vue3Mq } from "vue3-mq";
+import { Skeletor } from "vue-skeletor";
 import 'vue-skeletor/dist/vue-skeletor.css';
 import mitt from "mitt";
-import {UnwrapNestedRefs} from "@vue/reactivity";
+import { UnwrapNestedRefs } from "@vue/reactivity";
 
 declare global {
-  interface Window {
-    axios: AxiosInstance,
-    _: LoDashStatic,
-    pusher: Pusher,
-    echo: Echo,
-    initialConfig: GlobalConfig,
-    // @ts-ignore
-    config: UnwrapNestedRefs<GlobalConfig>,
-  }
+    interface Window {
+        axios: AxiosInstance,
+        _: LoDashStatic,
+        pusher: Pusher,
+        echo: Echo,
+        initialConfig: GlobalConfig,
+        // @ts-ignore
+        config: UnwrapNestedRefs<GlobalConfig>,
+    }
 }
 
 window.config = reactive(window.initialConfig);

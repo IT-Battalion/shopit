@@ -1,7 +1,7 @@
 <template>
   <div>
     <AddProductProcess />
-    <div class="w-full grid grid-rows-2 grid-cols-1 place-items-center my-16">
+    <div class="grid w-full grid-cols-1 grid-rows-2 my-16 place-items-center">
       <InputField labelName="Produktname" />
       <InputField labelName="Preis" type="number" />
     </div>
