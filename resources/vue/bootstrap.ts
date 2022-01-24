@@ -12,7 +12,7 @@ import { Skeletor } from "vue-skeletor";
 import 'vue-skeletor/dist/vue-skeletor.css';
 import mitt from "mitt";
 import { UnwrapNestedRefs } from "@vue/reactivity";
-import Toast, { PluginOptions } from "vue-toastification";
+import Toast  from "vue-toastification";
 import "vue-toastification/dist/index.css";
 
 declare global {
@@ -50,7 +50,7 @@ window.axios.interceptors.response.use(res => res, err => {
         return Promise.reject(err);
     }
 
-    return err;
+    return Promise.reject(err);
 });
 
 /**
@@ -108,17 +108,13 @@ const i18n = createI18n({
 
 const bus = mitt();
 
-const options: PluginOptions = {
-    // You can set your default options here
-};
-
 
 let createdApp = createApp(App);
 createdApp
     .use(router)
     //    .use(i18n)
     .use(Vue3Mq, { preset: "tailwind" })
-    .use(Toast, options)
+    .use(Toast)
     .component('mq-responsive', MqResponsive)
     .component(Skeletor.name, Skeletor)
     .mount("#app");
