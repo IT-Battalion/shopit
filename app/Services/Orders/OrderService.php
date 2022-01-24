@@ -11,6 +11,8 @@ use App\Exceptions\OrderNotPaidException;
 use App\Exceptions\OrderNotReceivedException;
 use App\Exceptions\ShoppingCartEmptyException;
 use App\Models\Order;
+use App\Models\Product;
+use App\Models\ShoppingCartEntry;
 use App\Models\User;
 use App\Services\ShoppingCart\ShoppingCartServiceInterface;
 use App\Types\OrderStatus;
@@ -47,7 +49,9 @@ class OrderService implements OrderServiceInterface
             'total' => $prices['total'],
         ]);
 
+        /** @var Product $product */
         foreach ($products as $product) {
+            /** @var ShoppingCartEntry $metadata */
             $metadata = $product->pivot;
 
             // convert product to order product

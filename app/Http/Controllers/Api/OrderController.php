@@ -64,9 +64,11 @@ class OrderController extends Controller
      * @param User $user
      * @return \Illuminate\Http\Response
      */
-    public function userShow(Order $order, User $user)
+    public function userShow(Order $order)
     {
-        if ($user->id !== $order->id) {
+        /** @var User $user */
+        $user = Auth::user();
+        if (!$user->is_admin && $user->id !== $order->customer_id) {
             abort(404);
         }
         return response()->json($order);

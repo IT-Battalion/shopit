@@ -40,7 +40,7 @@ export default defineComponent({
   methods: {
     async loadOrder() {
       let id = this.route.params.id;
-      this.orders[toInteger(id)] = {order: undefined, isLoading: true};
+      this.orders[toInteger(id)] = {isLoading: true};
 
       initLoad();
       let response = await this.$http.get<void, AxiosResponse<Order>>(`/user/orders/${id}`);
