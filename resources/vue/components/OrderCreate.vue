@@ -1,5 +1,5 @@
 <template>
-  <h2 class="w-full my-16 text-2xl font-bold text-center text-white">
+  <h2 class="w-full my-16 text-3xl font-bold text-center text-white">
     Bestellübersicht
   </h2>
   <div class="w-full p-10 bg-white rounded-3xl md:w-1/2">
@@ -69,19 +69,19 @@
             class="w-full px-4 py-2 ml-0 text-black placeholder-green-600 border border-indigo-500 rounded-lg  focus:outline-none focus:ring-2 focus:ring-indigo-200"
             @submit="addCoupon()"
           />
-          <button class="w-8 h-8">
+          <button class="w-8 h-8 ml-3">
             <img
               src="/img/doneBlack.svg"
               alt="Coupon Code verifizieren"
-              class="w-8 h-8 ml-3"
+              class="w-8 h-8"
               @click="addCoupon()"
             />
           </button>
-          <button class="w-8 h-8">
+          <button class="w-8 h-8 ml-3">
             <img
               src="/img/blackX.svg"
               alt="Coupon Code verifizieren"
-              class="w-8 h-8 ml-3"
+              class="w-4 h-4"
               @click="resetCoupon()"
             />
           </button>
@@ -90,12 +90,13 @@
       <div class="flex flex-row items-center justify-center my-3">
         <input type="checkbox" name="agb" id="agb" v-model="agb" />
         <label for="stayLogedIn" class="my-auto ml-2 text-center text-black">
-          Hiermiet stimme ich den AGB zu.
+          Hiermit stimme ich den AGB zu.
         </label>
       </div>
       <div class="mt-6">
         <button
           @click="order()"
+          :disabled="!agb"
           class="flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm  hover:bg-indigo-700"
         >
           Bestellen
