@@ -90,14 +90,17 @@
                       "
                     >
                       <span class="text-white block px-4 py-3 text-sm"
-                      ><img
-                        src="/img/profile.svg"
-                        class="object-scale-down mr-4 h-7"
-                      />Profil</span
+                        ><img
+                          src="/img/profile.svg"
+                          class="object-scale-down mr-4 h-7"
+                        />Profil</span
                       >
                     </MenuItem>
                   </router-link>
-                  <router-link :to="{ name: 'Admin' }" v-if="this.user.isAdmin.value">
+                  <router-link
+                    :to="{ name: 'Admin' }"
+                    v-if="this.user.isAdmin.value"
+                  >
                     <MenuItem
                       class="
                         flex flex-row
@@ -107,10 +110,10 @@
                       "
                     >
                       <span class="text-white block px-4 py-3 text-sm"
-                      ><img
-                        src="/img/wheel-chair.svg"
-                        class="object-scale-down mr-4 h-7"
-                      />Admin Panel</span
+                        ><img
+                          src="/img/wheel-chair.svg"
+                          class="object-scale-down mr-4 h-7"
+                        />Admin Panel</span
                       >
                     </MenuItem>
                   </router-link>
@@ -152,15 +155,13 @@
 </template>
 
 <script lang="ts">
-import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
-import {defineComponent} from "@vue/runtime-core";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
+import { defineComponent } from "@vue/runtime-core";
 import useUser from "../stores/user";
 import Shoppingcart from "./Shoppingcart.vue";
-import Log from "./Log.vue";
 
 export default defineComponent({
   components: {
-    Log,
     Menu,
     MenuButton,
     MenuItem,
@@ -173,7 +174,9 @@ export default defineComponent({
   },
   computed: {
     profilePicture() {
-      return `https://avatars.dicebear.com/api/micah/${(this as any).user.username.value}.svg`;
+      return `https://avatars.dicebear.com/api/micah/${
+        (this as any).user.username.value
+      }.svg`;
     },
   },
   methods: {

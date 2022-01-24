@@ -45,9 +45,9 @@ class CouponController extends Controller
         $data = $request->validate([
             'code' => 'required|min:6|string|unique:coupon_codes',
             'discount' => 'required|numeric|integer|min:1|max:100',
-            'enabled_until' => 'required|date_format:Y-m-dTH:i|after_or_equal:' . date('yyyy-MM-dd')
+            'enabled_until' => 'required|date_format:Y-m-d\TH:i|after_or_equal:' . date('yyyy-MM-dd')
         ]);
-        $data['discount'] = $data['discount']/100;
+        $data['discount'] = $data['discount'] / 100;
 
         $coupon = CouponCode::create($data);
         $coupon = CouponCode::find($coupon->id);

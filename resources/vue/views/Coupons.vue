@@ -66,6 +66,7 @@ import { AxiosResponse } from "axios";
 import { Coupon, CreateCouponRequest } from "../types/api";
 import { endLoad, initLoad } from "../loader";
 import ButtonField from "../components/ButtonField.vue";
+import { useToast } from "vue-toastification";
 
 export default defineComponent({
   components: {
@@ -128,24 +129,38 @@ export default defineComponent({
       endLoad();
     },
     async createCoupon() {
-      initLoad();
-      let code = (this.$refs.code as typeof InputField).getValue();
-      let discount = (this.$refs.discount as typeof InputField).getValue();
-      let enabled_until = (
-        this.$refs.enabled_until as typeof InputField
-      ).getValue();
-      console.log(enabled_until);
-      let newCoupon = await this.$http.post<
-        CreateCouponRequest,
-        AxiosResponse<Coupon>
-      >("/admin/coupons", {
-        code,
-        discount,
-        enabled_until,
-      });
-      this.rows.push(newCoupon.data);
-      endLoad();
+      try {
+        initLoad();
+        let code = (this.$refs.code as typeof InputField).getValue();
+        let discount = (this.$refs.discount as typeof InputField).getValue();
+        let enabled_until =
+          (this.$refs.enabled_until as typeof InputField).getValue() + "T00:00";
+        console.log(enabled_until);
+        let newCoupon = await this.$http
+          .post<CreateCouponRequest, AxiosResponse<Coupon>>("/admin/coupons", {
+            code,
+            discount,
+            enabled_until,
+          })
+          .catch((e) => {
+            console.log(e);
+            throw e;
+          });
+        console.log(newCoupon);
+        this.rows.push(newCoupon.data);
+        this.toast.success("Coupon code wurde erfolgreich erstellt!");
+      } catch (e) {
+        this.toast.error(
+          "Beim Erstellen des Coupons ist ein Fehler aufgetreten."
+        );
+      } finally {
+        endLoad();
+      }
     },
+  },
+  setup() {
+    const toast = useToast();
+    return { toast };
   },
 });
 </script>
