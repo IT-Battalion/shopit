@@ -83,8 +83,8 @@
               hover:opacity-100
               decoration-solid
             "
-            >Impressum
-            <ExternalLinkIcon class="w-5 h-5 pl-1" />
+            target="_blank">Impressum
+            <ExternalLinkIcon class="w-5 h-5 pl-1"/>
           </a>
         </div>
         <div class="flex flex-col w-full space-y-4 sm:w-1/5">
@@ -126,8 +126,8 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
-import { ExternalLinkIcon, HomeIcon } from "@heroicons/vue/solid";
+import {defineComponent} from "@vue/runtime-core";
+import {ExternalLinkIcon, HomeIcon} from "@heroicons/vue/solid";
 
 export default defineComponent({
   components: {

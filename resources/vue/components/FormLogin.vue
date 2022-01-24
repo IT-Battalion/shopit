@@ -46,7 +46,7 @@
             mb-2
           "
         >
-          Willkommen zurück!
+          Willkommen bei ShopIT!
         </h1>
         <p class="text-md text-center text-gray-400 sm:text-md lg:text-2xl">
           Der Online Shop der Abteilung für Informationstechnologie
@@ -149,6 +149,19 @@
           Anmelden
         </button>
       </form>
+      <div class="col-span-2">
+        <a class="
+              underline
+              opacity-60
+              hover:opacity-100
+              decoration-solid
+              text-white
+            "
+           href="https://lernenimaufbruch.at/impressum.html"
+           target="_blank"
+        >Impressum
+        </a>
+      </div>
     </div>
   </div>
   <div v-else class="text-center grid place-items-center h-[100vh] w-full">
@@ -194,17 +207,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import {defineComponent, reactive} from "vue";
+import {useRoute, useRouter} from "vue-router";
 import useUser from "../stores/user";
 import userStore from "../stores/user";
-import { initLoad } from "../loader";
 
 export default defineComponent({
   setup() {
     let isLoading = false;
     const route = useRoute();
-    const { user, login } = useUser();
+    const {user, login} = useUser();
     const router = useRouter();
 
     const form = reactive({
