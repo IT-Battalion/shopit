@@ -1,12 +1,12 @@
 <template>
-  <h1 class="my-10 w-full text-white text-center text-5xl font-bold uppercase">
+  <h1 class="w-full my-10 text-5xl font-bold text-center text-white uppercase">
     Credits
   </h1>
   <div
     v-for="credit in credits"
     :key="credit.iconLink"
     :name="credit.iconName"
-    class="w-full flex flex-col justify-items-center text-center"
+    class="flex flex-col w-full text-center justify-items-center"
   >
     <div class="my-5 text-white">
       "<a :href="credit.iconLink" class="underline">{{ credit.iconName }}</a
@@ -230,6 +230,12 @@ export default defineComponent({
         iconLink: "https://thenounproject.com/icon/upload-4526942/",
         creator: "Widyatmoko",
         creatorLink: "https://thenounproject.com/yogs144/",
+      },
+      {
+        iconName: "Lock",
+        iconLink: "https://thenounproject.com/icon/lock-4530345/",
+        creator: "Saideep Karipalli",
+        creatorLink: "https://thenounproject.com/saideep/",
       },
     ];
     return { credits };

@@ -3,35 +3,14 @@
     <router-link
       :to="cancel"
       tag="button"
-      class="
-        flex
-        items-center
-        px-6
-        py-4
-        mr-2
-        font-bold
-        text-gray-400
-        rounded-full
-        hover:bg-elevatedColor hover:text-white
-      "
+      class="flex items-center px-6 py-4 mr-2 font-bold text-gray-400 rounded-full  hover:bg-elevatedColor hover:text-white"
     >
       Abbrechen
     </router-link>
     <router-link
       :to="last"
       tag="button"
-      class="
-        flex
-        items-center
-        px-6
-        py-4
-        mx-2
-        font-bold
-        text-white
-        border border-white
-        rounded-full
-        hover:bg-elevatedColor hover:border-backgroundColor hover:text-white
-      "
+      class="flex items-center px-6 py-4 mx-2 font-bold text-white border border-white rounded-full  hover:bg-elevatedColor hover:border-backgroundColor hover:text-white"
     >
       <svg
         class="w-5 h-5 mr-2 fill-current"
@@ -53,21 +32,10 @@
       Vorherige Seite
     </router-link>
     <router-link
+      v-if="nextTrue"
       :to="next"
       tag="button"
-      class="
-        flex
-        items-center
-        px-6
-        py-4
-        ml-2
-        font-bold
-        text-elevatedColor
-        bg-white
-        border border-white
-        rounded-full
-        hover:bg-elevatedColor hover:border-backgroundColor hover:text-white
-      "
+      class="flex items-center px-6 py-4 ml-2 font-bold bg-white border border-white rounded-full  text-elevatedColor hover:bg-elevatedColor hover:border-backgroundColor hover:text-white"
     >
       Nächste Seite
       <svg
@@ -103,6 +71,10 @@ export default defineComponent({
     next: Object as PropType<RouteLocationRaw>,
     last: Object as PropType<RouteLocationRaw>,
     cancel: Object as PropType<RouteLocationRaw>,
+    nextTrue: {
+      default: true,
+      type: Boolean,
+    },
   },
 });
 </script>
