@@ -57,7 +57,7 @@
       </div>
     </div>
     <div class="w-full">
-      <h2 class="w-full my-10 text-2xl font-bold text-white tet-center">
+      <h2 class="w-full my-10 text-2xl font-bold text-center text-white">
         Kategorie Hinzufügen
       </h2>
       <div class="w-full max-w-sm px-4 top-16">
@@ -83,7 +83,7 @@
               <input
                 type="text"
                 placeholder="Name"
-                class="bg-elevatedDark rounded-2xl"
+                class="text-white bg-elevatedDark rounded-2xl"
               />
               <button class="w-8 h-8 my-auto ml-5">
                 <img src="/img/check.svg" alt="check" class="w-8 h-8" />

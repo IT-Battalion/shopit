@@ -36,10 +36,10 @@
                 height="100%"
               />
             </div>
-            <h3 class="self-end w-5/6 text-sm text-white">
+            <h3 class="self-end w-5/6 text-xl font-semibold text-white">
               {{ highlightedProduct.name }}
             </h3>
-            <p class="self-end w-2/3 text-sm font-medium text-gray-900">
+            <p class="self-end w-2/3 text-sm font-medium text-white">
               {{ highlightedProduct.price }}
             </p>
             <button
@@ -72,12 +72,7 @@
             class="grid items-center w-full h-full grid-cols-2 grid-rows-4  gap-x-6"
           >
             <div class="w-full h-full row-span-full">
-              <Skeletor
-                :pill="false"
-                :circle="false"
-                as="div"
-                height="100%"
-              />
+              <Skeletor :pill="false" :circle="false" as="div" height="100%" />
             </div>
             <h3 class="self-end w-5/6 text-sm text-white">
               <Skeletor :pill="true" />
@@ -139,7 +134,7 @@ export default defineComponent({
   components: {
     Swiper,
     SwiperSlide,
-    LoadingImage
+    LoadingImage,
   },
   data() {
     return {
