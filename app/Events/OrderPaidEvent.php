@@ -17,7 +17,7 @@ class OrderPaidEvent
      *
      * @return void
      */
-    public function __construct(Order $model)
+    public function __construct(public Order $model)
     {
         //TODO: send email
     }
@@ -29,6 +29,6 @@ class OrderPaidEvent
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-name');
+        return new PrivateChannel('app.order.' . $this->model->id);
     }
 }

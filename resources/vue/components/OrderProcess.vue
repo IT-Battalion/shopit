@@ -30,32 +30,54 @@
 
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
+import {Order} from "../types/api";
+import {PropType} from "vue";
+import {OrderStatus} from "../types/api-values";
 
 export default defineComponent({
+  props: {
+    order: {
+      type: Object as PropType<Order>,
+    },
+  },
   setup() {
     const orderProcess = [
       {
-        name: "Bestellt",
+        name: "Bestellen",
         icon_url: "/img/orderOrdered.svg",
+        step: OrderStatus.CREATED,
       },
       {
         name: "Bezahlen",
         icon_url: "/img/orderPayed.svg",
+        step: OrderStatus.PAID,
       },
       {
         name: "Auf Produkt warten",
         icon_url: "/img/orderWaiting.svg",
+        step: OrderStatus.ORDERED,
       },
       {
         name: "Abholen",
         icon_url: "/img/orderCollect.svg",
+        step: OrderStatus.RECEIVED,
       },
       {
         name: "Abgeschlossen",
         icon_url: "/img/orderComplete.svg",
+        step: OrderStatus.HANDED_OVER,
       },
     ];
     return { orderProcess };
   },
+  computed: {
+    current() {
+      if (this.order === undefined) {
+        return -1;
+      } else {
+        return this.order.status;
+      }
+    }
+  }
 });
 </script>

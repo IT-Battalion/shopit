@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Order;
+use App\Models\User;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -17,6 +19,10 @@ Broadcast::channel('app.user.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('app.user.{id}.shopping-cart', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+Broadcast::channel('app.user.{id}.shopping-cart', function (User $user, $id) {
+    return $user->id === (int) $id;
+});
+
+Broadcast::channel('app.order.{order}', function (User $user, Order $order) {
+    return $user->id === $order->customer_id || $user->is_admin;
 });

@@ -2,10 +2,10 @@
 
 namespace App\Services\Orders;
 
-use App\Events\OrderDeliveringEvent;
-use App\Events\OrderOrderingEvent;
-use App\Events\OrderPayingEvent;
-use App\Events\OrderReceivingEvent;
+use App\Events\OrderDeliveredEvent;
+use App\Events\OrderOrderedEvent;
+use App\Events\OrderPaidEvent;
+use App\Events\OrderReceivedEvent;
 use App\Exceptions\OrderNotOrderedException;
 use App\Exceptions\OrderNotPaidException;
 use App\Exceptions\OrderNotReceivedException;
@@ -80,7 +80,7 @@ class OrderService implements OrderServiceInterface
         $order->transaction_confirmed_by_id = Auth::user()->id;
         $order->status = OrderStatus::PAID;
         $order->save();
-        event(new OrderPayingEvent($order));
+        event(new OrderPaidEvent($order));
         return $order;
     }
 
@@ -89,8 +89,7 @@ class OrderService implements OrderServiceInterface
      */
     public function markOrderAsOrdered(Order $order): Order
     {
-        if (!$order->isPaid())
-        {
+        if (!$order->isPaid()) {
             throw new OrderNotPaidException('Die Bestellung wurde noch nicht bezahlt.');
         }
 
@@ -99,7 +98,7 @@ class OrderService implements OrderServiceInterface
         $order->status = OrderStatus::ORDERED;
         $order->save();
 
-        event(new OrderOrderingEvent($order));
+        event(new OrderOrderedEvent($order));
         return $order;
     }
 
@@ -108,8 +107,7 @@ class OrderService implements OrderServiceInterface
      */
     public function markOrderAsReceived(Order $order): Order
     {
-        if (!$order->isOrdered())
-        {
+        if (!$order->isOrdered()) {
             throw new OrderNotOrderedException('Die Bestellung wurde noch nicht von einem Administrator bestellt.');
         }
 
@@ -118,7 +116,7 @@ class OrderService implements OrderServiceInterface
         $order->status = OrderStatus::RECEIVED;
         $order->save();
 
-        event(new OrderReceivingEvent($order));
+        event(new OrderReceivedEvent($order));
         return $order;
     }
 
@@ -127,8 +125,7 @@ class OrderService implements OrderServiceInterface
      */
     public function markOrderAsDelivered(Order $order): Order
     {
-        if (!$order->isReceived())
-        {
+        if (!$order->isReceived()) {
             throw new OrderNotReceivedException('Die Bestellung wurde noch nicht von einem Administrator erhalten.');
         }
 
@@ -137,7 +134,7 @@ class OrderService implements OrderServiceInterface
         $order->status = OrderStatus::HANDED_OVER;
         $order->save();
 
-        event(new OrderDeliveringEvent($order));
+        event(new OrderDeliveredEvent($order));
         return $order;
     }
 }

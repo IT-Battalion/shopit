@@ -55,9 +55,58 @@ const routes: Array<RouteRecordRaw> = [
           },
           {
             path: "/order/",
+            name: "create order",
+            component: () =>
+              import(/* webpackChunkName: "orders" */ "../views/layout/CreateOrder.vue"),
+            children: [
+              {
+                path: "",
+                name: "Create Order",
+                component: () =>
+                  import(/* webpackChunkName: "orders" */ "../components/OrderCreate.vue"),
+              },
+            ],
+          },
+          {
+            path: "/order/:id",
             name: "order",
             component: () =>
               import(/* webpackChunkName: "orders" */ "../views/layout/Order.vue"),
+            meta: {
+              isAdminView: false,
+            },
+            children: [
+              {
+                path: "/created",
+                name: "Order Created",
+                component: () =>
+                  import(/* webpackChunkName: "orders" */ "../components/OrderCreated.vue"),
+              },
+              {
+                path: "/pay",
+                name: "Order Pay",
+                component: () =>
+                  import(/* webpackChunkName: "orders" */ "../components/OrderPay.vue"),
+              },
+              {
+                path: "/ordered",
+                name: "Order Ordered",
+                component: () =>
+                  import(/* webpackChunkName: "orders" */ "../components/OrderOrdered.vue"),
+              },
+              {
+                path: "/receive",
+                name: "Order Receive",
+                component: () =>
+                  import(/* webpackChunkName: "orders" */ "../components/OrderReceive.vue"),
+              },
+              {
+                path: "/handed-over",
+                name: "Order Handed Over",
+                component: () =>
+                  import(/* webpackChunkName: "orders" */ "../components/OrderHandedOver.vue"),
+              },
+            ]
           },
         ]
       },

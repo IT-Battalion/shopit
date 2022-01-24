@@ -123,12 +123,8 @@
                       Coupon Codes werden im nächsten Schritt angegeben.
                     </p>
                     <div class="mt-6">
-                      <router-link :to="{ name: 'order' }">
-                        <a
-                          href="#"
-                          class="flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm  hover:bg-indigo-700"
-                          >Bestellen</a
-                        >
+                      <router-link :to="{ name: 'order' }" class="flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm  hover:bg-indigo-700">
+                        Bestellen
                       </router-link>
                     </div>
                     <div

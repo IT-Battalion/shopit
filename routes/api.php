@@ -50,10 +50,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     // Orders routes
     Route::get('/orders', [OrderController::class, 'all']);
-    Route::get('/users/{id}/orders', [OrderController::class, 'show']);
+    Route::get('/users/{id}/orders', [OrderController::class, 'userAll']);
 
     // Category Routes
     Route::apiResource('category', 'CategoryController');
 });
 
 Route::get('/user/orders', [OrderController::class, 'userAll']);
+Route::get('/user/orders/{id}', [OrderController::class, 'show']);
