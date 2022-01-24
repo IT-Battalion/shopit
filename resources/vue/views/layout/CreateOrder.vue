@@ -4,7 +4,7 @@
 </template>
 
 <script lang="ts">
-import OrderProcess from "@/components/OrderProcess.vue";
+import OrderProcess from "../../components/OrderProcess.vue";
 import {Order} from "../../types/api";
 import OrderCreate from "../../components/OrderCreate.vue";
 export default {

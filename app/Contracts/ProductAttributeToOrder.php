@@ -20,8 +20,8 @@ interface ProductAttributeToOrder extends Attribute, ConvertableToOrder
 
     /**
      * Find an existing equivalent {@link OrderProductAttribute}
-     * @return OrderProductAttribute
+     * @return OrderProductAttribute|null
      */
 
-    public function findOrderEquivalent(): OrderProductAttribute;
+    public function findOrderEquivalent(): OrderProductAttribute|null;
 }

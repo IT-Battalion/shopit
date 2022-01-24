@@ -70,7 +70,7 @@ class ProductColorAttribute extends Model implements ProductAttributeToOrder
         ]);
     }
 
-    public function findOrderEquivalent(): OrderProductAttribute
+    public function findOrderEquivalent(): OrderProductAttribute|null
     {
         return OrderColorAttribute::where('name', $this->name)
             ->where('color', $this->color)->first();

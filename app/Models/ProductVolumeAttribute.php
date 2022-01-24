@@ -18,7 +18,7 @@ use Illuminate\Support\Carbon;
  * App\Models\VolumeProductAttribute
  *
  * @property int $id
- * @property int $volume
+ * @property Liter $volume
  * @method static Builder|ProductVolumeAttribute newModelQuery()
  * @method static Builder|ProductVolumeAttribute newQuery()
  * @method static Builder|ProductVolumeAttribute query()
@@ -71,9 +71,9 @@ class ProductVolumeAttribute extends Model implements ProductAttributeToOrder
             ]);
     }
 
-    public function findOrderEquivalent(): OrderProductAttribute
+    public function findOrderEquivalent(): OrderProductAttribute|null
     {
-        return OrderVolumeAttribute::whereVolume($this->volume);
+        return OrderVolumeAttribute::whereVolume($this->volume->getValue())->first();
     }
 
     public function jsonSerialize()

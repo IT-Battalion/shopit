@@ -41,7 +41,7 @@ Route::prefix('user')->name('user.')->group(function () {
     // Order routes
     Route::get('/orders', [OrderController::class, 'userAll']);
     Route::post('/orders', [OrderController::class, 'store']);
-    Route::get('/orders/{id}', [OrderController::class, 'show']);
+    Route::get('/orders/{order}', [OrderController::class, 'userShow']);
 });
 
 // Admin routes
@@ -57,7 +57,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     // Orders routes
     Route::get('/orders', [OrderController::class, 'all']);
-    Route::get('/users/{id}/orders', [OrderController::class, 'userAll']);
+    Route::get('/orders/{order}', [OrderController::class, 'show']);
 
     // Category Routes
     Route::apiResource('category', 'CategoryController');

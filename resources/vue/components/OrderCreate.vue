@@ -111,7 +111,7 @@ import { defineComponent } from "vue";
 import ShoppingcartItem from "./ShoppingcartItem.vue";
 import {
   Coupon,
-  Money,
+  Money, Order,
   Product,
   RemoveFromShoppingCartResponse,
   SelectedAttributes,
@@ -164,8 +164,8 @@ export default defineComponent({
       this.shoppingCart.total = data.total;
     },
     async order() {
-      let response: AxiosResponse<void> = await this.$http.post("/user/orders");
-      this.router.replace({ name: "Order Created" });
+      let response: AxiosResponse<Order> = await this.$http.post("/user/orders");
+      this.router.replace({ name: "Order Created", params: {id: response.data.id} });
     },
   },
   async mounted() {

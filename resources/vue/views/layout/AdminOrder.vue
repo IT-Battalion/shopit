@@ -1,5 +1,5 @@
 <template>
-  <OrderProcess />
+  <AdminOrderProcess />
   <router-view />
 </template>
 
@@ -40,10 +40,9 @@ export default defineComponent({
   methods: {
     async loadOrder() {
       let id = this.route.params.id;
-      this.orders[toInteger(id)] = {order: undefined, isLoading: true};
-
       initLoad();
-      let response = await this.$http.get<void, AxiosResponse<Order>>(`/user/orders/${id}`);
+      this.orders[toInteger(id)].isLoading = true;
+      let response = await this.$http.get<void, AxiosResponse<Order>>(`/admin/orders/${id}`);
       this.orders[toInteger(id)].order = response.data;
       this.orders[toInteger(id)].isLoading = false;
       endLoad();

@@ -73,7 +73,7 @@ class ProductImage extends Model implements ConvertableToOrder
             return $orderProductImage;
         }
 
-        $hash = hash_file('sha256', $this->path);
+        $hash = hash_file('sha256', Storage::path($this->path));
         $orderPath = Storage::path('order/product/images/' . $hash . time() . pathinfo($this->path, PATHINFO_EXTENSION));
         Storage::copy($this->path, $orderPath);
 
@@ -86,7 +86,7 @@ class ProductImage extends Model implements ConvertableToOrder
 
     public function findOrderEquivalent()
     {
-        $hash = hash_file('sha256', $this->path);
+        $hash = hash_file('sha256', Storage::path($this->path));
 
         return OrderProductImage::whereHash($hash);
     }

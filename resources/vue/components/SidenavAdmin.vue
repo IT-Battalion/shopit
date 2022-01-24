@@ -150,7 +150,7 @@ export default defineComponent({
       },
       {
         name: "Bestellungen",
-        routerLink: {name:"Orders"},
+        routerLink: {name:"Admin Orders"},
         icon_url: "/img/categoryOrders.svg",
       },
       {

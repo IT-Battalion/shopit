@@ -2,30 +2,16 @@
   <mq-responsive target="lg+">
     <div class="flex flex-row items-center justify-center w-full gap-5">
       <template v-for="process in orderProcess" :key="process.name">
-        <router-link :to="process.link" v-if="current >= process.step">
-          <div class="flex flex-col items-center">
-            <img :src="process.icon_url" :alt="process.name" class="w-10 h-10" />
-            <a class="mt-3 text-base text-center text-white">{{
-              process.name
-            }}</a>
-          </div>
-          <span
-            class="w-20 h-2 bg-white rounded-full"
-            v-if="process.name !== 'Abgeschlossen'"
-          />
-        </router-link>
-        <template v-else>
-          <div class="flex flex-col items-center">
-            <img :src="process.icon_url" :alt="process.name" class="w-10 h-10" />
-            <a class="mt-3 text-base text-center text-white">{{
-                process.name
-              }}</a>
-          </div>
-          <span
-            class="w-20 h-2 bg-white rounded-full"
-            v-if="process.name !== 'Abgeschlossen'"
-          />
-        </template>
+        <div class="flex flex-col items-center">
+          <img :src="process.icon_url" :alt="process.name" class="w-10 h-10" />
+          <a class="mt-3 text-base text-center text-white">{{
+            process.name
+          }}</a>
+        </div>
+        <span
+          class="w-20 h-2 bg-white rounded-full"
+          v-if="process.name !== 'Abgeschlossen'"
+        />
       </template>
     </div>
   </mq-responsive>
@@ -47,7 +33,6 @@ import { defineComponent } from "@vue/runtime-core";
 import { Order } from "../types/api";
 import { PropType } from "vue";
 import { OrderStatus } from "../types/api-values";
-import {useRoute} from "vue-router";
 
 export default defineComponent({
   props: {
@@ -55,38 +40,36 @@ export default defineComponent({
       type: Object as PropType<Order>,
     },
   },
-  data() {
-    const route = useRoute();
-    const id = route.params.id;
+  setup() {
     const orderProcess = [
       {
         name: "Bestellen",
         icon_url: "/img/webshop.svg",
-        link: {name: 'Order Created', params: {id}},
+        link: {name: 'Admin Order Created'},
         step: OrderStatus.CREATED,
       },
       {
         name: "Bezahlen",
         icon_url: "/img/paying.svg",
-        link: {name: 'Order Pay', params: {id}},
+        link: {name: 'Admin Order Pay'},
         step: OrderStatus.PAID,
       },
       {
         name: "Auf Produkt warten",
         icon_url: "/img/waiting.svg",
-        link: {name: 'Order Ordered', params: {id}},
+        link: {name: 'Admin Order Ordered'},
         step: OrderStatus.ORDERED,
       },
       {
         name: "Abholen",
         icon_url: "/img/pickUp.svg",
-        link: {name: 'Order Receive', params: {id}},
+        link: {name: 'Admin Order Received'},
         step: OrderStatus.RECEIVED,
       },
       {
         name: "Abgeschlossen",
         icon_url: "/img/done.svg",
-        link: {name: 'Order Handed Over', params: {id}},
+        link: {name: 'Admin Order Handed Over'},
         step: OrderStatus.HANDED_OVER,
       },
     ];

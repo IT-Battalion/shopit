@@ -47,10 +47,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::view('/coupons', 'vue')->name('coupons.index');
     Route::view('/categories', 'vue')->name('categories.index');
 
-    //Order Management
-    Route::prefix('/orders')->name('orders.')->group(function () {
-        Route::view('/orders', 'view')->name('orders.index');
-        Route::view('/orders/{id}', 'view')->name('orders.show');
+    // Orders
+    Route::prefix('orders')->name('orders.')->group(function () {
+        Route::view('/', 'vue')->name('orders.index');
+        Route::view('/{id}', 'view')->name('orders.show');
+        Route::view('/{id}/created', 'vue')->name('orders.created');
+        Route::view('/{id}/pay', 'vue')->name('orders.pay');
+        Route::view('/{id}/ordered', 'vue')->name('orders.created');
+        Route::view('/{id}/received', 'vue')->name('orders.created');
+        Route::view('/{id}/handed-over', 'vue')->name('orders.created');
     });
 
     // Usermanagement
@@ -78,7 +83,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 // Order
 Route::prefix('order')->name('order.')->group(function () {
-    Route::view('/', 'vue')->name('create');
     Route::view('{id}/created', 'vue')->name('created');
     Route::view('{id}/pay', 'vue')->name('pay');
     Route::view('{id}/ordered', 'vue')->name('ordered');
@@ -86,6 +90,8 @@ Route::prefix('order')->name('order.')->group(function () {
     Route::view('{id}/handed-over', 'vue')->name('handed-over');
     Route::view('{id}', 'vue')->name('show');
 });
+
+Route::view('/shopping-cart/', 'vue')->name('shopping-cart');
 
 // Credits
 

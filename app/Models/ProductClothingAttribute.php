@@ -68,9 +68,9 @@ class ProductClothingAttribute extends Model implements ProductAttributeToOrder
             ]);
     }
 
-    public function findOrderEquivalent(): OrderProductAttribute
+    public function findOrderEquivalent(): OrderProductAttribute|null
     {
-        return OrderClothingAttribute::whereSize($this->size);
+        return OrderClothingAttribute::whereSize($this->size)->first();
     }
 
     public function jsonSerialize()

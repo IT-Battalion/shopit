@@ -18,7 +18,7 @@
       }"
     >
       <template #table-row="props">
-        <router-link :to="{name: 'Order detail', params: {id: props.formattedRow['id']}}"
+        <router-link :to="{name: 'Admin Order detail', params: {id: props.formattedRow['id']}}"
                      v-if="props.column.field === 'detail'" target="_blank"><img src='/img/info-white.svg'
                                                                                   class='object-scale-down h-7 w-full'/>
         </router-link>

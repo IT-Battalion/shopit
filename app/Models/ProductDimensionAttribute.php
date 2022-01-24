@@ -17,17 +17,9 @@ use Illuminate\Support\Carbon;
 /**
  * App\Models\DimensionProductAttribute
  *
- * @property int $id
- * @property int $width
- * @property int $height
- * @property int $depth
  * @method static Builder|ProductDimensionAttribute newModelQuery()
  * @method static Builder|ProductDimensionAttribute newQuery()
  * @method static Builder|ProductDimensionAttribute query()
- * @method static Builder|ProductDimensionAttribute whereDepth($value)
- * @method static Builder|ProductDimensionAttribute whereHeight($value)
- * @method static Builder|ProductDimensionAttribute whereId($value)
- * @method static Builder|ProductDimensionAttribute whereWidth($value)
  * @mixin Eloquent
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -40,6 +32,14 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $shopping_cart_entries_count
  * @property-read mixed $type
  * @property-read OrderProductAttribute $order
+ * @property int $id
+ * @property Meter $width
+ * @property Meter $height
+ * @property Meter $depth
+ * @method static Builder|ProductDimensionAttribute whereDepth($value)
+ * @method static Builder|ProductDimensionAttribute whereHeight($value)
+ * @method static Builder|ProductDimensionAttribute whereId($value)
+ * @method static Builder|ProductDimensionAttribute whereWidth($value)
  */
 class ProductDimensionAttribute extends Model implements ProductAttributeToOrder
 {
@@ -81,12 +81,13 @@ class ProductDimensionAttribute extends Model implements ProductAttributeToOrder
             ]);
     }
 
-    public function findOrderEquivalent(): OrderProductAttribute
+    public function findOrderEquivalent(): OrderProductAttribute|null
     {
-        return OrderDimensionAttribute::where('width', $this->width)
-            ->where('height', $this->height)
-            ->where('depth', $this->depth)
-            ->first()();
+        return OrderDimensionAttribute::query()
+            ->where('width', $this->width->getValue())
+            ->where('height', $this->height->getValue())
+            ->where('depth', $this->depth->getValue())
+            ->first();
     }
 
     public function jsonSerialize()

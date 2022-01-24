@@ -60,13 +60,27 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param Order $order
+     * @param User $user
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function userShow(Order $order, User $user)
     {
-        $orders = Order::where('customer_id', $id)->get();
-        return response()->json($orders);
+        if ($user->id !== $order->id) {
+            abort(404);
+        }
+        return response()->json($order);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param Order $order
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Order $order)
+    {
+        return response()->json($order);
     }
 
     /**
