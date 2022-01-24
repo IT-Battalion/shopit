@@ -237,6 +237,12 @@ export default defineComponent({
         creator: "Saideep Karipalli",
         creatorLink: "https://thenounproject.com/saideep/",
       },
+      {
+        iconName: "LoXck",
+        iconLink: "https://thenounproject.com/icon/x-2289952/",
+        creator: "Fardan",
+        creatorLink: "https://thenounproject.com/mfardan0103/",
+      },
     ];
     return { credits };
   },

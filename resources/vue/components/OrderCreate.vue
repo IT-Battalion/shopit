@@ -67,12 +67,22 @@
             type="text"
             v-model="coupon"
             class="w-full px-4 py-2 ml-0 text-black placeholder-green-600 border border-indigo-500 rounded-lg  focus:outline-none focus:ring-2 focus:ring-indigo-200"
+            @submit="addCoupon()"
           />
           <button class="w-8 h-8">
             <img
               src="/img/doneBlack.svg"
               alt="Coupon Code verifizieren"
               class="w-8 h-8 ml-3"
+              @click="addCoupon()"
+            />
+          </button>
+          <button class="w-8 h-8">
+            <img
+              src="/img/blackX.svg"
+              alt="Coupon Code verifizieren"
+              class="w-8 h-8 ml-3"
+              @click="resetCoupon()"
             />
           </button>
         </div>
@@ -84,25 +94,32 @@
         </label>
       </div>
       <div class="mt-6">
-        <router-link
-          :to="{ name: 'Create Order' }"
+        <button
+          @click="order()"
           class="flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm  hover:bg-indigo-700"
         >
           Bestellen
-        </router-link>
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-// TODO: Jan Bestellen Formular erstellen
 import { defineComponent } from "vue";
 import ShoppingcartItem from "./ShoppingcartItem.vue";
-import { Money, Product, SelectedAttributes, ShoppingCart } from "../types/api";
+import {
+  Coupon,
+  Money,
+  Product,
+  RemoveFromShoppingCartResponse,
+  SelectedAttributes,
+  ShoppingCart,
+} from "../types/api";
 import { AxiosResponse } from "axios";
 import { convertProxyValue, objectEquals } from "../util";
-import { isBoolean } from "lodash";
+import { add, isBoolean } from "lodash";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   components: {
@@ -125,9 +142,39 @@ export default defineComponent({
       this.shoppingCart = response.data;
       this.isLoading = false;
     },
+    async addCoupon() {
+      let response: AxiosResponse<RemoveFromShoppingCartResponse> =
+        await this.$http.post("/user/shopping-cart/coupon", {
+          code: this.coupon,
+        });
+      let data = response.data;
+      this.shoppingCart.subtotal = data.subtotal;
+      this.shoppingCart.discount = data.discount;
+      this.shoppingCart.tax = data.tax;
+      this.shoppingCart.total = data.total;
+    },
+    async resetCoupon() {
+      let response: AxiosResponse<RemoveFromShoppingCartResponse> =
+        await this.$http.post("/user/shopping-cart/coupon/reset");
+      let data = response.data;
+      this.shoppingCart.subtotal = data.subtotal;
+      this.shoppingCart.discount = data.discount;
+      this.shoppingCart.tax = data.tax;
+      this.shoppingCart.total = data.total;
+    },
+    async order() {
+      let response: AxiosResponse<void> = await this.$http.post("/user/orders");
+      this.router.replace({ name: "Order Created" });
+    },
   },
   async mounted() {
     await this.loadCart();
+  },
+  setup() {
+    let router = useRouter();
+    return {
+      router,
+    };
   },
 });
 </script>
