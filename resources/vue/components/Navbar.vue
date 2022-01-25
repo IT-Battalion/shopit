@@ -20,7 +20,7 @@
         :to="{ name: 'Products' }"
         class="inline-flex items-center text-2xl font-semibold text-white"
       >
-        <img src="/img/logo.svg" class="w-16 mr-4" alt="logo-img" />
+        <img src="/img/logo.svg" class="w-16 mr-4" alt="logo-img"/>
         <span>ShopIT</span>
       </router-link>
       <div>
@@ -128,10 +128,10 @@
                     <span
                       class="text-white block px-4 py-3 text-sm cursor-pointer"
                       @click="logout()"
-                      ><img
-                        src="/img/logout.svg"
-                        class="object-scale-down mr-3 ml-1 h-7"
-                      />Abmelden</span
+                    ><img
+                      src="/img/logout.svg"
+                      class="object-scale-down mr-3 ml-1 h-7"
+                    />Abmelden</span
                     >
                   </MenuItem>
                 </MenuItems>
