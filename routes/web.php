@@ -50,7 +50,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Orders
     Route::prefix('orders')->name('orders.')->group(function () {
         Route::view('/', 'vue')->name('orders.index');
-        Route::view('/{id}', 'view')->name('orders.show');
+        Route::view('/{id}', 'vue')->name('orders.show');
         Route::view('/{id}/created', 'vue')->name('orders.created');
         Route::view('/{id}/pay', 'vue')->name('orders.pay');
         Route::view('/{id}/ordered', 'vue')->name('orders.created');

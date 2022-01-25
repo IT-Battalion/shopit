@@ -7,9 +7,6 @@ use App\Models\CouponCode;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
-use Session;
 
 class CouponController extends Controller
 {
