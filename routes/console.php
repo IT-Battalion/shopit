@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\Admin;
 use App\Models\OrderProductImage;
 use App\Models\ProductImage;
+use App\Models\User;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
@@ -95,3 +97,11 @@ Artisan::command('clean', function () {
         }
     }
 });*/
+
+Artisan::command('user:get {--admin}', function ($admin) {
+    if ($admin) {
+        $this->info(Admin::inRandomOrder()->first()->username);
+    } else {
+        $this->info(User::inRandomOrder()->first()->username);
+    }
+});

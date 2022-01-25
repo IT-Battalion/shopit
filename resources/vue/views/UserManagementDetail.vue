@@ -1,5 +1,5 @@
 <template>
-  <Profile v-if="!state.isLoading" :user="user"/>
+  <Profile v-if="!state.isLoading" :user="user" />
   <h2 class="text-3xl mt-10 mb-6 text-white font-bold">Bestellungen</h2>
   <vue-good-table
     :columns="userOrderColumns"
@@ -23,9 +23,7 @@
     </template>
   </vue-good-table>
   <h2 class="text-3xl mt-10 mb-6 text-white font-bold">Benutzer ent/sperren</h2>
-  <div class="w-1/2 bg-white">
-    <QuillEditor theme="snow" toolbar="minimal"/>
-  </div>
+  <textarea class="w-1/2 bg-elevatedDark text-white"></textarea>
   <ButtonField
     name="ent/sperren"
     :acceptName="true"
@@ -35,21 +33,18 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "@vue/runtime-core";
-import {Order, User} from "../types/api";
-import {endLoad, initLoad, state} from "../loader";
-import {AxiosResponse} from "axios";
-import {OrderStatusLables} from "../types/api-values";
+import { defineComponent } from "@vue/runtime-core";
+import { Order, User } from "../types/api";
+import { endLoad, initLoad, state } from "../loader";
+import { AxiosResponse } from "axios";
+import { OrderStatusLables } from "../types/api-values";
 import Profile from "../components/Profile.vue";
 import ButtonField from "../components/ButtonField.vue";
-import {QuillEditor} from "@vueup/vue-quill";
-import "@vueup/vue-quill/dist/vue-quill.snow.css";
 
 export default defineComponent({
   components: {
     Profile,
     ButtonField,
-    QuillEditor,
     "vue-good-table": require("vue-good-table-next").VueGoodTable,
   },
   setup() {
@@ -142,13 +137,17 @@ export default defineComponent({
   methods: {
     async loadOrders() {
       initLoad();
-      let response: AxiosResponse<Order[]> = await this.$http.get(`/admin/users/${this.$route.params.id}/orders`);
+      let response: AxiosResponse<Order[]> = await this.$http.get(
+        `/admin/users/${this.$route.params.id}/orders`
+      );
       this.userOrderRows = response.data;
       endLoad();
     },
     async loadUser() {
       initLoad();
-      let response: AxiosResponse<User> = await this.$http.get('/admin/users/' + this.$route.params.id);
+      let response: AxiosResponse<User> = await this.$http.get(
+        "/admin/users/" + this.$route.params.id
+      );
       this.user = response.data;
       endLoad();
     },

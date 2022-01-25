@@ -60,7 +60,6 @@
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
 import InputField from "@/components/InputField.vue";
-import InputFieldIcon from "@/components/InputFieldIcon.vue";
 import "vue-good-table-next/dist/vue-good-table-next.css";
 import { AxiosResponse } from "axios";
 import { Coupon, CreateCouponRequest } from "../types/api";
@@ -72,7 +71,6 @@ export default defineComponent({
   components: {
     InputField,
     ButtonField,
-    InputFieldIcon,
     "vue-good-table": require("vue-good-table-next").VueGoodTable,
   },
   data() {

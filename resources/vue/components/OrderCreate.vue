@@ -66,7 +66,17 @@
             id="coupon"
             type="text"
             v-model="coupon"
-            class="w-full px-4 py-2 ml-0 text-black placeholder-green-600 border border-indigo-500 rounded-lg  focus:outline-none focus:ring-2 focus:ring-indigo-200"
+            class="
+              w-full
+              px-4
+              py-2
+              ml-0
+              text-black
+              placeholder-green-600
+              border border-indigo-500
+              rounded-lg
+              focus:outline-none focus:ring-2 focus:ring-indigo-200
+            "
             @submit="addCoupon()"
           />
           <button class="w-8 h-8 ml-3">
@@ -97,7 +107,21 @@
         <button
           @click="order()"
           :disabled="!agb"
-          class="flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm  hover:bg-indigo-700"
+          class="
+            flex
+            items-center
+            justify-center
+            px-6
+            py-3
+            text-base
+            font-medium
+            text-white
+            bg-indigo-600
+            border border-transparent
+            rounded-md
+            shadow-sm
+            hover:bg-indigo-700
+          "
         >
           Bestellen
         </button>
@@ -111,7 +135,8 @@ import { defineComponent } from "vue";
 import ShoppingcartItem from "./ShoppingcartItem.vue";
 import {
   Coupon,
-  Money, Order,
+  Money,
+  Order,
   Product,
   RemoveFromShoppingCartResponse,
   SelectedAttributes,
@@ -121,6 +146,7 @@ import { AxiosResponse } from "axios";
 import { convertProxyValue, objectEquals } from "../util";
 import { add, isBoolean } from "lodash";
 import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
 
 export default defineComponent({
   components: {
@@ -153,6 +179,7 @@ export default defineComponent({
       this.shoppingCart.discount = data.discount;
       this.shoppingCart.tax = data.tax;
       this.shoppingCart.total = data.total;
+      this.toast.success("Coupon code wurde erfolgreich eingesetzt!");
     },
     async resetCoupon() {
       let response: AxiosResponse<RemoveFromShoppingCartResponse> =
@@ -162,10 +189,16 @@ export default defineComponent({
       this.shoppingCart.discount = data.discount;
       this.shoppingCart.tax = data.tax;
       this.shoppingCart.total = data.total;
+      this.toast.info("Coupon code wurde zurückgesetzt");
     },
     async order() {
-      let response: AxiosResponse<Order> = await this.$http.post("/user/orders");
-      this.router.replace({ name: "Order Created", params: {id: response.data.id} });
+      let response: AxiosResponse<Order> = await this.$http.post(
+        "/user/orders"
+      );
+      this.router.replace({
+        name: "Order Created",
+        params: { id: response.data.id },
+      });
     },
   },
   async mounted() {
@@ -173,8 +206,10 @@ export default defineComponent({
   },
   setup() {
     let router = useRouter();
+    const toast = useToast();
     return {
       router,
+      toast,
     };
   },
 });
