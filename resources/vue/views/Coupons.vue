@@ -27,6 +27,7 @@
     />
     <ButtonField
       iconSrc="/img/addBlack.svg"
+      :loading="loading"
       @click="createCoupon() && isEmpty()"
     />
     <vue-good-table
@@ -88,6 +89,7 @@ export default defineComponent({
       codeError: "",
       discountError: "",
       dateError: "",
+      loading: false,
       rows: [] as Coupon[],
       columns: [
         {
@@ -141,6 +143,7 @@ export default defineComponent({
     },
     async createCoupon() {
       try {
+        this.loading = true;
         initLoad();
         let code = (this.$refs.code as typeof InputField).getValue();
         let discount = (this.$refs.discount as typeof InputField).getValue();
@@ -160,6 +163,7 @@ export default defineComponent({
         console.log(newCoupon);
         this.rows.push(newCoupon.data);
         this.toast.success("Coupon code wurde erfolgreich erstellt!");
+        this.loading = false;
       } catch (e) {
         this.toast.error(
           "Beim Erstellen des Coupons ist ein Fehler aufgetreten."
