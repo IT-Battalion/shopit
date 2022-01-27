@@ -40,6 +40,7 @@
                 text-sm
                 font-medium
                 text-white
+                rounded-md
                 shadow-sm
                 focus:outline-none focus:ring-2 focus:ring-highlighted
               "
@@ -64,6 +65,7 @@
                 mt-2
                 overflow-hidden
                 origin-top-right
+                rounded-md
                 shadow-lg
                 ring-1 ring-black ring-opacity-5
                 focus:outline-none
