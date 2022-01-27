@@ -1,29 +1,14 @@
 <template>
   <div
-    :class="{
-        'overflow-auto': true,
-        'fixed': true,
-        'left-0': true,
-        'flex flex-col': true,
-        'justify-center': center,
-        'w-56': true,
-        //'pl-4': true,
-        'm-0': true,
-        'text-white': true,
-        'sidebar': true,
-        'top-32': true,
-        'bg-backgroundColor': true,
-      }
-    "
+    class="fixed overflow-auto left-0 flex flex-col justify-center w-56 m-0 text-white sidebar top-32 bg-backgroundColor"
     ref="sidenav"
   >
     <div
       v-for="category in categories"
       v-bind:key="category.name"
-      class="my-5 py-1 pl-6"
+      class="my-5 py-1 pl-6 hover:bg-sidenavSelected"
     >
-      <router-link class="flex flex-row items-center my-1 text-left" :to="'/#' + category.name"
-                   @click="checkActiveCategory($event)">
+      <router-link class="flex flex-row items-center my-1 text-left" :to="'/#' + category.name">
         <span class="object-scale-down h-8 w-8 mr-4 rounded" :style="'background-color:#'+category.color"></span>
         {{ category.name }}
       </router-link>
