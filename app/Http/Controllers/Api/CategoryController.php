@@ -8,7 +8,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Session;
+use Nette\Schema\ValidationException;
 use Validator;
 
 class CategoryController extends Controller
@@ -36,8 +36,7 @@ class CategoryController extends Controller
         ]);
 
         if ($validator->fails()) {
-            Session::flash($validator->errors());
-            return redirect()->back()->withInput();
+            throw new ValidationException($validator->errors());
         }
 
         ProductCategory::create([
@@ -51,7 +50,7 @@ class CategoryController extends Controller
      *
      * @param Request $request
      * @param int $id
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
@@ -60,12 +59,12 @@ class CategoryController extends Controller
         ]);
 
         if ($validator->fails()) {
-            Session::flash($validator->errors());
-            return redirect()->back()->withInput();
+            throw new ValidationException($validator->errors());
         }
 
-        ProductCategory::whereId($id)->update(['name' => $request['name']]);
-        return response('Success', 200);
+        $cat = ProductCategory::whereId($id)->get()->first();
+        $cat->update(['name' => $request['name']]);
+        return response()->json($cat);
     }
 
     /**

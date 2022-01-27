@@ -206,6 +206,14 @@ export interface CreateCouponRequest {
   enabled_until: string,
 }
 
+export interface CategoryCreateRequest {
+  name: string,
+}
+
+export interface CategoryEditRequest {
+  name: string,
+}
+
 export interface BanUserRequest {
   reason: string,
 }

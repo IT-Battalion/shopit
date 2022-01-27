@@ -61,7 +61,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/orders/{order}', [OrderController::class, 'show']);
 
     // Category Routes
-    Route::apiResource('category', 'CategoryController');
+    Route::apiResource('category', 'CategoryController')->only('update', 'store', 'destroy');
 
     Route::get('/ban/user/{user}/info', [BanController::class, 'info']);
     Route::post('/ban/user/{user}/ban', [BanController::class, 'ban']);

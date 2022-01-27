@@ -41,17 +41,19 @@
                   <input
                     type="text"
                     :placeholder="category.name"
+                    :id="category.id"
                     class="bg-elevatedDark rounded-2xl"
+                    ref="categoryname"
                   />
-                  <button class="w-8 h-8 my-auto ml-5">
-                    <img src="/img/check.svg" alt="check" class="w-8 h-8" />
+                  <button class="w-8 h-8 my-auto ml-5" @click="editCategory(category.id)">
+                    <img src="/img/check.svg" alt="check" class="w-8 h-8"/>
                   </button>
                 </PopoverPanel>
               </transition>
             </Popover>
           </div>
-          <button class="mx-5">
-            <img src="/img/bin.svg" alt="delete" class="w-8 h-8" />
+          <button class="mx-5" @click="deleteCategory(category.id)">
+            <img src="/img/bin.svg" alt="delete" class="w-8 h-8"/>
           </button>
         </div>
       </div>
@@ -66,7 +68,7 @@
             :class="open ? '' : 'text-opacity-90'"
             class="inline-flex items-center px-3 py-2 ml-20 text-base font-medium text-white rounded-md  group hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
           >
-            <ButtonField iconSrc="/img/addBlack.svg" />
+            <ButtonField iconSrc="/img/addBlack.svg"/>
           </PopoverButton>
 
           <transition
@@ -83,10 +85,10 @@
               <input
                 type="text"
                 placeholder="Name"
-                class="text-white bg-elevatedDark rounded-2xl"
+                class="text-white bg-elevatedDark rounded-2xl" ref="categorynamecreate"
               />
-              <button class="w-8 h-8 my-auto ml-5">
-                <img src="/img/check.svg" alt="check" class="w-8 h-8" />
+              <button class="w-8 h-8 my-auto ml-5" @click="createCategory">
+                <img src="/img/check.svg" alt="check" class="w-8 h-8"/>
               </button>
             </PopoverPanel>
           </transition>
@@ -97,12 +99,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
-import { ChevronDownIcon } from "@heroicons/vue/solid";
-import { endLoad, initLoad } from "../loader";
-import { ref } from "vue";
+import {defineComponent} from "vue";
+import {Popover, PopoverButton, PopoverPanel} from "@headlessui/vue";
+import {ChevronDownIcon} from "@heroicons/vue/solid";
+import {endLoad, initLoad} from "../loader";
 import ButtonField from "../components/ButtonField.vue";
+import {useToast} from "vue-toastification";
+import {CategoryCreateRequest, CategoryEditRequest, ProductCategory} from "../types/api";
+import {AxiosResponse} from "axios";
 
 export default defineComponent({
   components: {
@@ -112,25 +116,71 @@ export default defineComponent({
     ChevronDownIcon,
     ButtonField,
   },
+  setup() {
+    return {
+      toast: useToast(),
+    };
+  },
   data() {
     return {
       categories: window.config.categories,
     };
   },
   methods: {
-    async editCategory() {
+    async editCategory(catID: number) {
       initLoad();
-      await this.$http.put("/admin/category/edit"); //TODO implement correct way of api resource
+      try {
+        let name = (this.$refs.categoryname as HTMLInputElement[])[0].value;
+        let category = await this.$http.put<CategoryEditRequest, AxiosResponse<ProductCategory>>(
+          `/admin/category/${catID}`,
+          {
+            name,
+          }
+        );
+        this.categories.forEach((value, index, array) => {
+          if (value.id === catID) {
+            array[index] = category.data;
+          }
+        });
+        this.toast.success("Die Kategorie wurde erfolgreich bearbeitet.");
+      } catch (e) {
+        this.toast.error('Fehler beim bearbeiten der Kategorie.');
+      }
       endLoad();
     },
-    async deleteCategory() {
+    async deleteCategory(catID: number) {
       initLoad();
-      await this.$http.delete("/admin/category/");
+      try {
+        let response = await this.$http.delete(
+          `/admin/category/${catID}`
+        );
+        this.categories.forEach((value, index, array) => {
+          if (value.id === catID) {
+            delete array[index];
+          }
+        });
+        this.toast.success("Die Kategorie wurde erfolgreich gelöscht.");
+      } catch (e) {
+        this.toast.error('Fehler beim löschen der Kategorie.');
+      }
       endLoad();
     },
     async createCategory() {
       initLoad();
-      await this.$http.post("/admin/category");
+      try {
+        let name = (this.$refs.categorynamecreate as HTMLInputElement).value;
+        let category = await this.$http.post<CategoryCreateRequest, AxiosResponse<ProductCategory>>(
+          `/admin/category/`,
+          {
+            name
+          }
+        );
+        this.categories.push(category.data);
+        this.toast.success("Die Kategorie wurde erfolgreich erstellt.");
+      } catch (e) {
+        this.toast.error('Fehler beim erstellen der Kategorie.');
+        throw(e);
+      }
       endLoad();
     },
   },

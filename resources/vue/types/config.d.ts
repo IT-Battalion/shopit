@@ -1,9 +1,6 @@
-import { User } from "./api";
+import {ProductCategory, User} from "./api";
 
 export interface GlobalConfig {
-  categories: {
-    id: string,
-    name: string,
-  }[]
+  categories: ProductCategory[]
   user: User,
 }
