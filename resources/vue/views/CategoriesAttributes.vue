@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AddProductProcess />
+    <AddProductProcess/>
     <div
       class="flex flex-col items-center justify-center w-full mt-10 gap-y-10"
     >
@@ -53,13 +53,13 @@
                           selected ? 'font-medium' : 'font-normal',
                           'block truncate',
                         ]"
-                        >{{ category.name }}</span
+                      >{{ category.name }}</span
                       >
                       <span
                         v-if="selected"
                         class="absolute inset-y-0 left-0 flex items-center pl-3  text-amber-600"
                       >
-                        <CheckIcon class="w-5 h-5" aria-hidden="true" />
+                        <CheckIcon class="w-5 h-5" aria-hidden="true"/>
                       </span>
                     </li>
                   </ListboxOption>
@@ -117,9 +117,9 @@
           <h2 class="w-full mb-5 text-2xl font-bold text-center text-white">
             Dimensionen
           </h2>
-          <InputField labelName="Weite" type="number" />
-          <InputField labelName="Höhe" type="number" />
-          <InputField labelName="Tiefe" type="number" />
+          <InputField labelName="Weite" type="number" ref="product_dimension_width"/>
+          <InputField labelName="Höhe" type="number" ref="product_dimension_height"/>
+          <InputField labelName="Tiefe" type="number" ref="product_dimension_depth"/>
         </div>
       </div>
       <div class="flex flex-row items-center justify-center w-full">
@@ -226,7 +226,7 @@
           <h2 class="w-full mb-5 text-2xl font-bold text-center text-white">
             Volumen
           </h2>
-          <InputField type="number" />
+          <InputField type="number" ref="product_volume"/>
         </div>
       </div>
       <div class="flex flex-row items-center justify-center w-full">
@@ -271,7 +271,7 @@
             "
           />
         </Switch>
-        <ColorPicker class="ml-5" />
+        <ColorPicker class="ml-5" ref="product_color"/>
       </div>
     </div>
     <ForwardBackwardButton
@@ -283,26 +283,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
+import {defineComponent} from "@vue/runtime-core";
 import AddProductProcess from "../components/AddProductProcess.vue";
 import ForwardBackwardButton from "../components/ForwardBackwardButton.vue";
 import Multiselect from "@vueform/multiselect";
-import { ref } from "vue";
-import {
-  Listbox,
-  ListboxLabel,
-  ListboxButton,
-  ListboxOptions,
-  ListboxOption,
-  Switch,
-} from "@headlessui/vue";
-import { CheckIcon, SelectorIcon } from "@heroicons/vue/solid";
+import {ref} from "vue";
+import {Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions, Switch,} from "@headlessui/vue";
+import {CheckIcon, SelectorIcon} from "@heroicons/vue/solid";
 import ColorPicker from "../components/ColorPicker.vue";
-import { clothingSizeLabels } from "../types/api-values";
+import {clothingSizeLabels} from "../types/api-values";
 import InputField from "../components/InputField.vue";
+import ButtonField from "../components/ButtonField.vue";
+import {AxiosResponse} from "axios";
+import {ProductCategory} from "../types/api";
 
 export default defineComponent({
   components: {
+    ButtonField,
     AddProductProcess,
     ForwardBackwardButton,
     Listbox,
@@ -318,16 +315,12 @@ export default defineComponent({
     InputField,
   },
   setup() {
-    const categories = window.config.categories;
-    const selectedCategory = ref(categories[0]);
     const colorEnabled = ref(false);
     const colothingEnabled = ref(false);
     const dimensionEnabled = ref(false);
     const volumeEnabled = ref(false);
 
     return {
-      categories,
-      selectedCategory,
       colorEnabled,
       colothingEnabled,
       dimensionEnabled,
@@ -338,7 +331,45 @@ export default defineComponent({
     return {
       value: [],
       optionsClothing: clothingSizeLabels,
+      categories: [] as ProductCategory[],
+      selectedCategory: Object as unknown as ProductCategory,
     };
+  },
+  async beforeMount() {
+    await this.loadCategories();
+    this.selectedCategory = this.categories[0];
+  },
+  methods: {
+    saveToLocalStorage() {
+      let category = this.selectedCategory.id;
+      window.localStorage.setItem('product.category', String(category));
+
+      window.localStorage.setItem('product.clothing', String(this.dimensionEnabled)) //true or false
+      let clothing = this.value;
+      window.localStorage.setItem('product.clothings', JSON.stringify(clothing));
+
+      window.localStorage.setItem('product.volume', String(this.volumeEnabled)) //true or false
+      let volume = (this.$refs.product_volume as typeof InputField).getValue()
+      window.localStorage.setItem('product.volumes', volume);
+
+      window.localStorage.setItem('product.dimension', String(this.dimensionEnabled)) //true or false
+      let dimension = [
+        (this.$refs.product_dimension_width as typeof InputField).getValue(),
+        (this.$refs.product_dimension_height as typeof InputField).getValue(),
+        (this.$refs.product_dimension_depth as typeof InputField).getValue()
+      ];
+      window.localStorage.setItem('product.dimenstions', JSON.stringify(dimension));
+
+      window.localStorage.setItem('product.color', String(this.colorEnabled)) //true or false
+      let color = (this.$refs.product_color as typeof ColorPicker).colors;
+      window.localStorage.setItem('product.colors', JSON.stringify(color));
+    },
+    async loadCategories() {
+      let response: AxiosResponse<ProductCategory[]> = await this.$http.get(
+        '/admin/category'
+      );
+      this.categories = response.data;
+    },
   },
 });
 </script>

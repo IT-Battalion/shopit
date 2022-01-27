@@ -1,11 +1,11 @@
 <template>
   <div>
-    <AddProductProcess />
+    <AddProductProcess/>
     <h2 class="w-full my-10 text-2xl font-bold text-center text-white">
       Produktbeschreibung
     </h2>
     <div class="m-10 bg-white">
-      <QuillEditor theme="snow" toolbar="minimal" />
+      <QuillEditor theme="snow" toolbar="minimal" ref="desc"/>
     </div>
     <div class="flex flex-row gap-x-2">
       <ForwardBackwardButton
@@ -46,6 +46,10 @@ export default defineComponent({
     ButtonField,
   },
   methods: {
+    saveToLocalStorage() {
+      let description = (this.$refs.desc as typeof QuillEditor).getHTML();
+      window.localStorage.setItem('product.description', description);
+    },
     async createProduct() {
       initLoad();
       let product = await this.$http.post<CreateProductRequest, AxiosResponse<Product>>(
