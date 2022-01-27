@@ -1,7 +1,12 @@
 <template>
   <div class="w-full h-full pl-0 md:pl-24">
     <h1 class="text-4xl font-bold text-white">Coupons</h1>
-    <InputField ref="code" labelName="Rabattcode" required />
+    <InputField
+      ref="code"
+      labelName="Rabattcode"
+      :errorMessage="codeError"
+      required
+    />
     <InputField
       ref="discount"
       labelName="Rabatt"
@@ -9,6 +14,7 @@
       required
       type="number"
       :step="5"
+      :errorMessage="discountError"
     />
     <InputField
       ref="enabled_until"
@@ -17,8 +23,12 @@
       required
       type="date"
       class="min-w-max"
+      :errorMessage="dateError"
     />
-    <ButtonField iconSrc="/img/addBlack.svg" @click="createCoupon" />
+    <ButtonField
+      iconSrc="/img/addBlack.svg"
+      @click="createCoupon && isEmpty()"
+    />
     <vue-good-table
       class="mt-10"
       :columns="columns"
@@ -75,6 +85,9 @@ export default defineComponent({
   },
   data() {
     return {
+      codeError: "",
+      discountError: "",
+      dateError: "",
       rows: [] as Coupon[],
       columns: [
         {
@@ -153,6 +166,28 @@ export default defineComponent({
         );
       } finally {
         endLoad();
+      }
+    },
+    isEmpty() {
+      let code = (this.$refs.code as typeof InputField).getValue();
+      let discount = (this.$refs.discount as typeof InputField).getValue();
+      let enabled_until =
+        (this.$refs.enabled_until as typeof InputField).getValue() + "T00:00";
+      console.log(enabled_until);
+      if (code == "") {
+        this.codeError = "Couponcodefeld darf nicht leer sein!";
+      } else {
+        this.codeError = "";
+      }
+      if (discount == "") {
+        this.discountError = "Rabattfeld darf nicht leer sein!";
+      } else {
+        this.discountError = "";
+      }
+      if (enabled_until) {
+        this.dateError = "Datumfeld darf nicht leer sein!";
+      } else {
+        this.dateError = "";
       }
     },
   },

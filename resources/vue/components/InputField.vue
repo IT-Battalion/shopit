@@ -9,8 +9,8 @@
       :placeholder="placeholder"
       :step="step"
     />
-    <div class="flex flex-row mt-5" v-if="error">
-      <img :src="errorIcon" class="h-5 w-5 mr-3" />
+    <div class="flex flex-row mt-5" v-if="errorMessage">
+      <img v-if="errorIcon" :src="errorIcon" class="h-5 w-5 mr-3" />
       <p class="text-red-400 text-base font-semibold">{{ errorMessage }}</p>
     </div>
   </div>
@@ -31,10 +31,6 @@ export default defineComponent({
     step: Number,
     errorIcon: String,
     errorMessage: String,
-    error: {
-      type: Boolean,
-      default: false,
-    },
   },
   methods: {
     getValue() {
