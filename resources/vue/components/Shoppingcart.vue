@@ -137,9 +137,9 @@
                           class="font-medium text-indigo-600  hover:text-indigo-500"
                           @click="isOpen = false"
                         >
-                          Weiter Einkaufen<span aria-hidden="true">
+                          weiter einkaufen<span aria-hidden="true">
                             &rarr;</span
-                          >
+                        >
                         </button>
                       </p>
                     </div>
@@ -155,16 +155,10 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, nextTick} from "vue";
-import {
-  Dialog,
-  DialogOverlay,
-  DialogTitle,
-  TransitionChild,
-  TransitionRoot,
-} from "@headlessui/vue";
-import { XIcon } from "@heroicons/vue/outline";
-import { AxiosResponse } from "axios";
+import {defineComponent} from "vue";
+import {Dialog, DialogOverlay, DialogTitle, TransitionChild, TransitionRoot,} from "@headlessui/vue";
+import {XIcon} from "@heroicons/vue/outline";
+import {AxiosResponse} from "axios";
 import {Money, Product, SelectedAttributes, ShoppingCart} from "../types/api";
 import ShoppingcartItem from "./ShoppingcartItem.vue";
 import {convertProxyValue, objectEquals} from "../util";
