@@ -221,5 +221,5 @@ export interface BanUserRequest {
 export interface Ban {
   disabled_at?: string,
   disabled_for?: string,
-  disabled_by?: string,
+  disabled_by?: User,
 }

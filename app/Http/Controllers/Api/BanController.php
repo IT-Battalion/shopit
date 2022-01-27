@@ -14,7 +14,7 @@ class BanController extends Controller
     {
         $ban = [
             'disabled_at' => $user->disabled_at,
-            'disabled_by' => $user->disabled_by->username,
+            'disabled_by' => $user->disabled_by,
             'disabled_for' => $user->reason_for_disabling,
         ];
 
@@ -26,7 +26,7 @@ class BanController extends Controller
         $userService->ban($user, $request->get('reason'));
         $ban = [
             'disabled_at' => $user->disabled_at,
-            'disabled_by' => $user->disabled_by->username,
+            'disabled_by' => $user->disabled_by,
             'disabled_for' => $user->reason_for_disabling,
         ];
         return response()->json($ban);
@@ -37,7 +37,7 @@ class BanController extends Controller
         $userService->unban($user);
         $ban = [
             'disabled_at' => $user->disabled_at,
-            'disabled_by' => $user->disabled_by->username,
+            'disabled_by' => $user->disabled_by,
             'disabled_for' => $user->reason_for_disabling,
         ];
         return response()->json($ban);

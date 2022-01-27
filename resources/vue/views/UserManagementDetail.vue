@@ -86,7 +86,7 @@ export default defineComponent({
         },
         {
           label: "Bezahlt bei",
-          field: "transaction_confirmed_by_id",
+          field: "transaction_confirmed_by.username",
           type: "number",
         },
         {
@@ -98,7 +98,7 @@ export default defineComponent({
         },
         {
           label: "Produkte bestellt von",
-          field: "products_ordered_by_id",
+          field: "products_ordered_by.username",
           type: "number",
         },
         {
@@ -110,7 +110,7 @@ export default defineComponent({
         },
         {
           label: "Produkte erhalten von",
-          field: "products_received_by_id",
+          field: "products_received_by.username",
           type: "number",
         },
         {
@@ -122,7 +122,7 @@ export default defineComponent({
         },
         {
           label: "Produkte abgegeben von",
-          field: "handed_over_by_id",
+          field: "handed_over_by.username",
           type: "number",
         },
         {
@@ -134,7 +134,7 @@ export default defineComponent({
         },
         {
           label: "Coupon",
-          field: "coupon_code_id",
+          field: "coupon.code",
           type: "number",
         },
       ],
@@ -155,7 +155,7 @@ export default defineComponent({
     async loadOrders() {
       initLoad();
       let response: AxiosResponse<Order[]> = await this.$http.get(
-        `/admin/users/${this.$route.params.id}/orders`
+        `/admin/orders/user/${this.$route.params.id}`
       );
       this.userOrderRows = response.data;
       endLoad();
@@ -177,6 +177,7 @@ export default defineComponent({
       endLoad();
     },
     async banUser() {
+      initLoad();
       try {
         let reason = (this.$refs.reason as HTMLTextAreaElement).value;
         let ban = await this.$http.post<BanUserRequest, AxiosResponse<Ban>>(
@@ -189,8 +190,10 @@ export default defineComponent({
       } catch (e) {
         this.toast.error('Fehler beim sperren des Benutzers.');
       }
+      endLoad();
     },
     async unbanUser() {
+      initLoad();
       try {
         let ban = await this.$http.post<any, AxiosResponse<Ban>>(
           `/admin/ban/user/${this.$route.params.id}/unban`
@@ -200,6 +203,7 @@ export default defineComponent({
       } catch (e) {
         this.toast.error("Fehler beim entsperren des Benutzers.");
       }
+      endLoad();
     },
   },
 });

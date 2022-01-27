@@ -19,13 +19,46 @@ class OrderController extends Controller
         return Order::all();
     }
 
-    public function userAll(User $user): JsonResponse
+    public function userAll(): JsonResponse
     {
-        if (!isset($user)) {
-            $user = Auth::user();
-        }
+        $user = Auth::user();
         $orders = Order::whereCustomerId($user->id)->get();
         return response()->json($orders);
+    }
+
+    public function userAdminAll(User $user): JsonResponse
+    {
+        $orders = Order::whereCustomerId($user->id)->get();
+        $jsonOrders = [];
+        foreach ($orders as $order) {
+            $jsonOrders[] = [
+                'id' => $order->id,
+                'created_at' => $order->created_at,
+                'updated_at' => $order->updated_at,
+                'status' => $order->status,
+                'total' => $order->total,
+                'totalDiscount' => $order->totalDiscount,
+                'totalGross' => $order->totalGross,
+                'totalTax' => $order->totalTax,
+                'coupon_code_id' => $order->coupon_code_id,
+                'customer_id' => $order->customer_id,
+                'paid_at' => $order->paid_at,
+                'transaction_confirmed_by_id' => $order->transaction_confirmed_by_id,
+                'handed_over_at' => $order->handed_over_at,
+                'handed_over_by_id' => $order->handed_over_by_id,
+                'products_ordered_at' => $order->products_ordered_at,
+                'products_ordered_by_id' => $order->products_ordered_by_id,
+                'products_received_at' => $order->products_received_at,
+                'products_received_by_id' => $order->products_received_by_id,
+                'products_received_by' => $order->products_received_by,
+                'products_ordered_by' => $order->products_ordered_by,
+                'handed_over_by' => $order->handed_over_by,
+                'transaction_confirmed_by' => $order->transaction_confirmed_by,
+                'coupon' => $order->coupon_code,
+                'customer' => $order->customer,
+            ];
+        }
+        return response()->json($jsonOrders);
     }
 
     /**
