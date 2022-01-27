@@ -27,7 +27,7 @@
     />
     <ButtonField
       iconSrc="/img/addBlack.svg"
-      @click="createCoupon && isEmpty()"
+      @click="createCoupon() && isEmpty()"
     />
     <vue-good-table
       class="mt-10"
