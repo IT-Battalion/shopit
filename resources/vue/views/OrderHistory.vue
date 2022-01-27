@@ -16,6 +16,10 @@
         trigger: 'enter',
         placeholder: 'Search this table',
       }"
+      :sort-options="{
+        initialSortBy: {field: 'created_at', type: 'desc'},
+        enabled: true,
+      }"
     >
       <template #table-row="props">
         <router-link v-if="props.column.field === 'detail'"

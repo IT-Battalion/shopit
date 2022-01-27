@@ -16,11 +16,15 @@
         trigger: 'enter',
         placeholder: 'Search this table',
       }"
+      :sort-options="{
+        initialSortBy: {field: 'created_at', type: 'desc'},
+        enabled: true,
+      }"
     >
       <template #table-row="props">
         <router-link :to="{name: 'Admin Order detail', params: {id: props.formattedRow['id']}}"
                      v-if="props.column.field === 'detail'" target="_blank"><img src='/img/info-white.svg'
-                                                                                  class='object-scale-down h-7 w-full'/>
+                                                                                 class='object-scale-down h-7 w-full'/>
         </router-link>
         <span v-if="props.column.field === 'status'">
           {{ statusLables[props.formattedRow[props.column.field]] }}
@@ -36,7 +40,7 @@ import {AxiosResponse} from "axios";
 import "vue-good-table-next/dist/vue-good-table-next.css";
 import {endLoad, initLoad} from "../loader";
 import {Order} from "../types/api";
-import { OrderStatusLables } from "../types/api-values";
+import {OrderStatusLables} from "../types/api-values";
 
 
 export default defineComponent({

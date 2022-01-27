@@ -16,6 +16,10 @@
         trigger: 'enter',
         placeholder: 'Search this table',
       }"
+      :sort-options="{
+        initialSortBy: {field: 'created_at', type: 'desc'},
+        enabled: true,
+      }"
     >
       <template #table-row="download">
         <router-link
@@ -25,7 +29,7 @@
             params: { id: download.formattedRow['id'] },
           }"
           target="_blank"
-          ><img class="object-scale-down w-full h-7" src="/img/info-white.svg"
+        ><img class="object-scale-down w-full h-7" src="/img/info-white.svg"
         /></router-link>
       </template>
     </vue-good-table>
@@ -33,11 +37,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
+import {defineComponent} from "@vue/runtime-core";
 import "vue-good-table-next/dist/vue-good-table-next.css";
-import { Invoice } from "../types/api";
-import { AxiosResponse } from "axios";
-import { endLoad, initLoad } from "../loader";
+import {Invoice} from "../types/api";
+import {AxiosResponse} from "axios";
+import {endLoad, initLoad} from "../loader";
 
 export default defineComponent({
   name: "Bills",
