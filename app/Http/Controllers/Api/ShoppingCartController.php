@@ -11,12 +11,13 @@ use App\Models\CouponCode;
 use App\Models\Product;
 use App\Models\User;
 use App\Services\ShoppingCart\ShoppingCartServiceInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ShoppingCartController extends Controller
 {
-    public function all(ShoppingCartServiceInterface $shoppingCartService)
+    public function all(ShoppingCartServiceInterface $shoppingCartService): JsonResponse
     {
         $user = User::with([
             'shopping_cart.pivot.productClothingAttribute',
@@ -45,7 +46,7 @@ class ShoppingCartController extends Controller
         return response()->json($shoppingCart);
     }
 
-    public function add(AddToShoppingCartRequest $request, ShoppingCartServiceInterface $shoppingCart)
+    public function add(AddToShoppingCartRequest $request, ShoppingCartServiceInterface $shoppingCart): JsonResponse
     {
         $data = $request->validated();
 
@@ -70,7 +71,7 @@ class ShoppingCartController extends Controller
         return response()->json($prices);
     }
 
-    public function remove(RemoveFromShoppingCartRequest $request, ShoppingCartServiceInterface $shoppingCart)
+    public function remove(RemoveFromShoppingCartRequest $request, ShoppingCartServiceInterface $shoppingCart): JsonResponse
     {
         $data = $request->validated();
 
@@ -91,7 +92,8 @@ class ShoppingCartController extends Controller
         return response()->json($prices);
     }
 
-    public function applyCoupon(Request $request, ShoppingCartServiceInterface $shoppingCart) {
+    public function applyCoupon(Request $request, ShoppingCartServiceInterface $shoppingCart): JsonResponse
+    {
         $data = $request->validate([
             'code' => 'required|min:6|string',
         ]);
@@ -101,7 +103,8 @@ class ShoppingCartController extends Controller
         return response()->json($shoppingCart->calculateShoppingCartPrice());
     }
 
-    public function resetCoupon(ShoppingCartServiceInterface $shoppingCart) {
+    public function resetCoupon(ShoppingCartServiceInterface $shoppingCart): JsonResponse
+    {
         Auth::user()->shopping_cart_coupon_id = null;
         return response()->json($shoppingCart->calculateShoppingCartPrice());
     }

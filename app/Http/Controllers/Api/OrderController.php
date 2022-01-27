@@ -3,26 +3,25 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
 use App\Models\User;
 use App\Services\Orders\OrderServiceInterface;
 use Auth;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class OrderController extends Controller
 {
 
-    public function all()
+    public function all(): Collection|array
     {
         return Order::all();
     }
 
     public function userAll(): JsonResponse
     {
-        $user = Auth::user();
-        $orders = Order::whereCustomerId($user->id)->get();
+        $orders = Order::whereCustomerId(Auth::user()->id)->get();
         return response()->json($orders);
     }
 
@@ -59,26 +58,6 @@ class OrderController extends Controller
             ];
         }
         return response()->json($jsonOrders);
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -122,36 +101,17 @@ class OrderController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param int $id
-     * @return Response
+     * @param UpdateOrderRequest $request
+     * @param Order $order
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(UpdateOrderRequest $request, Order $order): JsonResponse
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
+        $data = $request->validated();
+        $order->update($data);
+        $order->refresh();
+        return response()->json($order);
     }
 }

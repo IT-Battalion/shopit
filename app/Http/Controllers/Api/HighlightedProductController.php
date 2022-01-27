@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreHighlightedProductRequest;
-use App\Http\Requests\UpdateHighlightedProductRequest;
 use App\Models\HighlightedProduct;
 use Illuminate\Http\JsonResponse;
 
@@ -15,10 +14,10 @@ class HighlightedProductController extends Controller
      *
      * @return JsonResponse
      */
-    public function all()
+    public function all(): JsonResponse
     {
         $products = HighlightedProduct::with('product')->get()
-            ->map(fn (HighlightedProduct $product) => $product->product->jsonPreview());
+            ->map(fn(HighlightedProduct $product) => $product->product->jsonPreview());
 
         return response()->json($products);
     }
@@ -26,45 +25,25 @@ class HighlightedProductController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreHighlightedProductRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreHighlightedProductRequest $request
+     * @return JsonResponse
      */
-    public function store(StoreHighlightedProductRequest $request)
+    public function store(StoreHighlightedProductRequest $request): JsonResponse
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\HighlightedProduct  $highlightedProduct
-     * @return \Illuminate\Http\Response
-     */
-    public function show(HighlightedProduct $highlightedProduct)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateHighlightedProductRequest  $request
-     * @param  \App\Models\HighlightedProduct  $highlightedProduct
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateHighlightedProductRequest $request, HighlightedProduct $highlightedProduct)
-    {
-        //
+        $data = $request->validated();
+        $product = HighlightedProduct::create($data);
+        $product = HighlightedProduct::find($product->id);
+        return response()->json($product);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\HighlightedProduct  $highlightedProduct
-     * @return \Illuminate\Http\Response
+     * @param HighlightedProduct $highlightedProduct
+     * @return JsonResponse
      */
-    public function destroy(HighlightedProduct $highlightedProduct)
+    public function destroy(HighlightedProduct $highlightedProduct): JsonResponse
     {
-        //
+        return response()->json($highlightedProduct->delete());
     }
 }

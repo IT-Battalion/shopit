@@ -3,79 +3,60 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\ProductCategory;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Nette\Schema\ValidationException;
-use Validator;
+use Illuminate\Http\JsonResponse;
 
 class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        //
+        $categories = ProductCategory::all();
+        return response()->json($categories);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
-     * @return Application|ResponseFactory|Response
+     * @param StoreCategoryRequest $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'string|required',
-        ]);
-
-        if ($validator->fails()) {
-            throw new ValidationException($validator->errors());
-        }
-
-        ProductCategory::create([
-            'name' => $request['name'],
-        ]);
-        return response('Success', 200);
+        $data = $request->validated();
+        $coupon = ProductCategory::create($data);
+        $coupon = ProductCategory::find($coupon->id);
+        return response()->json($coupon);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
+     * @param UpdateCategoryRequest $request
+     * @param ProductCategory $productCategory
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCategoryRequest $request, ProductCategory $productCategory): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'string|required',
-        ]);
-
-        if ($validator->fails()) {
-            throw new ValidationException($validator->errors());
-        }
-
-        $cat = ProductCategory::whereId($id)->get()->first();
-        $cat->update(['name' => $request['name']]);
-        return response()->json($cat);
+        $data = $request->validated();
+        $productCategory->update($data);
+        return response()->json($productCategory);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
-     * @return Response
+     * @param ProductCategory $productCategory
+     * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(ProductCategory $productCategory): JsonResponse
     {
-        ProductCategory::whereId($id)->delete();
-        return response('Success', 200);
+        return response()->json($productCategory->delete());
     }
 }

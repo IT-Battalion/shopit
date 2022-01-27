@@ -21,7 +21,7 @@ class BanController extends Controller
         return response()->json($ban);
     }
 
-    public function ban(User $user, UserServiceInterface $userService, Request $request): JsonResponse
+    public function ban(Request $request, User $user, UserServiceInterface $userService): JsonResponse
     {
         $userService->ban($user, $request->get('reason'));
         $ban = [
