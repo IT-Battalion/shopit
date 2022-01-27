@@ -34,9 +34,6 @@ use LdapRecord\Models\Model;
  * @property string $email
  * @property string $firstname
  * @property string $lastname
- * @property string $name
- * @property string $employeeType
- * @property string|null $class
  * @property string $lang
  * @property bool $is_admin
  * @property bool $enabled
@@ -109,9 +106,6 @@ class User extends Authenticatable implements LdapAuthenticatable
         'email',
         'firstname',
         'lastname',
-        'name',
-        'employeeType',
-        'class',
         'lang',
         'is_admin',
         'enabled',

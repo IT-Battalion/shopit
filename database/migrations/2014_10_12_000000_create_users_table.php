@@ -19,9 +19,6 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('firstname');
             $table->string('lastname');
-            $table->string('name');
-            $table->string('employeeType');
-            $table->string('class')->nullable();
             $table->string('lang')->default('de-AT');
             $table->boolean('is_admin')->default(false);
             $table->boolean('enabled')->default(true);
