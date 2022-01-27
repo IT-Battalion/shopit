@@ -66,21 +66,18 @@
             id="coupon"
             type="text"
             v-model="coupon"
-            class="
-              w-full
-              px-4
-              py-2
-              ml-0
-              text-black
-              placeholder-green-600
-              border border-indigo-500
-              rounded-lg
-              focus:outline-none focus:ring-2 focus:ring-indigo-200
+            :disabled="applied"
+            :class="
+              applied
+                ? 'border-emerald-300 text-emerald-400 bg-slate-100 cursor-not-allowed'
+                : 'border-indigo-500 text-black bg-white'
             "
+            class="w-full px-4 py-2 ml-0 placeholder-green-600 border rounded-lg  focus:outline-none focus:ring-2 focus:ring-indigo-200"
             @submit="addCoupon()"
           />
           <button class="w-8 h-8 ml-3">
             <img
+              v-if="!applied"
               src="/img/doneBlack.svg"
               alt="Coupon Code verifizieren"
               class="w-8 h-8"
@@ -89,6 +86,7 @@
           </button>
           <button class="w-8 h-8 ml-3">
             <img
+              v-if="applied"
               src="/img/blackX.svg"
               alt="Coupon Code verifizieren"
               class="w-4 h-4"
@@ -103,25 +101,16 @@
           Hiermit stimme ich den AGB zu.
         </label>
       </div>
-      <div class="mt-6">
+      <div class="flex justify-center mt-6">
         <button
           @click="order()"
           :disabled="!agb"
-          class="
-            flex
-            items-center
-            justify-center
-            px-6
-            py-3
-            text-base
-            font-medium
-            text-white
-            bg-indigo-600
-            border border-transparent
-            rounded-md
-            shadow-sm
-            hover:bg-indigo-700
+          :class="
+            agb
+              ? 'bg-indigo-600 hover:bg-indigo-700'
+              : 'cursor-not-allowed bg-slate-400'
           "
+          class="flex items-center justify-center px-6 py-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm "
         >
           Bestellen
         </button>
@@ -158,6 +147,7 @@ export default defineComponent({
       shoppingCart: {} as ShoppingCart,
       coupon: "",
       agb: false,
+      applied: false,
     };
   },
   methods: {
@@ -180,6 +170,7 @@ export default defineComponent({
       this.shoppingCart.tax = data.tax;
       this.shoppingCart.total = data.total;
       this.toast.success("Coupon code wurde erfolgreich eingesetzt!");
+      this.applied = true;
     },
     async resetCoupon() {
       let response: AxiosResponse<RemoveFromShoppingCartResponse> =
@@ -190,6 +181,7 @@ export default defineComponent({
       this.shoppingCart.tax = data.tax;
       this.shoppingCart.total = data.total;
       this.toast.info("Coupon code wurde zurückgesetzt");
+      this.applied = false;
     },
     async order() {
       let response: AxiosResponse<Order> = await this.$http.post(
