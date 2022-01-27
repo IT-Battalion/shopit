@@ -142,6 +142,7 @@ export default defineComponent({
             array[index] = category.data;
           }
         });
+        window.config.categories = this.categories;
         this.toast.success("Die Kategorie wurde erfolgreich bearbeitet.");
       } catch (e) {
         this.toast.error('Fehler beim bearbeiten der Kategorie.');
@@ -159,6 +160,7 @@ export default defineComponent({
             delete array[index];
           }
         });
+        window.config.categories = this.categories;
         this.toast.success("Die Kategorie wurde erfolgreich gelöscht.");
       } catch (e) {
         this.toast.error('Fehler beim löschen der Kategorie.');
@@ -176,6 +178,7 @@ export default defineComponent({
           }
         );
         this.categories.push(category.data);
+        window.config.categories = this.categories;
         this.toast.success("Die Kategorie wurde erfolgreich erstellt.");
       } catch (e) {
         this.toast.error('Fehler beim erstellen der Kategorie.');
