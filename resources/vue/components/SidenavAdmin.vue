@@ -6,7 +6,6 @@
       flex flex-col
       justify-center
       w-56
-      pl-4
       m-0
       overflow-auto
       text-white
@@ -19,7 +18,7 @@
       v-for="category in categories"
       v-bind:key="category.icon_url"
       v-bind:name="category.name"
-      class="flex flex-row my-6 ml-6 rounded-full hover:bg-sidenavSelected"
+      class="flex flex-row my-5 py-1 pl-6 hover:bg-sidenavSelected"
     >
       <img :src="category.icon_url" class="object-scale-down h-8 mr-4" />
       <template v-if="category.name != 'Produkte'">
@@ -41,7 +40,6 @@
                 text-sm
                 font-medium
                 text-white
-                rounded-md
                 shadow-sm
                 focus:outline-none focus:ring-2 focus:ring-highlighted
               "
@@ -66,7 +64,6 @@
                 mt-2
                 overflow-hidden
                 origin-top-right
-                rounded-md
                 shadow-lg
                 ring-1 ring-black ring-opacity-5
                 focus:outline-none

@@ -1,12 +1,12 @@
 <template>
   <div
-    class="fixed left-0 flex flex-col justify-center w-56 pl-4 m-0 overflow-auto text-white  sidebar top-32 bg-backgroundColor"
+    class="fixed left-0 flex flex-col justify-center w-56 m-0 overflow-auto text-white  sidebar top-32 bg-backgroundColor"
   >
     <div
       v-for="category in categories"
       v-bind:key="category.icon_url"
       v-bind:name="category.name"
-      class="flex flex-row my-6 ml-6 rounded-full hover:bg-sidenavSelected"
+      class="flex flex-row my-5 py-1 pl-6 hover:bg-sidenavSelected"
     >
       <img :src="category.icon_url" class="object-scale-down h-8 mr-4" />
       <template v-if="category.name != 'Produkte'">
@@ -18,7 +18,7 @@
         <Menu as="div" class="relative inline-block text-left">
           <div>
             <MenuButton
-              class="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white rounded-md shadow-sm  focus:outline-none focus:ring-2 focus:ring-highlighted"
+              class="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white shadow-sm  focus:outline-none focus:ring-2 focus:ring-highlighted"
             >
               Produkte
             </MenuButton>
@@ -33,7 +33,7 @@
             leave-to-class="transform scale-95 opacity-0"
           >
             <MenuItems
-              class="absolute right-0 w-40 mt-2 overflow-hidden origin-top-right rounded-md shadow-lg  ring-1 ring-black ring-opacity-5 focus:outline-none bg-elevatedDark"
+              class="absolute right-0 w-40 mt-2 overflow-hidden origin-top-right shadow-lg  ring-1 ring-black ring-opacity-5 focus:outline-none bg-elevatedDark"
             >
               <router-link to="/admin/produkte/hinzufuegen">
                 <MenuItem
@@ -68,8 +68,9 @@
 </template>
 
 <script lang="ts">
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
-import { defineComponent } from "@vue/runtime-core";
+import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
+import {defineComponent} from "@vue/runtime-core";
+
 export default defineComponent({
   components: {
     Menu,
