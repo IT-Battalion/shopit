@@ -87,7 +87,7 @@
               type="button"
               @click="addProduct"
             >
-              <a class="pr-2">Add to Bag</a>
+              <a class="pr-2">Zum Warenkorb hinzufügen</a>
               <svg
                 fill="#000"
                 version="1.1"
@@ -139,7 +139,7 @@
 <script lang="ts">
 import {AxiosResponse} from "axios";
 import {RadioGroup, RadioGroupLabel, RadioGroupOption} from "@headlessui/vue";
-import {AddToShoppingCartRequest, Product, SelectedAttributes, ShoppingCartDescriptor,} from "../types/api";
+import {Product, SelectedAttributes,} from "../types/api";
 import {RouteLocationNormalizedLoaded, useRoute} from "vue-router";
 import {defineComponent} from "@vue/runtime-core";
 import {Swiper, SwiperSlide} from "swiper/vue";

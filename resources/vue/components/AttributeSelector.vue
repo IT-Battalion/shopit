@@ -47,11 +47,11 @@
     <div class="mt-10" v-if="attributes[0].length > 0">
       <div class="flex items-center justify-between">
         <h3 class="text-sm font-medium text-white">Größe</h3>
-        <a
-          href="#"
-          class="text-sm font-medium text-gray-400 hover:text-gray-700"
-          >Size guide</a
-        >
+        <!--        <a-->
+        <!--          href="#"-->
+        <!--          class="text-sm font-medium text-gray-400 hover:text-gray-700"-->
+        <!--          >Size guide</a-->
+        <!--        >-->
       </div>
 
       <RadioGroup v-model="selectedSize" class="mt-4">
@@ -93,11 +93,11 @@
     <div class="mt-10" v-if="attributes[1].length > 0">
       <div class="flex items-center justify-between">
         <h3 class="text-sm font-medium text-white">Dimensionen</h3>
-        <a
-          href="#"
-          class="text-sm font-medium text-gray-400 hover:text-gray-700"
-          >Size guide</a
-        >
+        <!--        <a-->
+        <!--          href="#"-->
+        <!--          class="text-sm font-medium text-gray-400 hover:text-gray-700"-->
+        <!--          >Size guide</a-->
+        <!--        >-->
       </div>
 
       <RadioGroup v-model="selectedDimension" class="mt-4">
@@ -140,11 +140,11 @@
     <div class="mt-10" v-if="attributes[2].length > 0">
       <div class="flex items-center justify-between">
         <h3 class="text-sm font-medium text-white">Volumen</h3>
-        <a
-          href="#"
-          class="text-sm font-medium text-gray-400 hover:text-gray-700"
-          >Size guide</a
-        >
+        <!--        <a-->
+        <!--          href="#"-->
+        <!--          class="text-sm font-medium text-gray-400 hover:text-gray-700"-->
+        <!--          >Size guide</a-->
+        <!--        >-->
       </div>
 
       <RadioGroup v-model="selectedVolume" class="mt-4">
@@ -185,10 +185,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
-import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
-import { Attributes, SelectedAttributes } from "../types/api";
-import { AttributeType, clothingSizeLabels } from "../types/api-values";
+import {defineComponent} from "@vue/runtime-core";
+import {RadioGroup, RadioGroupLabel, RadioGroupOption} from "@headlessui/vue";
+import {Attributes, SelectedAttributes} from "../types/api";
+import {AttributeType, clothingSizeLabels} from "../types/api-values";
 
 export default defineComponent({
   components: {
@@ -197,7 +197,7 @@ export default defineComponent({
     RadioGroupOption,
   },
   props: {
-    productattributes: { type: Object as () => Attributes, required: true },
+    productattributes: {type: Object as () => Attributes, required: true},
   },
   data() {
     return {
