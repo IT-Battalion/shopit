@@ -342,8 +342,23 @@ export default defineComponent({
   async beforeMount() {
     await this.loadCategories();
     this.selectedCategory = this.categories[0];
+    await this.insertStoredData();
   },
   methods: {
+    async insertStoredData() {
+      this.selectedCategory.id = Number(window.localStorage.getItem('product.category'));
+      this.dimensionEnabled = Boolean(window.localStorage.getItem('product.dimension'));
+      this.volumeEnabled = Boolean(window.localStorage.getItem('product.volume'));
+      this.colorEnabled = Boolean(window.localStorage.getItem('product.color'));
+      this.colothingEnabled = Boolean(window.localStorage.getItem('product.clothing'));
+      this.value = JSON.parse(window.localStorage.getItem('product.clothings') ?? '{}');
+      (this.$refs.product_volume as typeof InputField).setValue(window.localStorage.getItem('product.volumes'));
+      (this.$refs.product_color as typeof ColorPicker).colors = JSON.parse(window.localStorage.getItem('product.colors') ?? '{}');
+      let dim = JSON.parse(window.localStorage.getItem('dimensions') ?? '{}');
+      (this.$refs.product_dimension_width as typeof InputField).setValue(dim[0]);
+      (this.$refs.product_dimension_height as typeof InputField).setValue(dim[1]);
+      (this.$refs.product_dimension_depth as typeof InputField).setValue(dim[2]);
+    },
     async backward() {
       await this.saveToLocalStorage();
       await this.$router.push({name: 'Add Product images'});
@@ -356,7 +371,7 @@ export default defineComponent({
       let category = this.selectedCategory.id;
       window.localStorage.setItem('product.category', String(category));
 
-      window.localStorage.setItem('product.clothing', String(this.dimensionEnabled)) //true or false
+      window.localStorage.setItem('product.clothing', String(this.colothingEnabled)) //true or false
       let clothing = this.value;
       window.localStorage.setItem('product.clothings', JSON.stringify(clothing));
 
@@ -376,7 +391,7 @@ export default defineComponent({
       let color = (this.$refs.product_color as typeof ColorPicker).colors;
       window.localStorage.setItem('product.colors', JSON.stringify(color));
 
-      this.$router.push({name: 'Add Product description'});
+      await this.$router.push({name: 'Add Product description'});
     },
     async loadCategories() {
       let response: AxiosResponse<ProductCategory[]> = await this.$http.get(

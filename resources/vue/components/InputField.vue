@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
+import {defineComponent} from "@vue/runtime-core";
 
 export default defineComponent({
   props: {
@@ -36,6 +36,9 @@ export default defineComponent({
     getValue() {
       return (this.$refs.input as HTMLInputElement).value;
     },
+    setValue(value: any) {
+      (this.$refs.input as HTMLInputElement).value = value;
+    }
   },
 });
 </script>

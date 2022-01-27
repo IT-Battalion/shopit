@@ -48,7 +48,13 @@ export default defineComponent({
     ForwardButton,
     CancelButton,
   },
+  async mounted() {
+    await this.insertStoredData();
+  },
   methods: {
+    async insertStoredData() {
+      (this.$refs.desc as typeof QuillEditor).setHTML(window.localStorage.getItem('product.description'));
+    },
     async backward() {
       await this.saveToLocalStorage();
       await this.$router.push({name: 'Add Product attributes'});

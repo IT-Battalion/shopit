@@ -35,7 +35,13 @@ export default defineComponent({
     ForwardButton,
     CancelButton,
   },
+  async mounted() {
+    await this.insertStoredData();
+  },
   methods: {
+    async insertStoredData() {
+      (this.$refs.images as typeof UploadImages).Imgs = JSON.parse(window.localStorage.getItem('product.images') ?? '{}');
+    },
     async backward() {
       await this.saveToLocalStorage();
       await this.$router.push({name: 'Add Product'});

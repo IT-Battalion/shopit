@@ -40,12 +40,14 @@ export default defineComponent({
     ForwardButton,
     InputField,
   },
-  async beforeMount() {
+  async mounted() {
     await this.insertStoredData();
   },
   methods: {
     async insertStoredData() {
-      //TODO implement insert data
+      (this.$refs.highlighted as HTMLInputElement).value = window.localStorage.getItem('product.highlighted') == null ? "off" : (this.$refs.highlighted as HTMLInputElement).value;
+      (this.$refs.product_name as typeof InputField).setValue(window.localStorage.getItem('product.title'));
+      (this.$refs.product_price as typeof InputField).setValue(window.localStorage.getItem('product.price'));
     },
     async forward() {
       await this.saveToLocalStorage();
