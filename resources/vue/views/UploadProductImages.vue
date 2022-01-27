@@ -4,7 +4,6 @@
     <div class="mx-5 mt-20 md:mx-20">
       <UploadImages @change="handleImages" />
       <ButtonField
-        :acceptName="true"
         name="Hochladen"
         iconSrc="/img/uploadBlack.svg"
         class="my-10 mx-auto"
