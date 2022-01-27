@@ -19,7 +19,8 @@
     >
       <template #table-row="props">
         <router-link v-if="props.column.field === 'detail'"
-                     :to="{name: 'Order detail', params: {id: props.formattedRow['id']}}" target="_blank"><img
+                     :to="{name: getCurrentOrderStateRoute(statusLables[props.formattedRow['status']]), params: {id: props.formattedRow['id']}}"
+                     target="_blank"><img
           class='object-scale-down h-7 w-full'
           src='/img/info-white.svg'/></router-link>
         <span v-if="props.column.field === 'status'">
@@ -86,7 +87,26 @@ export default defineComponent({
       let response: AxiosResponse<Order[]> = await this.$http.get('/user/orders');
       this.rows = response.data;
       endLoad();
-    }
+    },
+    getCurrentOrderStateRoute(status: string) {
+      switch (status) {
+        case 'bezahlt': {
+          return 'Order Pay';
+        }
+        case 'bestellt': {
+          return 'Order Ordered';
+        }
+        case 'erhalten': {
+          return 'Order Receive';
+        }
+        case 'übergeben': {
+          return 'Order Handed Over';
+        }
+        case 'erstellt': {
+          return 'Order Created';
+        }
+      }
+    },
   }
 });
 </script>
