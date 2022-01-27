@@ -24,7 +24,7 @@
   </vue-good-table>
   <div v-if="this.ban.disabled_at == null && this.ban.disabled_by == null && this.ban.disabled_for == null">
     <h2 class="text-3xl mt-10 mb-6 text-white font-bold">Benutzer Sperren</h2>
-    <textarea class="w-1/2 bg-elevatedDark text-white"></textarea>
+    <textarea class="w-1/2 bg-elevatedDark text-white" ref="reason"></textarea>
     <ButtonField
       name="Sperren"
       :acceptName="true"
@@ -48,12 +48,13 @@
 
 <script lang="ts">
 import {defineComponent} from "@vue/runtime-core";
-import {Ban, Order, User} from "../types/api";
+import {Ban, BanUserRequest, Order, User} from "../types/api";
 import {endLoad, initLoad, state} from "../loader";
 import {AxiosResponse} from "axios";
 import {OrderStatusLables} from "../types/api-values";
 import Profile from "../components/Profile.vue";
 import ButtonField from "../components/ButtonField.vue";
+import {useToast} from "vue-toastification";
 
 export default defineComponent({
   components: {
@@ -63,6 +64,7 @@ export default defineComponent({
   },
   setup() {
     return {
+      toast: useToast(),
       statusLables: OrderStatusLables,
       userOrderColumns: [
         {
@@ -161,7 +163,7 @@ export default defineComponent({
     async loadUser() {
       initLoad();
       let response: AxiosResponse<User> = await this.$http.get(
-        "/admin/users/" + this.$route.params.id
+        `/admin/users/${this.$route.params.id}`
       );
       this.user = response.data;
       endLoad();
@@ -169,20 +171,35 @@ export default defineComponent({
     async loadBan() {
       initLoad();
       let response: AxiosResponse<Ban> = await this.$http.get(
-        '/admin/ban/user/' + this.$route.params.id + '/info'
+        `/admin/ban/user/${this.$route.params.id}/info`
       );
       this.ban = response.data;
       endLoad();
     },
     async banUser() {
-      let response: AxiosResponse = await this.$http.post(
-        '/admin/ban/user/' + this.$route.params.id + '/ban'
-      );
+      try {
+        let reason = (this.$refs.reason as HTMLTextAreaElement).value;
+        let ban = await this.$http.post<BanUserRequest, AxiosResponse<Ban>>(
+          `/admin/ban/user/${this.$route.params.id}/ban`, {
+            reason,
+          }
+        );
+        this.toast.success('Benutzer wurde erfolgreich gesperrt.');
+        this.ban = ban.data;
+      } catch (e) {
+        this.toast.error('Fehler beim sperren des Benutzers.');
+      }
     },
     async unbanUser() {
-      let response: AxiosResponse = await this.$http.post(
-        '/admin/ban/user/' + this.$route.params.id + '/unban'
-      );
+      try {
+        let ban = await this.$http.post<any, AxiosResponse<Ban>>(
+          `/admin/ban/user/${this.$route.params.id}/unban`
+        );
+        this.toast.success("Benutzer wurde erfolgreich entsperrt.");
+        this.ban = ban.data;
+      } catch (e) {
+        this.toast.error("Fehler beim entsperren des Benutzers.");
+      }
     },
   },
 });

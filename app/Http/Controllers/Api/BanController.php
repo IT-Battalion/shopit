@@ -21,17 +21,25 @@ class BanController extends Controller
         return response()->json($ban);
     }
 
-    public function ban(User $user, UserServiceInterface $userService, Request $request)
+    public function ban(User $user, UserServiceInterface $userService, Request $request): JsonResponse
     {
-        if ($userService->ban($user, $request->get('reason'))) {
-            return response()->json($user);
-        }
+        $userService->ban($user, $request->get('reason'));
+        $ban = [
+            'disabled_at' => $user->disabled_at,
+            'disabled_by' => $user->disabled_by->username,
+            'disabled_for' => $user->reason_for_disabling,
+        ];
+        return response()->json($ban);
     }
 
-    public function unban(User $user, UserServiceInterface $userService)
+    public function unban(User $user, UserServiceInterface $userService): JsonResponse
     {
-        if ($userService->unban($user)) {
-            return response()->json($user);
-        }
+        $userService->unban($user);
+        $ban = [
+            'disabled_at' => $user->disabled_at,
+            'disabled_by' => $user->disabled_by->username,
+            'disabled_for' => $user->reason_for_disabling,
+        ];
+        return response()->json($ban);
     }
 }
