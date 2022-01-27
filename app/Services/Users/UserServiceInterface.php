@@ -11,7 +11,7 @@ interface UserServiceInterface
      * @param User $user the specific User Model
      * @return bool true if the User has been banned successfully else false
      */
-    function ban(User $user): bool;
+    function ban(User $user, string $reason): bool;
 
     /**
      * Unbans the specific User

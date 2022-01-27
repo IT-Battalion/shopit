@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\BanController;
 use App\Http\Controllers\Api\HighlightedProductController;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\OrderController;
@@ -61,4 +62,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     // Category Routes
     Route::apiResource('category', 'CategoryController');
+
+    Route::get('/ban/user/{user}/info', [BanController::class, 'info']);
+    Route::post('/ban/user/{user}/ban', [BanController::class, 'ban']);
+    Route::post('/ban/user/{user}/unban', [BanController::class, 'unban']);
 });

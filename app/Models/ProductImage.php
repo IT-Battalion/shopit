@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Contracts\ConvertableToOrder;
 use App\Traits\TracksModification;
-use Auth;
 use Database\Factories\ProductImageFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;

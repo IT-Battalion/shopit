@@ -1,5 +1,5 @@
 <template>
-  <Profile v-if="!state.isLoading" :user="user" />
+  <Profile v-if="!state.isLoading" :user="user"/>
   <h2 class="text-3xl mt-10 mb-6 text-white font-bold">Bestellungen</h2>
   <vue-good-table
     :columns="userOrderColumns"
@@ -22,22 +22,36 @@
       </span>
     </template>
   </vue-good-table>
-  <h2 class="text-3xl mt-10 mb-6 text-white font-bold">Benutzer ent/sperren</h2>
-  <textarea class="w-1/2 bg-elevatedDark text-white"></textarea>
-  <ButtonField
-    name="ent/sperren"
-    :acceptName="true"
-    iconSrc="/img/lockBlack.svg"
-    class="mt-10"
-  />
+  <div v-if="this.ban.disabled_at == null && this.ban.disabled_by == null && this.ban.disabled_for == null">
+    <h2 class="text-3xl mt-10 mb-6 text-white font-bold">Benutzer Sperren</h2>
+    <textarea class="w-1/2 bg-elevatedDark text-white"></textarea>
+    <ButtonField
+      name="Sperren"
+      :acceptName="true"
+      iconSrc="/img/lockBlack.svg"
+      class="mt-10"
+      @click="banUser"
+    />
+  </div>
+  <div v-else>
+    <h2 class="text-3xl mt-10 mb-6 text-white font-bold">Benutzer Entsperren</h2>
+    <textarea class="w-1/2 bg-elevatedDark text-white" v-text="this.ban.disabled_for" disabled></textarea>
+    <ButtonField
+      name="Entsperren"
+      :acceptName="true"
+      iconSrc="/img/lockBlack.svg"
+      class="mt-10"
+      @click="unbanUser"
+    />
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
-import { Order, User } from "../types/api";
-import { endLoad, initLoad, state } from "../loader";
-import { AxiosResponse } from "axios";
-import { OrderStatusLables } from "../types/api-values";
+import {defineComponent} from "@vue/runtime-core";
+import {Ban, Order, User} from "../types/api";
+import {endLoad, initLoad, state} from "../loader";
+import {AxiosResponse} from "axios";
+import {OrderStatusLables} from "../types/api-values";
 import Profile from "../components/Profile.vue";
 import ButtonField from "../components/ButtonField.vue";
 
@@ -129,10 +143,11 @@ export default defineComponent({
     return {
       userOrderRows: [] as Order[],
       user: Object as User,
+      ban: Object as Ban,
     };
   },
   async beforeMount() {
-    await Promise.all([this.loadOrders(), this.loadUser()]);
+    await Promise.all([this.loadOrders(), this.loadUser(), this.loadBan()]);
   },
   methods: {
     async loadOrders() {
@@ -150,6 +165,24 @@ export default defineComponent({
       );
       this.user = response.data;
       endLoad();
+    },
+    async loadBan() {
+      initLoad();
+      let response: AxiosResponse<Ban> = await this.$http.get(
+        '/admin/ban/user/' + this.$route.params.id + '/info'
+      );
+      this.ban = response.data;
+      endLoad();
+    },
+    async banUser() {
+      let response: AxiosResponse = await this.$http.post(
+        '/admin/ban/user/' + this.$route.params.id + '/ban'
+      );
+    },
+    async unbanUser() {
+      let response: AxiosResponse = await this.$http.post(
+        '/admin/ban/user/' + this.$route.params.id + '/unban'
+      );
     },
   },
 });

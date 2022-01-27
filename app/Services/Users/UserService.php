@@ -18,7 +18,7 @@ class UserService implements UserServiceInterface
      * @throws ActionNotAllowedForAdministratorException
      * @throws UserBannedException
      */
-    function ban(User $user): bool
+    function ban(User $user, string $reason): bool
     {
         if ($this->canBePerformedOnUser($user)) {
             if ($user->enabled) {
@@ -26,6 +26,7 @@ class UserService implements UserServiceInterface
                 $user->banWith(Auth::user());
                 $user->disabled_at = now();
                 $user->enabled = false;
+                $user->reason_for_disabling = $reason;
                 $user->save();
                 event(new UserBannedEvent($user));
                 return true;

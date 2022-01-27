@@ -28,4 +28,4 @@ mix
     .sass('resources/scss/vue-good-tables.sass', 'public/css/vue-good-tables.css')
     //.sass('resources/assets/scss/shopit.scss', 'public/css/shopit.css')
     .sourceMaps()
-    // .browserSync('localhost:80');
+    //.browserSync('localhost:80');

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\TracksModification;
 use App\Types\AttributeType;
 use App\Types\Money;
 use Barryvdh\LaravelIdeHelper\Eloquent;
@@ -14,7 +13,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * App\Models\OrderProduct

@@ -205,3 +205,9 @@ export interface CreateCouponRequest {
   discount: number,
   enabled_until: string,
 }
+
+export interface Ban {
+  disabled_at?: string,
+  disabled_for?: string,
+  disabled_by?: string,
+}
