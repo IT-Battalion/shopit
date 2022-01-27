@@ -346,7 +346,7 @@ export default defineComponent({
   },
   methods: {
     async insertStoredData() {
-      this.selectedCategory.id = Number(window.localStorage.getItem('product.category'));
+      //this.selectedCategory.id = Number(window.localStorage.getItem('product.category'));
       this.dimensionEnabled = Boolean(window.localStorage.getItem('product.dimension'));
       this.volumeEnabled = Boolean(window.localStorage.getItem('product.volume'));
       this.colorEnabled = Boolean(window.localStorage.getItem('product.color'));
@@ -354,7 +354,7 @@ export default defineComponent({
       this.value = JSON.parse(window.localStorage.getItem('product.clothings') ?? '{}');
       (this.$refs.product_volume as typeof InputField).setValue(window.localStorage.getItem('product.volumes'));
       (this.$refs.product_color as typeof ColorPicker).colors = JSON.parse(window.localStorage.getItem('product.colors') ?? '{}');
-      let dim = JSON.parse(window.localStorage.getItem('dimensions') ?? '{}');
+      let dim = JSON.parse(window.localStorage.getItem('product.dimensions') ?? '{}');
       (this.$refs.product_dimension_width as typeof InputField).setValue(dim[0]);
       (this.$refs.product_dimension_height as typeof InputField).setValue(dim[1]);
       (this.$refs.product_dimension_depth as typeof InputField).setValue(dim[2]);
