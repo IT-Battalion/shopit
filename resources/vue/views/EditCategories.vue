@@ -123,10 +123,19 @@ export default defineComponent({
   },
   data() {
     return {
-      categories: window.config.categories,
+      categories: [] as ProductCategory[],
     };
   },
+  async beforeMount() {
+    await this.loadCategories();
+  },
   methods: {
+    async loadCategories() {
+      let response: AxiosResponse<ProductCategory[]> = await this.$http.get(
+        '/admin/category'
+      );
+      this.categories = response.data;
+    },
     async editCategory(catID: number) {
       initLoad();
       try {
