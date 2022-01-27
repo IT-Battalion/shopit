@@ -2,6 +2,7 @@
   <div class="flex justify-end mt-10 sm:mr-20">
     <router-link
       :to="cancel"
+      @click="clearLocalStorage"
       tag="button"
       class="flex items-center px-6 py-4 mr-2 font-bold text-gray-400 rounded-full  hover:bg-elevatedColor hover:text-white"
     >
@@ -62,9 +63,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
-import { PropType } from "vue";
-import { RouteLocationRaw } from "vue-router";
+import {defineComponent} from "@vue/runtime-core";
+import {PropType} from "vue";
+import {RouteLocationRaw} from "vue-router";
 
 export default defineComponent({
   props: {
@@ -76,5 +77,10 @@ export default defineComponent({
       type: Boolean,
     },
   },
+  methods: {
+    clearLocalStorage() {
+      window.localStorage.removeItem('product.*');
+    }
+  }
 });
 </script>

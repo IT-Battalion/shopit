@@ -105,7 +105,7 @@ import {ChevronDownIcon} from "@heroicons/vue/solid";
 import {endLoad, initLoad} from "../loader";
 import ButtonField from "../components/ButtonField.vue";
 import {useToast} from "vue-toastification";
-import {CategoryCreateRequest, CategoryEditRequest, ProductCategory} from "../types/api";
+import {CreateCategoryRequest, EditCategoryRequest, ProductCategory} from "../types/api";
 import {AxiosResponse} from "axios";
 
 export default defineComponent({
@@ -140,7 +140,7 @@ export default defineComponent({
       initLoad();
       try {
         let name = (this.$refs.categoryname as HTMLInputElement[])[0].value;
-        let category = await this.$http.put<CategoryEditRequest, AxiosResponse<ProductCategory>>(
+        let category = await this.$http.put<EditCategoryRequest, AxiosResponse<ProductCategory>>(
           `/admin/category/${catID}`,
           {
             name,
@@ -180,7 +180,7 @@ export default defineComponent({
       initLoad();
       try {
         let name = (this.$refs.categorynamecreate as HTMLInputElement).value;
-        let category = await this.$http.post<CategoryCreateRequest, AxiosResponse<ProductCategory>>(
+        let category = await this.$http.post<CreateCategoryRequest, AxiosResponse<ProductCategory>>(
           `/admin/category/`,
           {
             name
@@ -191,7 +191,6 @@ export default defineComponent({
         this.toast.success("Die Kategorie wurde erfolgreich erstellt.");
       } catch (e) {
         this.toast.error('Fehler beim erstellen der Kategorie.');
-        throw(e);
       }
       endLoad();
     },

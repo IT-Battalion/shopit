@@ -206,11 +206,11 @@ export interface CreateCouponRequest {
   enabled_until: string,
 }
 
-export interface CategoryCreateRequest {
+export interface CreateCategoryRequest {
   name: string,
 }
 
-export interface CategoryEditRequest {
+export interface EditCategoryRequest {
   name: string,
 }
 
@@ -222,4 +222,66 @@ export interface Ban {
   disabled_at?: string,
   disabled_for?: string,
   disabled_by?: User,
+}
+
+export interface CreateProductRequest {
+  name: string,
+  description: string,
+  price: number,
+  tax: number,
+  thumbnail_id: number,
+  product_category_id: number,
+}
+
+export interface ProductImage {
+  path?: string,
+}
+
+export interface CreateProductImageRequest {
+  product_id: number,
+  path: string,
+  type: string
+}
+
+export interface CreateProductClothingAttributesRequest {
+  size: number,
+}
+
+export interface CreateProductDimensionAttributesRequest {
+  width: number
+  height: number,
+  depth: number,
+}
+
+export interface CreateProductVolumeAttributesRequest {
+  volume: number,
+}
+
+export interface CreateProductColorAttributesRequest {
+  name: string,
+  color: string,
+}
+
+export interface CreateProductVolumeAttributesLinkRequest {
+  product_id: number,
+  product_volume_attribute_id: number,
+}
+
+export interface CreateProductDimensionAttributesLinkRequest {
+  product_id: number,
+  product_dimension_attribute_id: number,
+}
+
+export interface CreateProductClothingAttributesLinkRequest {
+  product_id: number,
+  product_clothing_attribute_id: number,
+}
+
+export interface CreateProductColorAttributesLinkRequest {
+  product_id: number,
+  product_color_attribute_id: number,
+}
+
+export interface CreateHighlightedProductRequest {
+  product_id: number,
 }
