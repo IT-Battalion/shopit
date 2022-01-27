@@ -8,12 +8,11 @@
       <QuillEditor theme="snow" toolbar="minimal" ref="desc"/>
     </div>
     <div class="flex flex-row gap-x-2">
-      <ForwardBackwardButton
-        :nextTrue="false"
-        :last="{ name: 'Add Product attributes' }"
-        :cancel="{ name: 'Admin' }"
-      />
-      <ButtonField iconSrc="/img/doneBlack.svg" class="mt-auto mb-2" @click=""/>
+      <div class="flex justify-end mt-10 sm:mr-20">
+        <CancelButton/>
+        <BackwardButton @click="backward"/>
+      </div>
+      <ButtonField iconSrc="/img/doneBlack.svg" class="mt-auto mb-2" @click="createProduct"/>
     </div>
   </div>
 </template>
@@ -21,10 +20,12 @@
 <script lang="ts">
 import {defineComponent} from "@vue/runtime-core";
 import AddProductProcess from "../components/AddProductProcess.vue";
-import ForwardBackwardButton from "../components/ForwardBackwardButton.vue";
 import {QuillEditor} from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import ButtonField from "../components/ButtonField.vue";
+import CancelButton from "../components/buttons/CancelButton.vue";
+import BackwardButton from "../components/buttons/BackwardButton.vue";
+import ForwardButton from "../components/buttons/ForwardButton.vue";
 import {
   CreateProductClothingAttributesLinkRequest,
   CreateProductClothingAttributesRequest,
@@ -41,12 +42,18 @@ import {isNull} from "lodash";
 export default defineComponent({
   components: {
     AddProductProcess,
-    ForwardBackwardButton,
     QuillEditor,
     ButtonField,
+    BackwardButton,
+    ForwardButton,
+    CancelButton,
   },
   methods: {
-    saveToLocalStorage() {
+    async backward() {
+      await this.saveToLocalStorage();
+      await this.$router.push({name: 'Add Product attributes'});
+    },
+    async saveToLocalStorage() {
       let description = (this.$refs.desc as typeof QuillEditor).getHTML();
       window.localStorage.setItem('product.description', description);
     },
@@ -58,8 +65,23 @@ export default defineComponent({
       );
       await this.createProductImages(product.data.id);
       await this.createProductClothingAttributes(product.data.id);
-      window.localStorage.removeItem('product.*');
+      await this.clearLocalStorage();
       endLoad();
+    },
+    async clearLocalStorage() {
+      window.localStorage.removeItem('product.title');
+      window.localStorage.removeItem('product.price');
+      window.localStorage.removeItem('product.description');
+      window.localStorage.removeItem('product.images');
+      window.localStorage.removeItem('product.category');
+      window.localStorage.removeItem('product.clothing');
+      window.localStorage.removeItem('product.dimension');
+      window.localStorage.removeItem('product.color');
+      window.localStorage.removeItem('product.volume');
+      window.localStorage.removeItem('product.clothings');
+      window.localStorage.removeItem('product.dimensions');
+      window.localStorage.removeItem('product.colors');
+      window.localStorage.removeItem('product.volumes');
     },
     async createProductImages(productID: number) {
       let images = window.localStorage.getItem('product.images');

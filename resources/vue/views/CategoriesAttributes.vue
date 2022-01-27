@@ -274,18 +274,17 @@
         <ColorPicker class="ml-5" ref="product_color"/>
       </div>
     </div>
-    <ForwardBackwardButton
-      :next="{ name: 'Add Product description' }"
-      :last="{ name: 'Add Product images' }"
-      :cancel="{ name: 'Admin' }"
-    />
+    <div class="flex justify-end mt-10 sm:mr-20">
+      <CancelButton/>
+      <BackwardButton @click="backward"/>
+      <ForwardButton @click="forward"/>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import {defineComponent} from "@vue/runtime-core";
 import AddProductProcess from "../components/AddProductProcess.vue";
-import ForwardBackwardButton from "../components/ForwardBackwardButton.vue";
 import Multiselect from "@vueform/multiselect";
 import {ref} from "vue";
 import {Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions, Switch,} from "@headlessui/vue";
@@ -296,12 +295,14 @@ import InputField from "../components/InputField.vue";
 import ButtonField from "../components/ButtonField.vue";
 import {AxiosResponse} from "axios";
 import {ProductCategory} from "../types/api";
+import CancelButton from "../components/buttons/CancelButton.vue";
+import ForwardButton from "../components/buttons/ForwardButton.vue";
+import BackwardButton from "../components/buttons/BackwardButton.vue";
 
 export default defineComponent({
   components: {
     ButtonField,
     AddProductProcess,
-    ForwardBackwardButton,
     Listbox,
     ListboxLabel,
     ListboxButton,
@@ -313,6 +314,9 @@ export default defineComponent({
     Switch,
     Multiselect,
     InputField,
+    BackwardButton,
+    ForwardButton,
+    CancelButton,
   },
   setup() {
     const colorEnabled = ref(false);
@@ -340,7 +344,15 @@ export default defineComponent({
     this.selectedCategory = this.categories[0];
   },
   methods: {
-    saveToLocalStorage() {
+    async backward() {
+      await this.saveToLocalStorage();
+      await this.$router.push({name: 'Add Product images'});
+    },
+    async forward() {
+      await this.saveToLocalStorage();
+      await this.$router.push({name: 'Add Product description'});
+    },
+    async saveToLocalStorage() {
       let category = this.selectedCategory.id;
       window.localStorage.setItem('product.category', String(category));
 
@@ -358,11 +370,13 @@ export default defineComponent({
         (this.$refs.product_dimension_height as typeof InputField).getValue(),
         (this.$refs.product_dimension_depth as typeof InputField).getValue()
       ];
-      window.localStorage.setItem('product.dimenstions', JSON.stringify(dimension));
+      window.localStorage.setItem('product.dimensions', JSON.stringify(dimension));
 
       window.localStorage.setItem('product.color', String(this.colorEnabled)) //true or false
       let color = (this.$refs.product_color as typeof ColorPicker).colors;
       window.localStorage.setItem('product.colors', JSON.stringify(color));
+
+      this.$router.push({name: 'Add Product description'});
     },
     async loadCategories() {
       let response: AxiosResponse<ProductCategory[]> = await this.$http.get(

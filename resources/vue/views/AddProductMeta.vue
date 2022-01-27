@@ -17,29 +17,41 @@
         </label>
       </div>
     </div>
-    <ForwardBackwardButton
-      @click="saveToLocalStorage"
-      :next="{ name: 'Add Product images' }"
-      :last="{ name: 'Admin' }"
-      :cancel="{ name: 'Admin' }"
-    />
+    <div class="flex justify-end mt-10 sm:mr-20">
+      <CancelButton/>
+      <ForwardButton @click="forward"/>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import {defineComponent} from "@vue/runtime-core";
 import AddProductProcess from "../components/AddProductProcess.vue";
-import ForwardBackwardButton from "../components/ForwardBackwardButton.vue";
 import InputField from "../components/InputField.vue";
+import CancelButton from "../components/buttons/CancelButton.vue";
+import BackwardButton from "../components/buttons/BackwardButton.vue";
+import ForwardButton from "../components/buttons/ForwardButton.vue";
 
 export default defineComponent({
   components: {
+    BackwardButton,
+    CancelButton,
     AddProductProcess,
-    ForwardBackwardButton,
+    ForwardButton,
     InputField,
   },
+  async beforeMount() {
+    await this.insertStoredData();
+  },
   methods: {
-    saveToLocalStorage() {
+    async insertStoredData() {
+      //TODO implement insert data
+    },
+    async forward() {
+      await this.saveToLocalStorage();
+      await this.$router.push({name: 'Add Product images'});
+    },
+    async saveToLocalStorage() {
       window.localStorage.setItem('product.title', (this.$refs.product_name as typeof InputField).getValue());
       window.localStorage.setItem('product.price', (this.$refs.product_price as typeof InputField).getValue());
       window.localStorage.setItem('product.highlighted', (this.$refs.highlighted as HTMLInputElement).value);

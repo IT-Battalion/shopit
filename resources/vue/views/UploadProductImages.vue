@@ -9,11 +9,11 @@
       <!--        class="my-10 mx-auto"-->
       <!--      />-->
     </div>
-    <ForwardBackwardButton
-      :next="{ name: 'Add Product attributes' }"
-      :last="{ name: 'Add Product' }"
-      :cancel="{ name: 'Admin' }"
-    />
+    <div class="flex justify-end mt-10 sm:mr-20">
+      <CancelButton/>
+      <BackwardButton @click="backward"/>
+      <ForwardButton @click="forward"/>
+    </div>
   </div>
 </template>
 
@@ -21,18 +21,30 @@
 import {defineComponent} from "@vue/runtime-core";
 import UploadImages from "vue-upload-drop-images";
 import AddProductProcess from "../components/AddProductProcess.vue";
-import ForwardBackwardButton from "../components/ForwardBackwardButton.vue";
 import ButtonField from "../components/ButtonField.vue";
+import CancelButton from "../components/buttons/CancelButton.vue";
+import BackwardButton from "../components/buttons/BackwardButton.vue";
+import ForwardButton from "../components/buttons/ForwardButton.vue";
 
 export default defineComponent({
   components: {
+    BackwardButton,
     UploadImages,
     AddProductProcess,
-    ForwardBackwardButton,
     ButtonField,
+    ForwardButton,
+    CancelButton,
   },
   methods: {
-    saveToLocalStorage() {
+    async backward() {
+      await this.saveToLocalStorage();
+      await this.$router.push({name: 'Add Product'});
+    },
+    async forward() {
+      await this.saveToLocalStorage();
+      await this.$router.push({name: 'Add Product attributes'});
+    },
+    async saveToLocalStorage() {
       let images = (this.$refs.images as typeof UploadImages).Imgs;
       window.localStorage.setItem('product.images', JSON.stringify(images));
     }
