@@ -51,7 +51,7 @@
             data.column.field === 'enabled' &&
             data.formattedRow['enabled'] === false
           "
-          class="object-scale-down h-7 w-full"
+          class="object-scale-down w-full h-7"
           src="/img/red-x.svg"
         />
         <img
@@ -59,7 +59,7 @@
             data.column.field === 'enabled' &&
             data.formattedRow['enabled'] === true
           "
-          class="object-scale-down h-7 w-full"
+          class="object-scale-down w-full h-7"
           src="/img/green-checkmark.svg"
         />
       </template>

@@ -77,16 +77,17 @@
           />
           <button class="w-8 h-8 ml-3">
             <img
-              v-if="!applied"
+              v-if="!applied && !couponLoading"
               src="/img/doneBlack.svg"
               alt="Coupon Code verifizieren"
               class="w-8 h-8"
               @click="addCoupon()"
             />
           </button>
+          <Spinner v-if="couponLoading" :loading="couponLoading" />
           <button class="w-8 h-8 ml-3">
             <img
-              v-if="applied"
+              v-if="applied && !couponLoading"
               src="/img/blackX.svg"
               alt="Coupon Code verifizieren"
               class="w-4 h-4"
@@ -136,10 +137,12 @@ import { convertProxyValue, objectEquals } from "../util";
 import { add, isBoolean } from "lodash";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
+import Spinner from "@/components/Spinner.vue";
 
 export default defineComponent({
   components: {
     ShoppingcartItem,
+    Spinner,
   },
   data() {
     return {
@@ -148,6 +151,7 @@ export default defineComponent({
       coupon: "",
       agb: false,
       applied: false,
+      couponLoading: false,
     };
   },
   methods: {
@@ -160,6 +164,7 @@ export default defineComponent({
       this.isLoading = false;
     },
     async addCoupon() {
+      this.couponLoading = true;
       let response: AxiosResponse<RemoveFromShoppingCartResponse> =
         await this.$http.post("/user/shopping-cart/coupon", {
           code: this.coupon,
@@ -171,8 +176,10 @@ export default defineComponent({
       this.shoppingCart.total = data.total;
       this.toast.success("Coupon code wurde erfolgreich eingesetzt!");
       this.applied = true;
+      this.couponLoading = false;
     },
     async resetCoupon() {
+      this.couponLoading = true;
       let response: AxiosResponse<RemoveFromShoppingCartResponse> =
         await this.$http.post("/user/shopping-cart/coupon/reset");
       let data = response.data;
@@ -182,6 +189,7 @@ export default defineComponent({
       this.shoppingCart.total = data.total;
       this.toast.info("Coupon code wurde zurückgesetzt");
       this.applied = false;
+      this.couponLoading = false;
     },
     async order() {
       let response: AxiosResponse<Order> = await this.$http.post(
