@@ -142,56 +142,72 @@ export default defineComponent({
       endLoad();
     },
     async createCoupon() {
-      try {
-        this.loading = true;
-        initLoad();
-        let code = (this.$refs.code as typeof InputField).getValue();
-        let discount = (this.$refs.discount as typeof InputField).getValue();
-        let enabled_until =
-          (this.$refs.enabled_until as typeof InputField).getValue() + "T00:00";
-        console.log(enabled_until);
-        let newCoupon = await this.$http
-          .post<CreateCouponRequest, AxiosResponse<Coupon>>("/admin/coupons", {
-            code,
-            discount,
-            enabled_until,
-          })
-          .catch((e) => {
-            console.log(e);
-            throw e;
-          });
-        console.log(newCoupon);
-        this.rows.push(newCoupon.data);
-        this.toast.success("Coupon code wurde erfolgreich erstellt!");
-        this.loading = false;
-      } catch (e) {
-        this.toast.error(
-          "Beim Erstellen des Coupons ist ein Fehler aufgetreten."
-        );
-      } finally {
-        endLoad();
+      if (this.isEmpty()) {
+        try {
+          this.loading = true;
+          initLoad();
+          let code = (this.$refs.code as typeof InputField).getValue();
+          let discount = (this.$refs.discount as typeof InputField).getValue();
+          let enabled_until =
+            (this.$refs.enabled_until as typeof InputField).getValue() +
+            "T00:00";
+          console.log(enabled_until);
+          let newCoupon = await this.$http
+            .post<CreateCouponRequest, AxiosResponse<Coupon>>(
+              "/admin/coupons",
+              {
+                code,
+                discount,
+                enabled_until,
+              }
+            )
+            .catch((e) => {
+              console.log(e);
+              throw e;
+            });
+          console.log(newCoupon);
+          this.rows.push(newCoupon.data);
+          this.toast.success("Coupon code wurde erfolgreich erstellt!");
+          this.loading = false;
+        } catch (e) {
+          this.toast.error(
+            "Beim Erstellen des Coupons ist ein Fehler aufgetreten."
+          );
+          this.loading = false;
+        } finally {
+          endLoad();
+        }
       }
     },
     isEmpty() {
+      let notEmpty = 0;
       let code = (this.$refs.code as typeof InputField).getValue();
       let discount = (this.$refs.discount as typeof InputField).getValue();
-      let enabled_until =
-        (this.$refs.enabled_until as typeof InputField).getValue() + "T00:00";
-      console.log(enabled_until);
+      let enabled_until = (
+        this.$refs.enabled_until as typeof InputField
+      ).getValue();
       if (code == "") {
         this.codeError = "Couponcodefeld darf nicht leer sein!";
       } else {
         this.codeError = "";
+        notEmpty++;
       }
       if (discount == "") {
         this.discountError = "Rabattfeld darf nicht leer sein!";
       } else {
         this.discountError = "";
+        notEmpty++;
       }
-      if (enabled_until) {
+      if (enabled_until == "") {
         this.dateError = "Datumfeld darf nicht leer sein!";
       } else {
         this.dateError = "";
+        notEmpty++;
+      }
+      if (notEmpty == 3) {
+        return true;
+      } else {
+        return false;
       }
     },
   },
