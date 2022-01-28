@@ -7,7 +7,6 @@
       justify-center
       w-56
       m-0
-      overflow-auto
       text-white
       sidebar
       top-32
