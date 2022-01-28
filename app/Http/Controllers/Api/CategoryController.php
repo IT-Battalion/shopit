@@ -39,24 +39,24 @@ class CategoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param UpdateCategoryRequest $request
-     * @param ProductCategory $productCategory
+     * @param ProductCategory $category
      * @return JsonResponse
      */
-    public function update(UpdateCategoryRequest $request, ProductCategory $productCategory): JsonResponse
+    public function update(UpdateCategoryRequest $request, ProductCategory $category): JsonResponse
     {
         $data = $request->validated();
-        $productCategory->update($data);
-        return response()->json($productCategory);
+        $category->update($data);
+        return response()->json($category->refresh());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param ProductCategory $productCategory
-     * @return JsonResponse
+     * @param ProductCategory $category
+     * @return void
      */
-    public function destroy(ProductCategory $productCategory): JsonResponse
+    public function destroy(ProductCategory $category): void
     {
-        return response()->json($productCategory->delete());
+        $category->delete();
     }
 }
