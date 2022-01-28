@@ -228,8 +228,6 @@ export interface CreateProductRequest {
   name: string,
   description: string,
   price: number,
-  tax: number,
-  thumbnail_id: number,
   product_category_id: number,
 }
 
@@ -239,8 +237,7 @@ export interface ProductImage {
 
 export interface CreateProductImageRequest {
   product_id: number,
-  path: string,
-  type: string
+  image: string,
 }
 
 export interface CreateProductClothingAttributesRequest {
@@ -284,6 +281,11 @@ export interface CreateProductColorAttributesLinkRequest {
 
 export interface CreateHighlightedProductRequest {
   product_id: number,
+}
+
+export interface UpdateProductThumbnailRequest {
+  product_id: number,
+  thumbnail_id: number,
 }
 
 export interface ProductCreateProcessStorage {
