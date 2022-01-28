@@ -3,39 +3,60 @@
     <h2 class="w-full mb-5 text-2xl font-semibold text-center text-white">
       Farben auswahl
     </h2>
-    <InputField labelName="Farbname" class="w-full mx-auto" />
+    <InputField labelName="Farbname" ref="selectedName" class="w-full mx-auto"/>
     <div class="flex flex-row items-center justify-center mb-3">
-      <input type="color" name="color" v-model="selectedColor" />
+      <input type="color" name="color" v-model="selectedColor"/>
       <ButtonField
         iconSrc="/img/add.svg"
         class="ml-5 bg-elevatedColor"
-        @click="colors.push(selectedColor)"
+        @click="addColor"
       />
     </div>
     <div class="flex flex-row overflow-x-auto gap-x-2 shrink-0">
-      <template v-for="color in colors" :key="color">
+      <div v-for="c in this.colors" :key="c.color" class="">
         <span
-          @click="colors.pop()"
-          :style="'background-color:' + color"
-          class="w-10 min-w-[2.5rem] h-10 rounded-2xl hover:cursor-pointer"
+          @click="removeColor(c.color, c.name)"
+          :style="'background-color:' + c.color"
+          class="w-10 min-w-[2.5rem] h-10 rounded-2xl hover:cursor-pointer block"
         ></span>
-      </template>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
+import {defineComponent} from "@vue/runtime-core";
 import ButtonField from "./ButtonField.vue";
 import InputField from "./InputField.vue";
 
 export default defineComponent({
-  components: { ButtonField, InputField },
+  components: {ButtonField, InputField},
   data() {
     return {
-      selectedColor: "#31a8e2",
-      colors: ["#31a8e2"],
+      selectedColor: "#000",
+      colors: [] as { color: string, name: string }[],
     };
+  },
+  methods: {
+    removeColor(color: string, name: string) {
+      this.colors.forEach((value, index, array) => {
+        if (value.color === color && value.name === name) {
+          array.splice(index, 1);
+        }
+      });
+    },
+    addColor() {
+      let obj = {color: this.selectedColor, name: (this.$refs.selectedName as typeof InputField).getValue()}
+      this.colors.push(obj);
+      (this.$refs.selectedName as typeof InputField).setValue("");
+      this.selectedColor = "#000";
+    },
+    setSelectedName(name: string) {
+      (this.$refs.selectedName as typeof InputField).setValue(name);
+    },
+    getSelectedName() {
+      return (this.$refs.selectedName as typeof InputField).getValue();
+    },
   },
 });
 </script>

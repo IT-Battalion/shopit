@@ -285,3 +285,50 @@ export interface CreateProductColorAttributesLinkRequest {
 export interface CreateHighlightedProductRequest {
   product_id: number,
 }
+
+export interface ProductCreateProcessStorage {
+  title?: string,
+  price?: number,
+  description?: string,
+  highlighted?: boolean,
+  images?: string[],
+  category?: {
+    name: string,
+    id: number,
+  },
+  attributes?: {
+    volume?: {
+      enabled?: boolean,
+      value?: {
+        volume?: number
+      },
+    },
+    dimension?: {
+      enabled?: boolean,
+      value?: {
+        width?: number,
+        height?: number,
+        depth?: number,
+      },
+    },
+    clothing?: {
+      enabled?: boolean,
+      value?: {
+        size?: string[],
+      },
+    },
+    color?: {
+      enabled?: boolean,
+      value?: {
+        color?: {
+          colors?: {
+            color: string,
+            name: string,
+          }[],
+          selectedColor?: string,
+          selectedName?: string,
+        }
+      },
+    },
+  },
+}

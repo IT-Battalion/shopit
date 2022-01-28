@@ -13,19 +13,7 @@ import {defineComponent} from "@vue/runtime-core";
 export default defineComponent({
   methods: {
     clearLocalStorage() {
-      window.localStorage.removeItem('product.title');
-      window.localStorage.removeItem('product.price');
-      window.localStorage.removeItem('product.description');
-      window.localStorage.removeItem('product.images');
-      window.localStorage.removeItem('product.category');
-      window.localStorage.removeItem('product.clothing');
-      window.localStorage.removeItem('product.dimension');
-      window.localStorage.removeItem('product.color');
-      window.localStorage.removeItem('product.volume');
-      window.localStorage.removeItem('product.clothings');
-      window.localStorage.removeItem('product.dimensions');
-      window.localStorage.removeItem('product.colors');
-      window.localStorage.removeItem('product.volumes');
+      window.localStorage.removeItem('product');
       this.$router.push({name: 'Admin'});
     }
   }

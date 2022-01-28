@@ -31,6 +31,8 @@ import InputField from "../components/InputField.vue";
 import CancelButton from "../components/buttons/CancelButton.vue";
 import BackwardButton from "../components/buttons/BackwardButton.vue";
 import ForwardButton from "../components/buttons/ForwardButton.vue";
+import {ProductCreateProcessStorage} from "../types/api";
+import {isUndefined} from "lodash";
 
 export default defineComponent({
   components: {
@@ -40,24 +42,37 @@ export default defineComponent({
     ForwardButton,
     InputField,
   },
+  data() {
+    return {
+      productCreateStorage: Object as ProductCreateProcessStorage,
+    }
+  },
   async mounted() {
+    let data = window.localStorage.getItem('product');
+    if (!isUndefined(data) && data != null && data != 'undefined') {
+      this.productCreateStorage = JSON.parse(data);
+    } else {
+      this.productCreateStorage = {};
+    }
     await this.insertStoredData();
   },
   methods: {
     async insertStoredData() {
-      console.log((this.$refs.highlighted as HTMLInputElement));
-      (this.$refs.highlighted as HTMLInputElement).checked = Boolean(window.localStorage.getItem('product.highlighted') ?? false);
-      (this.$refs.product_name as typeof InputField).setValue(window.localStorage.getItem('product.title'));
-      (this.$refs.product_price as typeof InputField).setValue(window.localStorage.getItem('product.price'));
+      if (!isUndefined(this.productCreateStorage)) {
+        (this.$refs.highlighted as HTMLInputElement).checked = Boolean(this.productCreateStorage.highlighted ?? false);
+        (this.$refs.product_name as typeof InputField).setValue(this.productCreateStorage.title ?? "");
+        (this.$refs.product_price as typeof InputField).setValue(this.productCreateStorage.price ?? "");
+      }
     },
     async forward() {
       await this.saveToLocalStorage();
       await this.$router.push({name: 'Add Product images'});
     },
     async saveToLocalStorage() {
-      window.localStorage.setItem('product.title', (this.$refs.product_name as typeof InputField).getValue());
-      window.localStorage.setItem('product.price', (this.$refs.product_price as typeof InputField).getValue());
-      window.localStorage.setItem('product.highlighted', String((this.$refs.highlighted as HTMLInputElement).checked));
+      this.productCreateStorage.highlighted = (this.$refs.highlighted as HTMLInputElement).checked;
+      this.productCreateStorage.title = (this.$refs.product_name as typeof InputField).getValue();
+      this.productCreateStorage.price = (this.$refs.product_price as typeof InputField).getValue();
+      window.localStorage.setItem('product', JSON.stringify(this.productCreateStorage));
     }
   }
 });

@@ -25,6 +25,8 @@ import ButtonField from "../components/ButtonField.vue";
 import CancelButton from "../components/buttons/CancelButton.vue";
 import BackwardButton from "../components/buttons/BackwardButton.vue";
 import ForwardButton from "../components/buttons/ForwardButton.vue";
+import {ProductCreateProcessStorage} from "../types/api";
+import {isUndefined} from "lodash";
 
 export default defineComponent({
   components: {
@@ -35,14 +37,24 @@ export default defineComponent({
     ForwardButton,
     CancelButton,
   },
+  data() {
+    return {
+      productCreateStorage: Object as ProductCreateProcessStorage,
+    };
+  },
   async mounted() {
+    let data = window.localStorage.getItem('product');
+    if (!isUndefined(data) && data != null && data != 'undefined') {
+      this.productCreateStorage = JSON.parse(data);
+    }
     await this.insertStoredData();
   },
   methods: {
     async insertStoredData() {
-      let imgs = window.localStorage.getItem('product.images');
-      if (imgs != null) {
-        (this.$refs.images as typeof UploadImages).Imgs = JSON.parse(imgs);
+      if (!isUndefined(this.productCreateStorage) && !isUndefined(this.productCreateStorage.images)) {
+        if (this.productCreateStorage.images.length > 0) {
+          (this.$refs.images as typeof UploadImages).Imgs = this.productCreateStorage.images;
+        }
       }
     },
     async backward() {
@@ -54,8 +66,8 @@ export default defineComponent({
       await this.$router.push({name: 'Add Product attributes'});
     },
     async saveToLocalStorage() {
-      let images = (this.$refs.images as typeof UploadImages).Imgs;
-      window.localStorage.setItem('product.images', JSON.stringify(images));
+      this.productCreateStorage.images = (this.$refs.images as typeof UploadImages).Imgs;
+      window.localStorage.setItem('product', JSON.stringify(this.productCreateStorage));
     }
   },
 });

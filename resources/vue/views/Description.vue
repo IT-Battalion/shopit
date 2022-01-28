@@ -33,11 +33,12 @@ import {
   CreateProductRequest,
   Product,
   ProductAttribute,
+  ProductCreateProcessStorage,
   ProductImage
 } from "../types/api";
 import {AxiosResponse} from "axios";
 import {endLoad, initLoad} from "../loader";
-import {isNull} from "lodash";
+import {isNull, isUndefined} from "lodash";
 
 export default defineComponent({
   components: {
@@ -48,20 +49,31 @@ export default defineComponent({
     ForwardButton,
     CancelButton,
   },
+  data() {
+    return {
+      productCreateStorage: Object as ProductCreateProcessStorage,
+    };
+  },
   async mounted() {
+    let data = window.localStorage.getItem('product');
+    if (!isUndefined(data) && data != null && data != 'undefined') {
+      this.productCreateStorage = JSON.parse(data);
+    }
     await this.insertStoredData();
   },
   methods: {
     async insertStoredData() {
-      (this.$refs.desc as typeof QuillEditor).setHTML(window.localStorage.getItem('product.description'));
+      if (!isUndefined(this.productCreateStorage)) {
+        (this.$refs.desc as typeof QuillEditor).setHTML(this.productCreateStorage.description ?? "");
+      }
     },
     async backward() {
       await this.saveToLocalStorage();
       await this.$router.push({name: 'Add Product attributes'});
     },
     async saveToLocalStorage() {
-      let description = (this.$refs.desc as typeof QuillEditor).getHTML();
-      window.localStorage.setItem('product.description', description);
+      this.productCreateStorage.description = (this.$refs.desc as typeof QuillEditor).getHTML();
+      window.localStorage.setItem('product', JSON.stringify(this.productCreateStorage));
     },
     async createProduct() {
       initLoad();
@@ -75,19 +87,7 @@ export default defineComponent({
       endLoad();
     },
     async clearLocalStorage() {
-      window.localStorage.removeItem('product.title');
-      window.localStorage.removeItem('product.price');
-      window.localStorage.removeItem('product.description');
-      window.localStorage.removeItem('product.images');
-      window.localStorage.removeItem('product.category');
-      window.localStorage.removeItem('product.clothing');
-      window.localStorage.removeItem('product.dimension');
-      window.localStorage.removeItem('product.color');
-      window.localStorage.removeItem('product.volume');
-      window.localStorage.removeItem('product.clothings');
-      window.localStorage.removeItem('product.dimensions');
-      window.localStorage.removeItem('product.colors');
-      window.localStorage.removeItem('product.volumes');
+      window.localStorage.removeItem('product');
     },
     async createProductImages(productID: number) {
       let images = window.localStorage.getItem('product.images');

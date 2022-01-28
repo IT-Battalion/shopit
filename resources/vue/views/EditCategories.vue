@@ -166,7 +166,7 @@ export default defineComponent({
         );
         this.categories.forEach((value, index, array) => {
           if (value.id === catID) {
-            delete array[index];
+            array.splice(index, 1);
           }
         });
         window.config.categories = this.categories;
