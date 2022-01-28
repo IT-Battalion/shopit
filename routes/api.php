@@ -48,7 +48,7 @@ Route::prefix('user')->name('user.')->group(function () {
 // Admin routes
 Route::prefix('admin')->name('admin.')->group(function () {
     // Invoice routes
-    Route::get('/invoices', [InvoiceController::class, 'all']);
+    Route::get('/invoice', [InvoiceController::class, 'all']);
 
     // User routes
     Route::apiResource('/users', 'UserController')->only(['index', 'show']);

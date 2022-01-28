@@ -21,16 +21,20 @@
         enabled: true,
       }"
     >
-      <template #table-row="download">
-        <router-link
-          v-if="download.column.field === 'download'"
-          :to="{
-            name: 'Invoice detail',
-            params: { id: download.formattedRow['id'] },
-          }"
-          target="_blank"
-        ><img class="object-scale-down w-full h-7" src="/img/info-white.svg"
-        /></router-link>
+      <template #table-row="props">
+        <router-link v-if="props.column.field === 'detail'"
+                     :to="{name: 'Invoice detail', params: {id: props.formattedRow['id']}}"
+                     target="_blank"><img
+          class='object-scale-down h-7 w-full'
+          src='/img/info-white.svg'/></router-link>
+        <router-link v-if="props.column.field === 'download'"
+                     :to="{name: 'Invoice detail', params: {id: props.formattedRow['id']}}"
+                     target="_blank"><img
+          class='object-scale-down h-7 w-full'
+          src='/img/download.svg'/></router-link>
+        <span v-if="props.column.field === 'status'">
+          {{ statusLables[props.formattedRow[props.column.field]] }}
+        </span>
       </template>
     </vue-good-table>
   </div>
@@ -42,6 +46,7 @@ import "vue-good-table-next/dist/vue-good-table-next.css";
 import {Invoice} from "../types/api";
 import {AxiosResponse} from "axios";
 import {endLoad, initLoad} from "../loader";
+import {OrderStatusLables} from "../types/api-values";
 
 export default defineComponent({
   name: "Bills",
@@ -50,6 +55,7 @@ export default defineComponent({
   },
   data() {
     return {
+      statusLables: OrderStatusLables,
       columns: [
         {
           label: "ID",
@@ -63,7 +69,7 @@ export default defineComponent({
         },
         {
           label: "Preis",
-          field: "price",
+          field: "total",
           type: "number",
         },
         {
@@ -78,6 +84,11 @@ export default defineComponent({
           field: "detail",
           html: true,
         },
+        {
+          label: "Download",
+          field: 'download',
+          html: true,
+        },
       ],
       rows: [] as Invoice[],
     };
@@ -89,7 +100,7 @@ export default defineComponent({
     async loadInvoices() {
       initLoad();
       let response: AxiosResponse<Invoice[]> = await this.$http.get(
-        "/admin/invoices"
+        "/admin/invoice"
       );
       this.rows = response.data;
       endLoad();

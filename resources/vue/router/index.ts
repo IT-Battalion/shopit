@@ -147,7 +147,7 @@ const routes: Array<RouteRecordRaw> = [
               import(/* webpackChunkName: "admin" */ "../views/Dashboard.vue"),
           },
           {
-            path: "invoices/",
+            path: "invoices",
             name: "Invoices",
             component: () =>
               import(/* webpackChunkName: "admin" */ "../views/Bills.vue"),

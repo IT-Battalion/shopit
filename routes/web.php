@@ -43,7 +43,7 @@ Route::prefix('profile')->name('profil.')->group(function () {
 // Admin Page
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::view('/', 'vue')->name('profile');
-    Route::view('/bills', 'vue')->name('invoices.index');
+    Route::view('/invoices', 'vue')->name('invoices.index');
     Route::view('/coupons', 'vue')->name('coupons.index');
     Route::view('/categories', 'vue')->name('categories.index');
 

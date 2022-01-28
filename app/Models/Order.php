@@ -47,6 +47,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|Order ordered()
  * @method static Builder|Order query()
  * @method static Builder|Order received()
+ * @method static Builder|Order notOrdered()
  * @method static Builder|Order transactionConfirmed()
  * @method static Builder|Order whereCouponCodeId($value)
  * @method static Builder|Order whereCreatedAt($value)
@@ -201,6 +202,11 @@ class Order extends Model
         return $query->where('status', OrderStatus::ORDERED);
     }
 
+    public function scopeNotOrdered(Builder $query): Builder
+    {
+        return $query->where('status', '!=', OrderStatus::ORDERED);
+    }
+
     protected static function boot()
     {
         parent::boot();
@@ -217,8 +223,8 @@ class Order extends Model
         static::registerModelEvent('ordered', function () {
         });
         static::registerModelEvent('receiving', function (Order $model) {
-            $model->received_at = now();
-            if (!isset($model->received_by)) $model->received_by = Auth::user()->id;
+            $model->products_received_at = now();
+            if (!isset($model->products_received_by)) $model->products_received_by = Auth::user()->id;
         });
         static::registerModelEvent('received', function () {
         });
