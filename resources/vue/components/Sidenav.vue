@@ -1,23 +1,48 @@
 <template>
   <div
-    class="fixed overflow-auto left-0 flex flex-col justify-center w-56 m-0 text-white sidebar top-32 bg-backgroundColor"
+    class="
+      fixed
+      overflow-auto
+      left-0
+      flex flex-col
+      justify-center
+      w-56
+      m-0
+      text-white
+      sidebar
+      top-32
+      bg-backgroundColor
+    "
     ref="sidenav"
   >
-    <div
-      v-for="category in categories"
-      v-bind:key="category.name"
-      class="my-5 py-1 pl-6 hover:bg-sidenavSelected"
-    >
-      <router-link class="flex flex-row items-center my-1 text-left" :to="'/#' + category.name">
-        <span class="object-scale-down h-8 w-8 mr-4 rounded" :style="'background-color:#'+category.color"></span>
+    <template v-for="category in categories" v-bind:key="category.name">
+      <router-link
+        class="
+          flex flex-row
+          items-center
+          text-left
+          py-3
+          ml-3
+          my-3
+          pl-6
+          hover:bg-sidenavSelected hover:text-gray-400
+          rounded-xl
+        "
+        :to="'/#' + category.name"
+        as="div"
+      >
+        <span
+          class="object-scale-down h-8 w-8 mr-4 rounded"
+          :style="'background-color:#' + category.color"
+        ></span>
         {{ category.name }}
       </router-link>
-    </div>
+    </template>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   data() {
@@ -28,17 +53,17 @@ export default defineComponent({
   },
   mounted() {
     this.checkScroll();
-    window.addEventListener('resize', this.checkScroll);
+    window.addEventListener("resize", this.checkScroll);
   },
   beforeUnmount() {
-    window.removeEventListener('resize', this.checkScroll);
+    window.removeEventListener("resize", this.checkScroll);
   },
   methods: {
     checkScroll() {
       const elem = this.$refs.sidenav as HTMLDivElement;
       this.center = elem.scrollHeight <= elem.clientHeight;
     },
-  }
+  },
 });
 </script>
 
