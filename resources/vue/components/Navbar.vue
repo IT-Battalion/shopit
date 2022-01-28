@@ -89,7 +89,7 @@
                         hover:bg-elevatedColor
                       "
                     >
-                      <span class="text-white block px-4 py-3 text-sm"
+                      <span class="text-white block px-5 py-4 text-sm"
                         ><img
                           src="/img/profile.svg"
                           class="object-scale-down mr-4 h-7"
@@ -109,7 +109,7 @@
                         hover:bg-elevatedColor
                       "
                     >
-                      <span class="text-white block px-4 py-3 text-sm"
+                      <span class="text-white block px-5 py-4 text-sm"
                         ><img
                           src="/img/wheel-chair.svg"
                           class="object-scale-down mr-4 h-7"
@@ -126,7 +126,7 @@
                     "
                   >
                     <span
-                      class="text-white block px-4 py-3 text-sm cursor-pointer"
+                      class="text-white block px-5 py-4 text-sm cursor-pointer"
                       @click="logout()"
                     ><img
                       src="/img/logout.svg"
@@ -139,7 +139,7 @@
             </Menu>
           </li>
           <li class="flex flex-row items-center justify-center px-2 py-1 ml-5">
-            <Shoppingcart ref="shoppingCart">
+            <Shoppingcart>
               <img
                 src="/img/shoppingCart.svg"
                 alt=""
@@ -181,7 +181,7 @@ export default defineComponent({
   },
   methods: {
     setOpen(isOpen: boolean) {
-      (this.$refs as any).shoppingCart.setOpen(isOpen);
+      this.$globalBus.emit('shopping-cart.set-open', isOpen);
     },
   },
 });

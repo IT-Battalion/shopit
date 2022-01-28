@@ -4,6 +4,7 @@ import {redirectToLogin} from "../util";
 import {endLoad, initLoad} from "../loader";
 
 export const user = reactive({
+  id: window.initialConfig.user.id ?? '',
   username: window.initialConfig.user.username ?? '',
   name: window.initialConfig.user.name ?? '',
   firstname: window.initialConfig.user.firstname ?? '',
@@ -12,7 +13,7 @@ export const user = reactive({
   employeeType: window.initialConfig.user.employeeType ?? '',
   class: window.initialConfig.user.class ?? '',
   lang: window.initialConfig.user.lang ?? '',
-  isAdmin: window.initialConfig.user.isAdmin ?? false,
+  isAdmin: window.initialConfig.user.is_admin ?? false,
   isLoggedIn: window.initialConfig.user.isLoggedIn ?? false,
 
   error: ''
@@ -23,6 +24,7 @@ const actions = {
     initLoad();
     return Request.login(username, password, stayLoggedIn).then(responseUser => {
       user.isLoggedIn = true;
+      user.id = responseUser.id;
       user.username = responseUser.username;
       user.name = responseUser.name;
       user.firstname = responseUser.firstname;

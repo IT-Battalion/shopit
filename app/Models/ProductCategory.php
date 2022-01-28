@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * App\Models\ProductCategory
@@ -55,7 +56,8 @@ class ProductCategory extends Model
 //        return $this->belongsTo(Icon::class);
 //    }
 
-    public function jsonSerialize()
+    #[ArrayShape(['id' => "int", 'name' => "string", 'icon' => "int[]"])]
+    public function jsonSerialize(): array
     {
         return [
             'id' => $this->id,

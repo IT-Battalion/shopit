@@ -15,14 +15,16 @@ import {orders} from "../../stores/order";
 import {toInteger} from "lodash";
 import AdminOrderProcess from "../../components/AdminOrderProcess.vue";
 export default defineComponent({
+  name: 'User Order Detail',
   components: {
     AdminOrderProcess,
     OrderCreate,
     OrderProcess,
   },
   setup() {
+    const route = useRoute();
     return {
-      route: useRoute(),
+      route,
     }
   },
   async created() {
@@ -34,18 +36,18 @@ export default defineComponent({
   },
   data() {
     return {
+      order: Object as Order,
       orders,
     };
   },
   methods: {
     async loadOrder() {
       let id = this.route.params.id;
-      this.orders[toInteger(id)] = {isLoading: true};
 
       initLoad();
       let response = await this.$http.get<void, AxiosResponse<Order>>(`/user/orders/${id}`);
-      this.orders[toInteger(id)].order = response.data;
-      this.orders[toInteger(id)].isLoading = false;
+      this.orders.set(toInteger(id), response.data);
+      console.log('loaded');
       endLoad();
     },
     subscribe(orderId: string) {

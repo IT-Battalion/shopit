@@ -23,8 +23,7 @@
     >
       <template #table-row="props">
         <router-link v-if="props.column.field === 'detail'"
-                     :to="{name: getCurrentOrderStateRoute(statusLables[props.formattedRow['status']]), params: {id: props.formattedRow['id']}}"
-                     target="_blank"><img
+                     :to="getLink(props.formattedRow['status'], props.formattedRow['id'])" target="_blank"><img
           class='object-scale-down h-7 w-full'
           src='/img/info-white.svg'/></router-link>
         <span v-if="props.column.field === 'status'">
@@ -41,13 +40,15 @@ import "vue-good-table-next/dist/vue-good-table-next.css";
 import {Order} from "../types/api";
 import {endLoad, initLoad} from "../loader";
 import {AxiosResponse} from "axios";
-import {OrderStatusLables} from "../types/api-values";
+import {OrderStatus, OrderStatusLables} from "../types/api-values";
+import {useRoute} from "vue-router";
 
 export default defineComponent({
   components: {
     "vue-good-table": require("vue-good-table-next").VueGoodTable,
   },
   data() {
+    const route = useRoute();
     return {
       columns: [
         {
@@ -70,7 +71,7 @@ export default defineComponent({
         {
           label: "Status",
           field: "status",
-          type: "string",
+          type: "number",
         },
         {
           label: "Detail",
@@ -92,25 +93,20 @@ export default defineComponent({
       this.rows = response.data;
       endLoad();
     },
-    getCurrentOrderStateRoute(status: string) {
+    getLink(status: OrderStatus, id: number) {
       switch (status) {
-        case 'bezahlt': {
-          return 'Order Pay';
-        }
-        case 'bestellt': {
-          return 'Order Ordered';
-        }
-        case 'erhalten': {
-          return 'Order Receive';
-        }
-        case 'übergeben': {
-          return 'Order Handed Over';
-        }
-        case 'erstellt': {
-          return 'Order Created';
-        }
+        case OrderStatus.CREATED:
+          return {name: "Order Created", params: {id}};
+        case OrderStatus.PAID:
+          return {name: "Order Pay", params: {id}};
+        case OrderStatus.ORDERED:
+          return {name: "Order Ordered", params: {id}};
+        case OrderStatus.RECEIVED:
+          return {name: "Order Receive", params: {id}};
+        case OrderStatus.HANDED_OVER:
+          return {name: "Order Handed Over", params: {id}};
       }
-    },
+    }
   }
 });
 </script>

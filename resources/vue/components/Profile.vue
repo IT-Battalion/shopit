@@ -12,7 +12,7 @@
         class="hidden w-1/6 mx-auto my-10 border-2 rounded-full  md:shown border-linecolor"
       />
       <div class="mt-10 text-2xl font-medium text-center text-white md:mt-0">
-        <h2 v-if="user.isAdmin">Administrator</h2>
+        <h2 v-if="user.is_admin">Administrator</h2>
         <h2 v-else>Benutzer</h2>
         <h2 class="mt-3">
           {{ user.username }}

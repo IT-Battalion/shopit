@@ -53,9 +53,9 @@
 
                     <div class="mt-8 flow-root">
                       <ul role="list" class="-my-6" ref="entryList">
-                        <template v-if="!isLoading">
+                        <template v-if="!shoppingCartData.changingProducts">
                           <li
-                            v-for="(entry, index) in shoppingCart.products"
+                            v-for="(entry, index) in shoppingCartData.shoppingCart.products"
                             :key="entry.product.id"
                             class="flex py-6"
                           >
@@ -106,7 +106,7 @@
                       "
                     >
                       <p>Zwischensumme (Netto)</p>
-                      <p v-if="!isLoading">{{ shoppingCart.subtotal }}</p>
+                      <p v-if="!shoppingCartData.isLoading">{{ shoppingCartData.shoppingCart.subtotal }}</p>
                       <Skeletor
                         :pill="true"
                         class="w-1/4"
@@ -122,10 +122,10 @@
                         text-base text-gray-200
                         font-base
                       "
-                      v-if="shoppingCart.discount !== '0,-€'"
+                      v-if="shoppingCartData.shoppingCart.discount !== '0,-€'"
                     >
                       <p>Rabatt (Coupon)</p>
-                      <p v-if="!isLoading">-{{ shoppingCart.discount }}</p>
+                      <p v-if="!shoppingCartData.isLoading">-{{ shoppingCartData.shoppingCart.discount }}</p>
                       <Skeletor
                         :pill="true"
                         class="w-1/4"
@@ -143,7 +143,7 @@
                       "
                     >
                       <p>USt</p>
-                      <p v-if="!isLoading">{{ shoppingCart.tax }}</p>
+                      <p v-if="!shoppingCartData.isLoading">{{ shoppingCartData.shoppingCart.tax }}</p>
                       <Skeletor
                         :pill="true"
                         class="w-1/4"
@@ -162,7 +162,7 @@
                       "
                     >
                       <p>Gesamt</p>
-                      <p v-if="!isLoading">{{ shoppingCart.total }}</p>
+                      <p v-if="!shoppingCartData.isLoading">{{ shoppingCartData.shoppingCart.total }}</p>
                       <Skeletor
                         :pill="true"
                         class="w-1/4"
@@ -241,11 +241,11 @@ import {
   TransitionRoot,
 } from "@headlessui/vue";
 import { XIcon } from "@heroicons/vue/outline";
-import { AxiosResponse } from "axios";
-import { Money, Product, SelectedAttributes, ShoppingCart } from "../types/api";
+import { AddToShoppingCartMessage, RemoveFromShoppingCartMessage } from "../types/api";
 import ShoppingcartItem from "./ShoppingcartItem.vue";
-import { convertProxyValue, objectEquals } from "../util";
-import { isBoolean } from "lodash";
+import useUser from "../stores/user";
+import { addToCart, removeProductFromCart, updatePrices, useShoppingCart } from "../stores/shoppingCart";
+import {useToast} from "vue-toastification";
 
 export default defineComponent({
   components: {
@@ -258,133 +258,65 @@ export default defineComponent({
     XIcon,
   },
   data() {
+    const {user} = useUser();
     return {
-      isLoading: true,
       isOpen: false,
-      shoppingCart: {} as ShoppingCart,
+      shoppingCartData: useShoppingCart(),
       scrollBeforeLoad: { top: 0, left: 0 },
+      user,
     };
   },
   async beforeMount() {
-    this.$globalBus.on("shopping-cart.add", this.addToCart);
-    this.$globalBus.on("shopping-cart.remove", this.removeFromCart);
-    this.$globalBus.on("shopping-cart.load", this.showLoading);
-  },
-  async mounted() {
-    await this.loadCart();
+    this.$globalBus.on('shopping-cart.open', this.open);
+    this.$globalBus.on('shopping-cart.close', this.close);
+    this.$globalBus.on('shopping-cart.toggle', this.toggle);
+    this.$globalBus.on('shopping-cart.set-open', this.setOpen);
+
+    this.$echo.private(`app.user.${this.user.id}.shopping-cart`)
+      .listen('ProductAddedToShoppingCartEvent', async (message: AddToShoppingCartMessage) => {
+        await addToCart(async () => {
+          return {
+            product: message.product,
+            count: message.count,
+            selectedAttributes: message.selected_attributes,
+            productPrice: message.price,
+          };
+        });
+        useToast().info('Ein Produkt wurde dem Einkaufswagen hinzugefügt.');
+        updatePrices(message.subtotal, message.discount, message.tax, message.total);
+      })
+      .listen('ProductRemovedFromShoppingCartEvent', async (message: RemoveFromShoppingCartMessage) => {
+        console.log(message);
+        await removeProductFromCart(async () => {
+          return {
+            product: message.product,
+            selectedAttributes: message.selected_attributes,
+          }
+        });
+        useToast().info('Ein Produkt wurde aus dem Einkaufswagen entfernt.');
+        updatePrices(message.subtotal, message.discount, message.tax, message.total);
+      });
   },
   async unmounted() {
-    this.$globalBus.off("shopping-cart.add", this.addToCart);
-    this.$globalBus.off("shopping-cart.remove", this.removeFromCart);
-    this.$globalBus.off("shopping-cart.load", this.showLoading);
+    this.$globalBus.off('shopping-cart.open', this.open);
+    this.$globalBus.off('shopping-cart.close', this.close);
+    this.$globalBus.off('shopping-cart.toggle', this.toggle);
+    this.$globalBus.off('shopping-cart.set-open', this.setOpen);
+
+    this.$echo.leave(`app.user.${this.user.id}.shopping-cart`);
   },
   methods: {
-    toggleOpen() {
+    open() {
+      this.isOpen = true;
+    },
+    close() {
+      this.isOpen = false;
+    },
+    toggle() {
       this.isOpen = !this.isOpen;
     },
     setOpen(isOpen: boolean) {
       this.isOpen = isOpen;
-    },
-    showLoading(open?: boolean) {
-      this.isLoading = true;
-      if (this.isOpen)
-        this.scrollBeforeLoad = {
-          top: (this.$refs.entryList as HTMLUListElement).scrollTop,
-          left: (this.$refs.entryList as HTMLUListElement).scrollLeft,
-        };
-      if (isBoolean(open)) this.isOpen = open;
-    },
-    async addToCart(event: {
-      product: Product;
-      count: number;
-      selectedAttributes: SelectedAttributes;
-      subtotal: Money;
-      discount: Money;
-      tax: Money;
-      total: Money;
-      price: Money;
-    }) {
-      const {
-        product,
-        count,
-        selectedAttributes,
-        subtotal,
-        discount,
-        tax,
-        total,
-        price,
-      } = event;
-
-      let found = false;
-      for (let entry of this.shoppingCart.products) {
-        if (
-          entry.product.name === product.name &&
-          objectEquals(
-            convertProxyValue(entry.selected_attributes),
-            selectedAttributes
-          )
-        ) {
-          found = true;
-          entry.price = price;
-          entry.count = count;
-        }
-      }
-      if (!found)
-        this.shoppingCart.products.push({
-          product: product,
-          count: count,
-          selected_attributes: selectedAttributes,
-          price: price,
-        });
-
-      this.shoppingCart.subtotal = subtotal;
-      this.shoppingCart.discount = discount;
-      this.shoppingCart.tax = tax;
-      this.shoppingCart.total = total;
-      this.isLoading = false;
-
-      // next tick doesn't work
-      // setTimeout(() => {
-      //   if (this.isOpen)
-      //     (this.$refs.entryList as HTMLUListElement).scrollTo(this.scrollBeforeLoad);
-      // }, 250);
-    },
-    async removeFromCart(event: {
-      index: number;
-      subtotal: Money;
-      discount: Money;
-      tax: Money;
-      total: Money;
-    }) {
-      const { index, subtotal, discount, tax, total } = event;
-
-      this.shoppingCart.products.splice(index, 1);
-
-      this.shoppingCart.subtotal = subtotal;
-      this.shoppingCart.discount = discount;
-      this.shoppingCart.tax = tax;
-      this.shoppingCart.total = total;
-      this.isLoading = false;
-
-      // next tick doesn't work
-      setTimeout(() => {
-        if (this.isOpen)
-          (this.$refs.entryList as HTMLUListElement).scrollTo(
-            this.scrollBeforeLoad
-          );
-      }, 250);
-    },
-    async loadCart() {
-      this.isLoading = true;
-      let response: AxiosResponse<ShoppingCart> = await this.$http.get(
-        "/user/shopping-cart"
-      );
-      this.shoppingCart = response.data;
-      this.isLoading = false;
-      if (this.isOpen)
-        (this.$refs.entryList as HTMLUListElement).scrollTo(
-          this.scrollBeforeLoad
-        );
     },
   },
   watch: {

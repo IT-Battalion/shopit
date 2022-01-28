@@ -22,7 +22,7 @@
       }"
     >
       <template #table-row="props">
-        <router-link :to="{name: 'Admin Order detail', params: {id: props.formattedRow['id']}}"
+        <router-link :to="getLink(props.formattedRow['status'], props.formattedRow['id'])"
                      v-if="props.column.field === 'detail'" target="_blank"><img src='/img/info-white.svg'
                                                                                  class='object-scale-down h-7 w-full'/>
         </router-link>
@@ -40,7 +40,7 @@ import {AxiosResponse} from "axios";
 import "vue-good-table-next/dist/vue-good-table-next.css";
 import {endLoad, initLoad} from "../loader";
 import {Order} from "../types/api";
-import {OrderStatusLables} from "../types/api-values";
+import {OrderStatus, OrderStatusLables} from "../types/api-values";
 
 
 export default defineComponent({
@@ -70,7 +70,7 @@ export default defineComponent({
         {
           label: "Status",
           field: "status",
-          type: "boolean",
+          type: "number",
         },
         {
           label: "Detail",
@@ -91,6 +91,20 @@ export default defineComponent({
       let response: AxiosResponse<Order[]> = await this.$http.get('/admin/orders');
       this.rows = response.data;
       endLoad();
+    },
+    getLink(status: OrderStatus, id: number) {
+      switch (status) {
+        case OrderStatus.CREATED:
+          return {name: "Admin Order Created", params: {id}};
+        case OrderStatus.PAID:
+          return {name: "Admin Order Pay", params: {id}};
+        case OrderStatus.ORDERED:
+          return {name: "Admin Order Ordered", params: {id}};
+        case OrderStatus.RECEIVED:
+          return {name: "Admin Order Received", params: {id}};
+        case OrderStatus.HANDED_OVER:
+          return {name: "Admin Order Handed Over", params: {id}};
+      }
     }
   }
 });

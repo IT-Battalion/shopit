@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * App\Models\OrderVolumeAttribute
@@ -54,7 +55,8 @@ class OrderVolumeAttribute extends Model implements OrderProductAttribute
         return AttributeType::VOLUME;
     }
 
-    public function jsonSerialize()
+    #[ArrayShape(['id' => "int", 'type' => "mixed", 'volume' => "\App\Types\Liter"])]
+    public function jsonSerialize(): array
     {
         return [
             'id' => $this->id,

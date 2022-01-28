@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * App\Models\ClothingProductAttribute
@@ -73,7 +74,8 @@ class ProductClothingAttribute extends Model implements ProductAttributeToOrder
         return OrderClothingAttribute::whereSize($this->size)->first();
     }
 
-    public function jsonSerialize()
+    #[ArrayShape(['id' => "int", 'type' => "mixed", 'size' => "\App\Types\ClothingSize"])]
+    public function jsonSerialize(): array
     {
         return [
             'id' => $this->id,

@@ -68,7 +68,7 @@ const routes: Array<RouteRecordRaw> = [
             ],
           },
           {
-            path: "/order/",
+            path: "/order/:id/",
             name: "order",
             component: () =>
               import(/* webpackChunkName: "orders" */ "../views/layout/Order.vue"),
@@ -77,31 +77,31 @@ const routes: Array<RouteRecordRaw> = [
             },
             children: [
               {
-                path: ":id/created",
+                path: "created",
                 name: "Order Created",
                 component: () =>
                   import(/* webpackChunkName: "orders" */ "../components/OrderCreated.vue"),
               },
               {
-                path: ":id/pay",
+                path: "pay",
                 name: "Order Pay",
                 component: () =>
                   import(/* webpackChunkName: "orders" */ "../components/OrderPay.vue"),
               },
               {
-                path: ":id/ordered",
+                path: "ordered",
                 name: "Order Ordered",
                 component: () =>
                   import(/* webpackChunkName: "orders" */ "../components/OrderOrdered.vue"),
               },
               {
-                path: ":id/received",
+                path: "received",
                 name: "Order Receive",
                 component: () =>
                   import(/* webpackChunkName: "orders" */ "../components/OrderReceived.vue"),
               },
               {
-                path: ":id/handed-over",
+                path: "handed-over",
                 name: "Order Handed Over",
                 component: () =>
                   import(/* webpackChunkName: "orders" */ "../components/OrderHandedOver.vue"),

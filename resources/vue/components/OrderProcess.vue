@@ -2,12 +2,12 @@
   <mq-responsive target="lg+">
     <div class="flex flex-row items-center justify-center w-full gap-5">
       <template v-for="process in orderProcess" :key="process.name">
-        <router-link :to="process.link" v-if="current >= process.step">
+        <router-link :to="process.link" v-if="!state.isLoading && current.valueOf() >= process.step.valueOf()">
           <div class="flex flex-col items-center">
-            <img :src="process.icon_url" :alt="process.name" class="w-10 h-10" />
+            <img :src="process.icon_url" :alt="process.name" class="w-10 h-10"/>
             <a class="mt-3 text-base text-center text-white">{{
-              process.name
-            }}</a>
+                process.name
+              }}</a>
           </div>
           <span
             class="w-20 h-2 bg-white rounded-full"
@@ -16,7 +16,7 @@
         </router-link>
         <template v-else>
           <div class="flex flex-col items-center">
-            <img :src="process.icon_url" :alt="process.name" class="w-10 h-10" />
+            <img :src="process.icon_url" :alt="process.name" class="w-10 h-10"/>
             <a class="mt-3 text-base text-center text-white">{{
                 process.name
               }}</a>
@@ -32,7 +32,7 @@
   <mq-responsive target="md-">
     <div class="flex flex-col items-center gap-5 ml-auto mr-0">
       <template v-for="process in orderProcess" :key="process.name">
-        <img :src="process.icon_url" :alt="process.name" class="w-8 h-8" />
+        <img :src="process.icon_url" :alt="process.name" class="w-8 h-8"/>
         <span
           class="w-1 h-10 bg-white rounded-full"
           v-if="process.name !== 'Abgeschlossen'"
@@ -43,18 +43,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
-import { Order } from "../types/api";
-import { PropType } from "vue";
-import { OrderStatus } from "../types/api-values";
+import {defineComponent} from "@vue/runtime-core";
+import {OrderStatus} from "../types/api-values";
 import {useRoute} from "vue-router";
+import {orders} from "../stores/order";
+import {toInteger} from "lodash";
+import {state} from "../loader";
 
 export default defineComponent({
-  props: {
-    order: {
-      type: Object as PropType<Order>,
-    },
-  },
   data() {
     const route = useRoute();
     const id = route.params.id;
@@ -90,15 +86,28 @@ export default defineComponent({
         step: OrderStatus.HANDED_OVER,
       },
     ];
-    return { orderProcess };
+    return {
+      orderProcess,
+      orders,
+      state,
+    };
   },
   computed: {
     current() {
-      if (this.order === undefined) {
+      let order = this.order;
+      if (order === undefined) {
         return -1;
       } else {
-        return this.order.status;
+        return (this as any).order.status;
       }
+    },
+    order() {
+      return orders.get(toInteger((this as any).id));
+    }
+  },
+  watch: {
+    'state.isLoading'(val) {
+      console.log(orders);
     },
   },
 });

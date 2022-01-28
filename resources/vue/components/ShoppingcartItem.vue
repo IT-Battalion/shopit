@@ -65,6 +65,8 @@ import {
 import LoadingImage from "./LoadingImage.vue";
 import Attributes from "./Attributes.vue";
 import { removeFromShoppingCart } from "../request";
+import {removeIndexFromCart, updatePrices} from "../stores/shoppingCart";
+import {toInteger} from "lodash";
 
 export default defineComponent({
   props: {
@@ -91,17 +93,16 @@ export default defineComponent({
         selected_attributes: this.entry.selected_attributes,
         count: this.count,
       };
-      this.$globalBus.emit("shopping-cart.load");
       try {
-        const response = await removeFromShoppingCart(
+        await removeIndexFromCart(async () => {
+          const response = await removeFromShoppingCart(
           descriptor.name,
           descriptor.count,
           descriptor.selected_attributes
         );
-        let data = response.data;
-        this.$globalBus.emit("shopping-cart.remove", {
-          index: this.index,
-          ...data,
+          let prices = response.data;
+          updatePrices(prices.subtotal, prices.discount, prices.tax, prices.total);
+          return toInteger(this.index);
         });
       } catch (e) {
         console.error(e);

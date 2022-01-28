@@ -161,7 +161,8 @@ import AttributeSelector from "../components/AttributeSelector.vue";
 import InputField from "../components/InputField.vue";
 import { AttributeType } from "../types/api-values";
 import { addToShoppingCart } from "../request";
-import { convertProxyValue } from "../util";
+import { cloneDeep } from "lodash";
+import {addToCart, updatePrices} from "../stores/shoppingCart";
 import ButtonField from "../components/ButtonField.vue";
 
 SwiperCore.use([Navigation, Pagination]);
@@ -207,37 +208,36 @@ export default defineComponent({
       let selectedAttributes: SelectedAttributes = (
         this.$refs.selectedAttributes as typeof AttributeSelector
       ).getSelected();
-      let attributes: SelectedAttributes = convertProxyValue(
-        Object.assign({}, selectedAttributes)
-      );
+      let attributes: SelectedAttributes = cloneDeep(selectedAttributes);
 
       Object.keys(AttributeType)
-        .filter((type) => (selectedAttributes as any)[type])
-        .forEach((type) => {
-          (selectedAttributes as any)[type] = {
-            id: (selectedAttributes as any)[type].id,
-            type: (selectedAttributes as any)[type].type,
-          };
-        });
+        .filter((type) => (attributes as any)[type])
+        .forEach(type => {
+          (attributes as any)[type] = {
+          id: (attributes as any)[type].id,
+          type: (attributes as any)[type].type,
+        };
+      });
 
       const count = (this.$refs.amount as typeof InputField).getValue();
 
       this.$globalBus.emit("shopping-cart.load", true);
       try {
-        const response = await addToShoppingCart(
-          this.product.name,
-          count,
-          selectedAttributes
-        );
-        const newPrices = response.data;
+        await addToCart(async () => {
+          this.$globalBus.emit('shopping-cart.open');
 
-        this.$globalBus.emit("shopping-cart.add", {
-          product: convertProxyValue(this.product),
-          count,
-          selectedAttributes: attributes,
-          ...newPrices,
-        });
-        this.buttonLoading = false;
+          const response = await addToShoppingCart(this.product.name, count, attributes);
+          const data = response.data;
+
+          updatePrices(data.subtotal, data.discount, data.tax, data.total);
+          this.buttonLoading = false;
+          return{
+            product: cloneDeep(this.product),
+            count: data.count,
+            selectedAttributes: cloneDeep(selectedAttributes),
+            productPrice: data.price,
+          };
+        })
       } catch (e) {
         console.log(e);
       }

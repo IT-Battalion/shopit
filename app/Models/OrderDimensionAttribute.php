@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * App\Models\OrderDimensionAttribute
@@ -62,7 +63,8 @@ class OrderDimensionAttribute extends Model implements OrderProductAttribute
         return AttributeType::DIMENSION;
     }
 
-    public function jsonSerialize()
+    #[ArrayShape(['id' => "int", 'type' => "mixed", 'width' => "\App\Types\Meter", 'height' => "\App\Types\Meter", 'depth' => "\App\Types\Meter"])]
+    public function jsonSerialize(): array
     {
         return [
             'id' => $this->id,

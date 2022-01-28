@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * App\Models\OrderColorAttribute
@@ -52,7 +53,8 @@ class OrderColorAttribute extends Model implements OrderProductAttribute
         return AttributeType::COLOR;
     }
 
-    public function jsonSerialize()
+    #[ArrayShape(['id' => "int", 'type' => "mixed", 'name' => "string", 'color' => "string"])]
+    public function jsonSerialize(): array
     {
         return [
             'id' => $this->id,

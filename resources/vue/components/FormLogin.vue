@@ -214,7 +214,6 @@ import userStore from "../stores/user";
 
 export default defineComponent({
   setup() {
-    let isLoading = false;
     const route = useRoute();
     const {user, login} = useUser();
     const router = useRouter();
@@ -243,7 +242,7 @@ export default defineComponent({
       user,
       userStore,
       onSubmit,
-      isLoading,
+      isLoading: false,
     };
   },
   methods: {

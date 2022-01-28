@@ -4,27 +4,29 @@ import { LoDashStatic } from "lodash";
 import Pusher from "pusher-js";
 import { GlobalConfig } from "./types/config";
 import { createApp, reactive } from "vue";
+// @ts-ignore
 import App from "./App.vue";
 import router from "./router";
 import { redirectToLogin } from "./util";
 import { MqResponsive, Vue3Mq } from "vue3-mq";
 import { Skeletor } from "vue-skeletor";
 import 'vue-skeletor/dist/vue-skeletor.css';
-import mitt from "mitt";
+import mitt, {Emitter} from "mitt";
 import { UnwrapNestedRefs } from "@vue/reactivity";
-import Toast  from "vue-toastification";
+import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 
 declare global {
-    interface Window {
-        axios: AxiosInstance,
-        _: LoDashStatic,
-        pusher: Pusher,
-        echo: Echo,
-        initialConfig: GlobalConfig,
-        // @ts-ignore
-        config: UnwrapNestedRefs<GlobalConfig>,
-    }
+  interface Window {
+    axios: AxiosInstance,
+    _: LoDashStatic,
+    pusher: Pusher,
+    echo: Echo,
+    initialConfig: GlobalConfig,
+    // @ts-ignore
+    config: UnwrapNestedRefs<GlobalConfig>,
+    eventBus: Emitter<any>,
+  }
 }
 
 window.config = reactive(window.initialConfig);
@@ -107,7 +109,7 @@ const i18n = createI18n({
 });*/
 
 const bus = mitt();
-
+window.eventBus = bus;
 
 let createdApp = createApp(App);
 createdApp

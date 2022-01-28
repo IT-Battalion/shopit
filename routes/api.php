@@ -29,8 +29,8 @@ Route::apiResource('product', 'ProductController')->only(['index', 'show']);
 
 Route::prefix('user')->name('user.')->group(function () {
     Route::get('/', function (Request $request) {
-        return $request->user();
-    });
+        return response()->json($request->user());
+    })->name('data');
 
     // Shopping Cart routes
     Route::get('/shopping-cart', [ShoppingCartController::class, 'all']);

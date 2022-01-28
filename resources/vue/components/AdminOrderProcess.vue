@@ -2,16 +2,30 @@
   <mq-responsive target="lg+">
     <div class="flex flex-row items-center justify-center w-full gap-5">
       <template v-for="process in orderProcess" :key="process.name">
-        <div class="flex flex-col items-center">
-          <img :src="process.icon_url" :alt="process.name" class="w-10 h-10" />
-          <a class="mt-3 text-base text-center text-white">{{
-            process.name
-          }}</a>
-        </div>
-        <span
-          class="w-20 h-2 bg-white rounded-full"
-          v-if="process.name !== 'Abgeschlossen'"
-        />
+        <router-link :to="process.link" v-if="!isLoading && current.valueOf() >= process.step.valueOf()">
+          <div class="flex flex-col items-center">
+            <img :src="process.icon_url" :alt="process.name" class="w-10 h-10" />
+            <a class="mt-3 text-base text-center text-white">{{
+              process.name
+            }}</a>
+          </div>
+          <span
+            class="w-20 h-2 bg-white rounded-full"
+            v-if="process.name !== 'Abgeschlossen'"
+          />
+        </router-link>
+        <template v-else>
+          <div class="flex flex-col items-center">
+            <img :src="process.icon_url" :alt="process.name" class="w-10 h-10" />
+            <a class="mt-3 text-base text-center text-white">{{
+                process.name
+              }}</a>
+          </div>
+          <span
+            class="w-20 h-2 bg-white rounded-full"
+            v-if="process.name !== 'Abgeschlossen'"
+          />
+        </template>
       </template>
     </div>
   </mq-responsive>
@@ -30,38 +44,35 @@
 
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
-import { Order } from "../types/api";
-import { PropType } from "vue";
 import { OrderStatus } from "../types/api-values";
+import {useRoute} from "vue-router";
+import {orders} from "../stores/order";
+import {toInteger} from "lodash";
+import {state} from "../loader";
 
 export default defineComponent({
-  props: {
-    order: {
-      type: Object as PropType<Order>,
-    },
-  },
   setup() {
     const orderProcess = [
       {
-        name: "Bestellen",
+        name: "Bestellt",
         icon_url: "/img/webshop.svg",
         link: {name: 'Admin Order Created'},
         step: OrderStatus.CREATED,
       },
       {
-        name: "Bezahlen",
+        name: "Geld empfangen",
         icon_url: "/img/paying.svg",
         link: {name: 'Admin Order Pay'},
         step: OrderStatus.PAID,
       },
       {
-        name: "Auf Produkt warten",
+        name: "Auf Produkte warten",
         icon_url: "/img/waiting.svg",
         link: {name: 'Admin Order Ordered'},
         step: OrderStatus.ORDERED,
       },
       {
-        name: "Abholen",
+        name: "Übergeben",
         icon_url: "/img/pickUp.svg",
         link: {name: 'Admin Order Received'},
         step: OrderStatus.RECEIVED,
@@ -73,16 +84,25 @@ export default defineComponent({
         step: OrderStatus.HANDED_OVER,
       },
     ];
-    return { orderProcess };
+    return {
+      orderProcess,
+      orders,
+      isLoading: state.isLoading,
+    };
   },
   computed: {
     current() {
       if (this.order === undefined) {
         return -1;
       } else {
-        return this.order.status;
+        return (this as any).order.status;
       }
     },
+    order() {
+      const route = useRoute();
+      const id = route.params.id;
+      return (this as any).orders.orders[toInteger(id)];
+    }
   },
 });
 </script>

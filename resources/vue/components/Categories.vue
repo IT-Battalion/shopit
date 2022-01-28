@@ -139,7 +139,7 @@ export default defineComponent({
     };
   },
   methods: {
-    toggleOpen() {
+    toggle() {
       this.isOpen = !this.isOpen;
     },
     setOpen(isOpen: boolean) {

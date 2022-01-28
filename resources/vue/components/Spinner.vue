@@ -1,11 +1,13 @@
 <template>
   <svg
     v-if="loading"
-    class="w-5 h-5 animate-spin"
+    class="w-5 h-5 animate-spin animate-reverse"
+    style="animation-direction: alternate-reverse; animation-timing-function: ease-in-out"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
+    title="Loading..."
   >
     <path
       stroke-linecap="round"

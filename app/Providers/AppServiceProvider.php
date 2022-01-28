@@ -8,6 +8,8 @@ use App\Models\ProductColorAttribute;
 use App\Models\ProductDimensionAttribute;
 use App\Models\ProductVolumeAttribute;
 use App\Models\User;
+use App\Services\Attributes\AttributeService;
+use App\Services\Attributes\AttributeServiceInterface;
 use App\Services\Orders\OrderService;
 use App\Services\Orders\OrderServiceInterface;
 use App\Services\Products\ProductService;
@@ -29,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
         ShoppingCartServiceInterface::class => ShoppingCartService::class,
         OrderServiceInterface::class => OrderService::class,
         ProductServiceInterface::class => ProductService::class,
+        AttributeServiceInterface::class => AttributeService::class,
     ];
 
     /**

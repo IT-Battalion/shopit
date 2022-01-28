@@ -89,6 +89,9 @@ use LdapRecord\Models\Model;
  * @property-read Admin|null $disabled_by
  * @property-read CouponCode|null $coupon
  * @property int|null $shopping_cart_coupon_id
+ * @property string $name
+ * @property string $employeeType
+ * @property string|null $class
  */
 class User extends Authenticatable implements LdapAuthenticatable
 {

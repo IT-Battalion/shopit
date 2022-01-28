@@ -7,6 +7,7 @@ export interface LoginRequestData {
 }
 
 export interface LoginResponseData {
+  id: number,
   redirect_to: string,
   username: string,
   name: string,
@@ -20,6 +21,7 @@ export interface LoginResponseData {
 }
 
 export interface User {
+  id?: number,
   username?: string,
   name?: string,
   firstname?: string,
@@ -28,7 +30,7 @@ export interface User {
   employeeType?: string,
   class?: string,
   lang?: string,
-  isAdmin?: boolean,
+  is_admin?: boolean,
   isLoggedIn?: boolean,
 }
 
@@ -130,6 +132,7 @@ export interface ShoppingCartEntry {
 
 export interface ShoppingCart {
   products: [ShoppingCartEntry],
+  coupon: string,
   subtotal: string,
   discount: string,
   tax: string,
@@ -143,6 +146,28 @@ export interface AddToShoppingCartRequest {
 }
 
 export interface AddToShoppingCartResponse {
+  count: number,
+  subtotal: Money,
+  discount: Money,
+  tax: Money,
+  total: Money,
+  price: Money,
+}
+
+export interface AddToShoppingCartMessage {
+  product: Product,
+  count: number,
+  selected_attributes: SelectedAttributes,
+  subtotal: Money,
+  discount: Money,
+  tax: Money,
+  total: Money,
+  price: Money,
+}
+
+export interface RemoveFromShoppingCartMessage {
+  product: Product,
+  selected_attributes: SelectedAttributes,
   subtotal: Money,
   discount: Money,
   tax: Money,
@@ -156,7 +181,7 @@ export interface RemoveFromShoppingCartRequest {
   selected_attributes: SelectedAttributes,
 }
 
-export interface RemoveFromShoppingCartResponse {
+export interface ShoppingCartPrices {
   subtotal: Money,
   discount: Money,
   tax: Money,

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use AjCastro\EagerLoadPivotRelations\EagerLoadPivotBuilder;
 use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
 use App\Contracts\ConvertableToOrder;
 use App\Traits\TracksModification;
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * App\Models\Product
@@ -69,7 +71,8 @@ use Illuminate\Support\Facades\DB;
  * @property-read Collection|ProductVolumeAttribute[] $productVolumeAttributes
  * @property-read int|null $product_volume_attributes_count
  * @property int $available
- * @method static \AjCastro\EagerLoadPivotRelations\EagerLoadPivotBuilder|Product whereAvailable($value)
+ * @property ShoppingCartEntry $pivot
+ * @method static EagerLoadPivotBuilder|Product whereAvailable($value)
  */
 class Product extends Model implements ConvertableToOrder
 {
@@ -201,7 +204,8 @@ class Product extends Model implements ConvertableToOrder
         return null;
     }
 
-    public function jsonSerialize()
+    #[ArrayShape(['id' => "int", 'name' => "string", 'description' => "string", 'price' => "\App\Types\Money", 'tax' => "mixed", 'thumbnail' => "int[]|null[]", 'images' => "mixed", 'attributes' => "\Illuminate\Database\Eloquent\Collection"])]
+    public function jsonSerialize(): array
     {
         return [
             'id' => $this->id,

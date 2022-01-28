@@ -4,6 +4,7 @@ namespace App\Types;
 
 use App\Exceptions\InvalidUnitException;
 use Illuminate\Contracts\Database\Eloquent\Castable;
+use JetBrains\PhpStorm\ArrayShape;
 use JsonSerializable;
 
 class Unit implements Castable, JsonSerializable
@@ -61,7 +62,8 @@ class Unit implements Castable, JsonSerializable
         return new UnitCast(static::class);
     }
 
-    public function jsonSerialize()
+    #[ArrayShape(['value' => "float", 'unit' => "string"])]
+    public function jsonSerialize(): array
     {
         return [
             'value' => $this->getOptimalValue(),

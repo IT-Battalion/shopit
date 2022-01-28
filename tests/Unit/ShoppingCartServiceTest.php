@@ -21,6 +21,7 @@ beforeEach(function () {
 });
 
 function generateShoppingCartCoupon(User $user) {
+    /** @var CouponCode $coupon */
     $coupon = CouponCode::factory()->create(['discount' => 0.20]);
     $user->shopping_cart_coupon_id = $coupon->id;
 }
@@ -30,42 +31,57 @@ function generateShoppingCartCoupon(User $user) {
 // =============================
 
 test('add product with no attributes to shopping cart', function () {
+    /** @var User $user */
     $user = User::factory()->create();
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
     $this->actingAs($user);
 
+    /** @var Product $product */
     $product = Product::factory()->create(['name' => 'TestProduct']);
-    $service->addProduct($product, collect([]));
+    $newAmount = $service->addProduct($product, collect([]));
 
+    expect($newAmount)->toBe(1);
     expect($service->hasProductInShoppingCart($product, collect([])))->toBeTrue();
+    expect($service->getAmountOfProduct($product, collect([])))->toBe(1);
     expect($user->shopping_cart->count())->toBe(1);
 });
 
-test('add two product with no attributes to shopping cart', function () {
+test('add two products with no attributes to shopping cart', function () {
+    /** @var User $user */
     $user = User::factory()->create();
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
     $this->actingAs($user);
 
+    /** @var Product $product */
     $product = Product::factory()->create(['name' => 'TestProduct']);
     $service->addProduct($product, collect([]));
-    $service->addProduct($product, collect([]), amount: 2);
+    $newAmount = $service->addProduct($product, collect([]), amount: 2);
 
+    expect($newAmount)->toBe(3);
     expect($service->hasProductInShoppingCart($product, collect([])))->toBeTrue();
     expect($service->getAmountOfProduct($product, collect([])))->toBe(3);
     expect($user->shopping_cart->count())->toBe(1);
 });
 
 test('add product with attributes to shopping cart', function () {
+    /** @var User $user */
     $user = User::factory()->create();
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
     $this->actingAs($user);
 
+    /** @var ProductClothingAttribute $clothingAttribute */
     $clothingAttribute = ProductClothingAttribute::factory()->create();
+    /** @var ProductDimensionAttribute $dimensionAttribute */
     $dimensionAttribute = ProductDimensionAttribute::factory()->create();
+    /** @var ProductVolumeAttribute $volumeAttribute */
     $volumeAttribute = ProductVolumeAttribute::factory()->create();
+    /** @var ProductColorAttribute $colorAttribute */
     $colorAttribute = ProductColorAttribute::factory()->create();
 
     $attributes = collect([
@@ -75,6 +91,7 @@ test('add product with attributes to shopping cart', function () {
         AttributeType::COLOR->value => $colorAttribute->id,
     ]);
 
+    /** @var Product $product */
     $product = Product::factory()->create(['name' => 'TestProduct']);
 
     $product->productClothingAttributes()->attach($clothingAttribute);
@@ -82,21 +99,28 @@ test('add product with attributes to shopping cart', function () {
     $product->productVolumeAttributes()->attach($volumeAttribute);
     $product->productColorAttributes()->attach($colorAttribute);
 
-    $service->addProduct($product, $attributes);
+    $newAmount = $service->addProduct($product, $attributes);
 
+    expect($newAmount)->toBe(1);
     expect($service->hasProductInShoppingCart($product, $attributes))->toBeTrue();
     expect($user->shopping_cart->count())->toBe(1);
 });
 
 test('add two products with attributes to shopping cart', function () {
+    /** @var User $user */
     $user = User::factory()->create();
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
     $this->actingAs($user);
 
+    /** @var ProductClothingAttribute $clothingAttribute */
     $clothingAttribute = ProductClothingAttribute::factory()->create();
+    /** @var ProductDimensionAttribute $dimensionAttribute */
     $dimensionAttribute = ProductDimensionAttribute::factory()->create();
+    /** @var ProductVolumeAttribute $volumeAttribute */
     $volumeAttribute = ProductVolumeAttribute::factory()->create();
+    /** @var ProductColorAttribute $colorAttribute */
     $colorAttribute = ProductColorAttribute::factory()->create();
 
     $attributes = collect([
@@ -106,6 +130,7 @@ test('add two products with attributes to shopping cart', function () {
         AttributeType::COLOR->value => $colorAttribute->id,
     ]);
 
+    /** @var Product $product */
     $product = Product::factory()->create(['name' => 'TestProduct']);
 
     $product->productClothingAttributes()->attach($clothingAttribute);
@@ -114,52 +139,72 @@ test('add two products with attributes to shopping cart', function () {
     $product->productColorAttributes()->attach($colorAttribute);
 
     $service->addProduct($product, $attributes);
-    $service->addProduct($product, $attributes, amount: 2);
-    $service->addProduct($product, collect([]));
+    $amount1 = $service->addProduct($product, $attributes, amount: 2);
+    $amount2 = $service->addProduct($product, collect([]));
+
+    expect($amount1)->toBe(3);
+    expect($amount2)->toBe(1);
 
     expect($service->hasProductInShoppingCart($product, $attributes))->toBeTrue();
     expect($service->hasProductInShoppingCart($product, collect([])))->toBeTrue();
+
     expect($service->getAmountOfProduct($product, $attributes))->toBe(3);
+    expect($service->getAmountOfProduct($product, collect([])))->toBe(1);
+
     expect($user->shopping_cart->count())->toBe(2);
 });
 
 test('add some products to the shopping cart', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $amount = 2;
 
     $this->actingAs($user);
 
+    /** @var Product $product */
     $product = Product::factory()->create(['name' => 'TestProduct']);
+    /** @var Product $product2 */
     $product2 = Product::factory()->create(['name' => 'TestProduct2']);
 
-    $service->addProduct($product, collect([]), $amount);
-    $service->addProduct($product2, collect([]), $amount);
+    $amount1 = $service->addProduct($product, collect([]), $amount);
+    $amount2 = $service->addProduct($product2, collect([]), $amount);
+
+    expect($amount1)->toBe(2);
+    expect($amount2)->toBe(2);
 
     expect($service->hasProductInShoppingCart($product, collect([]), $amount))->toBeTrue();
     expect($service->hasProductInShoppingCart($product2, collect([]), $amount))->toBeTrue();
 });
 
 test('add a product 0 times to the shopping cart', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var Product $product */
     $product = Product::factory()->state(['name' => 'TestProduct'])->create();
 
-    $service->addProduct($product, collect([]), 0);
+    $amount = $service->addProduct($product, collect([]), 0);
 
+    expect($amount)->toBe(0);
     expect($service->hasProductInShoppingCart($product, collect([])))->toBeFalse();
 });
 
 test('add an invalid amount of a product to the shopping cart', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var Product $product */
     $product = Product::factory()->state(['name' => 'TestProduct'])->create();
 
     $service->addProduct($product, collect([]), -10);
@@ -170,30 +215,40 @@ test('add an invalid amount of a product to the shopping cart', function () {
 // =============================
 
 test('remove a product with no attributes from the shopping cart', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
     $product = saturateShoppingCart($user)->first();
 
-    $service->removeProduct($product, collect([]));
+    $amount = $service->removeProduct($product, collect([]));
 
+    expect($amount)->toBe(0);
     expect($service->hasProductInShoppingCart($product, collect([])))->toBeFalse();
     expect($user->shopping_cart->count())->toBe(1);
 });
 
 test('remove a product with attributes from the shopping cart', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var ProductClothingAttribute $clothingAttribute */
     $clothingAttribute = ProductClothingAttribute::factory()->create();
+    /** @var ProductDimensionAttribute $dimensionAttribute */
     $dimensionAttribute = ProductDimensionAttribute::factory()->create();
+    /** @var ProductVolumeAttribute $volumeAttribute */
     $volumeAttribute = ProductVolumeAttribute::factory()->create();
+    /** @var ProductColorAttribute $colorAttribute */
     $colorAttribute = ProductColorAttribute::factory()->create();
 
+    /** @var Product $product */
     $product = Product::factory()->create();
 
     $product->productClothingAttributes()->attach($clothingAttribute);
@@ -207,14 +262,17 @@ test('remove a product with attributes from the shopping cart', function () {
         AttributeType::VOLUME->value => $volumeAttribute->id,
         AttributeType::COLOR->value => $colorAttribute->id,
     ]), 2);
-    $service->addProduct($product, collect([]));
+    $amount1 = $service->addProduct($product, collect([]));
 
-    $service->removeProduct($product, collect([
+    $amount2 = $service->removeProduct($product, collect([
         AttributeType::CLOTHING->value => $clothingAttribute->id,
         AttributeType::DIMENSION->value => $dimensionAttribute->id,
         AttributeType::VOLUME->value => $volumeAttribute->id,
         AttributeType::COLOR->value => $colorAttribute->id,
     ]));
+
+    expect($amount1)->toBe(1);
+    expect($amount2)->toBe(0);
 
     expect($service->hasProductInShoppingCart($product, collect([
         AttributeType::CLOTHING->value => $clothingAttribute->id,
@@ -223,40 +281,53 @@ test('remove a product with attributes from the shopping cart', function () {
         AttributeType::COLOR->value => $colorAttribute->id,
     ])))->toBeFalse();
     expect($service->hasProductInShoppingCart($product, collect([])))->toBeTrue();
+    expect($service->getAmountOfProduct($product, collect([])))->toBe(1);
     expect($user->shopping_cart->count())->toBe(1);
 });
 
 test('remove a specific number of items from the shopping cart', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var Product $product */
     $product = Product::factory()->create();
 
-    $service->addProduct($product, collect([]), 2);
+    $amount1 = $service->addProduct($product, collect([]), 2);
 
-    $service->removeProduct($product, collect([]), 1);
+    $amount2 = $service->removeProduct($product, collect([]), 1);
+
+    expect($amount1)->toBe(2);
+    expect($amount2)->toBe(1);
 
     expect($service->hasProductInShoppingCart($product, collect([]), 1))->toBeTrue();
 });
 
 test('remove all items from the shopping cart', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var ProductClothingAttribute $clothingAttribute */
     $clothingAttribute = ProductClothingAttribute::factory()->create();
 
     $product = saturateShoppingCart($user)->first();
     $product->productClothingAttributes()->attach($clothingAttribute);
 
-    $service->addProduct($product, collect([
+    $amount1 = $service->addProduct($product, collect([
         AttributeType::CLOTHING->value => $clothingAttribute->id,
     ]));
 
-    $service->removeProduct($product, collect([]), 2);
+    $amount2 = $service->removeProduct($product, collect([]), 2);
+
+    expect($amount1)->toBe(1);
+    expect($amount2)->toBe(0);
 
     expect($service->hasProductInShoppingCart($product, collect([])))->toBeFalse();
     expect($service->hasProductInShoppingCart($product, collect([
@@ -265,31 +336,39 @@ test('remove all items from the shopping cart', function () {
 });
 
 test('remove no items from the shopping cart', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var ProductClothingAttribute $clothingAttribute */
     $clothingAttribute = ProductClothingAttribute::factory()->create();
 
     $product = saturateShoppingCart($user)->first();
     $product->productClothingAttributes()->attach($clothingAttribute);
 
-    $service->addProduct($product, collect([
+    $amount1 = $service->addProduct($product, collect([
         AttributeType::CLOTHING->value => $clothingAttribute->id,
     ]));
 
-    $service->removeProduct($product, collect([]), 0);
+    $amount2 = $service->removeProduct($product, collect([]), 0);
+
+    expect($amount1)->toBe(1);
+    expect($amount2)->toBe(0);
 
     expect($service->hasProductInShoppingCart($product, collect([]), 2))->toBeTrue();
     expect($service->hasProductInShoppingCart($product, collect([
         AttributeType::CLOTHING->value => $clothingAttribute->id,
-    ])))->toBeTrue;
+    ])))->toBeTrue();
 });
 
 test('remove an invalid number of items from the shopping cart', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
@@ -298,12 +377,15 @@ test('remove an invalid number of items from the shopping cart', function () {
     $service->removeProduct($product, collect([]), -10);
 })->throws(IllegalArgumentException::class);
 
-test('remove a product from the shopping cart that isn\'t even in the shoppping cart', function () {
+test('remove a product from the shopping cart that isn\'t even in the shopping cart', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var Product $product */
     $product = Product::factory()->create();
 
     $service->removeProduct($product, collect([]), -10);
@@ -316,22 +398,28 @@ test('remove a product from the shopping cart that isn\'t even in the shoppping 
 // =============================
 
 test('set the amount of a product to an invalid number', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var Product $product */
     $product = Product::factory()->create();
 
     $service->setProductAmount($product, collect([]), -20);
 })->throws(IllegalArgumentException::class);
 
 test('set the amount of an product that isn\'t in the shopping cart ', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var Product $product */
     $product = Product::factory()->create();
 
     $service->setProductAmount($product, collect([]), 2);
@@ -340,20 +428,26 @@ test('set the amount of an product that isn\'t in the shopping cart ', function 
 });
 
 test('set the amount of an product that isn\'t in the shopping cart to 0', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var ProductClothingAttribute $clothingAttribute */
     $clothingAttribute = ProductClothingAttribute::factory()->create();
 
+    /** @var Product $product */
     $product = Product::factory()->create();
     $product->productClothingAttributes()->attach($clothingAttribute);
 
-    $service->addProduct($product, collect([
+    $amount = $service->addProduct($product, collect([
         AttributeType::CLOTHING->value => $clothingAttribute->id,
     ]));
     $service->setProductAmount($product, collect([]), 0);
+
+    expect($amount)->toBe(1);
 
     expect($service->hasProductInShoppingCart($product, collect([])))->toBeFalse();
     expect($service->hasProductInShoppingCart($product, collect([
@@ -362,22 +456,29 @@ test('set the amount of an product that isn\'t in the shopping cart to 0', funct
 });
 
 test('set the amount of an product that is in the shopping cart', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var ProductClothingAttribute $clothingAttribute */
     $clothingAttribute = ProductClothingAttribute::factory()->create();
 
+    /** @var Product $product */
     $product = Product::factory()->create();
     $product->productClothingAttributes()->attach($clothingAttribute);
 
-    $service->addProduct($product, collect([]));
-    $service->addProduct($product, collect([
+    $amount1 = $service->addProduct($product, collect([]));
+    $amount2 = $service->addProduct($product, collect([
         AttributeType::CLOTHING->value => $clothingAttribute->id,
     ]), 2);
 
     $service->setProductAmount($product, collect([]), 4);
+
+    expect($amount1)->toBe(1);
+    expect($amount2)->toBe(2);
 
     expect($service->hasProductInShoppingCart($product, collect([]), 2))->toBeFalse()
     ->and($service->hasProductInShoppingCart($product, collect([]), 4))->toBeTrue();
@@ -387,22 +488,29 @@ test('set the amount of an product that is in the shopping cart', function () {
 });
 
 test('set the amount of an product that is in the shopping cart to 0', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var ProductClothingAttribute $clothingAttribute */
     $clothingAttribute = ProductClothingAttribute::factory()->create();
 
+    /** @var Product $product */
     $product = Product::factory()->create();
     $product->productClothingAttributes()->attach($clothingAttribute);
 
-    $service->addProduct($product, collect([]), 2);
-    $service->addProduct($product, collect([
+    $amount1 = $service->addProduct($product, collect([]), 2);
+    $amount2 = $service->addProduct($product, collect([
         AttributeType::CLOTHING->value => $clothingAttribute->id,
     ]), 2);
 
     $service->setProductAmount($product, collect([]), 0);
+
+    expect($amount1)->toBe(2);
+    expect($amount2)->toBe(2);
 
     expect($service->hasProductInShoppingCart($product, collect([]), 2))->toBeFalse()
         ->and($service->hasProductInShoppingCart($product, collect([])))->toBeFalse();
@@ -417,7 +525,9 @@ test('set the amount of an product that is in the shopping cart to 0', function 
 
 
 test('get total price without taxes and without missing coupon', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
+    /** @var User $user */
     $user = User::factory()->create();
 
     $this->actingAs($user);
@@ -431,8 +541,10 @@ test('get total price without taxes and without missing coupon', function () {
 });
 
 test('get total price without taxes and without existing coupon', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
@@ -447,8 +559,10 @@ test('get total price without taxes and without existing coupon', function () {
 });
 
 test('get total price without taxes and with missing coupon', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
@@ -461,8 +575,10 @@ test('get total price without taxes and with missing coupon', function () {
 });
 
 test('get total price without taxes and with existing coupon', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
@@ -481,8 +597,10 @@ test('get total price without taxes and with existing coupon', function () {
 // =============================
 
 test('get total price with taxes and without missing coupon', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
@@ -495,8 +613,10 @@ test('get total price with taxes and without missing coupon', function () {
 });
 
 test('get total price with taxes and without existing coupon', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
@@ -511,8 +631,10 @@ test('get total price with taxes and without existing coupon', function () {
 });
 
 test('get total price with taxes and with missing coupon', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
@@ -525,8 +647,10 @@ test('get total price with taxes and with missing coupon', function () {
 });
 
 test('get total price with taxes and with existing coupon', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
@@ -546,8 +670,10 @@ test('get total price with taxes and with existing coupon', function () {
 // =============================
 
 test('get the tax without coupon', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
@@ -561,8 +687,10 @@ test('get the tax without coupon', function () {
 });
 
 test('get the tax with coupon', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
@@ -582,8 +710,10 @@ test('get the tax with coupon', function () {
 // =============================
 
 test('get the discount without coupon', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
@@ -597,8 +727,10 @@ test('get the discount without coupon', function () {
 });
 
 test('get the discount with coupon', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
@@ -619,11 +751,14 @@ test('get the discount with coupon', function () {
 // =============================
 
 test('get product price without taxes and without missing coupon', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var Product $product */
     $product = Product::factory()->create(['price' => new Money(20), 'tax' => '0.2']);
     $service->addProduct($product, collect([]), 2);
 
@@ -635,11 +770,14 @@ test('get product price without taxes and without missing coupon', function () {
 });
 
 test('get product price without taxes and without existing coupon', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var Product $product */
     $product = Product::factory()->create(['price' => new Money(20), 'tax' => '0.2']);
     $service->addProduct($product, collect([]), 2);
 
@@ -653,11 +791,14 @@ test('get product price without taxes and without existing coupon', function () 
 });
 
 test('get product price without taxes and with missing coupon', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var Product $product */
     $product = Product::factory()->create(['price' => new Money(20), 'tax' => '0.2']);
     $service->addProduct($product, collect([]), 2);
 
@@ -669,11 +810,14 @@ test('get product price without taxes and with missing coupon', function () {
 });
 
 test('get product price without taxes and with existing coupon', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var Product $product */
     $product = Product::factory()->create(['price' => new Money(20), 'tax' => '0.2']);
     $service->addProduct($product, collect([]), 2);
 
@@ -692,11 +836,14 @@ test('get product price without taxes and with existing coupon', function () {
 // =============================
 
 test('get product price with taxes and without missing coupon', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var Product $product */
     $product = Product::factory()->create(['price' => new Money(20), 'tax' => '0.2']);
     $service->addProduct($product, collect([]), 2);
 
@@ -708,11 +855,14 @@ test('get product price with taxes and without missing coupon', function () {
 });
 
 test('get product price with taxes and without existing coupon', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var Product $product */
     $product = Product::factory()->create(['price' => new Money(20), 'tax' => '0.2']);
     $service->addProduct($product, collect([]), 2);
 
@@ -726,11 +876,14 @@ test('get product price with taxes and without existing coupon', function () {
 });
 
 test('get product price with taxes and with missing coupon', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var Product $product */
     $product = Product::factory()->create(['price' => new Money(20), 'tax' => '0.2']);
     $service->addProduct($product, collect([]), 2);
 
@@ -742,11 +895,14 @@ test('get product price with taxes and with missing coupon', function () {
 });
 
 test('get product price with taxes and with existing coupon', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var Product $product */
     $product = Product::factory()->create(['price' => new Money(20), 'tax' => '0.2']);
     $service->addProduct($product, collect([]), 2);
 
@@ -764,11 +920,14 @@ test('get product price with taxes and with existing coupon', function () {
 // =============================
 
 test('check if product is in a shopping cart', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var Product $product */
     $product = Product::factory()->create();
     $user->shopping_cart()->attach($product, ['count' => 2]);
 
@@ -778,13 +937,17 @@ test('check if product is in a shopping cart', function () {
 });
 
 test('check if product is not in the shopping cart', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var ProductClothingAttribute $clothingAttribute */
     $clothingAttribute = ProductClothingAttribute::factory()->create();
 
+    /** @var Product $product */
     $product = Product::factory()->create();
     $product->productClothingAttributes()->attach($clothingAttribute);
 
@@ -798,13 +961,17 @@ test('check if product is not in the shopping cart', function () {
 });
 
 test('check if a specified amount of a product is in the shopping cart', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var ProductClothingAttribute $clothingAttribute */
     $clothingAttribute = ProductClothingAttribute::factory()->create();
 
+    /** @var Product $product */
     $product = Product::factory()->create();
     $product->productClothingAttributes()->attach($clothingAttribute);
 
@@ -819,13 +986,17 @@ test('check if a specified amount of a product is in the shopping cart', functio
 });
 
 test('check if a specified amount of a product isn\'t in the shopping cart', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var ProductClothingAttribute $clothingAttribute */
     $clothingAttribute = ProductClothingAttribute::factory()->create();
 
+    /** @var Product $product */
     $product = Product::factory()->create();
     $product->productClothingAttributes()->attach($clothingAttribute);
 
@@ -840,11 +1011,14 @@ test('check if a specified amount of a product isn\'t in the shopping cart', fun
 });
 
 test('check if 0 of a product is still in the shopping cart', function () {
+    /** @var ShoppingCartServiceInterface $service */
     $service = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    /** @var Product $product */
     $product = Product::factory()->create();
     $user->shopping_cart()->attach($product, ['count' => 0]);
 
@@ -854,8 +1028,10 @@ test('check if 0 of a product is still in the shopping cart', function () {
 });
 
 test('total shopping cart price', function () {
+    /** @var ShoppingCartServiceInterface $shoppingCart */
     $shoppingCart = $this->app->make(ShoppingCartServiceInterface::class);
 
+    /** @var User $user */
     $user = User::factory()->create();
     $this->actingAs($user);
 

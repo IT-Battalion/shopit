@@ -17,29 +17,43 @@ class ProductAddedToShoppingCartEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public array $product;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
     public function __construct(
-        public Product          $product,
+        Product                 $product,
         public int              $count,
         public array|Collection $selected_attributes,
-        public Money $subtotal,
-        public Money $discount,
-        public Money $tax,
-        public Money $total,
+        public Money            $price,
+        public Money            $subtotal,
+        public Money            $discount,
+        public Money            $tax,
+        public Money            $total,
         private int|User|null   $user = null)
     {
         if (is_null($user)) {
             $this->user = Auth::user();
-        } elseif(is_int($this->user)) {
+        } else if (is_int($this->user)) {
             $this->user = User::find($this->user);
         }
+
+        $this->product = $product->jsonSerialize();
+
+        if (is_array($this->selected_attributes)) {
+            $this->selected_attributes = collect($this->selected_attributes);
+        }
+
+        $this->selected_attributes = $this->selected_attributes->map(function ($attribute) {
+            return $attribute->jsonSerialize();
+        });
     }
 
-    public function broadcastWhen() {
+    public function broadcastWhen()
+    {
         return $this->user !== null;
     }
 
@@ -50,6 +64,6 @@ class ProductAddedToShoppingCartEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel(`app.user.${$this->user->id}.shopping-cart`);
+        return new PrivateChannel("app.user.{$this->user->id}.shopping-cart");
     }
 }

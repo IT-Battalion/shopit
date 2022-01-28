@@ -3,7 +3,7 @@ import {
   AddToShoppingCartRequest,
   AddToShoppingCartResponse,
   LoginRequestData,
-  LoginResponseData, RemoveFromShoppingCartRequest, RemoveFromShoppingCartResponse,
+  LoginResponseData, RemoveFromShoppingCartRequest, ShoppingCartPrices,
   SelectedAttributes
 } from "./types/api"
 
@@ -38,7 +38,7 @@ export async function addToShoppingCart(name: string, count: number, selectedAtt
 }
 
 export async function removeFromShoppingCart(name: string, count: number, selectedAttributes: SelectedAttributes) {
-  return window.axios.post<RemoveFromShoppingCartRequest, AxiosResponse<RemoveFromShoppingCartResponse>>('/user/shopping-cart/remove', {
+  return window.axios.post<RemoveFromShoppingCartRequest, AxiosResponse<ShoppingCartPrices>>('/user/shopping-cart/remove', {
     name,
     count,
     selected_attributes: selectedAttributes,

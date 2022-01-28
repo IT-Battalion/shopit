@@ -2,6 +2,10 @@
 
 namespace App\Types;
 
+use App\Models\ProductClothingAttribute;
+use App\Models\ProductColorAttribute;
+use App\Models\ProductDimensionAttribute;
+use App\Models\ProductVolumeAttribute;
 use App\Traits\GetRandomEnumCase;
 
 enum AttributeType: int
@@ -27,4 +31,13 @@ enum AttributeType: int
      * Product color
      */
     case COLOR = 3;
+
+    function getModelClass() {
+        return match ($this) {
+            AttributeType::CLOTHING => ProductClothingAttribute::class,
+            AttributeType::DIMENSION => ProductDimensionAttribute::class,
+            AttributeType::VOLUME => ProductVolumeAttribute::class,
+            AttributeType::COLOR => ProductColorAttribute::class,
+        };
+    }
 }

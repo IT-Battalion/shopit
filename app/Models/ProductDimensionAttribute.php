@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * App\Models\DimensionProductAttribute
@@ -90,7 +91,8 @@ class ProductDimensionAttribute extends Model implements ProductAttributeToOrder
             ->first();
     }
 
-    public function jsonSerialize()
+    #[ArrayShape(['id' => "int", 'type' => "mixed", 'width' => "\App\Types\Meter", 'height' => "\App\Types\Meter", 'depth' => "\App\Types\Meter"])]
+    public function jsonSerialize(): array
     {
         return [
             'id' => $this->id,

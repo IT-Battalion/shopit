@@ -10,15 +10,18 @@
         if (Auth::check()) {
             $userData = [
                 'isLoggedIn' => true,
-                'name' => $user->name,
-                'username' => $user->username,
-                'firstname' => $user->firstname,
-                'lastname' => $user->lastname,
-                'email' => $user->email,
-                'employeeType' => $user->employeeType,
-                'class' => $user->class,
-                'lang' => $user->lang,
-                'isAdmin' => $user->is_admin,
+                ...$user->only([
+					'id',
+					'username',
+					'email',
+					'firstname',
+					'lastname',
+					'name',
+					'employeeType',
+					'class',
+					'lang',
+					'is_admin',
+                ]),
             ];
         } else {
             $userData = [
@@ -26,7 +29,7 @@
             ];
         }
 
-		$categoryColors = config('shop.category.colors');
+        $categoryColors = config('shop.category.colors');
 
         echo str_replace(
             '"',

@@ -1,18 +1,10 @@
 <template>
   <div
-    class="
-      fixed
-      overflow-auto
-      left-0
-      flex flex-col
-      justify-center
-      w-56
-      m-0
-      text-white
-      sidebar
-      top-32
-      bg-backgroundColor
-    "
+    :class="
+      [
+      'fixed overflow-auto left-0 flex flex-col w-56 m-0 text-white sidebar top-32 bg-backgroundColor',
+      center ? 'justify-center' : '',
+      ]"
     ref="sidenav"
   >
     <template v-for="category in categories" v-bind:key="category.name">

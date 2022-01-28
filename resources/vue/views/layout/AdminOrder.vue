@@ -1,6 +1,6 @@
 <template>
-  <AdminOrderProcess />
-  <router-view />
+  <AdminOrderProcess/>
+  <router-view/>
 </template>
 
 <script lang="ts">
@@ -9,11 +9,12 @@ import {Order} from "../../types/api";
 import OrderCreate from "../../components/OrderCreate.vue";
 import {RouteLocationNormalizedLoaded, useRoute} from "vue-router";
 import {endLoad, initLoad} from "../../loader";
-import { AxiosResponse } from "axios";
+import {AxiosResponse} from "axios";
 import {defineComponent} from "vue";
-import {orders} from "../../stores/order";
 import {toInteger} from "lodash";
 import AdminOrderProcess from "../../components/AdminOrderProcess.vue";
+import {orders} from "../../stores/order";
+
 export default defineComponent({
   components: {
     AdminOrderProcess,
@@ -41,10 +42,8 @@ export default defineComponent({
     async loadOrder() {
       let id = this.route.params.id;
       initLoad();
-      this.orders[toInteger(id)].isLoading = true;
       let response = await this.$http.get<void, AxiosResponse<Order>>(`/admin/orders/${id}`);
-      this.orders[toInteger(id)].order = response.data;
-      this.orders[toInteger(id)].isLoading = false;
+      this.orders.set(toInteger(id), response.data);
       endLoad();
     },
     subscribe(orderId: string) {
@@ -67,10 +66,10 @@ export default defineComponent({
     }
   },
   watch: {
-      $route(to: RouteLocationNormalizedLoaded, from: RouteLocationNormalizedLoaded) {
-        this.unsubscribe(from.params.id as string);
-        this.subscribe(to.params.id as string);
-      }
+    $route(to: RouteLocationNormalizedLoaded, from: RouteLocationNormalizedLoaded) {
+      this.unsubscribe(from.params.id as string);
+      this.subscribe(to.params.id as string);
+    }
   },
 });
 </script>
