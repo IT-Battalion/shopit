@@ -243,6 +243,12 @@ export default defineComponent({
         creator: "Fardan",
         creatorLink: "https://thenounproject.com/mfardan0103/",
       },
+      {
+        iconName: "Download",
+        iconLink: "https://thenounproject.com/icon/download-4538491/",
+        creator: "Reza Nur",
+        creatorLink: "https://thenounproject.com/ezanurm/",
+      },
     ];
     return { credits };
   },
