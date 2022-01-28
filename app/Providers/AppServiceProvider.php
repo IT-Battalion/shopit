@@ -10,6 +10,8 @@ use App\Models\ProductVolumeAttribute;
 use App\Models\User;
 use App\Services\Orders\OrderService;
 use App\Services\Orders\OrderServiceInterface;
+use App\Services\Products\ProductService;
+use App\Services\Products\ProductServiceInterface;
 use App\Services\ShoppingCart\ShoppingCartService;
 use App\Services\ShoppingCart\ShoppingCartServiceInterface;
 use App\Services\Users\UserService;
@@ -26,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
         UserServiceInterface::class => UserService::class,
         ShoppingCartServiceInterface::class => ShoppingCartService::class,
         OrderServiceInterface::class => OrderService::class,
+        ProductServiceInterface::class => ProductService::class,
     ];
 
     /**
