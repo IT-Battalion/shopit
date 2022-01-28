@@ -54,7 +54,13 @@
       >
         <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
           <h1
-            class="text-2xl font-extrabold tracking-tight text-white  sm:text-3xl"
+            class="
+              text-2xl
+              font-extrabold
+              tracking-tight
+              text-white
+              sm:text-3xl
+            "
             v-if="!state.isLoading"
           >
             {{ product.name }}
@@ -80,36 +86,38 @@
               ref="selectedAttributes"
             />
 
-            <InputField labelName="Anzahl" value="1" ref="amount" type="number" v-if="!state.isLoading" />
-
-            <button
-              class="flex items-center justify-center w-full px-8 py-3 mt-10 text-base font-medium text-gray-900 bg-white  row-span-full rounded-3xl hover:bg-gray-300"
-              type="button"
+            <InputField
+              labelName="Anzahl"
+              value="1"
+              ref="amount"
+              type="number"
+              v-if="!state.isLoading"
+            />
+            <ButtonField
+              name="Hinzufügen"
+              iconSrc="/img/addToShoppingCart.svg"
               @click="addProduct"
-            >
-              <a class="pr-2">Zum Warenkorb hinzufügen</a>
-              <svg
-                fill="#000"
-                version="1.1"
-                viewBox="0 0 100 100"
-                xmlns="http://www.w3.org/2000/svg"
-                class="object-scale-down h-8"
-              >
-                <g>
-                  <path
-                    d="m48.359 42.656c-0.09375-0.89062-0.15625-1.7969-0.15625-2.7188s0.046875-1.8438 0.15625-2.75h-25.078l-2.125-8.0625c-0.3125-1.2031-1.4062-2.0312-2.6406-2.0312h-9.5312c-1.5156 0-2.7344 1.2188-2.7344 2.7344s1.2188 2.7344 2.7344 2.7344h7.4219l2.125 8.0625s0 0.015625 0.015625 0.015625l6.6406 25.609c0.3125 1.2031 1.4062 2.0312 2.6562 2.0312h0.32812c-0.39062 0.98438-0.60938 2.0469-0.60938 3.1719 0 4.75 3.875 8.625 8.625 8.625s8.625-3.875 8.625-8.625c0-1.125-0.21875-2.1875-0.60938-3.1719h6.5c-0.39062 0.98438-0.60938 2.0469-0.60938 3.1719 0 4.75 3.875 8.625 8.625 8.625s8.625-3.875 8.625-8.625c0-1.125-0.21875-2.1875-0.60938-3.1719h0.32812c1.25 0 2.3438-0.82812 2.6562-2.0312l0.28125-1.1094c-2.6562-0.375-5.1719-1.1875-7.4844-2.3281-7.7031-3.75-13.219-11.281-14.156-20.156zm-9.0156 28.812c0 1.7344-1.4062 3.1562-3.1562 3.1562-1.7344 0-3.1562-1.4219-3.1562-3.1562 0-1.75 1.4219-3.1719 3.1562-3.1719 1.75 0 3.1562 1.4219 3.1562 3.1719zm22.516 0c0 1.7344-1.4219 3.1562-3.1562 3.1562-1.75 0-3.1562-1.4219-3.1562-3.1562 0-1.75 1.4062-3.1719 3.1562-3.1719 1.7344 0 3.1562 1.4219 3.1562 3.1719z"
-                  />
-                  <path
-                    d="m73.703 19.906c-11.047 0-20.031 9-20.031 20.047s8.9844 20.031 20.031 20.031c11.062 0 20.031-8.9844 20.031-20.031 0-11.062-8.9688-20.047-20.031-20.047zm5.9531 22.766h-3.2188v3.2188c0 1.5-1.2188 2.7344-2.7344 2.7344-1.5 0-2.7344-1.2344-2.7344-2.7344v-3.2188h-3.2031c-1.5156 0-2.7344-1.2344-2.7344-2.7344 0-1.5156 1.2188-2.7344 2.7344-2.7344h3.2031v-3.2188c0-1.5156 1.2344-2.7344 2.7344-2.7344 1.5156 0 2.7344 1.2188 2.7344 2.7344v3.2188h3.2188c1.5156 0 2.7344 1.2188 2.7344 2.7344-0.015625 1.5-1.2188 2.7344-2.7344 2.7344z"
-                  />
-                </g>
-              </svg>
-            </button>
+              class="mt-10 row-span-full"
+              :loading="buttonLoading"
+              v-if="!state.isLoading"
+            />
+            <div class="text-3xl w-1/2" v-else>
+              <Skeletor :pill="true" />
+            </div>
           </form>
         </div>
 
         <div
-          class="py-10  lg:pt-6 lg:pb-16 lg:col-start-1 lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8"
+          class="
+            py-10
+            lg:pt-6
+            lg:pb-16
+            lg:col-start-1
+            lg:col-span-2
+            lg:border-r
+            lg:border-gray-200
+            lg:pr-8
+          "
         >
           <!-- Description and details -->
           <div>
@@ -137,23 +145,24 @@
 </template>
 
 <script lang="ts">
-import {AxiosResponse} from "axios";
-import {RadioGroup, RadioGroupLabel, RadioGroupOption} from "@headlessui/vue";
-import {Product, SelectedAttributes,} from "../types/api";
-import {RouteLocationNormalizedLoaded, useRoute} from "vue-router";
-import {defineComponent} from "@vue/runtime-core";
-import {Swiper, SwiperSlide} from "swiper/vue";
+import { AxiosResponse } from "axios";
+import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
+import { Product, SelectedAttributes } from "../types/api";
+import { RouteLocationNormalizedLoaded, useRoute } from "vue-router";
+import { defineComponent } from "@vue/runtime-core";
+import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import SwiperCore, {Navigation, Pagination} from "swiper";
-import {endLoad, initLoad, initProgress, state} from "../loader";
+import SwiperCore, { Navigation, Pagination } from "swiper";
+import { endLoad, initLoad, initProgress, state } from "../loader";
 import LoadingImage from "../components/LoadingImage.vue";
 import AttributeSelector from "../components/AttributeSelector.vue";
 import InputField from "../components/InputField.vue";
-import {AttributeType} from "../types/api-values";
-import {addToShoppingCart} from "../request";
-import {convertProxyValue} from "../util";
+import { AttributeType } from "../types/api-values";
+import { addToShoppingCart } from "../request";
+import { convertProxyValue } from "../util";
+import ButtonField from "../components/ButtonField.vue";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -167,11 +176,13 @@ export default defineComponent({
     SwiperSlide,
     AttributeSelector,
     InputField,
+    ButtonField,
   },
   data() {
     return {
       state: state,
       product: Object as any as Product,
+      buttonLoading: false,
     };
   },
   async beforeMount() {
@@ -192,33 +203,41 @@ export default defineComponent({
       endLoad();
     },
     async addProduct() {
+      this.buttonLoading = true;
       let selectedAttributes: SelectedAttributes = (
         this.$refs.selectedAttributes as typeof AttributeSelector
       ).getSelected();
-      let attributes: SelectedAttributes = convertProxyValue(Object.assign({},selectedAttributes));
+      let attributes: SelectedAttributes = convertProxyValue(
+        Object.assign({}, selectedAttributes)
+      );
 
       Object.keys(AttributeType)
         .filter((type) => (selectedAttributes as any)[type])
-        .forEach(type => {
+        .forEach((type) => {
           (selectedAttributes as any)[type] = {
-          id: (selectedAttributes as any)[type].id,
-          type: (selectedAttributes as any)[type].type,
-        };
-      });
+            id: (selectedAttributes as any)[type].id,
+            type: (selectedAttributes as any)[type].type,
+          };
+        });
 
       const count = (this.$refs.amount as typeof InputField).getValue();
 
-      this.$globalBus.emit('shopping-cart.load', true);
+      this.$globalBus.emit("shopping-cart.load", true);
       try {
-        const response = await addToShoppingCart(this.product.name, count, selectedAttributes);
+        const response = await addToShoppingCart(
+          this.product.name,
+          count,
+          selectedAttributes
+        );
         const newPrices = response.data;
 
-        this.$globalBus.emit('shopping-cart.add', {
+        this.$globalBus.emit("shopping-cart.add", {
           product: convertProxyValue(this.product),
           count,
           selectedAttributes: attributes,
-          ...newPrices
+          ...newPrices,
         });
+        this.buttonLoading = false;
       } catch (e) {
         console.log(e);
       }
