@@ -1,7 +1,19 @@
 <template>
   <div class="relative">
     <div
-      class="absolute w-3/4 h-full ml-0  md:w-5/12 rounded-3xl md:left-24 bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500"
+      class="
+        absolute
+        w-3/4
+        h-full
+        ml-0
+        md:w-5/12
+        rounded-3xl
+        md:left-24
+        bg-gradient-to-r
+        from-yellow-400
+        via-red-500
+        to-pink-500
+      "
     ></div>
     <div
       class="
@@ -26,7 +38,15 @@
           :key="highlightedProduct.name"
         >
           <div
-            class="grid items-center w-full h-full grid-cols-2 grid-rows-4  gap-x-6 justify-items-center"
+            class="
+              grid
+              items-center
+              w-full
+              h-full
+              grid-cols-2 grid-rows-4
+              gap-x-6
+              justify-items-center
+            "
           >
             <div class="w-full h-full row-span-full">
               <LoadingImage
@@ -42,14 +62,30 @@
             <p class="self-end w-2/3 text-sm font-medium text-white">
               {{ highlightedProduct.price }}
             </p>
-            <ButtonField class="self-end" iconSrc="img/info.svg" />
+            <router-link
+              :to="{
+                name: 'Product',
+                params: { name: highlightedProduct?.name },
+              }"
+              class="self-end"
+            >
+              <ButtonField iconSrc="img/info.svg" />
+            </router-link>
           </div>
         </swiper-slide>
       </swiper>
       <swiper class="w-full h-full" v-else>
         <swiper-slide>
           <div
-            class="grid items-center w-full h-full grid-cols-2 grid-rows-4  justify-items-center gap-x-6"
+            class="
+              grid
+              items-center
+              w-full
+              h-full
+              grid-cols-2 grid-rows-4
+              justify-items-center
+              gap-x-6
+            "
           >
             <div class="w-full h-full row-span-full">
               <Skeletor :pill="false" :circle="false" as="div" height="100%" />
