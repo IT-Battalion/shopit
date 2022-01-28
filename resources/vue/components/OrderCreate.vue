@@ -2,8 +2,8 @@
   <h2 class="w-full my-16 text-3xl font-bold text-center text-white">
     Bestellübersicht
   </h2>
-  <div class="w-full p-10 bg-white rounded-3xl md:w-1/2">
-    <ul role="list" class="-my-6 divide-y divide-gray-200" ref="entryList">
+  <div class="w-full p-10 bg-elevatedDark rounded-3xl md:w-1/2">
+    <ul role="list" class="-my-6 divide-y divide-elevatedColor" ref="entryList">
       <template v-if="!isLoading">
         <li
           v-for="(entry, index) in shoppingCart.products"
@@ -31,34 +31,32 @@
         </li>
       </template>
     </ul>
-    <div class="px-4 py-6 mt-5 border-t border-gray-200 sm:px-6">
-      <div class="flex justify-between my-2 text-base text-gray-900 font-base">
+    <div class="px-4 py-6 mt-5 border-t border-elevatedColor sm:px-6">
+      <div class="flex justify-between my-2 text-base text-gray-200 font-base">
         <p>Zwischensumme (Netto)</p>
         <p v-if="!isLoading">{{ shoppingCart.subtotal }}</p>
         <Skeletor :pill="true" class="w-1/4" height="1rem" v-else />
       </div>
       <div
-        class="flex justify-between my-2 text-base text-gray-900 font-base"
+        class="flex justify-between my-2 text-base text-gray-200 font-base"
         v-if="shoppingCart.discount !== '0,-€'"
       >
         <p>Rabatt (Coupon)</p>
         <p v-if="!isLoading">-{{ shoppingCart.discount }}</p>
         <Skeletor :pill="true" class="w-1/4" height="1rem" v-else />
       </div>
-      <div class="flex justify-between my-2 text-base text-gray-900 font-base">
+      <div class="flex justify-between my-2 text-base text-gray-200 font-base">
         <p>USt</p>
         <p v-if="!isLoading">{{ shoppingCart.tax }}</p>
         <Skeletor :pill="true" class="w-1/4" height="1rem" v-else />
       </div>
-      <div
-        class="flex justify-between my-2 text-base font-medium text-gray-900"
-      >
+      <div class="flex justify-between my-2 text-base font-medium text-white">
         <p>Gesamt</p>
         <p v-if="!isLoading">{{ shoppingCart.total }}</p>
         <Skeletor :pill="true" class="w-1/4" height="1rem" v-else />
       </div>
       <div class="flex flex-col my-3 space-y-2">
-        <label for="success" class="font-medium text-gray-700 select-none"
+        <label for="success" class="font-medium text-gray-200 select-none"
           >Coupon Code</label
         >
         <div class="flex flex-row items-center">
@@ -69,10 +67,19 @@
             :disabled="applied"
             :class="
               applied
-                ? 'border-emerald-300 text-emerald-400 bg-slate-100 cursor-not-allowed'
-                : 'border-indigo-500 text-black bg-white'
+                ? 'border-emerald-300 text-emerald-400 bg-gray-700 cursor-not-allowed'
+                : 'border-indigo-500 text-white bg-gray-900'
             "
-            class="w-full px-4 py-2 ml-0 placeholder-green-600 border rounded-lg  focus:outline-none focus:ring-2 focus:ring-indigo-200"
+            class="
+              w-full
+              px-4
+              py-2
+              ml-0
+              placeholder-green-600
+              border
+              rounded-lg
+              focus:outline-none focus:ring-2 focus:ring-indigo-200
+            "
             @submit="addCoupon()"
           />
           <button class="w-8 h-8 ml-3">
@@ -98,7 +105,7 @@
       </div>
       <div class="flex flex-row items-center justify-center my-3">
         <input type="checkbox" name="agb" id="agb" v-model="agb" />
-        <label for="stayLogedIn" class="my-auto ml-2 text-center text-black">
+        <label for="stayLogedIn" class="my-auto ml-2 text-center text-gray-200">
           Hiermit stimme ich den AGB zu.
         </label>
       </div>
@@ -111,7 +118,19 @@
               ? 'bg-indigo-600 hover:bg-indigo-700'
               : 'cursor-not-allowed bg-slate-400'
           "
-          class="flex items-center justify-center px-6 py-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm "
+          class="
+            flex
+            items-center
+            justify-center
+            px-6
+            py-3
+            text-base
+            font-medium
+            text-white
+            border border-transparent
+            rounded-md
+            shadow-sm
+          "
         >
           Bestellen
         </button>
