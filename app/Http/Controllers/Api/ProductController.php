@@ -7,7 +7,13 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use App\Models\ProductCategory;
+use App\Models\ProductClothingAttribute;
+use App\Models\ProductColorAttribute;
+use App\Models\ProductDimensionAttribute;
 use App\Models\ProductImage;
+use App\Models\ProductVolumeAttribute;
+use App\Types\Money;
+use Auth;
 use Illuminate\Http\JsonResponse;
 
 class ProductController extends Controller
@@ -40,7 +46,49 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $product = Product::create($data);
+        $product = Product::create([
+            'name' => $data['title'],
+            'description' => $data['description'],
+            'price' => new Money($data['price']),
+            'product_category_id' => $data['category']['id'],
+        ])->createWith(Auth::user());
+        /*foreach ($data['images'] as $image) {
+            $product_images[] = ProductImage::create([
+                    'path' => '',
+                    'type' => '',
+                    'product_id' => $product->id,
+                ])->createWith(Auth::user());
+        }
+        $product->thumbnail_id = $product_images[0]->id;
+        $product->update();*/
+        $attributes = $request['attributes'];
+        if (isset($attributes)) {
+            if ($attributes['color']['enabled']) {
+                $colorVal = $attributes['color']['value']['color']['colors'];
+                foreach ($colorVal as $val) {
+                    $col = substr($val['color'], 1);
+                    $attribute = ProductColorAttribute::create([
+                        'color' => $col,
+                        'name' => $val['name'],
+                    ]);
+                }
+            }
+            if ($attributes['clothing']['enabled']) {
+                $clothingVal = $attributes['clothing']['value']['size'];
+                foreach ($clothingVal as $val) {
+                    $attribute = ProductClothingAttribute::create($val);
+                }
+            }
+            if ($attributes['dimension']['enabled']) {
+                $dimensionVal = $attributes['dimension']['value'];
+                $attribute = ProductDimensionAttribute::create($dimensionVal);
+            }
+            if ($attributes['volume']['enabled']) {
+                $volumeVal = $attributes['volume']['value']['volume'];
+                $attribute = ProductVolumeAttribute::create($volumeVal);
+            }
+        }
+        $product = $product->refresh();
         return response()->json($product);
     }
 

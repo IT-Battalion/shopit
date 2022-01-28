@@ -344,6 +344,7 @@ export default defineComponent({
   },
   async beforeMount() {
     await this.loadCategories();
+    if (isUndefined(this.selectedCategory)) this.selectedCategory = this.categories[0];
   },
   async mounted() {
     let data = window.localStorage.getItem('product');
@@ -354,7 +355,6 @@ export default defineComponent({
   },
   methods: {
     async insertStoredData() {
-      this.selectedCategory = this.categories[0];
       if (!isUndefined(this.productCreateStorage)) {
         let category = this.productCreateStorage.category;
         if (!isUndefined(category)) {

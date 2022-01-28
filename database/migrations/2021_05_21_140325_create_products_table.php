@@ -27,7 +27,7 @@ class CreateProductsTable extends Migration
             $table->text('description');
             $table->foreignId('thumbnail_id')->nullable()->constrained('product_images')->onDelete('set null');
             $table->decimal('price', config('shop.money.decimal_points') + config('shop.money.max_digits'), config('shop.money.decimal_points'), true);
-            $table->decimal('tax', 2, 2, true);
+            $table->decimal('tax', 2, 2, true)->default(0.0);
             $table->integer('available')->default(-1);
             $table->user();
             $table->timestamps();

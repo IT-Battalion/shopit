@@ -76,9 +76,6 @@ class UserFactory extends Factory
             'email' => $email,
             'firstname' => $firstname,
             'lastname' => $lastname,
-            'name' => "$firstname $lastname",
-            'employeeType' => $employeeType,
-            'class' => $this->generateClass(),
             'lang' => 'de-AT',
             'guid' => $this->faker->unique()->uuid(),
         ];

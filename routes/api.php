@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/highlighted', [HighlightedProductController::class, 'all']);
 
 // Product routes
-Route::apiResource('product', ProductController::class);
+Route::apiResource('product', 'ProductController')->only(['index', 'show']);
 
 Route::prefix('user')->name('user.')->group(function () {
     Route::get('/', function (Request $request) {
@@ -64,7 +64,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Category Routes
     Route::apiResource('category', 'CategoryController')->only('update', 'store', 'destroy', 'index');
 
+    // Ban Routes
     Route::get('/ban/user/{user}/info', [BanController::class, 'info']);
     Route::post('/ban/user/{user}/ban', [BanController::class, 'ban']);
     Route::post('/ban/user/{user}/unban', [BanController::class, 'unban']);
+
+    // Product Routes
+    Route::apiResource('product', 'ProductController')->only(['store', 'update', 'destroy']);
 });
