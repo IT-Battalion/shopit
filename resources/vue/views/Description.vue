@@ -219,7 +219,7 @@ export default defineComponent({
           att,
         }
       );
-      await this.linkProductClothingAttributes(productID, product_attribute.data.id);
+      await this.linkProductVolumeAttributes(productID, product_attribute.data.id);
     },
     async linkProductVolumeAttributes(productID: number, productAttributeID: number) {
       let product_attribute_link = await this.$http.post<CreateProductVolumeAttributesLinkRequest, AxiosResponse<any>>(
@@ -242,7 +242,7 @@ export default defineComponent({
             color,
           }
         );
-        await this.linkProductClothingAttributes(productID, product_attribute.data.id);
+        await this.linkProductColorAttributes(productID, product_attribute.data.id);
       }
     },
     async linkProductColorAttributes(productID: number, productAttributeID: number) {
@@ -266,7 +266,7 @@ export default defineComponent({
           depth
         }
       );
-      await this.linkProductClothingAttributes(productID, product_attribute.data.id);
+      await this.linkProductDimensionAttributes(productID, product_attribute.data.id);
     },
     async linkProductDimensionAttributes(productID: number, productAttributeID: number) {
       let product_attribute_link = await this.$http.post<CreateProductDimensionAttributesLinkRequest, AxiosResponse<any>>(
