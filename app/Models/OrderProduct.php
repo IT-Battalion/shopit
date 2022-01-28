@@ -4,71 +4,12 @@ namespace App\Models;
 
 use App\Types\AttributeType;
 use App\Types\Money;
-use Barryvdh\LaravelIdeHelper\Eloquent;
-use Database\Factories\OrderProductFactory;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
-/**
- * App\Models\OrderProduct
- *
- * @property int $id
- * @property int $order_id
- * @property int $count
- * @property string $name
- * @property string $description
- * @property int|null $thumbnail_id
- * @property float $price
- * @property float $tax
- * @property int $available
- * @property int $created_by_id
- * @property int $updated_by_id
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property int $order_product_category_id
- * @property-read User $created_by
- * @property-read Collection|OrderProductImage[] $images
- * @property-read int|null $images_count
- * @property-read OrderProductImage|null $thumbnail
- * @property-read User $updated_by
- * @method static OrderProductFactory factory(...$parameters)
- * @method static Builder|OrderProduct newModelQuery()
- * @method static Builder|OrderProduct newQuery()
- * @method static Builder|OrderProduct query()
- * @method static Builder|OrderProduct whereAvailable($value)
- * @method static Builder|OrderProduct whereCount($value)
- * @method static Builder|OrderProduct whereCreatedAt($value)
- * @method static Builder|OrderProduct whereCreatedById($value)
- * @method static Builder|OrderProduct whereDescription($value)
- * @method static Builder|OrderProduct whereId($value)
- * @method static Builder|OrderProduct whereName($value)
- * @method static Builder|OrderProduct whereOrderId($value)
- * @method static Builder|OrderProduct wherePrice($value)
- * @method static Builder|OrderProduct whereTax($value)
- * @method static Builder|OrderProduct whereThumbnailId($value)
- * @method static Builder|OrderProduct whereUpdatedAt($value)
- * @method static Builder|OrderProduct whereUpdatedById($value)
- * @mixin Eloquent
- * @property int|null $order_clothing_attribute_id
- * @property int|null $order_dimension_attribute_id
- * @property int|null $order_volume_attribute_id
- * @property int|null $order_color_attribute_id
- * @property-read OrderClothingAttribute|null $orderClothingAttribute
- * @property-read OrderColorAttribute|null $orderColorAttribute
- * @property-read OrderDimensionAttribute|null $orderDimensionAttribute
- * @property-read OrderVolumeAttribute|null $orderVolumeAttribute
- * @method static Builder|OrderProduct whereOrderClothingAttributeId($value)
- * @method static Builder|OrderProduct whereOrderColorAttributeId($value)
- * @method static Builder|OrderProduct whereOrderDimensionAttributeId($value)
- * @method static Builder|OrderProduct whereOrderVolumeAttributeId($value)
- * @property-read mixed $main_thumbnail
- * @property mixed $product_attributes
- */
 class OrderProduct extends Model
 {
     use HasFactory;
@@ -123,13 +64,12 @@ class OrderProduct extends Model
         ]);
 
         return $attributes
-            ->filter(fn ($attribute) => !is_null($attribute));
+            ->filter(fn($attribute) => !is_null($attribute));
     }
 
     public function setProductAttributesAttribute(Collection $attributes)
     {
-        foreach ($attributes as $type => $attribute)
-        {
+        foreach ($attributes as $type => $attribute) {
             switch ($type) {
                 case AttributeType::CLOTHING->value:
                     $this->order_clothing_attribute_id = $attribute->id;
