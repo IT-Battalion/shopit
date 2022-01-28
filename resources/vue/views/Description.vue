@@ -169,6 +169,9 @@ export default defineComponent({
         await this.createProductDimensionAttributes(product_id);
         await this.clearLocalStorage();
         this.toast.success('Produkt wurde erfolgreich erstellt.');
+        setTimeout(() => {
+          window.open(this.$router.resolve({name: 'Product', params: {name: product.data.name}}).href, '_blank');
+        }, 2000);
       }
       endLoad();
     },
