@@ -18,7 +18,7 @@
                 selectedColor,
                 active && checked ? 'ring ring-offset-1' : '',
                 !active && checked ? 'ring-2' : '',
-                '-m-0.5 relative p-0.5 rounded-xl flex items-center justify-center cursor-pointer focus:outline-none w-8 h-8',
+                '-m-0.5 relative p-0.5 ring-white rounded-xl flex items-center justify-center cursor-pointer focus:outline-none w-8 h-8',
               ]"
               :style="'background-color: #' + color.color"
               :title="color.name"
@@ -185,10 +185,10 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "@vue/runtime-core";
-import {RadioGroup, RadioGroupLabel, RadioGroupOption} from "@headlessui/vue";
-import {Attributes, SelectedAttributes} from "../types/api";
-import {AttributeType, clothingSizeLabels} from "../types/api-values";
+import { defineComponent } from "@vue/runtime-core";
+import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
+import { Attributes, SelectedAttributes } from "../types/api";
+import { AttributeType, clothingSizeLabels } from "../types/api-values";
 
 export default defineComponent({
   components: {
@@ -197,7 +197,7 @@ export default defineComponent({
     RadioGroupOption,
   },
   props: {
-    productattributes: {type: Object as () => Attributes, required: true},
+    productattributes: { type: Object as () => Attributes, required: true },
   },
   data() {
     return {

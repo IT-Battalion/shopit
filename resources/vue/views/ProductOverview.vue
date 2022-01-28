@@ -98,7 +98,7 @@
               iconSrc="/img/addToShoppingCart.svg"
               @click="addProduct"
               class="mt-10 row-span-full"
-              :loading="buttonLoading"
+              :iconSpinner="buttonLoading"
               v-if="!state.isLoading"
             />
             <div class="text-3xl w-1/2" v-else>

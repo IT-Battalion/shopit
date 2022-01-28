@@ -1,12 +1,12 @@
 import router from "./router";
-import {isProxy} from "vue";
-import {isObjectLike} from "lodash";
+import { isProxy } from "vue";
+import { isObjectLike } from "lodash";
 
 export function redirectToLogin() {
-    return router.push({
-        name: 'Login',
-        params: {nextUrl: router.currentRoute.value.fullPath},
-    });
+  return router.push({
+    name: 'Login',
+    params: { nextUrl: router.currentRoute.value.fullPath },
+  });
 }
 
 /**
@@ -51,4 +51,8 @@ export function objectEquals(x: any, y: any): boolean {
   var p = Object.keys(x);
   return Object.keys(y).every(function (i) { return p.indexOf(i) !== -1; }) &&
     p.every(function (i) { return objectEquals(x[i], y[i]); });
+}
+
+export function invertHex(hex: String) {
+  return (Number(`0x1${hex}`) ^ 0xFFFFFF).toString(16).substr(1).toUpperCase()
 }
