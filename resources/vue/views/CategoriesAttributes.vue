@@ -9,7 +9,7 @@
           Kategorie
         </h2>
         <div class="z-50 w-72 top-16">
-          <Listbox v-model="selectedCategory">
+          <Listbox v-model="selectedCategory" ref="product_categories">
             <div class="relative mt-1">
               <ListboxButton
                 class="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-md cursor-default  focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm"
@@ -341,12 +341,18 @@ export default defineComponent({
   },
   async beforeMount() {
     await this.loadCategories();
-    this.selectedCategory = this.categories[0];
+  },
+  async mounted() {
     await this.insertStoredData();
   },
   methods: {
     async insertStoredData() {
-      //this.selectedCategory.id = Number(window.localStorage.getItem('product.category'));
+      let category = window.localStorage.getItem('product.category');
+      if (category != null) {
+        this.selectedCategory = JSON.parse(category);
+      } else {
+        this.selectedCategory = this.categories[0];
+      }
       this.dimensionEnabled = Boolean(window.localStorage.getItem('product.dimension'));
       this.volumeEnabled = Boolean(window.localStorage.getItem('product.volume'));
       this.colorEnabled = Boolean(window.localStorage.getItem('product.color'));
@@ -368,8 +374,8 @@ export default defineComponent({
       await this.$router.push({name: 'Add Product description'});
     },
     async saveToLocalStorage() {
-      let category = this.selectedCategory.id;
-      window.localStorage.setItem('product.category', String(category));
+      let category = this.selectedCategory; //id, name
+      window.localStorage.setItem('product.category', JSON.stringify(category));
 
       window.localStorage.setItem('product.clothing', String(this.colothingEnabled)) //true or false
       let clothing = this.value;

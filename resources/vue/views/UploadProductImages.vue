@@ -40,7 +40,10 @@ export default defineComponent({
   },
   methods: {
     async insertStoredData() {
-      (this.$refs.images as typeof UploadImages).Imgs = JSON.parse(window.localStorage.getItem('product.images') ?? '{}');
+      let imgs = window.localStorage.getItem('product.images');
+      if (imgs != null) {
+        (this.$refs.images as typeof UploadImages).Imgs = JSON.parse(imgs);
+      }
     },
     async backward() {
       await this.saveToLocalStorage();

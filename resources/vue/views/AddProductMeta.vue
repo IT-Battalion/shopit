@@ -45,7 +45,8 @@ export default defineComponent({
   },
   methods: {
     async insertStoredData() {
-      (this.$refs.highlighted as HTMLInputElement).value = window.localStorage.getItem('product.highlighted') == null ? "off" : (this.$refs.highlighted as HTMLInputElement).value;
+      console.log((this.$refs.highlighted as HTMLInputElement));
+      (this.$refs.highlighted as HTMLInputElement).checked = Boolean(window.localStorage.getItem('product.highlighted') ?? false);
       (this.$refs.product_name as typeof InputField).setValue(window.localStorage.getItem('product.title'));
       (this.$refs.product_price as typeof InputField).setValue(window.localStorage.getItem('product.price'));
     },
@@ -56,7 +57,7 @@ export default defineComponent({
     async saveToLocalStorage() {
       window.localStorage.setItem('product.title', (this.$refs.product_name as typeof InputField).getValue());
       window.localStorage.setItem('product.price', (this.$refs.product_price as typeof InputField).getValue());
-      window.localStorage.setItem('product.highlighted', (this.$refs.highlighted as HTMLInputElement).value);
+      window.localStorage.setItem('product.highlighted', String((this.$refs.highlighted as HTMLInputElement).checked));
     }
   }
 });
