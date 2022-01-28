@@ -44,6 +44,6 @@ class HighlightedProductController extends Controller
      */
     public function destroy(HighlightedProduct $highlightedProduct): JsonResponse
     {
-        return response()->json($highlightedProduct->delete());
+        $highlightedProduct->delete();
     }
 }

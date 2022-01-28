@@ -131,18 +131,17 @@ class ProductController extends Controller
     {
         $data = $request->validated();
         $product->update($data);
-        $product->refresh();
-        return response()->json($product);
+        return response()->json($product->refresh());
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param Product $product
-     * @return JsonResponse
+     * @return void
      */
-    public function destroy(Product $product): JsonResponse
+    public function destroy(Product $product): void
     {
-        return response()->json($product->delete());
+        $product->delete();
     }
 }

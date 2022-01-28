@@ -53,11 +53,10 @@ class UserController extends Controller
      * @param User $user
      * @return JsonResponse
      */
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(UpdateUserRequest $request, User $user): JsonResponse
     {
         $data = $request->validated();
         $user->update($data);
-        $user->refresh();
-        return response()->json($user);
+        return response()->json($user->refresh());
     }
 }

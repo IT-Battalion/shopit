@@ -44,6 +44,6 @@ class CouponController extends Controller
      */
     public function destroy(CouponCode $couponCode): JsonResponse
     {
-        return response()->json($couponCode->delete());
+        $couponCode->delete();
     }
 }
