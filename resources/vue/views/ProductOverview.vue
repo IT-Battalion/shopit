@@ -66,7 +66,7 @@
             {{ product.name }}
           </h1>
           <div v-else class="h-10">
-            <Skeletor :pill="true"/>
+            <Skeletor :pill="true" />
           </div>
         </div>
 
@@ -76,7 +76,7 @@
             {{ product.price }}
           </p>
           <div class="text-3xl" v-else>
-            <Skeletor :pill="true"/>
+            <Skeletor :pill="true" />
           </div>
 
           <form class="mt-10">
@@ -102,7 +102,7 @@
               v-if="!state.isLoading"
             />
             <div class="text-3xl w-1/2" v-else>
-              <Skeletor :pill="true"/>
+              <Skeletor :pill="true" />
             </div>
           </form>
         </div>
@@ -123,17 +123,17 @@
           <div>
             <div class="space-y-6">
               <p class="text-base text-white" v-if="!state.isLoading">
-                <quill
+                <quill />
               </p>
               <div v-else>
                 <div class="w-2/3">
-                  <Skeletor :pill="true"/>
+                  <Skeletor :pill="true" />
                 </div>
                 <div class="w-1/3">
-                  <Skeletor :pill="true"/>
+                  <Skeletor :pill="true" />
                 </div>
                 <div class="w-1/2">
-                  <Skeletor :pill="true"/>
+                  <Skeletor :pill="true" />
                 </div>
               </div>
             </div>
@@ -145,24 +145,24 @@
 </template>
 
 <script lang="ts">
-import {AxiosResponse} from "axios";
-import {RadioGroup, RadioGroupLabel, RadioGroupOption} from "@headlessui/vue";
-import {Product, SelectedAttributes} from "../types/api";
-import {RouteLocationNormalizedLoaded, useRoute} from "vue-router";
-import {defineComponent} from "@vue/runtime-core";
-import {Swiper, SwiperSlide} from "swiper/vue";
+import { AxiosResponse } from "axios";
+import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
+import { Product, SelectedAttributes } from "../types/api";
+import { RouteLocationNormalizedLoaded, useRoute } from "vue-router";
+import { defineComponent } from "@vue/runtime-core";
+import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import SwiperCore, {Navigation, Pagination} from "swiper";
-import {endLoad, initLoad, initProgress, state} from "../loader";
+import SwiperCore, { Navigation, Pagination } from "swiper";
+import { endLoad, initLoad, initProgress, state } from "../loader";
 import LoadingImage from "../components/LoadingImage.vue";
 import AttributeSelector from "../components/AttributeSelector.vue";
 import InputField from "../components/InputField.vue";
-import {AttributeType} from "../types/api-values";
-import {addToShoppingCart} from "../request";
-import {cloneDeep} from "lodash";
-import {addToCart, updatePrices} from "../stores/shoppingCart";
+import { AttributeType } from "../types/api-values";
+import { addToShoppingCart } from "../request";
+import { cloneDeep } from "lodash";
+import { addToCart, updatePrices } from "../stores/shoppingCart";
 import ButtonField from "../components/ButtonField.vue";
 
 SwiperCore.use([Navigation, Pagination]);
@@ -212,7 +212,7 @@ export default defineComponent({
 
       Object.keys(AttributeType)
         .filter((type) => (attributes as any)[type])
-        .forEach(type => {
+        .forEach((type) => {
           (attributes as any)[type] = {
             id: (attributes as any)[type].id,
             type: (attributes as any)[type].type,
@@ -223,9 +223,13 @@ export default defineComponent({
 
       try {
         await addToCart(async () => {
-          this.$globalBus.emit('shopping-cart.open');
+          this.$globalBus.emit("shopping-cart.open");
 
-          const response = await addToShoppingCart(this.product.name, count, attributes);
+          const response = await addToShoppingCart(
+            this.product.name,
+            count,
+            attributes
+          );
           const data = response.data;
 
           updatePrices(data.subtotal, data.discount, data.tax, data.total);
@@ -236,7 +240,7 @@ export default defineComponent({
             selectedAttributes: cloneDeep(selectedAttributes),
             productPrice: data.price,
           };
-        })
+        });
       } catch (e) {
         console.log(e);
       }
