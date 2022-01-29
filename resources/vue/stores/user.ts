@@ -2,6 +2,7 @@ import {reactive, toRefs} from 'vue'
 import * as Request from '../request'
 import {redirectToLogin} from "../util";
 import {endLoad, initLoad} from "../loader";
+import {useToast} from "vue-toastification";
 
 export const user = reactive({
   id: window.initialConfig.user.id ?? '',
@@ -22,6 +23,7 @@ export const user = reactive({
 const actions = {
   async login(username: string, password: string, stayLoggedIn: boolean) {
     initLoad();
+    let toast = useToast();
     return Request.login(username, password, stayLoggedIn).then(responseUser => {
       user.isLoggedIn = true;
       user.id = responseUser.id;
@@ -34,11 +36,14 @@ const actions = {
       user.class = responseUser.class;
       user.lang = responseUser.lang;
       user.isAdmin = responseUser.is_admin;
-
+      toast.success("Erfolgreich eingeloggt.");
       return true;
     }).catch(err => {
       if (err.response.status === 401) {
         user.error = err.response.data.message;
+        toast.error(user.error);
+      } else {
+        toast.error("Fehler beim Anmelden.");
       }
       return err;
     }).finally(endLoad);

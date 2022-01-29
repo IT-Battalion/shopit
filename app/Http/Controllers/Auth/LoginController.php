@@ -54,7 +54,7 @@ class LoginController extends Controller
         ];
 
         if ( ! Auth::attempt($credentials, $data['remember'])) {
-            abort(401);
+            abort(401, 'Benutzername oder Passwort falsch.');
         }
 
         return response()->json([

@@ -225,6 +225,7 @@ export default defineComponent({
     });
 
     const onSubmit = () => {
+      user.error.value = "";
       let username = form.username;
       let password = form.password;
 
