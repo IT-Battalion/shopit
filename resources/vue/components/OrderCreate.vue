@@ -2,7 +2,7 @@
   <h2 class="w-full my-16 text-3xl font-bold text-center text-white">
     Bestellübersicht
   </h2>
-  <div class="w-full p-10 bg-elevatedDark rounded-3xl md:w-1/2">
+  <div class="w-full p-10 sm:bg-elevatedDark rounded-3xl md:w-1/2">
     <ul role="list" class="-my-6 divide-y divide-elevatedColor" ref="entryList">
       <template v-if="!shoppingCartData.changingProducts">
         <li
@@ -31,7 +31,7 @@
         </li>
       </template>
     </ul>
-    <div class="px-4 py-6 mt-5 border-t border-elevatedColor sm:px-6">
+    <div class="px-4 py-6 mt-5 border-t border-elevatedColor px-6">
       <div class="flex justify-between my-2 text-base text-gray-200 font-base">
         <p>Zwischensumme (Netto)</p>
         <p v-if="!state.isLoading">{{ shoppingCartData.shoppingCart.subtotal }}</p>
