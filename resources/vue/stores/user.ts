@@ -8,7 +8,7 @@ import {useToast} from "vue-toastification";
 export const user = reactive({
   id: window.initialConfig.user.id ?? "",
   username: window.initialConfig.user.username ?? "",
-  name: (window.initialConfig.user.firstname + "" + window.initialConfig.user.lastname) ?? "",
+  name: (window.initialConfig.user.firstname + " " + window.initialConfig.user.lastname) ?? "",
   firstname: window.initialConfig.user.firstname ?? "",
   lastname: window.initialConfig.user.lastname ?? "",
   email: window.initialConfig.user.email ?? "",
@@ -71,4 +71,3 @@ export default function useUser() {
     ...actions,
   }
 }
-console.log(user);
