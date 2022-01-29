@@ -28,13 +28,7 @@
               </RadioGroupLabel>
               <!--span
                 aria-hidden="true"
-                class="
-                  w-8
-                  h-8
-                  border border-white
-                  rounded-full
-                  border-opacity-10
-                "
+                class="w-8 h-8 border border-white rounded-full border-opacity-10"
                 :style="'background-color: #' + color.color"
               /-->
             </div>
@@ -102,7 +96,7 @@
 
       <RadioGroup v-model="selectedDimension" class="mt-4">
         <RadioGroupLabel class="sr-only"> Choose a size </RadioGroupLabel>
-        <div class="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
+        <div class="flex flex-row flex-wrap gap-4">
           <RadioGroupOption
             as="template"
             v-for="(dimension, index) in attributes[1]"
@@ -114,7 +108,7 @@
               :class="[
                 'shadow-sm text-gray-300 cursor-pointer',
                 active ? 'ring-2 ring-highlighted' : '',
-                'group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm text-center font-medium hover:bg-gray-400 focus:outline-none sm:flex-1 sm:py-6 w-20',
+                'min-w-[2rem] group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm text-center font-medium hover:bg-gray-400 focus:outline-none sm:flex-1 sm:py-6 w-20',
               ]"
             >
               <RadioGroupLabel as="p">
@@ -149,7 +143,7 @@
 
       <RadioGroup v-model="selectedVolume" class="mt-4">
         <RadioGroupLabel class="sr-only"> Choose a size </RadioGroupLabel>
-        <div class="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
+        <div class="flex flex-row flex-wrap gap-4">
           <RadioGroupOption
             as="template"
             v-for="(volume, index) in attributes[2]"
@@ -162,7 +156,7 @@
               :class="[
                 'shadow-sm text-gray-300 cursor-pointer',
                 active ? 'ring-2 ring-highlighted' : '',
-                'group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-400 focus:outline-none sm:flex-1 sm:py-6',
+                'min-w-[2rem] group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-400 focus:outline-none sm:flex-1 sm:py-6',
               ]"
             >
               <RadioGroupLabel as="p">
