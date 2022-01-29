@@ -28,6 +28,14 @@ test('create product without price', function () {
 
 });
 
+test('create product without product category', function () {
+
+});
+
+test('create product with invalid product category', function () {
+
+});
+
 test('create product without highlighted', function () {
 
 });
