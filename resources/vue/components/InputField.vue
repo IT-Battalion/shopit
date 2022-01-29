@@ -8,6 +8,11 @@
       :type="type"
       :placeholder="placeholder"
       :step="step"
+      :min="min"
+      :max="max"
+      :size="size"
+      :minlength="minlength"
+      :maxlength="maxlength"
     />
     <div class="flex flex-row mt-5" v-if="errorMessage">
       <img v-if="errorIcon" :src="errorIcon" class="h-5 w-5 mr-3" />
@@ -24,6 +29,11 @@ export default defineComponent({
     labelName: String,
     value: String,
     placeholder: String,
+    min: Number,
+    max: Number,
+    size: Number,
+    minlength: Number,
+    maxlength: Number,
     type: {
       type: String,
       default: "text",

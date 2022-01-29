@@ -201,12 +201,12 @@ export interface Order {
   products_ordered_at?: string,
   products_received_at?: string,
   handed_over_at?: string,
-  handed_over?: User, //TOOD backend stuff
-  products_received?: User, //TOOD backend stuff
-  products_ordered?: User, //TOOD backend stuff
-  transaction_confirmed?: User,//TOOD backend stuff
-  customer?: User, //TOOD backend stuff
-  coupon?: Coupon, //TODO backend stuff
+  handed_over?: User,
+  products_received?: User,
+  products_ordered?: User,
+  transaction_confirmed?: User,
+  customer?: User,
+  coupon?: Coupon,
   subtotal?: Money,
   discount?: Money,
   tax?: Money,
@@ -350,4 +350,15 @@ export interface ProductCreateProcessStorage {
       },
     },
   },
+}
+
+export interface TemporaryColor {
+  name: string,
+  color: Color,
+}
+
+export interface TemporaryDimension {
+  width: Meter,
+  height: Meter,
+  depth: Meter,
 }

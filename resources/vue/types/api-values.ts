@@ -1,3 +1,5 @@
+import {Color, Meter, TemporaryColor, TemporaryDimension} from "./api";
+
 export enum AttributeType {
   CLOTHING = 0,
   DIMENSION = 1,
@@ -36,3 +38,26 @@ export const OrderStatusLables = [
   'erhalten',
   'übergeben',
 ];
+
+export class TemporaryColorObject implements TemporaryColor {
+  color: Color;
+  name: string;
+
+  constructor(color: Color, name: string) {
+    this.color = color;
+    this.name = name;
+  }
+}
+
+export class TemporaryDimensionObject implements TemporaryDimension {
+  depth: Meter;
+  height: Meter;
+  width: Meter;
+
+  constructor(depth: Meter, height: Meter, width: Meter) {
+    this.depth = depth;
+    this.height = height;
+    this.width = width;
+  }
+}
+

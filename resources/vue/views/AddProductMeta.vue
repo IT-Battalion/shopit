@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import {defineComponent} from "@vue/runtime-core";
-import AddProductProcess from "../components/AddProductProcess.vue";
+import AddProductProcess from "../components/product_create_process/AddProductProcessBar.vue";
 import InputField from "../components/InputField.vue";
 import CancelButton from "../components/buttons/CancelButton.vue";
 import BackwardButton from "../components/buttons/BackwardButton.vue";

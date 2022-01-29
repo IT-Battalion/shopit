@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import {defineComponent} from "@vue/runtime-core";
-import AddProductProcess from "../components/AddProductProcess.vue";
+import AddProductProcess from "../components/product_create_process/AddProductProcessBar.vue";
 import {QuillEditor} from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import ButtonField from "../components/ButtonField.vue";

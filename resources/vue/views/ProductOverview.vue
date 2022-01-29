@@ -123,7 +123,6 @@
           <div>
             <div class="space-y-6">
               <p class="text-base text-white" v-if="!state.isLoading">
-                <quill />
               </p>
               <div v-else>
                 <div class="w-2/3">

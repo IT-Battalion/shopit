@@ -14,9 +14,9 @@
       />
     </div>
     <div class="flex justify-end mt-10 sm:mr-20">
-      <CancelButton />
-      <BackwardButton />
-      <ForwardButton />
+      <CancelButton/>
+      <BackwardButton @click="backward"/>
+      <ForwardButton @click="forward"/>
     </div>
   </div>
 </template>
@@ -68,42 +68,33 @@ export default defineComponent({
       myFiles: ["cat.jpeg"],
     };
   },
-  // async mounted() {
-  //   let data = window.localStorage.getItem("product");
-  //   if (!isUndefined(data) && data != null && data != "undefined") {
-  //     this.productCreateStorage = JSON.parse(data);
-  //   }
-  //   await this.insertStoredData();
-  // },
+  async mounted() {
+    let data = window.localStorage.getItem('product');
+    if (!isUndefined(data) && data != null && data != 'undefined') {
+      this.productCreateStorage = JSON.parse(data);
+    }
+    await this.insertStoredData();
+  },
   methods: {
-    // async insertStoredData() {
-    //   if (
-    //     !isUndefined(this.productCreateStorage) &&
-    //     !isUndefined(this.productCreateStorage.images)
-    //   ) {
-    //     if (this.productCreateStorage.images.length > 0) {
-    //       (this.$refs.images as typeof UploadImages).Imgs =
-    //         this.productCreateStorage.images;
-    //     }
-    //   }
-    // },
-    // async backward() {
-    //   // await this.saveToLocalStorage();
-    //   await this.$router.push({ name: "Add Product" });
-    // },
-    // async forward() {
-    //   // await this.saveToLocalStorage();
-    //   await this.$router.push({ name: "Add Product attributes" });
-    // },
-    // async saveToLocalStorage() {
-    //   this.productCreateStorage.images = (
-    //     this.$refs.images as typeof UploadImages
-    //   ).Imgs;
-    //   window.localStorage.setItem(
-    //     "product",
-    //     JSON.stringify(this.productCreateStorage)
-    //   );
-    // },
+    async insertStoredData() {
+      if (!isUndefined(this.productCreateStorage) && !isUndefined(this.productCreateStorage.images)) {
+        if (this.productCreateStorage.images.length > 0) {
+          (this.$refs.images as typeof UploadImages).Imgs = this.productCreateStorage.images;
+        }
+      }
+    },
+    async backward() {
+      await this.saveToLocalStorage();
+      await this.$router.push({name: 'Add Product'});
+    },
+    async forward() {
+      await this.saveToLocalStorage();
+      await this.$router.push({name: 'Add Product attributes'});
+    },
+    async saveToLocalStorage() {
+      this.productCreateStorage.images = (this.$refs.images as typeof UploadImages).Imgs;
+      window.localStorage.setItem('product', JSON.stringify(this.productCreateStorage));
+    },
     handleFilePondInit: function () {
       console.log("FilePond has initialized");
 

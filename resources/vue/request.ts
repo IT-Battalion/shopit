@@ -3,8 +3,11 @@ import {
   AddToShoppingCartRequest,
   AddToShoppingCartResponse,
   LoginRequestData,
-  LoginResponseData, RemoveFromShoppingCartRequest, ShoppingCartPrices,
-  SelectedAttributes
+  LoginResponseData,
+  ProductCategory,
+  RemoveFromShoppingCartRequest,
+  SelectedAttributes,
+  ShoppingCartPrices
 } from "./types/api"
 
 export function getCSRFCookie() {
@@ -49,4 +52,11 @@ export async function removeFromShoppingCart(name: string, count: number, select
     count,
     selected_attributes: selectedAttributes,
   });
+}
+
+export async function loadCategories(): Promise<ProductCategory[]> {
+  let response: AxiosResponse<ProductCategory[]> = await window.axios.get(
+    '/admin/category'
+  );
+  return response.data;
 }
