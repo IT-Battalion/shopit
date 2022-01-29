@@ -10,7 +10,7 @@
           :key="entry.product.id"
           class="flex py-6"
         >
-          <ShoppingcartItem :shopping-cart-entry="entry" :index="index"/>
+          <ShoppingcartItem :shopping-cart-entry="entry" :index="index" />
         </li>
       </template>
       <template v-else>
@@ -25,40 +25,48 @@
           </div>
 
           <div class="flex flex-col flex-1 ml-4">
-            <Skeletor :pill="true" class="mt-2 mb-4"/>
-            <Skeletor :pill="true" width="80%"/>
+            <Skeletor :pill="true" class="mt-2 mb-4" />
+            <Skeletor :pill="true" width="80%" />
           </div>
         </li>
       </template>
     </ul>
-    <div class="px-4 py-6 mt-5 border-t border-elevatedColor px-6">
+    <div class="px-4 px-6 py-6 mt-5 border-t border-elevatedColor">
       <div class="flex justify-between my-2 text-base text-gray-200 font-base">
         <p>Zwischensumme (Netto)</p>
-        <p v-if="!state.isLoading">{{ shoppingCartData.shoppingCart.subtotal }}</p>
-        <Skeletor :pill="true" class="w-1/4" height="1rem" v-else/>
+        <p v-if="!state.isLoading">
+          {{ shoppingCartData.shoppingCart.subtotal }}
+        </p>
+        <Skeletor :pill="true" class="w-1/4" height="1rem" v-else />
       </div>
       <div
         class="flex justify-between my-2 text-base text-gray-200 font-base"
         v-if="shoppingCartData.shoppingCart.discount !== '0,-€'"
       >
         <p>Rabatt (Coupon)</p>
-        <p v-if="!state.isLoading">-{{ shoppingCartData.shoppingCart.discount }}</p>
-        <Skeletor :pill="true" class="w-1/4" height="1rem" v-else/>
+        <p v-if="!state.isLoading">
+          -{{ shoppingCartData.shoppingCart.discount }}
+        </p>
+        <Skeletor :pill="true" class="w-1/4" height="1rem" v-else />
       </div>
       <div class="flex justify-between my-2 text-base text-gray-200 font-base">
         <p>USt</p>
         <p v-if="!state.isLoading">{{ shoppingCartData.shoppingCart.tax }}</p>
-        <Skeletor :pill="true" class="w-1/4" height="1rem" v-else/>
+        <Skeletor :pill="true" class="w-1/4" height="1rem" v-else />
       </div>
       <div class="flex justify-between my-2 text-base font-medium text-white">
         <p>Gesamt</p>
         <p v-if="!state.isLoading">{{ shoppingCartData.shoppingCart.total }}</p>
-        <Skeletor :pill="true" class="w-1/4" height="1rem" v-else/>
+        <Skeletor :pill="true" class="w-1/4" height="1rem" v-else />
       </div>
       <div class="flex flex-col my-12 space-y-2">
         <label for="coupon" class="font-medium text-gray-200 select-none"
-        >Coupon Code</label>
-        <form class="flex flex-row items-center" @submit.prevent="applied ? resetCoupon() : addCoupon()">
+          >Coupon Code</label
+        >
+        <form
+          class="flex flex-row items-center"
+          @submit.prevent="applied ? resetCoupon() : addCoupon()"
+        >
           <input
             id="coupon"
             type="text"
@@ -68,33 +76,36 @@
             :class="
               state.isLoading
                 ? 'border-gray-300 text-gray-400 bg-elevatedDark cursor-not-allowed'
-              : applied
+                : applied
                 ? 'border-emerald-300 text-emerald-400 bg-elevatedDark cursor-not-allowed'
                 : 'border-indigo-500 text-white bg-elevatedDark'
             "
-            class="
-              w-full
-              px-4
-              py-2
-              ml-0
-              placeholder-green-600
-              border
-              rounded-lg
-              focus:outline-none focus:ring-2 focus:ring-indigo-200
-            "
+            class="w-full px-4 py-2 ml-0 placeholder-green-600 border rounded-lg  focus:outline-none focus:ring-2 focus:ring-indigo-200"
           />
-          <button class="w-8 h-8 ml-3" v-show="!applied && !state.isLoading" title="Coupon Code verifizieren">
+          <button
+            class="w-8 h-8 ml-3"
+            v-show="!applied && !state.isLoading"
+            title="Coupon Code verifizieren"
+          >
             <img
-              src="/img/doneBlack.svg"
+              src="/img/done.svg"
               alt="Coupon Code verifizieren"
               class="w-8 h-8"
               type="submit"
             />
           </button>
-          <Spinner class="ml-4 w-6 h-6 m-1" :loading="state.isLoading"/>
-          <button class="ml-5 w-6 h-6 my-1" v-show="applied && !state.isLoading" title="Coupon Code entfernen">
+          <Spinner
+            class="w-6 h-6 m-1 ml-4"
+            color="#fff"
+            :loading="state.isLoading"
+          />
+          <button
+            class="w-6 h-6 my-1 ml-5"
+            v-show="applied && !state.isLoading"
+            title="Coupon Code entfernen"
+          >
             <img
-              src="/img/blackX.svg"
+              src="/img/X.svg"
               alt="Coupon Code entfernen"
               class="w-4 h-4"
               type="submit"
@@ -103,7 +114,13 @@
         </form>
       </div>
       <div class="flex flex-row items-center justify-center my-3">
-        <input type="checkbox" name="agb" id="agb" class="checked:bg-highlighted" v-model="agb"/>
+        <input
+          type="checkbox"
+          name="agb"
+          id="agb"
+          class="checked:bg-highlighted"
+          v-model="agb"
+        />
         <label for="agb" class="my-auto ml-2 text-center text-gray-200">
           Hiermit stimme ich den AGB zu.
         </label>
@@ -117,19 +134,7 @@
               ? 'bg-highlighted hover:bg-indigo-700'
               : 'cursor-not-allowed bg-slate-400'
           "
-          class="
-            flex
-            items-center
-            justify-center
-            px-6
-            py-3
-            text-base
-            font-medium
-            text-white
-            border border-transparent
-            rounded-md
-            shadow-sm
-          "
+          class="flex items-center justify-center px-6 py-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm "
           :title="!agb ? 'Sie müssen zuerst den AGB zustimmen' : ''"
         >
           Bestellen
@@ -140,15 +145,20 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
+import { defineComponent } from "vue";
 import ShoppingcartItem from "./ShoppingcartItem.vue";
-import {Order, ShoppingCartPrices,} from "../types/api";
-import {AxiosResponse} from "axios";
-import {useRouter} from "vue-router";
-import {endLoad, initLoad, state} from "../loader";
-import {useToast} from "vue-toastification";
+import { Order, ShoppingCartPrices } from "../types/api";
+import { AxiosResponse } from "axios";
+import { useRouter } from "vue-router";
+import { endLoad, initLoad, state } from "../loader";
+import { useToast } from "vue-toastification";
 import Spinner from "@/components/Spinner.vue";
-import {loadCart, removeIndexFromCart, shoppingCartData, updatePrices} from "../stores/shoppingCart";
+import {
+  loadCart,
+  removeIndexFromCart,
+  shoppingCartData,
+  updatePrices,
+} from "../stores/shoppingCart";
 
 export default defineComponent({
   components: {
@@ -174,17 +184,18 @@ export default defineComponent({
       endLoad();
     },
     async addCoupon() {
-      if (this.shoppingCartData.changingCoupon)
-        return;
+      if (this.shoppingCartData.changingCoupon) return;
 
       this.shoppingCartData.changingCoupon = true;
       initLoad();
 
       try {
-        let response: AxiosResponse<ShoppingCartPrices> =
-          await this.$http.post("/user/shopping-cart/coupon", {
+        let response: AxiosResponse<ShoppingCartPrices> = await this.$http.post(
+          "/user/shopping-cart/coupon",
+          {
             code: this.shoppingCartData.shoppingCart.coupon,
-          });
+          }
+        );
         let data = response.data;
 
         updatePrices(data.subtotal, data.discount, data.tax, data.total);
@@ -194,9 +205,11 @@ export default defineComponent({
       } catch (e) {
         let handled = false;
 
-        if ('response' in e) {
+        if ("response" in e) {
           if (e.response.status === 404) {
-            this.toast.error("Der angegebene Coupon Code konnte nicht gefunden werden!");
+            this.toast.error(
+              "Der angegebene Coupon Code konnte nicht gefunden werden!"
+            );
             handled = true;
           }
         }
@@ -209,15 +222,15 @@ export default defineComponent({
       endLoad();
     },
     async resetCoupon() {
-      if (this.shoppingCartData.changingCoupon)
-        return;
+      if (this.shoppingCartData.changingCoupon) return;
 
       this.shoppingCartData.changingCoupon = true;
       initLoad();
 
       try {
-        let response: AxiosResponse<ShoppingCartPrices> =
-          await this.$http.post("/user/shopping-cart/coupon/reset");
+        let response: AxiosResponse<ShoppingCartPrices> = await this.$http.post(
+          "/user/shopping-cart/coupon/reset"
+        );
         let data = response.data;
 
         updatePrices(data.subtotal, data.discount, data.tax, data.total);
@@ -228,7 +241,7 @@ export default defineComponent({
       } catch (e) {
         this.toast.error(e);
       }
-      this.$globalBus.emit('shopping-cart.end-load');
+      this.$globalBus.emit("shopping-cart.end-load");
       endLoad();
       this.shoppingCartData.changingCoupon = false;
     },
@@ -238,7 +251,7 @@ export default defineComponent({
       );
       this.router.replace({
         name: "Order Created",
-        params: {id: response.data.id},
+        params: { id: response.data.id },
       });
     },
   },

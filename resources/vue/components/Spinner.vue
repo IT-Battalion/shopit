@@ -2,11 +2,14 @@
   <svg
     v-if="loading"
     class="w-5 h-5 animate-spin animate-reverse"
-    style="animation-direction: alternate-reverse; animation-timing-function: ease-in-out"
+    style="
+      animation-direction: alternate-reverse;
+      animation-timing-function: ease-in-out;
+    "
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
-    stroke="currentColor"
+    :stroke="color"
     title="Loading..."
   >
     <path
@@ -26,6 +29,10 @@ export default defineComponent({
     loading: {
       type: Boolean,
       default: false,
+    },
+    color: {
+      type: String,
+      default: "curentColor",
     },
   },
 });
