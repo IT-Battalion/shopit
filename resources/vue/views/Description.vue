@@ -5,7 +5,7 @@
       Produktbeschreibung
     </h2>
     <div class="m-10 bg-white">
-      <QuillEditor theme="snow" toolbar="minimal" ref="desc"/>
+      <QuillEditor theme="snow" toolbar="essential" ref="desc"/>
     </div>
     <div class="flex flex-row gap-x-2">
       <div class="flex justify-end mt-10 sm:mr-20">
@@ -57,11 +57,11 @@ export default defineComponent({
   methods: {
     async insertStoredData() {
       if (!isUndefined(this.productCreateStorage)) {
-        (this.$refs.desc as typeof QuillEditor).setHTML(this.productCreateStorage.description ?? "");
+        (this.$refs.desc as typeof QuillEditor).setContents(this.productCreateStorage.description ?? ""); //https://en.wikipedia.org/wiki/Operational_transformation
       }
     },
     async saveToLocalStorage() {
-      this.productCreateStorage.description = (this.$refs.desc as typeof QuillEditor).getHTML();
+      this.productCreateStorage.description = (this.$refs.desc as typeof QuillEditor).getContents(); //https://en.wikipedia.org/wiki/Operational_transformation
       window.localStorage.setItem('product', JSON.stringify(this.productCreateStorage));
     },
     async backward() {

@@ -123,7 +123,7 @@
           <div>
             <div class="space-y-6">
               <p class="text-base text-white" v-if="!state.isLoading">
-                {{ product.description }}
+                <quill
               </p>
               <div v-else>
                 <div class="w-2/3">
@@ -145,23 +145,23 @@
 </template>
 
 <script lang="ts">
-import { AxiosResponse } from "axios";
-import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
-import { Product, SelectedAttributes } from "../types/api";
-import { RouteLocationNormalizedLoaded, useRoute } from "vue-router";
-import { defineComponent } from "@vue/runtime-core";
-import { Swiper, SwiperSlide } from "swiper/vue";
+import {AxiosResponse} from "axios";
+import {RadioGroup, RadioGroupLabel, RadioGroupOption} from "@headlessui/vue";
+import {Product, SelectedAttributes} from "../types/api";
+import {RouteLocationNormalizedLoaded, useRoute} from "vue-router";
+import {defineComponent} from "@vue/runtime-core";
+import {Swiper, SwiperSlide} from "swiper/vue";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import SwiperCore, { Navigation, Pagination } from "swiper";
-import { endLoad, initLoad, initProgress, state } from "../loader";
+import SwiperCore, {Navigation, Pagination} from "swiper";
+import {endLoad, initLoad, initProgress, state} from "../loader";
 import LoadingImage from "../components/LoadingImage.vue";
 import AttributeSelector from "../components/AttributeSelector.vue";
 import InputField from "../components/InputField.vue";
-import { AttributeType } from "../types/api-values";
-import { addToShoppingCart } from "../request";
-import { cloneDeep } from "lodash";
+import {AttributeType} from "../types/api-values";
+import {addToShoppingCart} from "../request";
+import {cloneDeep} from "lodash";
 import {addToCart, updatePrices} from "../stores/shoppingCart";
 import ButtonField from "../components/ButtonField.vue";
 
