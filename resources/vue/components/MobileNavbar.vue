@@ -1,43 +1,21 @@
 <template>
   <div
-    class="
-      overflow-hidden
-      flex
-      items-center
-      justify-center
-      fixed
-      bottom-0
-      z-10
-      w-screen
-      h-auto
-      mx-auto
-    "
+    class="fixed bottom-0 z-10 flex items-center justify-center w-screen h-auto mx-auto overflow-hidden "
   >
     <div class="w-full mx-auto">
-      <div class="px-5 bg-sidenavSelected shadow-lg rounded-t-2xl">
+      <div class="shadow-lg sm:px-5 bg-elevatedDark rounded-t-2xl">
         <div class="flex">
           <router-link :to="{ name: 'Products' }" class="flex-1 group">
             <div>
               <a
                 href="#"
-                class="
-                  flex
-                  items-end
-                  justify-center
-                  text-center
-                  mx-auto
-                  px-3
-                  pt-2
-                  w-full
-                  text-gray-400
-                  group-hover:text-indigo-500
-                "
+                class="flex items-end justify-center w-full px-3 pt-2 mx-auto text-center text-gray-400  group-hover:text-indigo-500"
               >
                 <span class="block px-1 pt-1 pb-1">
-                  <HomeIcon class="h-8 w-8 pt-1 mb-1 block mx-auto"></HomeIcon>
-                  <span class="block text-xs pb-2">Home</span>
+                  <HomeIcon class="block w-8 h-8 pt-1 mx-auto mb-1"></HomeIcon>
+                  <span class="block pb-2 text-xs">Home</span>
                   <span
-                    class="block w-5 mx-auto h-1 group-hover:bg-indigo-500"
+                    class="block w-5 h-1 mx-auto group-hover:bg-indigo-500"
                   ></span>
                 </span>
               </a>
@@ -47,33 +25,15 @@
             <div @click="setOpenCategories(true)">
               <a
                 href="#"
-                class="
-                  flex
-                  items-end
-                  justify-center
-                  text-center
-                  mx-auto
-                  px-3
-                  pt-2
-                  w-full
-                  text-gray-400
-                  group-hover:text-indigo-500
-                "
+                class="flex items-end justify-center w-full px-3 pt-2 mx-auto text-center text-gray-400  group-hover:text-indigo-500"
               >
                 <span class="block px-1 pt-1 pb-1">
                   <CollectionIcon
-                    class="h-8 w-8 pt-1 mb-1 block mx-auto"
+                    class="block w-8 h-8 pt-1 mx-auto mb-1"
                   ></CollectionIcon>
-                  <span class="block text-xs pb-2">Kategorien</span>
+                  <span class="block pb-2 text-xs">Kategorien</span>
                   <span
-                    class="
-                      block
-                      w-5
-                      mx-auto
-                      h-1
-                      group-hover:bg-indigo-500
-                      rounded-full
-                    "
+                    class="block w-5 h-1 mx-auto rounded-full  group-hover:bg-indigo-500"
                   ></span>
                 </span>
               </a>
@@ -81,68 +41,31 @@
           </Categories>
           <Shoppingcart ref="shoppingCart" class="flex-1 group">
             <div
-              class="
-                flex
-                items-end
-                justify-center
-                text-center
-                mx-auto
-                px-3
-                pt-2
-                w-full
-                text-gray-400
-                group-hover:text-indigo-500
-                cursor-pointer
-              "
+              class="flex items-end justify-center w-full px-3 pt-2 mx-auto text-center text-gray-400 cursor-pointer  group-hover:text-indigo-500"
               @click="setOpen(true)"
             >
               <span class="block px-1 pt-1 pb-1">
                 <ShoppingCartIcon
-                  class="h-8 w-8 pt-1 mb-1 block mx-auto"
+                  class="block w-8 h-8 pt-1 mx-auto mb-1"
                 ></ShoppingCartIcon>
-                <span class="block text-xs pb-2">Korb</span>
+                <span class="block pb-2 text-xs">Korb</span>
                 <span
-                  class="
-                    block
-                    w-5
-                    mx-auto
-                    h-1
-                    group-hover:bg-indigo-500
-                    rounded-full
-                  "
+                  class="block w-5 h-1 mx-auto rounded-full  group-hover:bg-indigo-500"
                 ></span>
               </span>
             </div>
           </Shoppingcart>
-          <router-link :to="{name: 'Profile'}" class="flex-1 group">
+          <router-link :to="{ name: 'Profile' }" class="flex-1 group">
             <div>
               <a
                 href="#"
-                class="
-                  flex
-                  items-end
-                  justify-center
-                  text-center
-                  mx-auto
-                  px-3
-                  pt-2
-                  w-full
-                  text-gray-400
-                  group-hover:text-indigo-500
-                "
+                class="flex items-end justify-center w-full px-3 pt-2 mx-auto text-center text-gray-400  group-hover:text-indigo-500"
               >
                 <span class="block px-1 pt-1 pb-1">
-                  <UserIcon class="h-8 w-8 pt-1 mb-1 block mx-auto"></UserIcon>
-                  <span class="block text-xs pb-2">Profil</span>
+                  <UserIcon class="block w-8 h-8 pt-1 mx-auto mb-1"></UserIcon>
+                  <span class="block pb-2 text-xs">Profil</span>
                   <span
-                    class="
-                      block
-                      w-5
-                      mx-auto
-                      h-1
-                      group-hover:bg-indigo-500
-                      rounded-full
-                    "
+                    class="block w-5 h-1 mx-auto rounded-full  group-hover:bg-indigo-500"
                   ></span>
                 </span>
               </a>
