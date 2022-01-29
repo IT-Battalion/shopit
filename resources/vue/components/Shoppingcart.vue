@@ -18,7 +18,7 @@
             leave-to="opacity-0"
           >
             <DialogOverlay
-              class="absolute inset-0 transition-opacity bg-black bg-opacity-60"
+              class="absolute inset-0 transition-opacity bg-black bg-opacity-80"
             />
           </TransitionChild>
 
@@ -244,7 +244,7 @@ import { XIcon } from "@heroicons/vue/outline";
 import { AddToShoppingCartMessage, RemoveFromShoppingCartMessage } from "../types/api";
 import ShoppingcartItem from "./ShoppingcartItem.vue";
 import useUser from "../stores/user";
-import { addToCart, removeProductFromCart, updatePrices, useShoppingCart } from "../stores/shoppingCart";
+import {addToCart, loadCart, removeProductFromCart, updatePrices, useShoppingCart} from "../stores/shoppingCart";
 import {useToast} from "vue-toastification";
 
 export default defineComponent({
@@ -296,6 +296,9 @@ export default defineComponent({
         useToast().info('Ein Produkt wurde aus dem Einkaufswagen entfernt.');
         updatePrices(message.subtotal, message.discount, message.tax, message.total);
       });
+  },
+  async created() {
+    await loadCart();
   },
   async unmounted() {
     this.$globalBus.off('shopping-cart.open', this.open);

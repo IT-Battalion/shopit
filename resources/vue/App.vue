@@ -15,7 +15,6 @@ export default defineComponent({
   },
   setup() {
     const { user } = useUser();
-    loadCart();
 
     return {
       user,

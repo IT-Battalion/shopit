@@ -47,6 +47,7 @@ export interface UserManagementUser {
 export interface ProductCategory {
   id: number,
   name: string,
+  color: string,
 }
 
 export interface ProductAttribute {
@@ -319,10 +320,7 @@ export interface ProductCreateProcessStorage {
   description?: string,
   highlighted?: boolean,
   images?: string[],
-  category?: {
-    name: string,
-    id: number,
-  },
+  category?: ProductCategory,
   attributes?: {
     volume?: {
       enabled?: boolean,

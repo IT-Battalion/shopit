@@ -12,7 +12,7 @@
     "
   >
     <div v-if="attributes['3']" class="flex flex-row">
-      <a>Farbe: {{ attributes[3].name }}</a>
+      <span>Farbe: {{ attributes[3].name }}</span>
       <div
         class="rounded-full h-4 w-4 ml-[.5ch]"
         :style="'background-color: #' + attributes[3].color"
@@ -25,15 +25,15 @@
       v-if="attributes['1']"
       class="grid grid-cols-2 grid-rows-3 place-items-start w-36"
     >
-      <a class="row-span-3 cols-span-1 self-start">Dimension: </a
-      ><a class="row-span-1 cols-span-1"
-        >{{ attributes[1].width.value }}{{ attributes[1].width.unit }} x</a
+      <span class="row-span-3 cols-span-1 self-start">Dimension: </span
+      ><span class="row-span-1 cols-span-1"
+        >{{ attributes[1].width.value }}{{ attributes[1].width.unit }} x</span
       >
-      <a class="row-span-1 cols-span-1"
-        >{{ attributes[1].height.value }}{{ attributes[1].height.unit }} x</a
+      <span class="row-span-1 cols-span-1"
+        >{{ attributes[1].height.value }}{{ attributes[1].height.unit }} x</span
       >
-      <a class="row-span-1 cols-span-1"
-        >{{ attributes[1].depth.value }}{{ attributes[1].depth.unit }}</a
+      <span class="row-span-1 cols-span-1"
+        >{{ attributes[1].depth.value }}{{ attributes[1].depth.unit }}</span
       >
     </div>
     <div v-if="attributes['2']">

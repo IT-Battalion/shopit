@@ -33,7 +33,7 @@
         as="div"
       >
         <img :src="category.icon_url" class="object-scale-down h-8 mr-4" />
-        <a class="my-1 text-left">{{ category.name }}</a>
+        <span class="my-1 text-left">{{ category.name }}</span>
       </router-link>
       <Menu as="div" class="relative inline-block text-left w-full" v-else>
         <div class="w-full ml-3 my-3">

@@ -33,7 +33,7 @@
           </p>
         </div>
         <div class="flex flex-col w-full space-y-4 sm:w-2/5">
-          <a class="flex flex-row text-lg font-medium opacity-60">Kontakt</a>
+          <span class="flex flex-row text-lg font-medium opacity-60">Kontakt</span>
           <a
             href="mailto:info@shopit.tgm.ac.at"
             class="
@@ -58,8 +58,8 @@
           >
         </div>
         <div class="flex flex-col w-full space-y-4 sm:w-1/5">
-          <a class="flex flex-row mt-4 text-lg font-medium opacity-60 sm:mt-0"
-            >Links</a
+          <span class="flex flex-row mt-4 text-lg font-medium opacity-60 sm:mt-0"
+            >Links</span
           >
           <a
             href="https://www.tgm.ac.at/tagesschule/"
@@ -87,8 +87,8 @@
           </a>
         </div>
         <div class="flex flex-col w-full space-y-4 sm:w-1/5">
-          <a class="flex flex-row mt-4 text-lg font-medium opacity-60 sm:mt-0"
-            >Mentions</a
+          <span class="flex flex-row mt-4 text-lg font-medium opacity-60 sm:mt-0"
+            >Mentions</span
           >
           <router-link
             :to="{ name: 'credits' }"

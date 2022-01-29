@@ -7,22 +7,20 @@
         </div>
         <div>
             <h1>Zahlungsbeleg</h1>
+            <section>Lieber Max Mustermann, vielen Dank für Ihre Bestellung bei Shop-IT.</section>
             <section>
-                <a>Lieber Max Mustermann, vielen Dank für Ihre Bestellung bei Shop-IT.</a>
+                Ihre Zahlung in Höhe von
+                <span class="font-bold">30 Euro </span>
+                für die
+                <span class="font-bold">Rechnung Nr. 2523523523</span>
+                haben wir erhalten und Ihrem Kundenkonto gutgeschrieben.
             </section>
-                <section>
-                    <a>Ihre Zahlung in Höhe von </a>
-                    <a class="font-bold">30 Euro </a>
-                    <a>für die </a>
-                    <a class="font-bold">Rechnung Nr. 2523523523</a>
-                    <a>haben wir erhalten und Ihrem Kundenkonto gutgeschrieben.</a>
-                </section>
-                <section>
-                    <a>Ihre Bestellung wird nun bearbeitet. Sie erhalten eine E-Mail sobald Sie diese bei uns Abholen können.</a>
-                </section>
-                <section>
-                    <a>ACHTUNG: Sie können Ihre Produkte erst abholen, nachdem Sie die E-Mail für die Abholung der produkte erhalten haben.</a>
-                </section>
+            <section>
+                Ihre Bestellung wird nun bearbeitet. Sie erhalten eine E-Mail sobald Sie diese bei uns Abholen können.
+            </section>
+            <section>
+                ACHTUNG: Sie können Ihre Produkte erst abholen, nachdem Sie die E-Mail für die Abholung der produkte erhalten haben.
+            </section>
         </div>
     </div>
 @endsection

@@ -43,7 +43,7 @@
                     <h3>1</h3>
                 </td>
                 <td>
-                   <a class="font-bold">9.99$</a>
+                   <span class="font-bold">9.99$</span>
                    <p>Einzelpreis: 9.99$</p>
                    <p>Coupon: 2.00$</p>
                 </td>

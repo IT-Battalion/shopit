@@ -69,7 +69,7 @@ export async function loadCart() {
   shoppingCartData.changingProducts = false;
 }
 
-export function updatePrices(subtotal: string, discount: string, tax: string, total: string) {
+export function updatePrices(subtotal: Money, discount: Money, tax: Money, total: Money) {
   shoppingCartData.shoppingCart.subtotal = subtotal;
   shoppingCartData.shoppingCart.discount = discount;
   shoppingCartData.shoppingCart.tax = tax;

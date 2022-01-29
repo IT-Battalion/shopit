@@ -221,7 +221,6 @@ export default defineComponent({
 
       const count = (this.$refs.amount as typeof InputField).getValue();
 
-      this.$globalBus.emit("shopping-cart.load", true);
       try {
         await addToCart(async () => {
           this.$globalBus.emit('shopping-cart.open');
@@ -245,7 +244,8 @@ export default defineComponent({
   },
   watch: {
     $route(to: RouteLocationNormalizedLoaded, from) {
-      if (to.path.startsWith("/product/")) {
+      console.log(to, from);
+      if (to.name === "Product") {
         this.loadProduct(to.params.name as string);
       }
     },

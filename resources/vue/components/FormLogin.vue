@@ -11,7 +11,7 @@
         sm:grid-cols-2 sm:grid-rows-1
         grid-rows-[auto_1fr]
         place-items-center
-        bg-elevatedColor
+        bg-elevatedDark
         login-form__container
       "
     >

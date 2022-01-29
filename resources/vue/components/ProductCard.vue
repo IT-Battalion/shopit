@@ -14,9 +14,9 @@
     </div>
     <div class="grid grid-cols-2 grid-rows-2 justify-items-start">
       <h3 class="col-span-1 mt-2 text-lg text-white">
-        <a>
+        <router-link :to="{ name: 'Product', params: { name: product?.name } }">
           {{ product?.name }}
-        </a>
+        </router-link>
       </h3>
       <p
         class="col-span-1 row-start-2 my-auto text-base font-medium text-gray-300 "

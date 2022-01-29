@@ -15,6 +15,7 @@ import mitt, {Emitter} from "mitt";
 import { UnwrapNestedRefs } from "@vue/reactivity";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
+import {getCSRFCookie} from "./request";
 
 declare global {
   interface Window {
@@ -78,9 +79,7 @@ require('jszip');
 require('pdfmake');
 
 // Init csrf
-window.axios.get('/sanctum/csrf-cookie', { baseURL: '' }).catch(_ => {
-    console.error("CSRF couldn't be fetched");
-});
+getCSRFCookie();
 
 /*export const SUPPORT_LOCALES = ['de', 'en'];
 

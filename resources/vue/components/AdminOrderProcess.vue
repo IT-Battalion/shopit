@@ -5,9 +5,9 @@
         <router-link :to="process.link" v-if="!isLoading && current.valueOf() >= process.step.valueOf()">
           <div class="flex flex-col items-center">
             <img :src="process.icon_url" :alt="process.name" class="w-10 h-10" />
-            <a class="mt-3 text-base text-center text-white">{{
+            <span class="mt-3 text-base text-center text-white">{{
               process.name
-            }}</a>
+            }}</span>
           </div>
           <span
             class="w-20 h-2 bg-white rounded-full"
@@ -17,9 +17,9 @@
         <template v-else>
           <div class="flex flex-col items-center">
             <img :src="process.icon_url" :alt="process.name" class="w-10 h-10" />
-            <a class="mt-3 text-base text-center text-white">{{
+            <span class="mt-3 text-base text-center text-white">{{
                 process.name
-              }}</a>
+              }}</span>
           </div>
           <span
             class="w-20 h-2 bg-white rounded-full"

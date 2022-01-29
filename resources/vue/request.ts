@@ -7,6 +7,12 @@ import {
   SelectedAttributes
 } from "./types/api"
 
+export function getCSRFCookie() {
+  window.axios.get('/sanctum/csrf-cookie', { baseURL: '' }).catch(_ => {
+    console.error("CSRF couldn't be fetched");
+  });
+}
+
 export async function login(username: string, password: string, stayLoggedIn: boolean): Promise<LoginResponseData> {
   return new Promise<LoginResponseData>((res, rej) => {
     window.axios.post<LoginRequestData, AxiosResponse<LoginResponseData>>('/login', {

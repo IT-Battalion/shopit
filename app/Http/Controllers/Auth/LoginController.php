@@ -56,12 +56,15 @@ class LoginController extends Controller
 
         return response()->json([
             'redirect_to' => $this->redirectTo,
-            'username' => Auth::user()->username,
-            'firstname' => Auth::user()->firstname,
-            'lastname' => Auth::user()->lastname,
-            'email' => Auth::user()->email,
-            'lang' => Auth::user()->lang,
-            'is_admin' => Auth::user()->is_admin,
+            ...Auth::user()->only([
+                'id',
+                'username',
+                'firstname',
+                'lastname',
+                'email',
+                'lang',
+                'id_admin',
+                ]),
         ]);
     }
 }

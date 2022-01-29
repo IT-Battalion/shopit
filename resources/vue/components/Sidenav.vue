@@ -17,11 +17,10 @@
           ml-3
           my-3
           pl-6
-          hover:bg-sidenavSelected hover:text-gray-400
+          hover:text-sidenavSelected
           rounded-xl
         "
         :to="'/#' + category.name"
-        as="div"
       >
         <span
           class="object-scale-down h-8 w-8 mr-4 rounded"

@@ -11,7 +11,7 @@
       <img :src="category.icon_url" class="object-scale-down h-8 mr-4" />
       <template v-if="category.name != 'Produkte'">
         <router-link :to="category.routerLink" class="my-auto">
-          <a class="my-1 text-left">{{ category.name }}</a>
+          <span class="my-1 text-left">{{ category.name }}</span>
         </router-link>
       </template>
       <template v-else>

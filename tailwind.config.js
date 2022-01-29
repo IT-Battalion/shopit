@@ -12,9 +12,9 @@ module.exports = {
                 highlighted: "#6C5FCF",
                 inputLabel: "#9595A2",
                 elevatedColor: "#373c4d",
-                elevatedDark: "#262c38",
+                elevatedDark: "#242536",
                 linecolor: "#20202B",
-                sidenavSelected: "#383651",
+                sidenavSelected: "#9891ce",
             },
             gridTemplateRows: {
           '[auto,auto,1fr]': 'auto auto 1fr',

@@ -2,6 +2,7 @@ import {reactive, toRefs} from 'vue'
 import * as Request from '../request'
 import {redirectToLogin} from "../util";
 import {endLoad, initLoad} from "../loader";
+import {getCSRFCookie} from "../request";
 import {useToast} from "vue-toastification";
 
 export const user = reactive({
@@ -34,6 +35,8 @@ const actions = {
       user.lang = responseUser.lang;
       user.isAdmin = responseUser.is_admin;
       toast.success("Erfolgreich eingeloggt.");
+
+      getCSRFCookie();
       return true;
     }).catch(err => {
       if (err.response.status === 401) {
