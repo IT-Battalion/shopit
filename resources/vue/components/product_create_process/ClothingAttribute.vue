@@ -1,8 +1,5 @@
 <template>
-  <div class="w-1/4 p-5 ml-5 rounded-2xl bg-elevatedDark">
-    <h2 class="w-full mb-5 text-2xl font-bold text-center text-white">
-      Kleidungsgrößen
-    </h2>
+  <div class="w-full p-5 ml-5 rounded-2xl bg-elevatedDark">
     <Multiselect
       mode="tags"
       :close-on-select="false"
@@ -13,9 +10,9 @@
   </div>
 </template>
 
-<script>
-import {defineComponent} from "@vue/runtime-core";
-import {clothingSizeLabels} from "../../types/api-values";
+<script lang="ts">
+import { defineComponent } from "@vue/runtime-core";
+import { clothingSizeLabels } from "../../types/api-values";
 import Multiselect from "@vueform/multiselect";
 
 export default defineComponent({

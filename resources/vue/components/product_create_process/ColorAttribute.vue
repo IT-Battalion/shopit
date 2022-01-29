@@ -1,8 +1,5 @@
 <template>
-  <div class="w-1/4 p-5 bg-elevatedDark rounded-3xl">
-    <h2 class="w-full mb-5 text-2xl font-semibold text-center text-white">
-      Farben auswahl
-    </h2>
+  <div class="w-full p-5 bg-elevatedDark rounded-3xl">
     <InputField
       labelName="Farbname"
       ref="selectedName"
@@ -17,7 +14,7 @@
         @click="addColor"
       />
     </div>
-    <div class="flex flex-row overflow-x-auto gap-x-2 shrink-0">
+    <div class="flex flex-row max-w-full overflow-x-auto gap-x-2 shrink-0">
       <div v-for="[name, color] in colors.entries()" :key="name">
         <span
           @click="removeColor(name, color)"
@@ -37,13 +34,13 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "@vue/runtime-core";
-import {useToast} from "vue-toastification";
+import { defineComponent } from "@vue/runtime-core";
+import { useToast } from "vue-toastification";
 import InputField from "../InputField.vue";
 import ButtonField from "../ButtonField.vue";
 
 export default defineComponent({
-  components: {ButtonField, InputField},
+  components: { ButtonField, InputField },
   data() {
     return {
       selectedColor: "#000",
@@ -54,7 +51,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.currentName = (this.$refs.selectedName as typeof InputField);
+    this.currentName = this.$refs.selectedName as typeof InputField;
   },
   methods: {
     removeColor(name: string, color: string) {

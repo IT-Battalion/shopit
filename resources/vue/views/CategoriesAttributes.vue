@@ -1,37 +1,65 @@
 <template>
   <div>
-    <AddProductProcessBar/>
-    <div class="flex flex-col items-center w-full mt-10 gap-y-10">
-      <CategoryAttribute/>
-      <div class="flex flex-row items-center w-full overflow-x-auto py-7">
-        <AttributeSwitchOnOff ref="dimensionSwitcher"/>
-        <DimensionAttribute/>
+    <AddProductProcessBar />
+    <div class="flex flex-col items-center justify-center mt-10 gap-y-10">
+      <CategoryAttribute />
+      <div
+        class="flex flex-col items-center justify-center  p-7 bg-elevatedDark rounded-2xl"
+      >
+        <div class="flex flex-row items-center gap-4">
+          <input type="checkbox" v-model="checkDimension" />
+          <h2 class="w-full text-2xl font-bold text-center text-white">
+            Dimensionen
+          </h2>
+        </div>
+        <DimensionAttribute v-if="checkDimension" class="w-full mx-5" />
       </div>
-      <div class="flex flex-row items-center w-full">
-        <AttributeSwitchOnOff ref="clothingSwitcher"/>
-        <ClothingAttribute/>
+      <div
+        class="flex flex-col items-center justify-center  p-7 bg-elevatedDark rounded-2xl"
+      >
+        <div class="flex flex-row items-center gap-4">
+          <input type="checkbox" v-model="checkClothing" />
+          <h2 class="w-full text-2xl font-bold text-center text-white">
+            Kleidungsgrößen
+          </h2>
+        </div>
+        <ClothingAttribute v-if="checkClothing" class="w-full" />
       </div>
-      <div class="flex flex-row items-center w-full">
-        <AttributeSwitchOnOff ref="volumeSwitcher"/>
-        <VolumeAttribute/>
+      <div
+        class="flex flex-col items-center justify-center gap-4  p-7 bg-elevatedDark rounded-2xl"
+      >
+        <div class="flex flex-row items-center gap-4">
+          <input type="checkbox" v-model="checkVolume" />
+          <h2 class="w-full text-2xl font-bold text-center text-white">
+            Volumen
+          </h2>
+        </div>
+        <VolumeAttribute v-if="checkVolume" class="w-full" />
       </div>
-      <div class="flex flex-row items-center w-full">
-        <AttributeSwitchOnOff ref="colorSwitcher"/>
-        <ColorAttribute class="ml-5" ref="product_color"/>
+      <div
+        class="flex flex-col items-center justify-center gap-4  p-7 bg-elevatedDark rounded-2xl"
+      >
+        <div class="flex flex-row items-center gap-4">
+          <input type="checkbox" v-model="checkColor" />
+          <h2 class="w-full text-2xl font-bold text-center text-white">
+            Farbauswahl
+          </h2>
+        </div>
+        <ColorAttribute v-if="checkColor" class="w-full" ref="product_color" />
       </div>
     </div>
     <div class="flex justify-end mt-10 sm:mr-20">
-      <CancelButton/>
-      <BackwardButton @click="backward"/>
-      <ForwardButton @click="forward"/>
+      <CancelButton />
+      <BackwardButton @click="backward" />
+      <ForwardButton @click="forward" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent} from "@vue/runtime-core";
+import { defineComponent } from "@vue/runtime-core";
 import AddProductProcessBar from "../components/product_create_process/AddProductProcessBar.vue";
-import {ProductCreateProcessStorage} from "../types/api";
+import { ProductCreateProcessStorage } from "../types/api";
 import CancelButton from "../components/buttons/CancelButton.vue";
 import ForwardButton from "../components/buttons/ForwardButton.vue";
 import BackwardButton from "../components/buttons/BackwardButton.vue";
@@ -39,14 +67,12 @@ import DimensionAttribute from "../components/product_create_process/DimensionAt
 import ColorAttribute from "../components/product_create_process/ColorAttribute.vue";
 import VolumeAttribute from "../components/product_create_process/VolumeAttribute.vue";
 import ClothingAttribute from "../components/product_create_process/ClothingAttribute.vue";
-import AttributeSwitchOnOff from "../components/product_create_process/AttributeSwitchOnOff.vue";
 import CategoryAttribute from "../components/product_create_process/CategoryAttribute.vue";
-import {isUndefined} from "lodash";
+import { isUndefined } from "lodash";
 
 export default defineComponent({
   components: {
     CategoryAttribute,
-    AttributeSwitchOnOff,
     ClothingAttribute,
     VolumeAttribute,
     ColorAttribute,
@@ -59,12 +85,16 @@ export default defineComponent({
   data() {
     return {
       productCreateStorage: {} as ProductCreateProcessStorage,
-      dimensionBlocks: [] as { width: string, height: string, depth: string }[],
+      dimensionBlocks: [] as { width: string; height: string; depth: string }[],
+      checkDimension: false,
+      checkClothing: false,
+      checkVolume: false,
+      checkColor: false,
     };
   },
   async mounted() {
-    let data = window.localStorage.getItem('product');
-    if (!isUndefined(data) && data != null && data != 'undefined') {
+    let data = window.localStorage.getItem("product");
+    if (!isUndefined(data) && data != null && data != "undefined") {
       this.productCreateStorage = JSON.parse(data);
     }
     await this.insertStoredData();
@@ -72,11 +102,11 @@ export default defineComponent({
   methods: {
     async backward() {
       await this.saveToLocalStorage();
-      await this.$router.push({name: 'Add Product images'});
+      await this.$router.push({ name: "Add Product images" });
     },
     async forward() {
       await this.saveToLocalStorage();
-      await this.$router.push({name: 'Add Product description'});
+      await this.$router.push({ name: "Add Product description" });
     },
     async insertStoredData() {
       /*if (!isUndefined(this.productCreateStorage)) {

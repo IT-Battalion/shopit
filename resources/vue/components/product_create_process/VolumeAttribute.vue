@@ -1,26 +1,29 @@
 <template>
-  <div class="flex flex-col items-center justify-center w-1/4 p-5 ml-5 rounded-2xl bg-elevatedDark">
-    <h2 class="w-full mb-5 text-2xl font-bold text-center text-white">
-      Volumen
-    </h2>
-    <InputField type="number" ref="product_volume" min="1"/>
-    <ButtonField icon-src="/img/addBlack.svg" @click="addVolume"/>
+  <div class="flex flex-col items-center justify-center w-full gap-4">
+    <InputField type="number" ref="product_volume" :min="1" />
+    <ButtonField icon-src="/img/addBlack.svg" @click="addVolume" />
   </div>
-  <div class="flex flex-col w-1/6">
-    <div v-for="(vol, i) in volumes"
-         class="flex flex-row justify-between bg-gray-900 text-white p-5 rounded-2xl ml-3 mt-4">
-      <span>{{ vol }}L</span>
-      <button @click="deleteVolume(i)">
-        <img src="/img/bin.svg" alt="delete" class="w-5">
-      </button>
-    </div>
+  <div class="flex flex-row max-w-[35rem] gap-4 overflow-x-auto">
+    <template v-for="(vol, i) in volumes" :key="i">
+      <div
+        @click="deleteVolume(vol)"
+        :class="[
+          'shadow-sm text-gray-300 cursor-pointer',
+          'min-w-[5rem] group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-400 focus:outline-none sm:flex-1 sm:py-6',
+        ]"
+      >
+        <p class="whitespace-nowrap">{{ vol.volume }} {{ vol.type }}</p>
+      </div>
+    </template>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent} from "@vue/runtime-core";
+import { defineComponent } from "@vue/runtime-core";
 import InputField from "../InputField.vue";
 import ButtonField from "../ButtonField.vue";
+import { VolumeAttribute } from "../../types/api";
+import { AttributeType } from "../../types/api-values";
 
 export default defineComponent({
   components: {
@@ -29,30 +32,34 @@ export default defineComponent({
   },
   data() {
     return {
-      volumes: [] as number[],
+      volumes: new Set<VolumeAttribute>(),
       volume: {} as typeof InputField,
     };
   },
   mounted() {
-    this.volume = (this.$refs.product_volume as typeof InputField);
+    this.volume = this.$refs.product_volume as typeof InputField;
   },
   methods: {
     async addVolume() {
-      this.volumes.push(this.volume.getValue());
+      let vol: VolumeAttribute = {
+        id: 0,
+        type: AttributeType.VOLUME,
+        volume: this.volume.getValue(),
+      };
+      this.volumes.add(vol);
     },
-    async deleteVolume(index: number) {
-      this.volumes.splice(index, 1);
+    async deleteVolume(vol: VolumeAttribute) {
+      this.volumes.delete(vol);
     },
     getVolume() {
       return (this.$refs.product_volume as typeof InputField).getValue();
     },
     setVolume(volume: number) {
       (this.$refs.product_volume as typeof InputField).setValue(volume);
-    }
-  }
+    },
+  },
 });
 </script>
 
 <style scoped>
-
 </style>
