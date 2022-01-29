@@ -1,22 +1,22 @@
-import {reactive, toRefs} from 'vue'
-import * as Request from '../request'
+import {reactive, toRefs} from "vue"
+import * as Request from "../request"
 import {redirectToLogin} from "../util";
 import {endLoad, initLoad} from "../loader";
 import {getCSRFCookie} from "../request";
 import {useToast} from "vue-toastification";
 
 export const user = reactive({
-  id: window.initialConfig.user.id ?? '',
-  username: window.initialConfig.user.username ?? '',
-  name: window.initialConfig.user.name ?? '',
-  firstname: window.initialConfig.user.firstname ?? '',
-  lastname: window.initialConfig.user.lastname ?? '',
-  email: window.initialConfig.user.email ?? '',
-  lang: window.initialConfig.user.lang ?? '',
+  id: window.initialConfig.user.id ?? "",
+  username: window.initialConfig.user.username ?? "",
+  name: (window.initialConfig.user.firstname + "" + window.initialConfig.user.lastname) ?? "",
+  firstname: window.initialConfig.user.firstname ?? "",
+  lastname: window.initialConfig.user.lastname ?? "",
+  email: window.initialConfig.user.email ?? "",
+  lang: window.initialConfig.user.lang ?? "",
   isAdmin: window.initialConfig.user.is_admin ?? false,
   isLoggedIn: window.initialConfig.user.isLoggedIn ?? false,
 
-  error: '',
+  error: "",
 })
 
 const actions = {
@@ -24,13 +24,13 @@ const actions = {
     initLoad();
     let toast = useToast();
     return Request.login(username, password, stayLoggedIn).then(responseUser => {
-      user.error = '';
+      user.error = "";
       user.isLoggedIn = true;
       user.id = responseUser.id;
       user.username = responseUser.username;
       user.firstname = responseUser.firstname;
       user.lastname = responseUser.lastname;
-      user.name = user.firstname + ' ' + user.lastname;
+      user.name = user.firstname + " " + user.lastname;
       user.email = responseUser.email;
       user.lang = responseUser.lang;
       user.isAdmin = responseUser.is_admin;
@@ -52,12 +52,12 @@ const actions = {
     initLoad();
     await Request.logout();
     user.isLoggedIn = false;
-    user.username = '';
-    user.name = '';
-    user.firstname = '';
-    user.lastname = '';
-    user.email = '';
-    user.lang = '';
+    user.username = "";
+    user.name = "";
+    user.firstname = "";
+    user.lastname = "";
+    user.email = "";
+    user.lang = "";
     user.isAdmin = false;
 
     endLoad();
@@ -71,3 +71,4 @@ export default function useUser() {
     ...actions,
   }
 }
+console.log(user);

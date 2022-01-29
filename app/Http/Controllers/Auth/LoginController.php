@@ -63,7 +63,7 @@ class LoginController extends Controller
                 'lastname',
                 'email',
                 'lang',
-                'id_admin',
+                'is_admin',
                 ]),
         ]);
     }
