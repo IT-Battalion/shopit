@@ -7,22 +7,21 @@
   <p class="text-gray-200">Für das Ausarbeiten der Idee, sowie die Begleitung während der Umsetzung.</p>
   <br>
   <h2 class="text-1xl font-bold text-white">Michael Weber</h2>
-  <p class="text-gray-200">Für die Hilfe bei der LDAP Authentifizierung ;)</p>
+  <p class="text-gray-200">Für die Hilfe bei der LDAP Authentifizierung ;) der beste Klassenvorstand.</p>
   <br>
   <h2 class="text-1xl font-bold text-white">Christoph Roschger</h2>
   <p class="text-gray-200">Für die Hilfe und Unterstützung bei Sicherheitsfragen sowie das versenden von Mails.</p>
   <br>
   <h2 class="text-1xl font-bold text-white">Walter Rafeiner-Magor</h2>
-  <p class="text-gray-200">Für das Überprüfen und bestätigen diverser Dokumente wie Rechnungen, ..</p>
+  <p class="text-gray-200">Für das Überprüfen und bestätigen diverser Dokumente wie Rechnungen, Bestellbestätigungen und
+    einegem mehr.</p>
   <br>
   <h2 class="text-1xl font-bold text-white">Eva-Maria Kriechbaum</h2>
-  <p class="text-gray-200">Für die Unterstützung bei der Klärung rechtlicher Fragen.</p>
-  <br>
-  <h2 class="text-1xl font-bold text-white">Monika Reichart</h2>
-  <p class="text-gray-200">Für viel Inspiration und Motivation.</p>
+  <p class="text-gray-200">Für die Unterstützung bei der Klärung rechtlicher Fragen wie Rechnungen, Datenschutz und
+    vielem mehr..</p>
   <br>
   <h2 class="text-1xl font-bold text-white">RamsesTheTeacher</h2>
-  <p class="text-gray-200">Für Unterhaltsame Begleitung während schlafloser Nächte.</p>
+  <p class="text-gray-200">Für Unterhaltsame Begleitung während schlafloser Nächte. (Wir wollen Horror Games!!)</p>
   <br>
 
 
