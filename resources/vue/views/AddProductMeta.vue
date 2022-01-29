@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AddProductProcess/>
+    <AddProductProcessBar/>
     <div class="grid w-full grid-cols-1 grid-rows-2 my-16 place-items-center">
       <InputField labelName="Produktname" ref="product_name"/>
       <InputField labelName="Preis" type="number" ref="product_price"/>
@@ -26,19 +26,19 @@
 
 <script lang="ts">
 import {defineComponent} from "@vue/runtime-core";
-import AddProductProcess from "../components/product_create_process/AddProductProcessBar.vue";
 import InputField from "../components/InputField.vue";
 import CancelButton from "../components/buttons/CancelButton.vue";
 import BackwardButton from "../components/buttons/BackwardButton.vue";
 import ForwardButton from "../components/buttons/ForwardButton.vue";
 import {ProductCreateProcessStorage} from "../types/api";
 import {isUndefined} from "lodash";
+import AddProductProcessBar from "../components/product_create_process/AddProductProcessBar.vue";
 
 export default defineComponent({
   components: {
     BackwardButton,
     CancelButton,
-    AddProductProcess,
+    AddProductProcessBar,
     ForwardButton,
     InputField,
   },

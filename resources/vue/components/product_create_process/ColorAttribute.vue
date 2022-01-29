@@ -37,20 +37,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
-import { useToast } from "vue-toastification";
-import ButtonField from "./ButtonField.vue";
-import InputField from "./InputField.vue";
+import {defineComponent} from "@vue/runtime-core";
+import {useToast} from "vue-toastification";
+import InputField from "../InputField.vue";
+import ButtonField from "../ButtonField.vue";
 
 export default defineComponent({
-  components: { ButtonField, InputField },
+  components: {ButtonField, InputField},
   data() {
     return {
       selectedColor: "#000",
       colors: new Map<string, string>(),
       colorSet: new Set<string>(),
       inputError: "",
+      currentName: {} as typeof InputField,
     };
+  },
+  mounted() {
+    this.currentName = (this.$refs.selectedName as typeof InputField);
   },
   methods: {
     removeColor(name: string, color: string) {
@@ -74,14 +78,14 @@ export default defineComponent({
       this.colors.set(colorName, this.selectedColor);
       this.colorSet.add(this.selectedColor);
 
-      (this.$refs.selectedName as typeof InputField).setValue("");
+      this.currentName.setValue("");
       this.selectedColor = "#000";
     },
     setSelectedName(name: string) {
-      (this.$refs.selectedName as typeof InputField).setValue(name);
+      this.currentName.setValue(name);
     },
     getSelectedName() {
-      return (this.$refs.selectedName as typeof InputField).getValue();
+      return this.currentName.getValue();
     },
   },
   setup() {

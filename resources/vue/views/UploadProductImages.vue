@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AddProductProcess />
+    <AddProductProcessBar/>
     <div class="mx-5 mt-20 md:mx-20">
       <file-pond
         name="test"
@@ -22,14 +22,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
-import AddProductProcess from "../components/AddProductProcess.vue";
+import {defineComponent} from "@vue/runtime-core";
 import ButtonField from "../components/ButtonField.vue";
 import CancelButton from "../components/buttons/CancelButton.vue";
 import BackwardButton from "../components/buttons/BackwardButton.vue";
 import ForwardButton from "../components/buttons/ForwardButton.vue";
-import { ProductCreateProcessStorage } from "../types/api";
-import { isUndefined } from "lodash";
+import {ProductCreateProcessStorage} from "../types/api";
+import {isUndefined} from "lodash";
 
 // Import Vue FilePond
 import vueFilePond from "vue-filepond";
@@ -39,33 +38,39 @@ import "filepond/dist/filepond.min.css";
 
 // Import FilePond plugins
 // Please note that you need to install these plugins separately
-
 // Import image preview plugin styles
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
 
 // Import image preview and file type validation plugins
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
-
-// Create component
-const FilePond = vueFilePond(
-  FilePondPluginFileValidateType,
-  FilePondPluginImagePreview
-);
+import {FilePond} from "filepond";
+import AddProductProcessBar from "../components/product_create_process/AddProductProcessBar.vue";
 
 export default defineComponent({
   components: {
     BackwardButton,
     FilePond,
-    AddProductProcess,
+    AddProductProcessBar,
     ButtonField,
     ForwardButton,
     CancelButton,
   },
   data() {
     return {
-      productCreateStorage: Object as ProductCreateProcessStorage,
+      productCreateStorage: {} as ProductCreateProcessStorage,
       myFiles: ["cat.jpeg"],
+    };
+  },
+  setup() {
+    // Create component
+    const FilePond = vueFilePond(
+      FilePondPluginFileValidateType,
+      FilePondPluginImagePreview
+    );
+
+    return {
+      FilePond
     };
   },
   async mounted() {
@@ -77,11 +82,11 @@ export default defineComponent({
   },
   methods: {
     async insertStoredData() {
-      if (!isUndefined(this.productCreateStorage) && !isUndefined(this.productCreateStorage.images)) {
+      /*if (!isUndefined(this.productCreateStorage) && !isUndefined(this.productCreateStorage.images)) {
         if (this.productCreateStorage.images.length > 0) {
           (this.$refs.images as typeof UploadImages).Imgs = this.productCreateStorage.images;
         }
-      }
+      }*/
     },
     async backward() {
       await this.saveToLocalStorage();
@@ -92,8 +97,8 @@ export default defineComponent({
       await this.$router.push({name: 'Add Product attributes'});
     },
     async saveToLocalStorage() {
-      this.productCreateStorage.images = (this.$refs.images as typeof UploadImages).Imgs;
-      window.localStorage.setItem('product', JSON.stringify(this.productCreateStorage));
+      /*this.productCreateStorage.images = (this.$refs.images as typeof UploadImages).Imgs;
+      window.localStorage.setItem('product', JSON.stringify(this.productCreateStorage));*/
     },
     handleFilePondInit: function () {
       console.log("FilePond has initialized");

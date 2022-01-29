@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AddProductProcess/>
+    <AddProductProcessBar/>
     <h2 class="w-full my-10 text-2xl font-bold text-center text-white">
       Produktbeschreibung
     </h2>
@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import {defineComponent} from "@vue/runtime-core";
-import AddProductProcess from "../components/product_create_process/AddProductProcessBar.vue";
+import AddProductProcessBar from "../components/product_create_process/AddProductProcessBar.vue";
 import {QuillEditor} from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import ButtonField from "../components/ButtonField.vue";
@@ -34,7 +34,7 @@ import {AxiosResponse} from "axios";
 
 export default defineComponent({
   components: {
-    AddProductProcess,
+    AddProductProcessBar,
     QuillEditor,
     ButtonField,
     BackwardButton,
