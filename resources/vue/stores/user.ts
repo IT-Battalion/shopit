@@ -11,13 +11,11 @@ export const user = reactive({
   firstname: window.initialConfig.user.firstname ?? '',
   lastname: window.initialConfig.user.lastname ?? '',
   email: window.initialConfig.user.email ?? '',
-  employeeType: window.initialConfig.user.employeeType ?? '',
-  class: window.initialConfig.user.class ?? '',
   lang: window.initialConfig.user.lang ?? '',
   isAdmin: window.initialConfig.user.is_admin ?? false,
   isLoggedIn: window.initialConfig.user.isLoggedIn ?? false,
 
-  error: ''
+  error: '',
 })
 
 const actions = {
@@ -25,15 +23,14 @@ const actions = {
     initLoad();
     let toast = useToast();
     return Request.login(username, password, stayLoggedIn).then(responseUser => {
+      user.error = '';
       user.isLoggedIn = true;
       user.id = responseUser.id;
       user.username = responseUser.username;
-      user.name = responseUser.name;
       user.firstname = responseUser.firstname;
       user.lastname = responseUser.lastname;
+      user.name = user.firstname + ' ' + user.lastname;
       user.email = responseUser.email;
-      user.employeeType = responseUser.employeeType;
-      user.class = responseUser.class;
       user.lang = responseUser.lang;
       user.isAdmin = responseUser.is_admin;
       toast.success("Erfolgreich eingeloggt.");
@@ -57,8 +54,6 @@ const actions = {
     user.firstname = '';
     user.lastname = '';
     user.email = '';
-    user.employeeType = '';
-    user.class = '';
     user.lang = '';
     user.isAdmin = false;
 

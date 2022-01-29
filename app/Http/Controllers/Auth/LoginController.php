@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
 use App\Providers\RouteServiceProvider;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use LdapRecord\Laravel\Auth\ListensForLdapBindFailure;
 
@@ -28,7 +29,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected string $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
@@ -40,37 +41,27 @@ class LoginController extends Controller
 
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request): JsonResponse
     {
-        $data = $request->validate([
-            'username' => 'required',
-            'password' => 'required',
-            'remember' => 'nullable',
-        ]);
+        $data = $request->validated();
 
         $credentials = [
             'username' => $data['username'],
             'password' => $data['password'],
         ];
 
-        if ( ! Auth::attempt($credentials, $data['remember'])) {
+        if (!Auth::attempt($credentials, $data['remember'])) {
             abort(401, 'Benutzername oder Passwort falsch.');
         }
 
         return response()->json([
             'redirect_to' => $this->redirectTo,
-            ...Auth::user()->only([
-                'id',
-                'username',
-                'name',
-                'firstname',
-                'lastname',
-                'email',
-                'employeeType',
-                'class',
-                'lang',
-                'id_admin',
-                ]),
+            'username' => Auth::user()->username,
+            'firstname' => Auth::user()->firstname,
+            'lastname' => Auth::user()->lastname,
+            'email' => Auth::user()->email,
+            'lang' => Auth::user()->lang,
+            'is_admin' => Auth::user()->is_admin,
         ]);
     }
 }
