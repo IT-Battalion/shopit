@@ -66,7 +66,7 @@
             {{ product.name }}
           </h1>
           <div v-else class="h-10">
-            <Skeletor :pill="true" />
+            <Skeletor :pill="true"/>
           </div>
         </div>
 
@@ -76,7 +76,7 @@
             {{ product.price }}
           </p>
           <div class="text-3xl" v-else>
-            <Skeletor :pill="true" />
+            <Skeletor :pill="true"/>
           </div>
 
           <form class="mt-10">
@@ -102,7 +102,7 @@
               v-if="!state.isLoading"
             />
             <div class="text-3xl w-1/2" v-else>
-              <Skeletor :pill="true" />
+              <Skeletor :pill="true"/>
             </div>
           </form>
         </div>
@@ -127,13 +127,13 @@
               </p>
               <div v-else>
                 <div class="w-2/3">
-                  <Skeletor :pill="true" />
+                  <Skeletor :pill="true"/>
                 </div>
                 <div class="w-1/3">
-                  <Skeletor :pill="true" />
+                  <Skeletor :pill="true"/>
                 </div>
                 <div class="w-1/2">
-                  <Skeletor :pill="true" />
+                  <Skeletor :pill="true"/>
                 </div>
               </div>
             </div>
@@ -214,10 +214,10 @@ export default defineComponent({
         .filter((type) => (attributes as any)[type])
         .forEach(type => {
           (attributes as any)[type] = {
-          id: (attributes as any)[type].id,
-          type: (attributes as any)[type].type,
-        };
-      });
+            id: (attributes as any)[type].id,
+            type: (attributes as any)[type].type,
+          };
+        });
 
       const count = (this.$refs.amount as typeof InputField).getValue();
 
@@ -231,7 +231,7 @@ export default defineComponent({
 
           updatePrices(data.subtotal, data.discount, data.tax, data.total);
           this.buttonLoading = false;
-          return{
+          return {
             product: cloneDeep(this.product),
             count: data.count,
             selectedAttributes: cloneDeep(selectedAttributes),
