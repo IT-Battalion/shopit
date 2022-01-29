@@ -1,35 +1,38 @@
 <template>
   <div class="w-full h-full pl-0 md:pl-24">
     <h1 class="text-4xl font-bold text-white">Coupons</h1>
-    <InputField
-      ref="code"
-      labelName="Rabattcode"
-      :errorMessage="codeError"
-      required
-    />
-    <InputField
-      ref="discount"
-      labelName="Rabatt"
-      placeholder="%"
-      required
-      type="number"
-      :step="5"
-      :errorMessage="discountError"
-    />
-    <InputField
-      ref="enabled_until"
-      iconName="calender"
-      labelName="Erhältlich bis"
-      required
-      type="date"
-      class="min-w-max"
-      :errorMessage="dateError"
-    />
-    <ButtonField
-      iconSrc="/img/addBlack.svg"
-      :loading="loading"
-      @click="createCoupon() && isEmpty()"
-    />
+    <div class="flex flex-row justify-center w-full mt-10 gap-28">
+      <InputField
+        ref="code"
+        labelName="Rabattcode"
+        :errorMessage="codeError"
+        required
+      />
+      <InputField
+        ref="discount"
+        labelName="Rabatt"
+        placeholder="%"
+        required
+        type="number"
+        :step="5"
+        :errorMessage="discountError"
+      />
+      <InputField
+        ref="enabled_until"
+        iconName="calender"
+        labelName="Erhältlich bis"
+        required
+        type="date"
+        class="min-w-max"
+        :errorMessage="dateError"
+      />
+      <ButtonField
+        class="mt-14"
+        iconSrc="/img/addBlack.svg"
+        :loading="loading"
+        @click="createCoupon() && isEmpty()"
+      />
+    </div>
     <vue-good-table
       class="mt-10"
       :columns="columns"
