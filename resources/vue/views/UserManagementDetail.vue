@@ -1,7 +1,7 @@
 <template>
   <div>
     <Profile v-if="!state.isLoading" :user="user"/>
-    <h2 class="text-3xl mt-10 mb-6 text-white font-bold">Bestellungen</h2>
+    <h2 class="mt-10 mb-6 text-3xl font-bold text-white">Bestellungen</h2>
     <vue-good-table
       :columns="userOrderColumns"
       :pagination-options="{
@@ -23,27 +23,43 @@
         </span>
       </template>
     </vue-good-table>
-    <div v-if="this.ban.disabled_at == null && this.ban.disabled_by == null && this.ban.disabled_for == null">
-      <h2 class="text-3xl mt-10 mb-6 text-white font-bold">Benutzer Sperren</h2>
-      <textarea class="w-1/2 bg-elevatedDark text-white" ref="reason" minlength="1"></textarea>
+    <div v-if="!state.isLoading || state.isProgressing">
+    <template
+      v-if="
+        ban.disabled_at == null &&
+        ban.disabled_by == null &&
+        ban.disabled_for == null
+
+      "
+    >
+      <h2 class="mt-10 mb-6 text-3xl font-bold text-white">Benutzer Sperren</h2>
+      <div class="flex flex-row gap-4">
+        <div class="flex flex-row gap-4">
+        <textarea
+          class="w-1/2 text-white bg-elevatedDark rounded-2xl"
+          ref="reason"
+        ></textarea>
       <ButtonField
         name="Sperren"
         :acceptName="true"
-        class="mt-10"
+
         @click="banUser"
       >
         <template v-slot:text>Sperren</template>
         <template v-slot:icon><img src="/img/lockBlack.svg" /></template>
       </ButtonField>
     </div>
-    <div v-else>
-      <h2 class="text-3xl mt-10 mb-6 text-white font-bold">Benutzer Entsperren</h2>
-      <textarea class="w-1/2 bg-elevatedDark text-white" v-text="this.ban.disabled_for" disabled></textarea>
+    </template>
+    </template>
+    <div v-else class="flex flex-row gap-4">
+      <h2 class="mt-10 mb-6 text-3xl font-bold text-white">Benutzer Entsperren</h2>
+      <textarea class="w-1/2 text-white bg-elevatedDark rounded-2xl"
+        v-text="ban.disabled_for" disabled></textarea>
       <ButtonField
         name="Entsperren"
         :acceptName="true"
 
-        class="mt-10"
+
         @click="unbanUser"
       >
         <template v-slot:text>Entsperren</template>
@@ -51,17 +67,21 @@
       </ButtonField>
     </div>
   </div>
+  <div v-else class="flex flex-row gap-4">
+    <Skeletor :pill="true" class="w-1/2 h-28" />
+    <Skeletor :pill="true" class="w-20 h-10" />
+  </div>
 </template>
 
 <script lang="ts">
-import {defineComponent} from "@vue/runtime-core";
-import {Ban, BanUserRequest, Order, User} from "../types/api";
-import {endLoad, initLoad, state} from "../loader";
-import {AxiosResponse} from "axios";
-import {OrderStatusLables} from "../types/api-values";
+import { defineComponent } from "@vue/runtime-core";
+import { Ban, BanUserRequest, Order, User } from "../types/api";
+import { endLoad, initLoad, state } from "../loader";
+import { AxiosResponse } from "axios";
+import { OrderStatusLables } from "../types/api-values";
 import Profile from "../components/Profile.vue";
 import ButtonField from "../components/ButtonField.vue";
-import {useToast} from "vue-toastification";
+import { useToast } from "vue-toastification";
 
 export default defineComponent({
   components: {
@@ -188,14 +208,15 @@ export default defineComponent({
       try {
         let reason = (this.$refs.reason as HTMLTextAreaElement).value;
         let ban = await this.$http.post<BanUserRequest, AxiosResponse<Ban>>(
-          `/admin/ban/user/${this.$route.params.id}/ban`, {
+          `/admin/ban/user/${this.$route.params.id}/ban`,
+          {
             reason,
           }
         );
-        this.toast.success('Benutzer wurde erfolgreich gesperrt.');
+        this.toast.success("Benutzer wurde erfolgreich gesperrt.");
         this.ban = ban.data;
       } catch (e) {
-        this.toast.error('Fehler beim sperren des Benutzers.');
+        this.toast.error("Fehler beim sperren des Benutzers.");
       }
       endLoad();
     },

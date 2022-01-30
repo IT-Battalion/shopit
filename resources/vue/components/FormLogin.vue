@@ -16,17 +16,7 @@
       "
     >
       <div
-        class="
-          flex flex-col
-          items-center
-          justify-center
-          w-full
-          h-full
-          inset-0
-          login-form__elevation
-          mb-10
-          sm:mb-0
-        "
+        class="inset-0 flex flex-col items-center justify-center w-full h-full mb-10  login-form__elevation sm:mb-0"
       >
         <div class="flex flex-row">
           <img
@@ -37,34 +27,19 @@
           <img src="/img/IT_Logo.png" alt="IT Logo" class="w-3/4 mb-10" />
         </div>
         <h1
-          class="
-            text-xl
-            sm:text-2xl
-            text-white
-            lg:text-4xl
-            whitespace-nowrap
-            mb-2
-          "
+          class="mb-2 text-xl text-white  sm:text-2xl lg:text-4xl whitespace-nowrap"
         >
           Willkommen bei ShopIT!
         </h1>
-        <p class="text-md text-center text-gray-400 sm:text-md lg:text-2xl">
+        <p class="text-center text-gray-400 text-md sm:text-md lg:text-2xl">
           Der Online Shop der Abteilung für Informationstechnologie
         </p>
       </div>
       <form
         @submit.prevent="onSubmit"
-        class="
-          grid
-          mx-3
-          sm:mx-0 sm:w-1/2
-          grid-rows-6
-          gap-2
-          md:gap-4
-          place-items-center
-        "
+        class="grid grid-rows-6 gap-2 mx-3  sm:mx-0 sm:w-1/2 md:gap-4 place-items-center"
       >
-        <label
+        <!-- <label
           for="username"
           class="block mt-2 text-sm font-bold text-left text-inputLabel"
           >Benutzername</label
@@ -75,23 +50,13 @@
             name="username"
             type="text"
             v-model="form.username"
-            class="
-              w-full
-              px-3
-              py-2
-              leading-tight
-              text-white
-              bg-gray-900
-              rounded
-              shadow
-              appearance-none
-              focus:outline-none focus:shadow-outline
-            "
+            class="w-full px-3 py-2 leading-tight text-white bg-gray-900 rounded shadow appearance-none focus:outline-none focus:shadow-outline"
             autofocus
             required
           />
-        </div>
-        <label
+        </div> -->
+        <InputField labelName="Benutzername" ref="username" />
+        <!-- <label
           for="user-password"
           class="block mt-2 text-sm font-bold text-inputLabel"
           >Passwort</label
@@ -102,27 +67,17 @@
             name="username"
             type="password"
             v-model="form.password"
-            class="
-              w-full
-              px-3
-              py-2
-              leading-tight
-              text-white
-              bg-gray-900
-              rounded
-              shadow
-              appearance-none
-              focus:outline-none focus:shadow-outline
-            "
+            class="w-full px-3 py-2 leading-tight text-white bg-gray-900 rounded shadow appearance-none focus:outline-none focus:shadow-outline"
             required
           />
-        </div>
-        <div class="flex flex-row">
+        </div> -->
+        <InputField labelName="Passwort" ref="password" />
+        <div class="flex flex-row items-center justify-center">
           <input
             type="checkbox"
             name="stayLogedIn"
             id="stayLogedIn"
-            v-model="form.stayLogedIn"
+            v-model="stayLogedIn"
           />
           <label for="stayLogedIn" class="my-auto ml-2 text-center text-white">
             Angemeldet bleiben
@@ -133,33 +88,18 @@
           {{ user.error.value }}
         </div>
         <button
-          class="
-            px-4
-            py-4
-            w-full
-            md:w-auto md:py-2
-            font-bold
-            text-white
-            bg-gray-800
-            rounded
-            hover:bg-gray-700
-          "
+          class="w-full px-4 py-4 font-bold text-white bg-gray-800 rounded  md:w-auto md:py-2 hover:bg-gray-700"
           type="submit"
         >
           Anmelden
         </button>
       </form>
       <div class="col-span-2">
-        <a class="
-              underline
-              opacity-60
-              hover:opacity-100
-              decoration-solid
-              text-white
-            "
-           href="https://lernenimaufbruch.at/impressum.html"
-           target="_blank"
-        >Impressum
+        <a
+          class="text-white underline  opacity-60 hover:opacity-100 decoration-solid"
+          href="https://lernenimaufbruch.at/impressum.html"
+          target="_blank"
+          >Impressum
         </a>
       </div>
     </div>
@@ -207,27 +147,34 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive} from "vue";
-import {useRoute, useRouter} from "vue-router";
+import { defineComponent, reactive, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import useUser from "../stores/user";
 import userStore from "../stores/user";
+import InputField from "./InputField.vue";
 
 export default defineComponent({
+  components: { InputField },
+  data() {
+    return {
+      stayLogedIn: false,
+    };
+  },
   setup() {
     const route = useRoute();
-    const {user, login} = useUser();
+    const { user, login } = useUser();
     const router = useRouter();
 
     const form = reactive({
-      username: "",
-      password: "",
+      username: ref(""),
+      password: ref(""),
       stayLogedIn: false,
     });
 
     const onSubmit = () => {
       user.error.value = "";
-      let username = form.username;
-      let password = form.password;
+      let username = ref(null);
+      let password = ref(null);
 
       login(username, password, form.stayLogedIn).then((_) => {
         const next = (route.params.nextUrl as string) || "/";
@@ -251,6 +198,19 @@ export default defineComponent({
       this.user.error.value = "";
       this.form.username = "";
       this.form.password = "";
+    },
+    onSubmit() {
+      this.user.error.value = "";
+      let username = ref(null);
+      let password = ref(null);
+
+      login(username, password, this.form.stayLogedIn).then((_) => {
+        const next = (this.route.params.nextUrl as string) || "/";
+
+        router.replace({
+          path: next,
+        });
+      });
     },
   },
 });
