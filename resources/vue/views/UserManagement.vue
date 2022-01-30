@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full pl-0 md:pl-24">
+  <div class="w-full h-full">
     <h1 class="text-4xl font-bold text-white">Userverwaltung</h1>
     <vue-good-table
       class="mt-10"

@@ -1,8 +1,9 @@
 <template>
   <div class="w-full">
     <div
-      class="max-w-2xl px-4 pt-32 mx-auto sm:px-6 lg:max-w-7xl lg:px-8"
-      v-for="(products, categoryName) in categories"
+      class="max-w-2xl mx-auto sm:px-6 lg:max-w-7xl lg:px-8"
+      :class="index !== 0 ? 'mt-32' : ''"
+      v-for="(products, categoryName, index) in categories"
       :key="categoryName"
       :id="categoryName"
       v-if="!state.isLoading || state.isProgressing"

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full pl-0 md:pl-24">
+  <div class="w-full h-full pl-0">
     <h1 class="text-4xl font-bold text-white">Coupons</h1>
     <div class="flex flex-row justify-center w-full mt-10 gap-28">
       <InputField

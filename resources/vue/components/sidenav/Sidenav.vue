@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'fixed overflow-y-auto overflow-x-hidden left-0 flex flex-col w-56 m-0 text-white sidebar top-32 bg-backgroundColor',
+      'fixed overflow-y-auto overflow-x-hidden left-0 flex flex-col place-content-start place-items-start w-56 m-0 text-white sidebar top-32 bg-backgroundColor',
       center ? 'justify-center' : '',
     ]"
     ref="sidenav"
@@ -14,6 +14,7 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
+  name: "Sidenav",
   data() {
     return {
       center: true,

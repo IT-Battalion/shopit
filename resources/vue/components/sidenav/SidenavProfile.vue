@@ -1,26 +1,20 @@
 <template>
-  <div
-    class="fixed left-0 flex flex-col justify-center w-56 m-0 overflow-auto text-white  sidebar top-32 bg-backgroundColor"
-  >
-    <div
-      v-for="category in categories"
-      v-bind:key="category.icon_url"
-      v-bind:name="category.name"
-      class="flex flex-row py-1 pl-6 my-5 hover:text-sidenavSelected rounded-xl"
-    >
+  <Sidenav>
+    <router-link
+        :to="category.routerLink"
+        class="my-auto flex flex-row py-1 pl-6 my-5 hover:text-sidenavSelected rounded-xl"
+        v-for="category in categories"
+        v-bind:key="category.icon_url">
       <img :src="category.icon_url" class="object-scale-down h-8 mr-4" />
-      <template v-if="category.name != 'Produkte'">
-        <router-link :to="category.routerLink" class="my-auto">
-          <span class="my-1 text-left">{{ category.name }}</span>
-        </router-link>
-      </template>
-    </div>
-  </div>
+      <span class="my-1 text-left" v-if="category.name != 'Produkte'">{{ category.name }}</span>
+    </router-link>
+  </Sidenav>
 </template>
 
 <script lang="ts">
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { defineComponent } from "@vue/runtime-core";
+import Sidenav from "./Sidenav.vue";
 
 export default defineComponent({
   components: {
@@ -28,6 +22,7 @@ export default defineComponent({
     MenuButton,
     MenuItem,
     MenuItems,
+    Sidenav,
   },
   setup() {
     const categories = [

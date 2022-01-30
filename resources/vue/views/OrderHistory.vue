@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full pl-0 md:pl-24">
+  <div class="w-full h-full pl-0">
     <h1 class="text-4xl font-bold text-white">Bestellverlauf</h1>
     <vue-good-table
       class="mt-10"
@@ -94,18 +94,7 @@ export default defineComponent({
       endLoad();
     },
     getLink(status: OrderStatus, id: number) {
-      switch (status) {
-        case OrderStatus.CREATED:
-          return {name: "Order Created", params: {id}};
-        case OrderStatus.PAID:
-          return {name: "Order Pay", params: {id}};
-        case OrderStatus.ORDERED:
-          return {name: "Order Ordered", params: {id}};
-        case OrderStatus.RECEIVED:
-          return {name: "Order Receive", params: {id}};
-        case OrderStatus.HANDED_OVER:
-          return {name: "Order Handed Over", params: {id}};
-      }
+      return {name: "Order Detail", params: {id}};
     }
   }
 });

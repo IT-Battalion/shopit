@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row">
+  <div class="flex flex-row md:mx-24">
     <mq-responsive target="md+">
       <SidenavProfile />
     </mq-responsive>

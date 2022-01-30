@@ -1,53 +1,55 @@
 <template>
-  <Profile v-if="!state.isLoading" :user="user"/>
-  <h2 class="text-3xl mt-10 mb-6 text-white font-bold">Bestellungen</h2>
-  <vue-good-table
-    :columns="userOrderColumns"
-    :pagination-options="{
-      enabled: true,
-      perPage: 5,
-    }"
-    :rows="userOrderRows"
-    :search-options="{
-      enabled: true,
-      trigger: 'enter',
-      placeholder: 'Search this table',
-    }"
-    max-height="400px"
-    theme="shopit"
-  >
-    <template #table-row="props">
-      <span v-if="props.column.field === 'status'">
-        {{ statusLables[props.formattedRow[props.column.field]] }}
-      </span>
-    </template>
-  </vue-good-table>
-  <div v-if="this.ban.disabled_at == null && this.ban.disabled_by == null && this.ban.disabled_for == null">
-    <h2 class="text-3xl mt-10 mb-6 text-white font-bold">Benutzer Sperren</h2>
-    <textarea class="w-1/2 bg-elevatedDark text-white" ref="reason" minlength="1"></textarea>
-    <ButtonField
-      name="Sperren"
-      :acceptName="true"
-      class="mt-10"
-      @click="banUser"
+  <div>
+    <Profile v-if="!state.isLoading" :user="user"/>
+    <h2 class="text-3xl mt-10 mb-6 text-white font-bold">Bestellungen</h2>
+    <vue-good-table
+      :columns="userOrderColumns"
+      :pagination-options="{
+        enabled: true,
+        perPage: 5,
+      }"
+      :rows="userOrderRows"
+      :search-options="{
+        enabled: true,
+        trigger: 'enter',
+        placeholder: 'Search this table',
+      }"
+      max-height="400px"
+      theme="shopit"
     >
-      <template v-slot:text>Sperren</template>
-      <template v-slot:icon><img src="/img/lockBlack.svg" /></template>
-    </ButtonField>
-  </div>
-  <div v-else>
-    <h2 class="text-3xl mt-10 mb-6 text-white font-bold">Benutzer Entsperren</h2>
-    <textarea class="w-1/2 bg-elevatedDark text-white" v-text="this.ban.disabled_for" disabled></textarea>
-    <ButtonField
-      name="Entsperren"
-      :acceptName="true"
+      <template #table-row="props">
+        <span v-if="props.column.field === 'status'">
+          {{ statusLables[props.formattedRow[props.column.field]] }}
+        </span>
+      </template>
+    </vue-good-table>
+    <div v-if="this.ban.disabled_at == null && this.ban.disabled_by == null && this.ban.disabled_for == null">
+      <h2 class="text-3xl mt-10 mb-6 text-white font-bold">Benutzer Sperren</h2>
+      <textarea class="w-1/2 bg-elevatedDark text-white" ref="reason" minlength="1"></textarea>
+      <ButtonField
+        name="Sperren"
+        :acceptName="true"
+        class="mt-10"
+        @click="banUser"
+      >
+        <template v-slot:text>Sperren</template>
+        <template v-slot:icon><img src="/img/lockBlack.svg" /></template>
+      </ButtonField>
+    </div>
+    <div v-else>
+      <h2 class="text-3xl mt-10 mb-6 text-white font-bold">Benutzer Entsperren</h2>
+      <textarea class="w-1/2 bg-elevatedDark text-white" v-text="this.ban.disabled_for" disabled></textarea>
+      <ButtonField
+        name="Entsperren"
+        :acceptName="true"
 
-      class="mt-10"
-      @click="unbanUser"
-    >
-      <template v-slot:text>Entsperren</template>
-      <template v-slot:icon><img src="/img/lockBlack.svg" /></template>
-    </ButtonField>
+        class="mt-10"
+        @click="unbanUser"
+      >
+        <template v-slot:text>Entsperren</template>
+        <template v-slot:icon><img src="/img/lockBlack.svg" /></template>
+      </ButtonField>
+    </div>
   </div>
 </template>
 

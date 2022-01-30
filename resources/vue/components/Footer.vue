@@ -12,7 +12,7 @@
       sm:mt-48 sm:mb-0
     "
   >
-    <div class="px-5 pb-12 xl:px-30 lg:px-15 md:px-5 sm:px-0">
+    <div class="px-5 pb-12 xl:px-30 lg:px-15 md:px-5 mx-4 sm:px-0">
       <div
         class="flex flex-col justify-start w-full pt-12 space-y-2 sm:flex-row"
       >

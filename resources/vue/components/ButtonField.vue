@@ -10,6 +10,7 @@
       flex flex-row
       justify-center
       items-center
+      gap-3
       px-7
       text-black
     "
@@ -31,9 +32,7 @@
         d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
       />
     </svg>
-    <span v-if="!loading" class="mr-3">
-      <slot name="text" />
-    </span>
+    <slot v-if="!loading" name="text" />
     <span v-if="!loading && !iconSpinner" class="w-7 h-7 flex items-center justify-center">
       <slot name="icon" />
     </span>

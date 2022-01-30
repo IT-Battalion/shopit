@@ -51,7 +51,7 @@
             />
           </svg></template>
       </ButtonField>
-      <ButtonField v-if="user.isAdmin && !state.isLoading && order.status !== handedOver" :icon-spinner="state.isLoading" @click="confirmStep">
+      <ButtonField v-if="user.isAdmin && order.status !== handedOver" :icon-spinner="state.isLoading" @click="confirmStep">
         <template v-slot:text><span>{{ confirmText }}</span></template>
         <template v-slot:icon><img src="/img/doneBlack.svg" /></template>
       </ButtonField>
