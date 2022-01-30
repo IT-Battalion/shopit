@@ -25,7 +25,8 @@ mix
         require('tailwindcss'),
     ])
     .css('node_modules/vue-skeletor/dist/vue-skeletor.css', 'public/css/vendor.css')
-    .sass('resources/scss/vue-good-tables.sass', 'public/css/vue-good-tables.css')
+    .sass('resources/scss/vue-good-tables.sass', 'public/css/vendor.css')
+    .sass('resources/scss/app.scss', 'public/css/vendor.css')
     //.sass('resources/assets/scss/shopit.scss', 'public/css/shopit.css')
     .sourceMaps()
     //.browserSync('localhost:80');

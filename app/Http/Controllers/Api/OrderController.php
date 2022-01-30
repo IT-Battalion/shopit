@@ -8,15 +8,14 @@ use App\Models\Order;
 use App\Models\User;
 use App\Services\Orders\OrderServiceInterface;
 use Auth;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 
 class OrderController extends Controller
 {
 
-    public function all(): Collection|array
+    public function index(): JsonResponse
     {
-        return Order::all();
+        return response()->json(Order::all());
     }
 
     public function userAll(): JsonResponse
@@ -36,9 +35,9 @@ class OrderController extends Controller
                 'updated_at' => $order->updated_at,
                 'status' => $order->status,
                 'total' => $order->total,
-                'totalDiscount' => $order->totalDiscount,
-                'totalGross' => $order->totalGross,
-                'totalTax' => $order->totalTax,
+                'discount' => $order->discount,
+                'subtotal' => $order->subtotal,
+                'tax' => $order->tax,
                 'coupon_code_id' => $order->coupon_code_id,
                 'customer_id' => $order->customer_id,
                 'paid_at' => $order->paid_at,
@@ -92,11 +91,12 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Order $order
+     * @param int $order
      * @return JsonResponse
      */
-    public function show(Order $order): JsonResponse
+    public function show(int $order): JsonResponse
     {
+        $order = Order::withCount('products')->find($order);
         return response()->json($order);
     }
 

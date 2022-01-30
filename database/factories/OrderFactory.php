@@ -57,9 +57,9 @@ class OrderFactory extends Factory
             'products_received_by_id' => $hasReceived ? $admin_received : null,
             'handed_over_at' => $hasHanded ? Date::now()->addDays(22) : null,
             'handed_over_by_id' => $hasHanded ? $admin_handed : null,
-            'totalGross' => new Money($this->faker->randomFloat(2, 1, 300)),
-            'totalDiscount' => new Money($this->faker->randomFloat(2, 1, 300)),
-            'totalTax' => new Money($this->faker->randomFloat(2, 1, 300)),
+            'subtotal' => new Money($this->faker->randomFloat(2, 1, 300)),
+            'discount' => new Money($this->faker->randomFloat(2, 1, 300)),
+            'tax' => new Money($this->faker->randomFloat(2, 1, 300)),
             'total' => new Money($this->faker->randomFloat(2, 1, 300)),
         ];
     }

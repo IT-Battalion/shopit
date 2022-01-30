@@ -194,9 +194,9 @@ export interface Coupon {
 }
 
 export interface Order {
-  id?: number,
-  status?: OrderStatus,
-  created_at?: string,
+  id: number,
+  status: OrderStatus,
+  created_at: string,
   paid_at?: string,
   products_ordered_at?: string,
   products_received_at?: string,
@@ -207,10 +207,10 @@ export interface Order {
   transaction_confirmed?: User,
   customer?: User,
   coupon?: Coupon,
-  subtotal?: Money,
-  discount?: Money,
-  tax?: Money,
-  total?: Money,
+  subtotal: Money,
+  discount: Money,
+  tax: Money,
+  total: Money,
 }
 
 export interface Invoice {

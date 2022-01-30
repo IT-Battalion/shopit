@@ -41,9 +41,9 @@ class CreateOrdersTable extends Migration
             $table->foreignId('handed_over_by_id')->nullable()->constrained('users');
 
             //prices
-            $table->string('totalGross');
-            $table->string('totalDiscount');
-            $table->string('totalTax');
+            $table->string('subtotal');
+            $table->string('discount');
+            $table->string('tax');
             $table->string('total');
 
             $table->timestamps();

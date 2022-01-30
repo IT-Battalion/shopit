@@ -6,7 +6,9 @@
       :min="1"
       :errorMessage="errorMessage"
     />
-    <ButtonField icon-src="/img/addBlack.svg" @click="addVolume" />
+    <ButtonField @click="addVolume">
+      <template v-slot:icon><img src="/img/addBlack.svg" /></template>
+    </ButtonField>
   </div>
   <div class="flex flex-row max-w-[35rem] gap-4 overflow-x-auto">
     <template v-for="(vol, i) in volumes" :key="i">

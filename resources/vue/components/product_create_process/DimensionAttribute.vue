@@ -22,10 +22,11 @@
       :errorMessage="depthError"
     />
     <ButtonField
-      icon-src="/img/addBlack.svg"
       @click="addDimension"
       class="mt-16"
-    />
+    >
+      <template v-slot:icon><img src="/img/addBlack.svg" /></template>
+    </ButtonField>
   </div>
   <div class="flex flex-row max-w-[35rem] gap-4 overflow-x-auto">
     <template v-for="(dimension, i) in dimensions" :key="i">

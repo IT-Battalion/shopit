@@ -43,9 +43,9 @@ class OrderService implements OrderServiceInterface
             'customer_id' => $customer->id,
             'coupon_code_id' => $coupon,
             'status' => OrderStatus::CREATED,
-            'totalGross' => $prices['subtotal'],
-            'totalDiscount' => $prices['discount'],
-            'totalTax' => $prices['tax'],
+            'subtotal' => $prices['subtotal'],
+            'discount' => $prices['discount'],
+            'tax' => $prices['tax'],
             'total' => $prices['total'],
         ]);
 

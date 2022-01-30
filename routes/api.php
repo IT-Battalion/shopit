@@ -58,8 +58,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::apiResource('/coupons', 'CouponController')->only(['index', 'store']);
 
     // Orders routes
-    Route::get('/orders', [OrderController::class, 'all']);
-    Route::get('/orders/{order}', [OrderController::class, 'show']);
+    Route::apiResource('orders', 'OrderController')->except(['store', 'delete']);
     Route::get('/orders/user/{user}', [OrderController::class, 'userAdminAll']);
 
     // Category Routes

@@ -94,13 +94,14 @@
               v-if="!state.isLoading"
             />
             <ButtonField
-              name="Hinzufügen"
-              iconSrc="/img/addToShoppingCart.svg"
               @click="addProduct"
               class="mt-10 row-span-full"
               :iconSpinner="buttonLoading"
               v-if="!state.isLoading"
-            />
+            >
+              <template v-slot:text><span>Hinzufügen</span></template>
+              <template v-slot:icon><img src="/img/addToShoppingCart.svg" /></template>
+            </ButtonField>
             <div class="text-3xl w-1/2" v-else>
               <Skeletor :pill="true" />
             </div>

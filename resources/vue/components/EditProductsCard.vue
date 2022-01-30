@@ -32,13 +32,17 @@
         :to="{ name: 'Product', params: { name: product?.name } }"
         class="col-span-1 col-start-1 mt-3"
       >
-        <ButtonField iconSrc="/img/editBlack.svg" />
+        <ButtonField>
+          <template v-slot:icon><img src="/img/editBlack.svg" /></template>
+        </ButtonField>
       </router-link>
       <router-link
         :to="{ name: 'Product', params: { name: product?.name } }"
         class="col-span-1 col-start-2 justify-self-end mt-3"
       >
-        <ButtonField iconSrc="/img/binBlack.svg" />
+        <ButtonField>
+          <template v-slot:icon><img src="/img/binBlack.svg" /></template>
+        </ButtonField>
       </router-link>
     </div>
   </template>

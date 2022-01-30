@@ -93,18 +93,7 @@ export default defineComponent({
       endLoad();
     },
     getLink(status: OrderStatus, id: number) {
-      switch (status) {
-        case OrderStatus.CREATED:
-          return {name: "Admin Order Created", params: {id}};
-        case OrderStatus.PAID:
-          return {name: "Admin Order Pay", params: {id}};
-        case OrderStatus.ORDERED:
-          return {name: "Admin Order Ordered", params: {id}};
-        case OrderStatus.RECEIVED:
-          return {name: "Admin Order Received", params: {id}};
-        case OrderStatus.HANDED_OVER:
-          return {name: "Admin Order Handed Over", params: {id}};
-      }
+      return {name: "Admin Order Detail", params: {id}};
     }
   }
 });

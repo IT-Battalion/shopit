@@ -22,7 +22,6 @@
 
 <script lang="ts">
 import {defineComponent} from "@vue/runtime-core";
-import ButtonField from "../components/ButtonField.vue";
 import CancelButton from "../components/buttons/CancelButton.vue";
 import BackwardButton from "../components/buttons/BackwardButton.vue";
 import ForwardButton from "../components/buttons/ForwardButton.vue";
@@ -52,7 +51,6 @@ export default defineComponent({
   components: {
     BackwardButton,
     AddProductProcessBar,
-    ButtonField,
     ForwardButton,
     CancelButton,
     FilePond,

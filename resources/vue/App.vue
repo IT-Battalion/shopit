@@ -7,7 +7,6 @@
 import { defineComponent } from "@vue/runtime-core";
 import useUser from "./stores/user";
 import Loader from "./components/Loader.vue";
-import {loadCart} from "./stores/shoppingCart";
 
 export default defineComponent({
   components: {

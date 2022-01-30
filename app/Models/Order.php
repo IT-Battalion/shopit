@@ -31,17 +31,17 @@ class Order extends Model
         'handed_over_at',
         'handed_over_by_id',
 
-        'totalGross',
-        'totalDiscount',
-        'totalTax',
+        'subtotal',
+        'discount',
+        'tax',
         'total',
     ];
 
     protected $casts = [
         'status' => OrderStatus::class,
-        'totalGross' => Money::class,
-        'totalDiscount' => Money::class,
-        'totalTax' => Money::class,
+        'subtotal' => Money::class,
+        'discount' => Money::class,
+        'tax' => Money::class,
         'total' => Money::class,
     ];
 

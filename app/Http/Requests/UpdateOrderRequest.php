@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Types\OrderStatus;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rules\Enum;
 
 class UpdateOrderRequest extends FormRequest
 {
@@ -13,7 +16,7 @@ class UpdateOrderRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return Auth::user()->is_admin;
     }
 
     /**
@@ -24,7 +27,7 @@ class UpdateOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'status' => [new Enum(OrderStatus::class)],
         ];
     }
 }

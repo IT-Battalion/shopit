@@ -55,58 +55,15 @@ const routes: Array<RouteRecordRaw> = [
           },
           {
             path: "/shopping-cart",
-            name: "create order",
+            name: "Create Order",
             component: () =>
-              import(/* webpackChunkName: "orders" */ "../views/layout/CreateOrder.vue"),
-            children: [
-              {
-                path: "",
-                name: "Create Order",
-                component: () =>
-                  import(/* webpackChunkName: "orders" */ "../components/OrderCreate.vue"),
-              },
-            ],
+              import(/* webpackChunkName: "orders" */ "../views/OrderCreateForm.vue"),
           },
           {
-            path: "/order/:id/",
-            name: "order",
+            path: "/order/:id",
+            name: "Order Detail",
             component: () =>
-              import(/* webpackChunkName: "orders" */ "../views/layout/Order.vue"),
-            meta: {
-              isAdminView: false,
-            },
-            children: [
-              {
-                path: "created",
-                name: "Order Created",
-                component: () =>
-                  import(/* webpackChunkName: "orders" */ "../components/OrderCreated.vue"),
-              },
-              {
-                path: "pay",
-                name: "Order Pay",
-                component: () =>
-                  import(/* webpackChunkName: "orders" */ "../components/OrderPay.vue"),
-              },
-              {
-                path: "ordered",
-                name: "Order Ordered",
-                component: () =>
-                  import(/* webpackChunkName: "orders" */ "../components/OrderOrdered.vue"),
-              },
-              {
-                path: "received",
-                name: "Order Receive",
-                component: () =>
-                  import(/* webpackChunkName: "orders" */ "../components/OrderReceived.vue"),
-              },
-              {
-                path: "handed-over",
-                name: "Order Handed Over",
-                component: () =>
-                  import(/* webpackChunkName: "orders" */ "../components/OrderHandedOver.vue"),
-              },
-            ]
+              import(/* webpackChunkName: "orders" */ "../views/Order.vue"),
           },
         ]
       },
@@ -167,44 +124,9 @@ const routes: Array<RouteRecordRaw> = [
           },
           {
             path: "orders/:id",
-            name: "Admin Order detail",
+            name: "Admin Order Detail",
             component: () =>
-              import(/* webpackChunkName: "admin" */ "../views/layout/AdminOrder.vue"),
-            meta: {
-              isAdminView: true,
-            },
-            children: [
-              {
-                path: 'created',
-                name: "Admin Order Created",
-                component: () =>
-                  import(/* webpackChunkName: "admin" */ "../components/AdminOrderCreated.vue"),
-              },
-              {
-                path: 'pay',
-                name: "Admin Order Pay",
-                component: () =>
-                  import(/* webpackChunkName: "admin" */ "../components/AdminOrderPay.vue"),
-              },
-              {
-                path: 'ordered',
-                name: "Admin Order Ordered",
-                component: () =>
-                  import(/* webpackChunkName: "admin" */ "../components/AdminOrderOrdered.vue"),
-              },
-              {
-                path: 'received',
-                name: "Admin Order Received",
-                component: () =>
-                  import(/* webpackChunkName: "admin" */ "../components/AdminOrderReceived.vue"),
-              },
-              {
-                path: 'handed-over',
-                name: "Admin Order Handed Over",
-                component: () =>
-                  import(/* webpackChunkName: "admin" */ "../components/AdminOrderHandedOver.vue"),
-              },
-            ]
+              import(/* webpackChunkName: "admin" */ "../views/Order.vue"),
           },
           {
             path: "coupons",

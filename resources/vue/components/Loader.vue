@@ -16,7 +16,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
   .progress-bar {
     animation: pulse 1s linear 0s infinite alternate;
     transition: top linear 300ms, right linear 300ms;

@@ -9,10 +9,11 @@
     <div class="flex flex-row items-center justify-center mb-3">
       <input type="color" name="color" v-model="selectedColor" />
       <ButtonField
-        iconSrc="/img/add.svg"
         class="ml-5 bg-elevatedColor"
         @click="addColor"
-      />
+      >
+        <template v-slot:icon><img src="/img/add.svg" /></template>
+      </ButtonField>
     </div>
     <div class="flex flex-row max-w-full overflow-x-auto gap-x-2 shrink-0">
       <div v-for="[name, color] in colors.entries()" :key="name">

@@ -28,10 +28,12 @@
     <ButtonField
       name="Sperren"
       :acceptName="true"
-      iconSrc="/img/lockBlack.svg"
       class="mt-10"
       @click="banUser"
-    />
+    >
+      <template v-slot:text>Sperren</template>
+      <template v-slot:icon><img src="/img/lockBlack.svg" /></template>
+    </ButtonField>
   </div>
   <div v-else>
     <h2 class="text-3xl mt-10 mb-6 text-white font-bold">Benutzer Entsperren</h2>
@@ -39,10 +41,13 @@
     <ButtonField
       name="Entsperren"
       :acceptName="true"
-      iconSrc="/img/lockBlack.svg"
+
       class="mt-10"
       @click="unbanUser"
-    />
+    >
+      <template v-slot:text>Entsperren</template>
+      <template v-slot:icon><img src="/img/lockBlack.svg" /></template>
+    </ButtonField>
   </div>
 </template>
 

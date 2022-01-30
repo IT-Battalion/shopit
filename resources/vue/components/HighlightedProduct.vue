@@ -69,7 +69,9 @@
               }"
               class="self-end"
             >
-              <ButtonField iconSrc="img/info.svg" />
+              <ButtonField>
+                <template v-slot:icon><img src="img/info.svg" /></template>
+              </ButtonField>
             </router-link>
           </div>
         </swiper-slide>

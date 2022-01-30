@@ -12,7 +12,9 @@
         <CancelButton/>
         <BackwardButton @click="backward"/>
       </div>
-      <ButtonField iconSrc="/img/doneBlack.svg" class="mt-auto mb-2" @click="createProduct"/>
+      <ButtonField class="mt-auto mb-2" @click="createProduct">
+        <template v-slot:icon><img src="/img/doneBlack.svg" /></template>
+      </ButtonField>
     </div>
   </div>
 </template>

@@ -28,10 +28,11 @@
       />
       <ButtonField
         class="mt-14"
-        iconSrc="/img/addBlack.svg"
         :loading="loading"
         @click="createCoupon() && isEmpty()"
-      />
+      >
+        <template v-slot:icon><img src="/img/addBlack.svg" /></template>
+      </ButtonField>
     </div>
     <vue-good-table
       class="mt-10"

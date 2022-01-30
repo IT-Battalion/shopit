@@ -17,8 +17,17 @@ module.exports = {
                 sidenavSelected: "#9891ce",
             },
             gridTemplateRows: {
-          '[auto,auto,1fr]': 'auto auto 1fr',
-        },
+              '[auto,auto,1fr]': 'auto auto 1fr',
+            },
+            animation: {
+                'pulse-emphasized': 'pulse-emphasized 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+            transitionProperty: {
+                'size': 'width, height, font-size',
+            },
+            transitionTimingFunction: {
+                'overshoot': 'cubic-bezier(.65,0,.18,1.67)',
+            },
         },
         fontFamily: {
             poppins: ['Poppins', 'sans-serif'],

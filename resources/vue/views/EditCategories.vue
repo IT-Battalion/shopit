@@ -46,11 +46,9 @@
       </h2>
       <div class="flex flex-row items-center justify-center w-full gap-4">
         <InputField ref="categorynamecreate" />
-        <ButtonField
-          iconSrc="/img/addBlack.svg"
-          class="mt-8"
-          @click="createCategory"
-        />
+        <ButtonField class="mt-8" @click="createCategory">
+          <template v-slot:icon><img src="/img/addBlack.svg" /></template>
+        </ButtonField>
       </div>
     </div>
   </div>

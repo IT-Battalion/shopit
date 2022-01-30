@@ -78,7 +78,7 @@
                 ? 'border-gray-300 text-gray-400 bg-elevatedDark cursor-not-allowed'
                 : applied
                 ? 'border-emerald-300 text-emerald-400 bg-elevatedDark cursor-not-allowed'
-                : 'border-indigo-500 text-white bg-elevatedDark'
+                : 'border-indigo-500 text-white bg-elevatedDark border focus:ring-2 focus:ring-elevatedDark'
             "
             class="w-full px-4 py-2 ml-0 placeholder-green-600 border rounded-lg  focus:outline-none focus:ring-2 focus:ring-indigo-200"
           />
@@ -146,7 +146,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import ShoppingcartItem from "./ShoppingcartItem.vue";
+import ShoppingcartItem from "../components/ShoppingcartItem.vue";
 import { Order, ShoppingCartPrices } from "../types/api";
 import { AxiosResponse } from "axios";
 import { useRouter } from "vue-router";
@@ -155,7 +155,6 @@ import { useToast } from "vue-toastification";
 import Spinner from "@/components/Spinner.vue";
 import {
   loadCart,
-  removeIndexFromCart,
   shoppingCartData,
   updatePrices,
 } from "../stores/shoppingCart";
@@ -249,8 +248,8 @@ export default defineComponent({
       let response: AxiosResponse<Order> = await this.$http.post(
         "/user/orders"
       );
-      this.router.replace({
-        name: "Order Created",
+      await this.router.replace({
+        name: "Order Detail",
         params: { id: response.data.id },
       });
     },

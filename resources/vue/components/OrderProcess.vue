@@ -1,31 +1,19 @@
 <template>
   <mq-responsive target="lg+">
-    <div class="flex flex-row items-center justify-center w-full gap-5">
+    <div class="flex flex-row items-center justify-center w-full gap-5 h-28" :class="state.isLoading ? 'animate-pulse-emphasized' : ''">
       <template v-for="process in orderProcess" :key="process.name">
-        <router-link :to="process.link" v-if="!state.isLoading && current.valueOf() >= process.step.valueOf()">
-          <div class="flex flex-col items-center">
-            <img :src="process.icon_url" :alt="process.name" class="w-10 h-10"/>
-            <span class="mt-3 text-base text-center text-white">{{
-                process.name
-              }}</span>
-          </div>
-          <span
-            class="w-20 h-2 bg-white rounded-full"
-            v-if="process.name !== 'Abgeschlossen'"
-          />
-        </router-link>
-        <template v-else>
-          <div class="flex flex-col items-center">
-            <img :src="process.icon_url" :alt="process.name" class="w-10 h-10"/>
-            <span class="mt-3 text-base text-center text-white">{{
-                process.name
-              }}</span>
-          </div>
-          <span
-            class="w-20 h-2 bg-white rounded-full"
-            v-if="process.name !== 'Abgeschlossen'"
-          />
-        </template>
+        <div class="flex flex-col items-center transition-opacity transition-size">
+          <img :src="process.icon_url" :alt="process.name"
+               class="transition-size transition-opacity ease-overshoot"
+               :class="imageClasses(process.step, current)"/>
+          <span class="mt-3 text-base text-center transition-opacity transition-size text-white" :class="textClasses(process.step, current)">{{
+              process.name
+            }}</span>
+        </div>
+        <span
+          class="rounded-full transition-opacity bg-white w-16 h-1 opacity-80"
+          v-if="process.name !== 'Abgeschlossen'"
+        />
       </template>
     </div>
   </mq-responsive>
@@ -45,69 +33,76 @@
 <script lang="ts">
 import {defineComponent} from "@vue/runtime-core";
 import {OrderStatus} from "../types/api-values";
-import {useRoute} from "vue-router";
-import {orders} from "../stores/order";
-import {toInteger} from "lodash";
 import {state} from "../loader";
+import {Order} from "../types/api";
+import {PropType} from "vue";
+import {isEmpty} from "lodash";
 
 export default defineComponent({
+  name: "OrderProcess",
+  props: {
+    order: {
+      type: Object as PropType<Order>,
+    },
+  },
   data() {
-    const route = useRoute();
-    const id = route.params.id;
     const orderProcess = [
       {
-        name: "Bestellen",
+        name: "Bestellt",
         icon_url: "/img/webshop.svg",
-        link: {name: 'Order Created', params: {id}},
-        step: OrderStatus.CREATED,
+        step: -1,
       },
       {
         name: "Bezahlen",
         icon_url: "/img/paying.svg",
-        link: {name: 'Order Pay', params: {id}},
+        step: OrderStatus.CREATED,
+      },
+      {
+        name: "Produkte werden bestellt",
+        icon_url: "/img/waiting.svg",
         step: OrderStatus.PAID,
       },
       {
-        name: "Auf Produkt warten",
-        icon_url: "/img/waiting.svg",
-        link: {name: 'Order Ordered', params: {id}},
+        name: "Produkte werden geliefert",
+        icon_url: "/img/order.svg",
         step: OrderStatus.ORDERED,
       },
       {
         name: "Abholen",
         icon_url: "/img/pickUp.svg",
-        link: {name: 'Order Receive', params: {id}},
         step: OrderStatus.RECEIVED,
       },
       {
         name: "Abgeschlossen",
         icon_url: "/img/done.svg",
-        link: {name: 'Order Handed Over', params: {id}},
         step: OrderStatus.HANDED_OVER,
       },
     ];
     return {
       orderProcess,
-      orders,
       state,
     };
   },
   computed: {
     current() {
-      let order = this.order;
-      if (order === undefined) {
+      if (isEmpty(this.order))
         return -1;
-      } else {
-        return (this as any).order.status;
-      }
+      else
+        return this.order?.status;
     },
-    order() {
-      return orders.get(toInteger((this as any).id));
-    }
   },
-  watch: {
-    'state.isLoading'(val) {
-      console.log(orders);
+  methods: {
+    imageClasses(step: number, current: number) {
+      if (state.isLoading || step !== current)
+        return "w-8 h-8 opacity-80";
+
+      return "w-16 h-16";
+    },
+    textClasses(step: number, current: number) {
+      if (state.isLoading || step !== current)
+        return "text-sm opacity-80";
+
+      return "text-lg";
     },
   },
 });
