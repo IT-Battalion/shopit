@@ -24,9 +24,11 @@
       </template>
     </vue-good-table>
     <div>
-      <h2 class="mt-24 mb-6 text-3xl font-bold text-white">Benutzer {{ getActionVerb() }}</h2>
+      <h2 class="mt-24 mb-6 text-3xl font-bold text-white">
+        Benutzer {{ getActionVerb() }}
+      </h2>
       <div class="flex flex-row gap-4">
-        <div class="flex flex-col gap-2 w-1/2">
+        <div class="flex flex-col w-1/2 gap-2">
           <label for="reason" class="text-sm text-gray-400">Grund</label>
           <textarea
             class="text-white bg-elevatedDark rounded-2xl"
@@ -41,28 +43,13 @@
           :icon-spinner="state.isLoading"
           @click="user.enabled ? banUser() : unbanUser()"
         >
-          <template v-slot:text><span>{{ getActionVerb() }}</span></template>
+          <template v-slot:text
+            ><span>{{ getActionVerb() }}</span></template
+          >
           <template v-slot:icon><img src="/img/lockBlack.svg" /></template>
         </ButtonField>
       </div>
     </div>
-<!--    </template>-->
-<!--    <div v-else class="flex flex-row gap-4">-->
-<!--      <h2 class="mt-10 mb-6 text-3xl font-bold text-white">Benutzer Entsperren</h2>-->
-<!--      <textarea class="w-1/2 text-white bg-elevatedDark rounded-2xl"-->
-<!--        v-text="ban.disabled_for" disabled></textarea>-->
-<!--      <ButtonField-->
-<!--        name="Entsperren"-->
-<!--        :acceptName="true"-->
-
-
-<!--        @click="unbanUser"-->
-<!--      >-->
-<!--        <template v-slot:text>Entsperren</template>-->
-<!--        <template v-slot:icon><img src="/img/lockBlack.svg" /></template>-->
-<!--      </ButtonField>-->
-<!--    </div>-->
-<!--    </div>-->
   </div>
 </template>
 

@@ -42,19 +42,23 @@
     <h2 class="text-3xl font-bold text-center text-white">Developer Team</h2>
     <div class="flex flex-col items-center justify-center sm:flex-row">
       <div class="flex flex-col items-center justify-center w-1/3 text-center">
-        <img alt="pelias" src="/img/pelias.png" />
+        <img alt="pelias" src="/img/pelias.png" class="w-full sm:w-2/3" />
         <span class="text-2xl font-bold text-white">Patrick Elias</span>
         <span class="text-gray-200">Projektleiter & Full-Stack Developer</span>
       </div>
       <div class="flex flex-col items-center justify-center w-1/3 text-center">
-        <img alt="pdamianik" src="/img/pdamianik.png" />
+        <img alt="pdamianik" src="/img/pdamianik.png" class="w-full sm:w-2/3" />
         <span class="text-2xl font-bold text-white">Philip Damianik</span>
         <span class="text-gray-200"
           >Full-Stack Developer & Systemadministrator</span
         >
       </div>
       <div class="flex flex-col items-center justify-center w-1/3 text-center">
-        <img alt="jkammellander" src="/img/jkammellander.png" />
+        <img
+          alt="jkammellander"
+          src="/img/jkammellander.png"
+          class="w-full sm:w-2/3"
+        />
         <span class="text-2xl font-bold text-white">Jan Kammellander</span>
         <span class="text-gray-200">Frontend Developer & Grafik Designer</span>
       </div>

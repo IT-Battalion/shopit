@@ -255,6 +255,12 @@ export default defineComponent({
         creator: "shashank singh",
         creatorLink: "https://thenounproject.com/rshashank19/",
       },
+      {
+        iconName: "back",
+        iconLink: "https://thenounproject.com/icon/back-3540090/",
+        creator: "designvector",
+        creatorLink: "https://thenounproject.com/designvector10/",
+      },
     ];
     return { credits };
   },
