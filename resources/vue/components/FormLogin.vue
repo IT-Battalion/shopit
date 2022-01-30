@@ -50,6 +50,7 @@
           labelName="Passwort"
           v-model:value="form.password"
           :errorMessage="errorPassword"
+          type="password"
           class="w-10/12"
         />
         <div class="flex flex-row items-center justify-center mt-5 mb-10">
