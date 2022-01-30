@@ -16,7 +16,7 @@ test('user can be banned', function () {
 
     $user = User::factory()->enabled()->create();
 
-    $service->ban($user);
+    $service->ban($user, 'Test');
 
     expect($user->enabled)->toBeFalse();
     expect($user->disabled_at)->not()->toBeNull();
@@ -42,7 +42,7 @@ test('admin can not be banned', function () {
     $service = $this->app->make(UserService::class);
     $admin = Admin::whereEnabled(true)->get()->random();
 
-    $service->ban($admin);
+    $service->ban($admin, 'Test');
 })->throws(ActionNotAllowedForAdministratorException::class);
 
 test('admin can not be unbanned', function () {
