@@ -3,28 +3,29 @@
     <!-- the submit event will no longer reload the page -->
     <div
       class="
-        grid
+        flex flex-row flex-wrap
         w-10/12
         sm:h-[80vh]
         py-10
         px-10
-        sm:grid-cols-2 sm:grid-rows-1
-        grid-rows-[auto_1fr]
         place-items-center
         bg-elevatedDark
         login-form__container
       "
     >
       <div
-        class="inset-0 flex flex-col items-center justify-center w-full h-full mb-10  login-form__elevation sm:mb-0"
+        class="inset-0 flex flex-col items-center justify-center w-full h-full mb-10  md:w-1/2 login-form__elevation sm:mb-0"
       >
-        <div class="flex flex-row">
+        <div class="flex flex-row" v-if="!state.isLoading">
           <img
             src="/img/logo.svg"
             alt="ShopIT Logo"
             class="w-1/4 mb-10 sm:mr-5"
           />
-          <img src="/img/IT_Logo.png" alt="IT Logo" class="w-3/4 mb-10" />
+          <img src="/img/IT_logo.png" alt="IT Logo" class="w-3/4 mb-10" />
+        </div>
+        <div v-else>
+          <Skeletor :pill="true" class="w-full h-16" />
         </div>
         <h1
           class="mb-2 text-xl text-white  sm:text-2xl lg:text-4xl whitespace-nowrap"
@@ -37,11 +38,21 @@
       </div>
       <form
         @submit.prevent="onSubmit"
-        class="grid grid-rows-6 gap-2 mx-3  sm:mx-0 sm:w-1/2 md:gap-4 place-items-center"
+        class="flex flex-col items-center justify-center w-full md:w-1/2"
       >
-        <InputField labelName="Benutzername" v-model:value="form.username" />
-        <InputField labelName="Passwort" v-model:value="form.password" />
-        <div class="flex flex-row items-center justify-center">
+        <InputField
+          labelName="Benutzername"
+          v-model:value="form.username"
+          :errorMessage="errorUsername"
+          class="w-10/12"
+        />
+        <InputField
+          labelName="Passwort"
+          v-model:value="form.password"
+          :errorMessage="errorPassword"
+          class="w-10/12"
+        />
+        <div class="flex flex-row items-center justify-center mt-5 mb-10">
           <input
             type="checkbox"
             name="stayLogedIn"
@@ -53,16 +64,16 @@
           </label>
         </div>
         <!-- only call `submitForm()` when the `key` is `Enter` -->
-        <div class="text-red-400" v-if="user.error.value">
+        <span class="mb-10 text-red-400" v-if="user.error.value">
           {{ user.error.value }}
-        </div>
+        </span>
         <ButtonField buttonType="submit" :iconSpinner="state.isLoading">
           <template v-slot:text>
             <span>Anmelden</span>
           </template>
         </ButtonField>
       </form>
-      <div class="col-span-2">
+      <div class="w-full my-5 text-center md:my-0">
         <a
           class="text-white underline  opacity-60 hover:opacity-100 decoration-solid"
           href="https://lernenimaufbruch.at/impressum.html"
@@ -93,6 +104,8 @@ export default defineComponent({
         password: "",
         stayLogedIn: false,
       },
+      errorUsername: "",
+      errorPassword: "",
     };
   },
   setup() {
@@ -115,20 +128,29 @@ export default defineComponent({
       this.form.password = "";
     },
     onSubmit() {
-      console.log(this.form);
-      this.user.error.value = "";
+      this.errorUsername = "";
+      this.errorPassword = "";
+      if (this.form.username && this.form.password) {
+        console.log(this.form);
+        this.user.error.value = "";
 
-      this.login(
-        this.form.username,
-        this.form.password,
-        this.form.stayLogedIn
-      ).then((_) => {
-        const next = (this.route.params.nextUrl as string) || "/";
+        this.login(
+          this.form.username,
+          this.form.password,
+          this.form.stayLogedIn
+        ).then((_) => {
+          const next = (this.route.params.nextUrl as string) || "/";
 
-        this.router.replace({
-          path: next,
+          this.router.replace({
+            path: next,
+          });
         });
-      });
+      } else {
+        if (!this.form.username)
+          this.errorUsername = "Der Benutzername ist erforderlich!";
+        if (!this.form.password)
+          this.errorPassword = "Das Passwort ist erforderlich!";
+      }
     },
   },
 });
