@@ -6,12 +6,14 @@
         labelName="Produktname"
         ref="product_name"
         :errorMessage="errorTitle"
+        minlength="3"
       />
       <InputField
         labelName="Preis"
         type="number"
         ref="product_price"
         :errorMessage="errorPrice"
+        min="1"
       />
       <div class="flex flex-row my-5">
         <input
@@ -34,13 +36,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
+import {defineComponent} from "@vue/runtime-core";
 import InputField from "../components/InputField.vue";
 import CancelButton from "../components/buttons/CancelButton.vue";
 import BackwardButton from "../components/buttons/BackwardButton.vue";
 import ForwardButton from "../components/buttons/ForwardButton.vue";
-import { ProductCreateProcessStorage } from "../types/api";
-import { isUndefined } from "lodash";
+import {ProductCreateProcessStorage} from "../types/api";
+import {isUndefined} from "lodash";
 import AddProductProcessBar from "../components/product_create_process/AddProductProcessBar.vue";
 
 export default defineComponent({
