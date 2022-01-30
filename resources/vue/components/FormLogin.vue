@@ -71,6 +71,7 @@
           <template v-slot:text>
             <span>Anmelden</span>
           </template>
+          <template v-slot:icon><img src="/img/lockBlack.svg" /></template>
         </ButtonField>
       </form>
       <div class="w-full my-5 text-center md:my-0">

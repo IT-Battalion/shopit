@@ -3,6 +3,7 @@
     <h1 class="mb-10 text-4xl font-bold text-center text-white">Kategorien</h1>
     <div
       class="flex flex-row flex-wrap justify-center w-full mx-auto my-auto text-white  justify-items-center"
+      v-if="!isLoading"
     >
       <div
         v-for="category in categories"
@@ -40,6 +41,14 @@
         </div>
       </div>
     </div>
+    <div
+      class="flex flex-row flex-wrap justify-center w-full mx-auto my-auto text-white  justify-items-center"
+      v-else
+    >
+      <div v-for="i in 5" :key="i" class="w-40 h-16 m-5">
+        <Skeletor :pill="true" />
+      </div>
+    </div>
     <div class="w-full">
       <h2 class="w-full my-10 text-2xl font-bold text-center text-white">
         Kategorie Hinzufügen
@@ -68,6 +77,7 @@ import {
 } from "../types/api";
 import { AxiosResponse } from "axios";
 import InputField from "../components/InputField.vue";
+import { state } from "../loader";
 
 export default defineComponent({
   components: {
@@ -81,12 +91,14 @@ export default defineComponent({
   setup() {
     return {
       toast: useToast(),
+      state,
     };
   },
   data() {
     return {
       categories: [] as ProductCategory[],
       showInput: new Map<string, Boolean>(),
+      isLoading: false,
     };
   },
   async beforeMount() {
@@ -94,10 +106,12 @@ export default defineComponent({
   },
   methods: {
     async loadCategories() {
+      this.isLoading = true;
       let response: AxiosResponse<ProductCategory[]> = await this.$http.get(
         "/admin/category"
       );
       this.categories = response.data;
+      this.isLoading = false;
     },
     async editCategory(catID: number) {
       initLoad();
