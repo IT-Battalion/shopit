@@ -23,13 +23,11 @@
     >
       <template #table-row="props">
         <router-link v-if="props.column.field === 'detail'"
-                     :to="{name: 'Invoice detail', params: {id: props.formattedRow['id']}}"
-                     target="_blank"><img
+                     :to="{name: 'Invoice detail', params: {id: props.formattedRow['id']}}"><img
           class='object-scale-down h-7 w-full'
           src='/img/info-white.svg'/></router-link>
         <router-link v-if="props.column.field === 'download'"
-                     :to="{name: 'Invoice detail', params: {id: props.formattedRow['id']}}"
-                     target="_blank"><img
+                     :to="{name: 'Invoice detail', params: {id: props.formattedRow['id']}}"><img
           class='object-scale-down h-7 w-full'
           src='/img/download.svg'/></router-link>
         <span v-if="props.column.field === 'status'">

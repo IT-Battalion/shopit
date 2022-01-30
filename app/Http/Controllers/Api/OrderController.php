@@ -7,8 +7,12 @@ use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
 use App\Models\User;
 use App\Services\Orders\OrderServiceInterface;
+use App\Types\OrderStatus;
 use Auth;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Collection;
 
 class OrderController extends Controller
 {
@@ -109,9 +113,42 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderRequest $request, Order $order): JsonResponse
     {
-        $data = $request->validated();
-        $order->update($data);
+        $data = collect($request->validated());
+        $status = OrderStatus::from($data['status']);
+        debug($status);
+        debug($order->status);
+
+        if ($order->status === $status) {
+            return response()->json($order);
+        }
+
+        try {
+            if ($status->value > $order->status->value) { // increment status
+                debug('increment');
+                $columns = $this->getStatusColums($status, now(), Auth::id());
+            } else {
+                debug('decrement');
+                $columns = $this->getStatusColums($order->status); // empty current status columns
+            }
+        } catch (Exception $e) {
+            return response()->json(['errors' => ['status' => [$e->getMessage()]]], 400);
+        }
+
+        $order->update($data->merge($columns)->all());
         $order->refresh();
         return response()->json($order);
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function getStatusColums(OrderStatus $status, Carbon $time = null, int $admin_id = null): Collection {
+        return match ($status) {
+            OrderStatus::CREATED => throw new Exception('Unexpected order status for columns: ' . $status->name),
+            OrderStatus::PAID => collect(['paid_at' => $time, 'transaction_confirmed_by_id' => $admin_id]),
+            OrderStatus::ORDERED => collect(['products_ordered_at' => $time, 'products_ordered_by_id' => $admin_id]),
+            OrderStatus::RECEIVED => collect(['products_received_at' => $time, 'products_received_by_id' => $admin_id]),
+            OrderStatus::HANDED_OVER => collect(['handed_over_at' => $time, 'handed_over_by_id' => $admin_id]),
+        };
     }
 }

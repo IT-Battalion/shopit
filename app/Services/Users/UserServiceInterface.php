@@ -2,6 +2,9 @@
 
 namespace App\Services\Users;
 
+use App\Exceptions\ActionNotAllowedForAdministratorException;
+use App\Exceptions\UserBannedException;
+use App\Exceptions\UserNotBannedException;
 use App\Models\User;
 
 interface UserServiceInterface
@@ -9,21 +12,16 @@ interface UserServiceInterface
     /**
      * Bans a specific User
      * @param User $user the specific User Model
-     * @return bool true if the User has been banned successfully else false
+     * @throws ActionNotAllowedForAdministratorException
+     * @throws UserBannedException
      */
-    function ban(User $user, string $reason): bool;
+    function ban(User $user, string $reason);
 
     /**
      * Unbans the specific User
      * @param User $user the specific User Model
-     * @return bool true if the User has been unbanned else false
+     * @throws UserNotBannedException
+     * @throws ActionNotAllowedForAdministratorException
      */
-    function unban(User $user): bool;
-
-    /**
-     * Determines if an Action can be performed on a given User.
-     * @param User $user The user which should be checked for.
-     * @return bool true if the action can be performed. else false.
-     */
-    function canBePerformedOnUser(User $user): bool;
+    function unban(User $user);
 }

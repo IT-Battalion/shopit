@@ -4,6 +4,7 @@ namespace App\Services\Orders;
 
 use App\Models\Order;
 use App\Models\User;
+use App\Types\OrderStatus;
 
 interface OrderServiceInterface
 {
@@ -15,30 +16,10 @@ interface OrderServiceInterface
     public function createOrder(User $customer = null): Order;
 
     /**
-     * Mark an Order as paid. Step 2
-     * @param Order $order The Order which should be marked as Paid.
-     * @return Order The edited Order Model.
+     * Increments the {@link OrderStatus} of an {@link Order}
+     * @param Order $order the order to change
+     * @param $newStatus the new
+     * @return mixed
      */
-    public function markOrderAsPaid(Order $order): Order;
-
-    /**
-     * Mark an Order as Ordered by the Administrator. Step 3
-     * @param Order $order The Order which should be marked as Ordered.
-     * @return Order The edited Order Model.
-     */
-    public function markOrderAsOrdered(Order $order): Order;
-
-    /**
-     * Mark the Order as Received by the Administrator. Step 4
-     * @param Order $order The Order which should be marked as Received.
-     * @return Order The edited Order Model.
-     */
-    public function markOrderAsReceived(Order $order): Order;
-
-    /**
-     * Mark an Order as Delivered to the User by the Administrator. Step 5 (final)
-     * @param Order $order The Order which should be marked as Delivered.
-     * @return Order The edited Order Model.
-     */
-    public function markOrderAsDelivered(Order $order): Order;
+    public function incrementOrderStatus(Order $order);
 }

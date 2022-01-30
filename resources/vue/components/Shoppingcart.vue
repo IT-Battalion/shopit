@@ -57,7 +57,7 @@
                           <li
                             v-for="(entry, index) in shoppingCartData.shoppingCart.products"
                             :key="entry.product.id"
-                            class="flex py-6"
+                            class="flex py-10"
                           >
                             <ShoppingcartItem
                               :shopping-cart-entry="entry"

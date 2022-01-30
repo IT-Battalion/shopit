@@ -23,7 +23,7 @@
     >
       <template #table-row="props">
         <router-link v-if="props.column.field === 'detail'"
-                     :to="getLink(props.formattedRow['status'], props.formattedRow['id'])" target="_blank"><img
+                     :to="getLink(props.formattedRow['status'], props.formattedRow['id'])"><img
           class='object-scale-down h-7 w-full'
           src='/img/info-white.svg'/></router-link>
         <span v-if="props.column.field === 'status'">

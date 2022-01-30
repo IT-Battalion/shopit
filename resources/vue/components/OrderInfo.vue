@@ -1,38 +1,43 @@
 <template>
   <div class="flex flex-col items-center">
     <h2 class="w-full my-16 text-3xl font-bold text-center text-white">
-      Bestellung #{{ state.isLoading ? "Loading..." : order.id }} - {{ state.isLoading ? 'Loading...' : statusText }}
+      Bestellung #{{ showLoading(state.isLoading, order.id?.toString()) }} - {{ showLoading(state.isLoading, statusText) }}
     </h2>
     <div class="w-full p-10 sm:bg-elevatedDark rounded-3xl md:w-1/2">
       <div class="flex justify-between my-2 text-base text-gray-200 font-base">
         <p>Zwischensumme (Netto)</p>
-        <p v-if="!state.isLoading">
+        <p v-if="order.discount !== undefined">
           {{ order.subtotal }}
         </p>
         <Skeletor :pill="true" class="w-1/4" height="1rem" v-else />
       </div>
       <div
         class="flex justify-between my-2 text-base text-gray-200 font-base"
-        v-if="!state.isLoading && order.discount !== '0,-€'"
+        v-if="order.discount !== '0,-€' && order.discount !== undefined"
       >
         <p>Rabatt (Coupon)</p>
-        <p>
+        <p v-if="order.discount !== undefined">
           -{{ order.discount }}
         </p>
+        <Skeletor :pill="true" class="w-1/4" height="1rem" v-else />
       </div>
       <div class="flex justify-between my-2 text-base text-gray-200 font-base">
         <p>USt</p>
-        <p v-if="!state.isLoading">{{ order.tax }}</p>
+        <p v-if="order.discount !== undefined">{{ order.tax }}</p>
         <Skeletor :pill="true" class="w-1/4" height="1rem" v-else />
       </div>
       <div class="flex justify-between my-2 text-base font-medium text-white">
         <p>Gesamt</p>
-        <p v-if="!state.isLoading">{{ order.total }}</p>
+        <p v-if="order.discount !== undefined">{{ order.total }}</p>
         <Skeletor :pill="true" class="w-1/4" height="1rem" v-else />
       </div>
       <FileList />
     </div>
     <div class="flex mt-12 gap-6">
+      <ButtonField v-if="user.isAdmin && order.status !== firstStatus" :icon-spinner="state.isLoading" @click="previousStep">
+        <template v-slot:text><span>{{ showLoading(state.isLoading, "Hoppalla zurück") }}</span></template>
+        <template v-slot:icon><img src="/img/backBlack.svg" class="w-5 h-5 m-1" /></template>
+      </ButtonField>
       <ButtonField :iconSpinner="state.isLoading" @click="refresh">
         <template v-slot:text><span>Neu laden</span></template>
         <template v-slot:icon>
@@ -51,8 +56,8 @@
             />
           </svg></template>
       </ButtonField>
-      <ButtonField v-if="user.isAdmin && order.status !== handedOver" :icon-spinner="state.isLoading" @click="confirmStep">
-        <template v-slot:text><span>{{ confirmText }}</span></template>
+      <ButtonField v-if="user.isAdmin && order.status !== lastStatus" :icon-spinner="state.isLoading" @click="confirmStep">
+        <template v-slot:text><span>{{ showLoading(state.isLoading, confirmText) }}</span></template>
         <template v-slot:icon><img src="/img/doneBlack.svg" /></template>
       </ButtonField>
     </div>
@@ -79,7 +84,8 @@ export default defineComponent({
   },
   setup() {
     return {
-      handedOver: OrderStatus.HANDED_OVER,
+      firstStatus: OrderStatus.CREATED,
+      lastStatus: OrderStatus.HANDED_OVER,
     };
   },
   data() {
@@ -88,17 +94,27 @@ export default defineComponent({
       state,
     }
   },
-  emits: ['refresh', 'confirm'],
+  emits: ['refresh', 'confirm', 'previous'],
   methods: {
     refresh() {
       this.$emit('refresh');
     },
+
     getZahlwort(id: number) {
       return getZahlwort(id.toString());
     },
+
     confirmStep() {
       this.$emit('confirm');
     },
+
+    previousStep() {
+      this.$emit('previous');
+    },
+
+    showLoading(when: boolean, otherwise: string) {
+        return when ? "Loading..." : otherwise;
+    }
   },
   computed: {
     confirmText() {

@@ -6,7 +6,7 @@
     <div v-if="attributes['3']" class="flex flex-row">
       <span>Farbe: {{ attributes[3].name }}</span>
       <div
-        class="rounded-full h-4 w-4 ml-[.5ch]"
+        class="rounded-xl border border-white h-4 w-4 ml-[.5ch]"
         :style="'background-color: #' + attributes[3].color"
       />
     </div>

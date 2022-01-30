@@ -8,9 +8,9 @@
       theme="shopit"
       max-height="400px"
       :pagination-options="{
-    enabled: true,
-    perPage: 5,
-  }"
+        enabled: true,
+        perPage: 5,
+      }"
       :search-options="{
         enabled: true,
         trigger: 'enter',
@@ -23,7 +23,7 @@
     >
       <template #table-row="props">
         <router-link :to="getLink(props.formattedRow['status'], props.formattedRow['id'])"
-                     v-if="props.column.field === 'detail'" target="_blank"><img src='/img/info-white.svg'
+                     v-if="props.column.field === 'detail'"><img src='/img/info-white.svg'
                                                                                  class='object-scale-down h-7 w-full'/>
         </router-link>
         <span v-if="props.column.field === 'status'">

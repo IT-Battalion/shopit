@@ -64,6 +64,7 @@ class LoginController extends Controller
                 'email',
                 'lang',
                 'is_admin',
+                'enabled',
                 ]),
         ]);
     }

@@ -5,7 +5,6 @@
       w-24
       h-28
       overflow-hidden
-      border border-elevatedColor
       rounded-md
     "
   >
@@ -39,7 +38,7 @@
       <Attributes :selected-attributes="entry.selected_attributes" />
     </div>
     <div class="flex items-end justify-between flex-1 text-sm">
-      <p class="text-gray-500">{{ count }} Stück</p>
+      <p class="text-gray-200">{{ count }} Stück</p>
 
       <div class="flex">
         <button

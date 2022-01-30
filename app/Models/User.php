@@ -69,19 +69,9 @@ class User extends Authenticatable implements LdapAuthenticatable
         'enabled' => 'bool',
     ];
 
-    public static function unbanning($callback)
-    {
-        static::registerModelEvent(UserUnbanningEvent::class, $callback);
-    }
-
     public static function unbanned($callback)
     {
         static::registerModelEvent(UserUnbannedEvent::class, $callback);
-    }
-
-    public static function banning($callback)
-    {
-        static::registerModelEvent(UserBanningEvent::class, $callback);
     }
 
     public static function gotBanned($callback)
@@ -108,16 +98,6 @@ class User extends Authenticatable implements LdapAuthenticatable
         return $this->hasMany(Order::class, 'customer_id');
     }
 
-    public function scopeTeacher(Builder $query): Builder
-    {
-        return $query->where('employeeType', '=', 'lehrer');
-    }
-
-    public function scopeStudent(Builder $query): Builder
-    {
-        return $query->where('employeeType', '=', 'schueler');
-    }
-
     public function scopeBanned(Builder $query): Builder
     {
         return $query->where('enabled', '=', false);
@@ -131,11 +111,15 @@ class User extends Authenticatable implements LdapAuthenticatable
     public function banWith(Admin $admin)
     {
         $this->disabled_by_id = $admin->id;
+        $this->disabled_at = now();
+        $this->enabled = false;
     }
 
     public function unbanWith(Admin $admin = null)
     {
         $this->disabled_by_id = null;
+        $this->disabled_at = null;
+        $this->enabled = true;
     }
 
     public function disabled_by()
@@ -143,36 +127,8 @@ class User extends Authenticatable implements LdapAuthenticatable
         return $this->belongsTo(Admin::class, 'disabled_by_id');
     }
 
-    public function addProducts(array|Collection|\Illuminate\Support\Collection $products)
-    {
-        foreach ($products as $entry) {
-            $this->addProduct(
-                $entry['product'],
-                $entry['count'],
-                $entry['clothingAttribute'] ?? null,
-                $entry['dimensionAttribute'] ?? null,
-                $entry['volumeAttribute'] ?? null,
-                $entry['colorAttribute'] ?? null,
-            );
-        }
-    }
-
-    public function addProduct(
-        Product|int                   $product,
-        int                           $count,
-        ProductClothingAttribute|int  $clothingAttribute = null,
-        ProductDimensionAttribute|int $dimensionAttribute = null,
-        ProductVolumeAttribute|int    $volumeAttribute = null,
-        ProductColorAttribute|int     $colorAttribute = null)
-    {
-        $this->shopping_cart()->create([
-            'count' => $count,
-            'product_id' => getModelId($product),
-            'product_clothing_attribute_id' => getModelId($clothingAttribute),
-            'product_dimension_attribute_id' => getModelId($dimensionAttribute),
-            'product_volume_attribute_id' => getModelId($volumeAttribute),
-            'product_color_attribute_id' => getModelId($colorAttribute),
-        ]);
+    public function getBannableAttribute(): bool {
+        return !$this->is_admin;
     }
 
     public function shopping_cart(): BelongsToMany
@@ -187,5 +143,9 @@ class User extends Authenticatable implements LdapAuthenticatable
                 'product_color_attribute_id',
             ])
             ->using(ShoppingCartEntry::class);
+    }
+
+    public function asAdmin(): Admin {
+        return Admin::find($this->id);
     }
 }

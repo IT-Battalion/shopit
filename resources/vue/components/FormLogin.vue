@@ -79,7 +79,6 @@
         <a
           class="text-white underline  opacity-60 hover:opacity-100 decoration-solid"
           href="https://lernenimaufbruch.at/impressum.html"
-          target="_blank"
           >Impressum
         </a>
       </div>
@@ -88,7 +87,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from "vue";
+import { defineComponent} from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { state } from "../loader";
 import useUser from "../stores/user";
@@ -158,7 +157,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .login-form__container {
   margin: 10vh 8.33333333%;
   border-radius: 1.5rem;

@@ -81,8 +81,7 @@
               opacity-60
               hover:opacity-100
               decoration-solid
-            "
-            target="_blank">Impressum
+            ">Impressum
             <ExternalLinkIcon class="w-5 h-5 pl-1"/>
           </a>
         </div>
