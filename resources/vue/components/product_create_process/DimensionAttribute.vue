@@ -5,18 +5,21 @@
       type="number"
       ref="product_dimension_width"
       :min="0"
+      :errorMessage="widthError"
     />
     <InputField
       labelName="Höhe"
       type="number"
       ref="product_dimension_height"
       :min="0"
+      :errorMessage="heightError"
     />
     <InputField
       labelName="Tiefe"
       type="number"
       ref="product_dimension_depth"
       :min="0"
+      :errorMessage="depthError"
     />
     <ButtonField
       icon-src="/img/addBlack.svg"
@@ -39,22 +42,6 @@
       </div>
     </template>
   </div>
-  <!-- <div class="flex flex-row justify-center w-full gap-4 mx-5 overflow-x-auto">
-    <div
-      v-for="(dim, i) in dimensions"
-      :key="i"
-      class="flex flex-row justify-between p-5 mt-4 ml-3 text-white bg-gray-900 rounded-2xl"
-    >
-      <span>{{ dim.width }}cm</span>
-      <span>x</span>
-      <span>{{ dim.height }}cm</span>
-      <span>x</span>
-      <span>{{ dim.depth }}cm</span>
-      <button @click="deleteDimension(dim)">
-        <img src="/img/bin.svg" alt="delete" class="w-5" />
-      </button>
-    </div>
-  </div> -->
 </template>
 
 <script lang="ts">
@@ -75,6 +62,9 @@ export default defineComponent({
       width: {} as typeof InputField,
       height: {} as typeof InputField,
       depth: {} as typeof InputField,
+      widthError: "",
+      heightError: "",
+      depthError: "",
     };
   },
   mounted() {
@@ -84,21 +74,35 @@ export default defineComponent({
   },
   methods: {
     async addDimension() {
-      let dim: DimensionAttribute = {
-        id: 0,
-        type: AttributeType.DIMENSION,
-        width: this.width.getValue() ?? 0,
-        height: this.height.getValue() ?? 0,
-        depth: this.depth.getValue() ?? 0,
-      };
-      if (this.dimensions.has(dim)) {
-        return;
+      this.widthError = "";
+      this.heightError = "";
+      this.depthError = "";
+      if (
+        this.width.getValue() &&
+        this.height.getValue() &&
+        this.depth.getValue()
+      ) {
+        let dim: DimensionAttribute = {
+          id: 0,
+          type: AttributeType.DIMENSION,
+          width: this.width.getValue() ?? 0,
+          height: this.height.getValue() ?? 0,
+          depth: this.depth.getValue() ?? 0,
+        };
+        if (this.dimensions.has(dim)) {
+          return;
+        }
+        this.dimensions.add(dim);
+        console.log(this.dimensions);
+        this.width.setValue("");
+        this.height.setValue("");
+        this.depth.setValue("");
+      } else {
+        if (!this.width.getValue()) this.widthError = "Weite ist erforderlich!";
+        if (!this.height.getValue())
+          this.heightError = "Höhe ist erforderlich!";
+        if (!this.depth.getValue()) this.depthError = "Tiefe ist erforderlich!";
       }
-      this.dimensions.add(dim);
-      console.log(this.dimensions);
-      this.width.setValue("");
-      this.height.setValue("");
-      this.depth.setValue("");
     },
     async deleteDimension(dim: DimensionAttribute) {
       this.dimensions.delete(dim);

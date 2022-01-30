@@ -1,6 +1,11 @@
 <template>
   <div class="flex flex-col items-center justify-center w-full gap-4">
-    <InputField type="number" ref="product_volume" :min="1" />
+    <InputField
+      type="number"
+      ref="product_volume"
+      :min="1"
+      :errorMessage="errorMessage"
+    />
     <ButtonField icon-src="/img/addBlack.svg" @click="addVolume" />
   </div>
   <div class="flex flex-row max-w-[35rem] gap-4 overflow-x-auto">
@@ -34,6 +39,7 @@ export default defineComponent({
     return {
       volumes: new Set<VolumeAttribute>(),
       volume: {} as typeof InputField,
+      errorMessage: "",
     };
   },
   mounted() {
@@ -41,6 +47,11 @@ export default defineComponent({
   },
   methods: {
     async addVolume() {
+      this.errorMessage = "";
+      if (this.volume.getValue() == "") {
+        this.errorMessage = "Dieses Feld darf nicht leer sein!";
+        return;
+      }
       let vol: VolumeAttribute = {
         id: 0,
         type: AttributeType.VOLUME,
