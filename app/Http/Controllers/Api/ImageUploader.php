@@ -117,12 +117,14 @@ class ImageUploader extends Controller
         if (!in_array(mimetype_from_extension($file->extension()), $this->allowedMimeTypes, true)) {
             abort(415); //Unsupported Media Type (RFC 7231)
         }
-        if (!($tmpFile = $file->storeAs($this->tmpPath . DIRECTORY_SEPARATOR . now()->timestamp, $file->getClientOriginalName(), 'local'))) {
+        if (!($tmpFile = $file->storeAs($this->tmpPath, now()->timestamp . '_' . $file->getClientOriginalName(), 'local'))) {
             abort(507); //Insufficient Storage (WebDAV; RFC 4918)
         }
-
-        $response = Crypt::encryptString(Storage::disk('local')->path($tmpFile));
-        return response($response, 200);
+        $id = Storage::disk('local')->path($tmpFile);
+        $response = Crypt::encryptString($id);
+        return response($response, 200, [
+            'Content-Type' => 'text/plain',
+        ]);
     }
 
     /**
@@ -142,16 +144,16 @@ class ImageUploader extends Controller
      */
     public function revert(Request $request): Response|Application|ResponseFactory
     {
-        $id = trim($request->getContent());
+        $id = $request->getContent();
 
         $filePath = Crypt::decryptString($id);
         $basePath = Storage::disk('local')->path($this->tmpPath);
         if (!Str::startsWith($filePath, $basePath)) {
             abort(501, 'Invalid File Path');
         }
-        if (Storage::disk('local')->delete($filePath)) {
-            return response('', 200);
+        if (!Storage::disk('local')->delete($filePath)) {
+            abort(422, 'Error deleting File');
         }
-        abort(422);
+        return response();
     }
 }
