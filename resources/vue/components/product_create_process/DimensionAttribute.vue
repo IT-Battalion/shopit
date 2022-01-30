@@ -31,14 +31,19 @@
     <template v-for="(dimension, i) in dimensions" :key="i">
       <div
         @click="deleteDimension(dimension)"
+        @mouseover="hover.set(i, true)"
+        @mouseleave="hover.delete(i)"
         :class="[
           'shadow-sm text-gray-300 cursor-pointer',
           'min-w-[5rem] group relative border rounded-md py-3 px-4 flex flex-col items-center justify-center text-sm font-medium hover:bg-gray-400 focus:outline-none sm:flex-1 sm:py-6',
         ]"
       >
-        <p>{{ dimension.width }} cm x</p>
-        <p>{{ dimension.height }} cm x</p>
-        <p>{{ dimension.depth }} cm</p>
+        <div v-if="!hover.get(i)">
+          <p>{{ dimension.width }} cm x</p>
+          <p>{{ dimension.height }} cm x</p>
+          <p>{{ dimension.depth }} cm</p>
+        </div>
+        <img v-else src="/img/bin.svg" alt="löschen" class="w-5 h-5" />
       </div>
     </template>
   </div>
@@ -65,6 +70,7 @@ export default defineComponent({
       widthError: "",
       heightError: "",
       depthError: "",
+      hover: new Map<number, Boolean>(),
     };
   },
   mounted() {

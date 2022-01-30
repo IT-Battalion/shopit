@@ -12,12 +12,17 @@
     <template v-for="(vol, i) in volumes" :key="i">
       <div
         @click="deleteVolume(vol)"
+        @mouseover="hover.set(i, true)"
+        @mouseleave="hover.delete(i)"
         :class="[
           'shadow-sm text-gray-300 cursor-pointer',
           'min-w-[5rem] group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-400 focus:outline-none sm:flex-1 sm:py-6',
         ]"
       >
-        <p class="whitespace-nowrap">{{ vol.volume }} {{ vol.type }}</p>
+        <p v-if="!hover.get(i)" class="whitespace-nowrap">
+          {{ vol.volume }} {{ vol.type }}
+        </p>
+        <img v-else src="/img/bin.svg" alt="löschen" class="w-5 h-5" />
       </div>
     </template>
   </div>
@@ -40,6 +45,7 @@ export default defineComponent({
       volumes: new Set<VolumeAttribute>(),
       volume: {} as typeof InputField,
       errorMessage: "",
+      hover: new Map<number, Boolean>(),
     };
   },
   mounted() {
