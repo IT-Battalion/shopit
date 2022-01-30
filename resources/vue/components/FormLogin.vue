@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-hidden bg-backgroundColor" v-if="!isLoading">
+  <div class="overflow-hidden bg-backgroundColor">
     <!-- the submit event will no longer reload the page -->
     <div
       class="
@@ -39,39 +39,8 @@
         @submit.prevent="onSubmit"
         class="grid grid-rows-6 gap-2 mx-3  sm:mx-0 sm:w-1/2 md:gap-4 place-items-center"
       >
-        <!-- <label
-          for="username"
-          class="block mt-2 text-sm font-bold text-left text-inputLabel"
-          >Benutzername</label
-        >
-        <div>
-          <input
-            id="username"
-            name="username"
-            type="text"
-            v-model="form.username"
-            class="w-full px-3 py-2 leading-tight text-white bg-gray-900 rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            autofocus
-            required
-          />
-        </div> -->
-        <InputField labelName="Benutzername" ref="username" />
-        <!-- <label
-          for="user-password"
-          class="block mt-2 text-sm font-bold text-inputLabel"
-          >Passwort</label
-        >
-        <div>
-          <input
-            id="user-password"
-            name="username"
-            type="password"
-            v-model="form.password"
-            class="w-full px-3 py-2 leading-tight text-white bg-gray-900 rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            required
-          />
-        </div> -->
-        <InputField labelName="Passwort" ref="password" />
+        <InputField labelName="Benutzername" v-model:value="form.username" />
+        <InputField labelName="Passwort" v-model:value="form.password" />
         <div class="flex flex-row items-center justify-center">
           <input
             type="checkbox"
@@ -87,12 +56,11 @@
         <div class="text-red-400" v-if="user.error.value">
           {{ user.error.value }}
         </div>
-        <button
-          class="w-full px-4 py-4 font-bold text-white bg-gray-800 rounded  md:w-auto md:py-2 hover:bg-gray-700"
-          type="submit"
-        >
-          Anmelden
-        </button>
+        <ButtonField buttonType="submit" :iconSpinner="state.isLoading">
+          <template v-slot:text>
+            <span>Anmelden</span>
+          </template>
+        </ButtonField>
       </form>
       <div class="col-span-2">
         <a
@@ -104,93 +72,40 @@
       </div>
     </div>
   </div>
-  <div v-else class="text-center grid place-items-center h-[100vh] w-full">
-    <div title="0">
-      <svg
-        version="1.1"
-        id="loader-1"
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        x="0px"
-        y="0px"
-        width="120px"
-        height="120px"
-        viewBox="0 0 40 40"
-        enable-background="new 0 0 40 40"
-        xml:space="preserve"
-      >
-        <path
-          opacity="0.2"
-          fill="#fff"
-          d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
-    s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
-    c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"
-        />
-        <path
-          fill="#fff"
-          d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
-    C22.32,8.481,24.301,9.057,26.013,10.047z"
-        >
-          <animateTransform
-            attributeType="xml"
-            attributeName="transform"
-            type="rotate"
-            from="0 20 20"
-            to="360 20 20"
-            dur="0.5s"
-            repeatCount="indefinite"
-          />
-        </path>
-      </svg>
-    </div>
-  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { state } from "../loader";
 import useUser from "../stores/user";
 import userStore from "../stores/user";
 import InputField from "./InputField.vue";
+import ButtonField from "./ButtonField.vue";
 
 export default defineComponent({
-  components: { InputField },
+  components: { InputField, ButtonField },
   data() {
     return {
       stayLogedIn: false,
+      form: {
+        username: "",
+        password: "",
+        stayLogedIn: false,
+      },
     };
   },
   setup() {
     const route = useRoute();
     const { user, login } = useUser();
     const router = useRouter();
-
-    const form = reactive({
-      username: ref(""),
-      password: ref(""),
-      stayLogedIn: false,
-    });
-
-    const onSubmit = () => {
-      user.error.value = "";
-      let username = ref(null);
-      let password = ref(null);
-
-      login(username, password, form.stayLogedIn).then((_) => {
-        const next = (route.params.nextUrl as string) || "/";
-
-        router.replace({
-          path: next,
-        });
-      });
-    };
-
     return {
-      form,
       user,
+      login,
       userStore,
-      onSubmit,
-      isLoading: false,
+      route,
+      router,
+      state,
     };
   },
   methods: {
@@ -200,14 +115,17 @@ export default defineComponent({
       this.form.password = "";
     },
     onSubmit() {
+      console.log(this.form);
       this.user.error.value = "";
-      let username = ref(null);
-      let password = ref(null);
 
-      login(username, password, this.form.stayLogedIn).then((_) => {
+      this.login(
+        this.form.username,
+        this.form.password,
+        this.form.stayLogedIn
+      ).then((_) => {
         const next = (this.route.params.nextUrl as string) || "/";
 
-        router.replace({
+        this.router.replace({
           path: next,
         });
       });

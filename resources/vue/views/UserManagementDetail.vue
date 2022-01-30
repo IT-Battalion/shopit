@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Profile v-if="!state.isLoading" :user="user"/>
+    <Profile v-if="!state.isLoading" :user="user" />
     <h2 class="mt-10 mb-6 text-3xl font-bold text-white">Bestellungen</h2>
     <vue-good-table
       :columns="userOrderColumns"
@@ -23,7 +23,8 @@
         </span>
       </template>
     </vue-good-table>
-    <div v-if="!state.isLoading || state.isProgressing">
+    <h2 class="mt-10 mb-6 text-3xl font-bold text-white">Benutzer Sperren</h2>
+    <!-- <div v-if="!state.isLoading || state.isProgressing">
     <template
       v-if="
         ban.disabled_at == null &&
@@ -50,7 +51,6 @@
       </ButtonField>
     </div>
     </template>
-    </template>
     <div v-else class="flex flex-row gap-4">
       <h2 class="mt-10 mb-6 text-3xl font-bold text-white">Benutzer Entsperren</h2>
       <textarea class="w-1/2 text-white bg-elevatedDark rounded-2xl"
@@ -66,10 +66,7 @@
         <template v-slot:icon><img src="/img/lockBlack.svg" /></template>
       </ButtonField>
     </div>
-  </div>
-  <div v-else class="flex flex-row gap-4">
-    <Skeletor :pill="true" class="w-1/2 h-28" />
-    <Skeletor :pill="true" class="w-20 h-10" />
+    </div> -->
   </div>
 </template>
 
@@ -232,6 +229,15 @@ export default defineComponent({
         this.toast.error("Fehler beim entsperren des Benutzers.");
       }
       endLoad();
+    },
+  },
+  computed: {
+    isBanned() {
+      return (
+        this.ban.disabled_at == null &&
+        ban.disabled_by == null &&
+        ban.disabled_for == null
+      );
     },
   },
 });
