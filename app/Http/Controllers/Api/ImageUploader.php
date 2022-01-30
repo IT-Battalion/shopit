@@ -10,10 +10,12 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use function RingCentral\Psr7\mimetype_from_extension;
 
 class ImageUploader extends Controller
 {
-    protected $tmpPath = 'product' . DIRECTORY_SEPARATOR . 'images';
+    protected string $tmpPath = 'product' . DIRECTORY_SEPARATOR . 'images';
+    protected array $allowedMimeTypes = ['image/jpeg', 'image/png'];
 
     /**
      * Asynchronously uploading files with FilePond is called processing.
@@ -109,11 +111,14 @@ class ImageUploader extends Controller
     {
         $file = $request->file('uploadImages');
         if (!isset($file)) {
-            abort(422);
+            abort(422); //Unprocessable Entity (WebDAV; RFC 4918)
         }
         $file = is_array($file) ? $file[0] : $file;
+        if (!in_array(mimetype_from_extension($file->extension()), $this->allowedMimeTypes, true)) {
+            abort(415); //Unsupported Media Type (RFC 7231)
+        }
         if (!($tmpFile = $file->storeAs($this->tmpPath . DIRECTORY_SEPARATOR . now()->timestamp, $file->getClientOriginalName(), 'local'))) {
-            abort(500);
+            abort(507); //Insufficient Storage (WebDAV; RFC 4918)
         }
 
         $response = Crypt::encryptString(Storage::disk('local')->path($tmpFile));
@@ -137,10 +142,7 @@ class ImageUploader extends Controller
      */
     public function revert(Request $request): Response|Application|ResponseFactory
     {
-        $id = $request->getContent();
-        if (!trim($id)) {
-            abort(422, 'File not found');
-        }
+        $id = trim($request->getContent());
 
         $filePath = Crypt::decryptString($id);
         $basePath = Storage::disk('local')->path($this->tmpPath);
@@ -150,6 +152,6 @@ class ImageUploader extends Controller
         if (Storage::disk('local')->delete($filePath)) {
             return response('', 200);
         }
-        abort(500);
+        abort(422);
     }
 }
