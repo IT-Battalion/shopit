@@ -14,10 +14,10 @@
 </template>
 
 <script lang="ts">
-import Sidenav from "@/components/Sidenav.vue";
-import {defineComponent} from "vue";
+import Sidenav from "@/components/sidenav/SidenavCategories.vue";
+import { defineComponent } from "vue";
 export default defineComponent({
-  name: 'Home',
+  name: "Home",
   components: {
     Sidenav,
   },

@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import SidenavAdmin from "@/components/SidenavAdmin.vue";
+import SidenavAdmin from "@/components/sidenav/SidenavAdmin.vue";
 import {defineComponent} from "vue";
 export default defineComponent({
   name: "Admin Layout",

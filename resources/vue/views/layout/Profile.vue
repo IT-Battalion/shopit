@@ -10,9 +10,9 @@
 </template>
 
 <script lang="ts">
-import SidenavAdmin from "@/components/SidenavAdmin.vue";
+import SidenavAdmin from "@/components/sidenav/SidenavAdmin.vue";
 import {defineComponent} from "vue";
-import SidenavProfile from "../../components/SidenavProfile.vue";
+import SidenavProfile from "../../components/sidenav/SidenavProfile.vue";
 export default defineComponent({
   name: "Profile Layout",
   components: {
