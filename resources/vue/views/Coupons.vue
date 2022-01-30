@@ -31,7 +31,7 @@
         :min="getDateString"
       />
       <ButtonField
-        class="mt-14"
+        class="mt-14 h-10"
         :loading="loading"
         @click="createCoupon() && isEmpty()"
       >
