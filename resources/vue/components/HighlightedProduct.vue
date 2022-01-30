@@ -69,7 +69,7 @@
               }"
               class="self-end"
             >
-              <ButtonField>
+              <ButtonField class="h-10">
                 <template v-slot:icon><img src="img/info.svg" /></template>
               </ButtonField>
             </router-link>

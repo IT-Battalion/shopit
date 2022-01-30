@@ -4,15 +4,14 @@
     <h2 class="w-full my-10 text-2xl font-bold text-center text-white">
       Produktbeschreibung
     </h2>
-    <div class="m-10 bg-white">
+    <div>
       <QuillEditor theme="snow" toolbar="essential" ref="desc"/>
     </div>
-    <div class="flex flex-row gap-x-2">
-      <div class="flex justify-end mt-10 sm:mr-20">
-        <CancelButton/>
-        <BackwardButton @click="backward"/>
-      </div>
-      <ButtonField class="mt-auto mb-2" @click="createProduct">
+    <div class="flex mt-10 sm:mr-20">
+      <CancelButton/>
+      <BackwardButton @click="backward"/>
+      <ButtonField class="px-6 py-4 mx-2" @click="createProduct">
+        <template v-slot:text>Erstellen</template>
         <template v-slot:icon><img src="/img/doneBlack.svg" /></template>
       </ButtonField>
     </div>

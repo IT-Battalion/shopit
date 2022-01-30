@@ -1,17 +1,15 @@
 <template>
   <button
     class="
-      h-10
-      py-1
-      my-auto
+      px-6
+      py-4
       bg-white
-      rounded-3xl
+      rounded-full
       hover:bg-gray-300
       flex flex-row
       justify-center
       items-center
       gap-3
-      px-7
       text-black
     "
     type="button"
@@ -19,7 +17,7 @@
   >
     <svg
       v-if="loading"
-      class="animate-spin h-5 w-5 mx-1"
+      class="animate-spin h-5 w-5 m-1"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
@@ -38,7 +36,7 @@
     </span>
     <svg
       v-if="iconSpinner"
-      class="animate-spin h-5 w-5 mx-1"
+      class="animate-spin h-5 w-5 m-1"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"

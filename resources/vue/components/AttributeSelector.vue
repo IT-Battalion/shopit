@@ -56,23 +56,18 @@
             v-for="(size, index) in attributes[0]"
             :key="size.size"
             :value="index"
-            v-slot="{ active, checked }"
+            v-slot="{ checked }"
             :title="clothingSizeValues[size.size]"
           >
             <div
-              :class="[
-                'shadow-sm text-gray-300 cursor-pointer',
-                active ? 'ring-2 ring-highlighted' : '',
-                'group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-400 focus:outline-none sm:flex-1 sm:py-6',
-              ]"
+              class="shadow-sm text-white cursor-pointer group relative rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase focus:outline-none sm:flex-1 sm:py-6 hover:scale-105 focus:scale-105"
             >
               <RadioGroupLabel as="p">
                 {{ clothingSizeValues[size.size] }}
               </RadioGroupLabel>
               <div
                 :class="[
-                  active ? 'border' : 'border-2',
-                  checked ? 'border-indigo-500' : 'border-transparent',
+                  checked ? 'border-indigo-500 border-2' : 'border-gray-400 border',
                   'absolute -inset-px rounded-md pointer-events-none',
                 ]"
                 aria-hidden="true"
@@ -102,13 +97,12 @@
             v-for="(dimension, index) in attributes[1]"
             :key="dimension.type"
             :value="index"
-            v-slot="{ active, checked }"
+            v-slot="{ checked }"
           >
             <div
               :class="[
                 'shadow-sm text-gray-300 cursor-pointer',
-                active ? 'ring-2 ring-highlighted' : '',
-                'min-w-[2rem] group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm text-center font-medium hover:bg-gray-400 focus:outline-none sm:flex-1 sm:py-6 w-20',
+                'min-w-[2rem] group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm text-center font-medium focus:outline-none sm:flex-1 sm:py-6 w-20 hover:scale-105 focus:scale-105',
               ]"
             >
               <RadioGroupLabel as="p">
@@ -118,8 +112,7 @@
               </RadioGroupLabel>
               <div
                 :class="[
-                  active ? 'border' : 'border-2',
-                  checked ? 'border-indigo-500' : 'border-transparent',
+                  checked ? 'border-indigo-500 border-2' : 'border-gray-400 border',
                   'absolute -inset-px rounded-md pointer-events-none',
                 ]"
                 aria-hidden="true"
@@ -153,19 +146,14 @@
             :title="volume.volume.value + volume.volume.unit"
           >
             <div
-              :class="[
-                'shadow-sm text-gray-300 cursor-pointer',
-                active ? 'ring-2 ring-highlighted' : '',
-                'min-w-[2rem] group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-400 focus:outline-none sm:flex-1 sm:py-6',
-              ]"
+              class="shadow-sm text-gray-300 cursor-pointer min-w-[2rem] group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase focus:outline-none sm:flex-1 sm:py-6 hover:scale-105 focus:scale-105"
             >
               <RadioGroupLabel as="p">
                 {{ volume.volume.value }}{{ volume.volume.unit }}
               </RadioGroupLabel>
               <div
                 :class="[
-                  active ? 'border' : 'border-2',
-                  checked ? 'border-indigo-500' : 'border-transparent',
+                  checked ? 'border-indigo-500 border-2' : 'border-gray-400 border',
                   'absolute -inset-px rounded-md pointer-events-none',
                 ]"
                 aria-hidden="true"
