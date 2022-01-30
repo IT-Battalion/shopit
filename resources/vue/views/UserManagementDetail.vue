@@ -24,7 +24,7 @@
   </vue-good-table>
   <div v-if="this.ban.disabled_at == null && this.ban.disabled_by == null && this.ban.disabled_for == null">
     <h2 class="text-3xl mt-10 mb-6 text-white font-bold">Benutzer Sperren</h2>
-    <textarea class="w-1/2 bg-elevatedDark text-white" ref="reason"></textarea>
+    <textarea class="w-1/2 bg-elevatedDark text-white" ref="reason" minlength="1"></textarea>
     <ButtonField
       name="Sperren"
       :acceptName="true"
