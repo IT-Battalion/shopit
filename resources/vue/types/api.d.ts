@@ -1,4 +1,4 @@
-import { AttributeType, ClothingSize, OrderStatus } from "./api-values";
+import {AttributeType, ClothingSize, OrderStatus} from "./api-values";
 
 export interface LoginRequestData {
   username: string,
@@ -252,7 +252,7 @@ export interface CreateProductRequest {
 }
 
 export interface ProductImage {
-  path?: string,
+  path: string,
 }
 
 export interface CreateProductImageRequest {
@@ -308,48 +308,63 @@ export interface UpdateProductThumbnailRequest {
   thumbnail_id: number,
 }
 
-export interface ProductCreateProcessStorage {
-  title?: string,
-  price?: number,
-  description?: string,
-  highlighted?: boolean,
-  images?: string[],
-  category?: ProductCategory,
-  attributes?: {
-    volume?: {
-      enabled?: boolean,
-      value?: {
-        volume?: number
-      },
-    },
-    dimension?: {
-      enabled?: boolean,
-      value?: {
-        width?: number,
-        height?: number,
-        depth?: number,
-      },
-    },
-    clothing?: {
-      enabled?: boolean,
-      value?: {
-        size?: string[],
-      },
-    },
-    color?: {
-      enabled?: boolean,
-      value?: {
-        color?: {
-          colors?: {
-            color: string,
-            name: string,
-          }[],
-          selectedColor?: string,
-          selectedName?: string,
-        }
-      },
-    },
-  },
+export interface TemporaryProductCreateStorage {
+  title: string;
+  price: number;
+  description: string;
+  highlighted: boolean;
+  category: null | ProductCategory;
+  images: string[];
+  attributes: {
+    dimensions: {
+      value: Set<DimensionAttribute>;
+      enabled: boolean;
+    };
+    volumes: {
+      value: Set<VolumeAttribute>;
+      enabled: boolean;
+    };
+    clothing: {
+      value: string[];
+      enabled: boolean;
+    };
+    colors: {
+      value: Map<string, string>;
+      enabled: boolean;
+    };
+  };
+
+  isColorAttributeEnabled(): boolean;
+
+  isDimensionAttributeEnabled(): boolean;
+
+  isClothingAttributeEnabled(): boolean;
+
+  isVolumeAttributeEnabled(): boolean;
+
+  setColorAttributeEnabled(value: boolean): void;
+
+  setDimensionAttributeEnabled(value: boolean): void;
+
+  setClothingAttributeEnabled(value: boolean): void;
+
+  setVolumeAttributeEnabled(value: boolean): void;
+
+  getColorAttributeValue(): Map<string, string>;
+
+  getClothingAttributeValue(): string[];
+
+  getVolumeAttributeValue(): Set<VolumeAttribute>;
+
+  getDimensionAttributeValue(): Set<DimensionAttribute>;
+
+  setColorAttributeValue(value: Map<string, string>): void;
+
+  setVolumeAttributeValue(value: Set<VolumeAttribute>): void;
+
+  setClothingAttributeValue(value: string[]): void;
+
+  setDimensionAttributeValue(value: Set<DimensionAttribute>): void;
 }
 
 export interface TemporaryColor {

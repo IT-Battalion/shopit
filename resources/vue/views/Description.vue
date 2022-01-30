@@ -27,11 +27,11 @@ import ButtonField from "../components/ButtonField.vue";
 import CancelButton from "../components/buttons/CancelButton.vue";
 import BackwardButton from "../components/buttons/BackwardButton.vue";
 import ForwardButton from "../components/buttons/ForwardButton.vue";
-import {Product, ProductCreateProcessStorage,} from "../types/api";
-import {isUndefined} from "lodash";
+import {Product, TemporaryProductCreateStorage,} from "../types/api";
 import {useToast} from "vue-toastification";
 import {endLoad, initLoad} from "../loader";
 import {AxiosResponse} from "axios";
+import {ProductProcessCreateProcessStorage} from "../types/api-values";
 
 export default defineComponent({
   components: {
@@ -44,26 +44,23 @@ export default defineComponent({
   },
   data() {
     return {
-      productCreateStorage: Object as ProductCreateProcessStorage,
+      productCreateStorage: {} as TemporaryProductCreateStorage as ProductProcessCreateProcessStorage,
       toast: useToast(),
+      quilleditor: QuillEditor,
     };
   },
   async mounted() {
-    let data = window.localStorage.getItem('product');
-    if (!isUndefined(data) && data != null && data != 'undefined') {
-      this.productCreateStorage = JSON.parse(data);
-    }
+    this.productCreateStorage = ProductProcessCreateProcessStorage.load();
+    this.quilleditor = this.$refs.desc as typeof QuillEditor;
     await this.insertStoredData();
   },
   methods: {
     async insertStoredData() {
-      if (!isUndefined(this.productCreateStorage)) {
-        (this.$refs.desc as typeof QuillEditor).setContents(this.productCreateStorage.description ?? ""); //https://en.wikipedia.org/wiki/Operational_transformation
-      }
+      this.quilleditor.setContents(this.productCreateStorage.description); //https://en.wikipedia.org/wiki/Operational_transformation
     },
     async saveToLocalStorage() {
-      this.productCreateStorage.description = (this.$refs.desc as typeof QuillEditor).getContents(); //https://en.wikipedia.org/wiki/Operational_transformation
-      window.localStorage.setItem('product', JSON.stringify(this.productCreateStorage));
+      this.productCreateStorage.description = this.quilleditor.getContents(); //https://en.wikipedia.org/wiki/Operational_transformation
+      ProductProcessCreateProcessStorage.save(this.productCreateStorage);
     },
     async backward() {
       await this.saveToLocalStorage();
@@ -76,15 +73,14 @@ export default defineComponent({
       initLoad();
       await this.saveToLocalStorage();
       try {
-        let product = await this.$http.post<ProductCreateProcessStorage, AxiosResponse<Product>>(
+        let product = await this.$http.post<TemporaryProductCreateStorage, AxiosResponse<Product>>(
           '/admin/product',
           this.productCreateStorage
         );
         this.toast.success('Produkt wurde erfolgreich erstellt.');
-        console.log(product);
+        await this.$router.push({name: 'Product detail', params: {name: product.data.name}});
       } catch (e) {
         this.toast.error('Fehler beim erstellen des Produktes');
-        throw e;
       }
       endLoad();
     }

@@ -7,12 +7,12 @@
       :errorMessage="inputError"
     />
     <div class="flex flex-row items-center justify-center mb-3">
-      <input type="color" name="color" v-model="selectedColor" />
+      <input type="color" name="color" v-model="selectedColor"/>
       <ButtonField
         class="ml-5 bg-elevatedColor"
         @click="addColor"
       >
-        <template v-slot:icon><img src="/img/add.svg" /></template>
+        <template v-slot:icon><img src="/img/add.svg"/></template>
       </ButtonField>
     </div>
     <div class="flex flex-row max-w-full overflow-x-auto gap-x-2 shrink-0">
@@ -35,20 +35,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
-import { useToast } from "vue-toastification";
+import {defineComponent} from "@vue/runtime-core";
+import {useToast} from "vue-toastification";
 import InputField from "../InputField.vue";
 import ButtonField from "../ButtonField.vue";
 
 export default defineComponent({
-  components: { ButtonField, InputField },
+  components: {ButtonField, InputField},
   data() {
     return {
       selectedColor: "#000",
       colors: new Map<string, string>(),
       colorSet: new Set<string>(),
       inputError: "",
-      currentName: {} as typeof InputField,
+      currentName: InputField,
     };
   },
   mounted() {
@@ -61,7 +61,7 @@ export default defineComponent({
     },
     addColor() {
       this.inputError = "";
-      let colorName = (this.$refs.selectedName as typeof InputField).getValue();
+      let colorName = this.currentName.getValue();
 
       if (colorName == "") {
         this.inputError = "Dieses Feld darf nicht leer sein!";
@@ -84,6 +84,15 @@ export default defineComponent({
     },
     getSelectedName() {
       return this.currentName.getValue();
+    },
+    getColors(): Map<string, string> {
+      return this.colors;
+    },
+    setColors(value: Map<string, string>) {
+      this.colors = value;
+      for (let color in this.colors.values()) {
+        this.colorSet.add(color);
+      }
     },
   },
   setup() {

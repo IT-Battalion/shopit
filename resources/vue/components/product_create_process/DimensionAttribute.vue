@@ -25,7 +25,7 @@
       @click="addDimension"
       class="mt-16"
     >
-      <template v-slot:icon><img src="/img/addBlack.svg" /></template>
+      <template v-slot:icon><img src="/img/addBlack.svg"/></template>
     </ButtonField>
   </div>
   <div class="flex flex-row max-w-[35rem] gap-4 overflow-x-auto">
@@ -44,18 +44,18 @@
           <p>{{ dimension.height }} cm x</p>
           <p>{{ dimension.depth }} cm</p>
         </div>
-        <img v-else src="/img/bin.svg" alt="löschen" class="w-5 h-5" />
+        <img v-else src="/img/bin.svg" alt="löschen" class="w-5 h-5"/>
       </div>
     </template>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
+import {defineComponent} from "@vue/runtime-core";
 import InputField from "../InputField.vue";
 import ButtonField from "../ButtonField.vue";
-import { DimensionAttribute } from "../../types/api";
-import { AttributeType } from "../../types/api-values";
+import {DimensionAttribute} from "../../types/api";
+import {AttributeType} from "../../types/api-values";
 
 export default defineComponent({
   components: {
@@ -113,6 +113,12 @@ export default defineComponent({
     },
     async deleteDimension(dim: DimensionAttribute) {
       this.dimensions.delete(dim);
+    },
+    getDimensions(): Set<DimensionAttribute> {
+      return this.dimensions;
+    },
+    setDimensions(value: Set<DimensionAttribute>) {
+      this.dimensions = value;
     },
     getWidth() {
       return (

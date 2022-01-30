@@ -2,9 +2,9 @@
   <div>
     <AddProductProcessBar/>
     <div class="mx-5 mt-20 md:mx-20">
-      <file-pond
+      <pond
         name="uploadImages"
-        ref="pond"
+        ref="images"
         allow-multiple="true"
         label-idle="Hier klicken um Bilder hochzuladen!"
         accepted-file-types="image/jpeg, image/png"
@@ -25,27 +25,29 @@ import {defineComponent} from "@vue/runtime-core";
 import CancelButton from "../components/buttons/CancelButton.vue";
 import BackwardButton from "../components/buttons/BackwardButton.vue";
 import ForwardButton from "../components/buttons/ForwardButton.vue";
-import {ProductCreateProcessStorage} from "../types/api";
-import {isUndefined} from "lodash";
+import {TemporaryProductCreateStorage} from "../types/api";
 import AddProductProcessBar from "../components/product_create_process/AddProductProcessBar.vue";
 
 import vueFilePond, {VueFilePondComponent} from 'vue-filepond';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import {ProductProcessCreateProcessStorage} from "../types/api-values";
+import {FilePond} from "filepond";
 
-const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview) as VueFilePondComponent;
+const Pond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview) as VueFilePondComponent;
 
 export default defineComponent({
   data() {
     return {
-      productCreateStorage: {} as ProductCreateProcessStorage,
-      myFiles: [],
+      productCreateStorage: {} as TemporaryProductCreateStorage as ProductProcessCreateProcessStorage,
+      myFiles: [] as string[],
       server: {
         url: "/api/admin/productImage",
         headers: {
           'X-CSRF-TOKEN': window.document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
         }
-      }
+      },
+      filePondRef: {} as FilePond, //import {FilePond} from './filepond'
     };
   },
   components: {
@@ -53,22 +55,16 @@ export default defineComponent({
     AddProductProcessBar,
     ForwardButton,
     CancelButton,
-    FilePond,
+    Pond,
   },
   async mounted() {
-    let data = window.localStorage.getItem('product');
-    if (!isUndefined(data) && data != null && data != 'undefined') {
-      this.productCreateStorage = JSON.parse(data);
-    }
+    this.productCreateStorage = ProductProcessCreateProcessStorage.load();
+    this.filePondRef = this.$refs.images as FilePond;
     await this.insertStoredData();
   },
   methods: {
     async insertStoredData() {
-      /*if (!isUndefined(this.productCreateStorage) && !isUndefined(this.productCreateStorage.images)) {
-        if (this.productCreateStorage.images.length > 0) {
-          (this.$refs.images as typeof UploadImages).Imgs = this.productCreateStorage.images;
-        }
-      }*/
+      this.myFiles = this.productCreateStorage.images;
     },
     async backward() {
       await this.saveToLocalStorage();
@@ -79,8 +75,8 @@ export default defineComponent({
       await this.$router.push({name: 'Add Product attributes'});
     },
     async saveToLocalStorage() {
-      /*this.productCreateStorage.images = (this.$refs.images as typeof UploadImages).Imgs;
-      window.localStorage.setItem('product', JSON.stringify(this.productCreateStorage));*/
+      this.productCreateStorage.images = this.myFiles;
+      ProductProcessCreateProcessStorage.save(this.productCreateStorage);
     },
   },
 });

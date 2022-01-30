@@ -7,7 +7,7 @@
       :errorMessage="errorMessage"
     />
     <ButtonField @click="addVolume">
-      <template v-slot:icon><img src="/img/addBlack.svg" /></template>
+      <template v-slot:icon><img src="/img/addBlack.svg"/></template>
     </ButtonField>
   </div>
   <div class="flex flex-row max-w-[35rem] gap-4 overflow-x-auto">
@@ -24,18 +24,18 @@
         <p v-if="!hover.get(i)" class="whitespace-nowrap">
           {{ vol.volume }} {{ vol.type }}
         </p>
-        <img v-else src="/img/bin.svg" alt="löschen" class="w-5 h-5" />
+        <img v-else src="/img/bin.svg" alt="löschen" class="w-5 h-5"/>
       </div>
     </template>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
+import {defineComponent} from "@vue/runtime-core";
 import InputField from "../InputField.vue";
 import ButtonField from "../ButtonField.vue";
-import { VolumeAttribute } from "../../types/api";
-import { AttributeType } from "../../types/api-values";
+import {VolumeAttribute} from "../../types/api";
+import {AttributeType} from "../../types/api-values";
 
 export default defineComponent({
   components: {
@@ -45,7 +45,7 @@ export default defineComponent({
   data() {
     return {
       volumes: new Set<VolumeAttribute>(),
-      volume: {} as typeof InputField,
+      volume: InputField,
       errorMessage: "",
       hover: new Map<number, Boolean>(),
     };
@@ -71,11 +71,17 @@ export default defineComponent({
       this.volumes.delete(vol);
     },
     getVolume() {
-      return (this.$refs.product_volume as typeof InputField).getValue();
+      return this.volume.getValue();
     },
     setVolume(volume: number) {
-      (this.$refs.product_volume as typeof InputField).setValue(volume);
+      this.volume.setValue(volume);
     },
+    getVolumes(): Set<VolumeAttribute> {
+      return this.volumes;
+    },
+    setVolumes(value: Set<VolumeAttribute>) {
+      this.volumes = value;
+    }
   },
 });
 </script>
