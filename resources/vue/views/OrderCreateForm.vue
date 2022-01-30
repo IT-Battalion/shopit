@@ -201,7 +201,7 @@ export default defineComponent({
         this.toast.success("Der Coupon Code wurde erfolgreich hinzugefügt!");
 
         this.applied = true;
-      } catch (e) {
+      } catch (e: any) {
         let handled = false;
 
         if ("response" in e) {
@@ -237,7 +237,7 @@ export default defineComponent({
         this.applied = false;
 
         this.$globalBus.emit("shopping-cart.update-prices", data);
-      } catch (e) {
+      } catch (e: any) {
         this.toast.error(e);
       }
       this.$globalBus.emit("shopping-cart.end-load");
