@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Profile v-if="!state.isLoading" :user="user" />
-    <h2 class="mt-10 mb-6 text-3xl font-bold text-white">Bestellungen</h2>
+    <Profile :loading="state.isLoading" :user="user" />
+    <h2 class="mt-24 mb-6 text-3xl font-bold text-white">Bestellungen</h2>
     <vue-good-table
       :columns="userOrderColumns"
       :pagination-options="{
@@ -23,50 +23,46 @@
         </span>
       </template>
     </vue-good-table>
-    <h2 class="mt-10 mb-6 text-3xl font-bold text-white">Benutzer Sperren</h2>
-    <!-- <div v-if="!state.isLoading || state.isProgressing">
-    <template
-      v-if="
-        ban.disabled_at == null &&
-        ban.disabled_by == null &&
-        ban.disabled_for == null
-
-      "
-    >
-      <h2 class="mt-10 mb-6 text-3xl font-bold text-white">Benutzer Sperren</h2>
+    <div>
+      <h2 class="mt-24 mb-6 text-3xl font-bold text-white">Benutzer {{ getActionVerb() }}</h2>
       <div class="flex flex-row gap-4">
-        <div class="flex flex-row gap-4">
-        <textarea
-          class="w-1/2 text-white bg-elevatedDark rounded-2xl"
-          ref="reason"
-        ></textarea>
-      <ButtonField
-        name="Sperren"
-        :acceptName="true"
-
-        @click="banUser"
-      >
-        <template v-slot:text>Sperren</template>
-        <template v-slot:icon><img src="/img/lockBlack.svg" /></template>
-      </ButtonField>
+        <div class="flex flex-col gap-2 w-1/2">
+          <label for="reason" class="text-sm text-gray-400">Grund</label>
+          <textarea
+            class="text-white bg-elevatedDark rounded-2xl"
+            id="reason"
+            v-model="ban.reason"
+            :disabled="!user.enabled"
+          ></textarea>
+        </div>
+        <ButtonField
+          name="Sperren"
+          :acceptName="true"
+          :icon-spinner="state.isLoading"
+          @click="user.enabled ? banUser() : unbanUser()"
+        >
+          <template v-slot:text><span>{{ getActionVerb() }}</span></template>
+          <template v-slot:icon><img src="/img/lockBlack.svg" /></template>
+        </ButtonField>
+      </div>
     </div>
-    </template>
-    <div v-else class="flex flex-row gap-4">
-      <h2 class="mt-10 mb-6 text-3xl font-bold text-white">Benutzer Entsperren</h2>
-      <textarea class="w-1/2 text-white bg-elevatedDark rounded-2xl"
-        v-text="ban.disabled_for" disabled></textarea>
-      <ButtonField
-        name="Entsperren"
-        :acceptName="true"
+<!--    </template>-->
+<!--    <div v-else class="flex flex-row gap-4">-->
+<!--      <h2 class="mt-10 mb-6 text-3xl font-bold text-white">Benutzer Entsperren</h2>-->
+<!--      <textarea class="w-1/2 text-white bg-elevatedDark rounded-2xl"-->
+<!--        v-text="ban.disabled_for" disabled></textarea>-->
+<!--      <ButtonField-->
+<!--        name="Entsperren"-->
+<!--        :acceptName="true"-->
 
 
-        @click="unbanUser"
-      >
-        <template v-slot:text>Entsperren</template>
-        <template v-slot:icon><img src="/img/lockBlack.svg" /></template>
-      </ButtonField>
-    </div>
-    </div> -->
+<!--        @click="unbanUser"-->
+<!--      >-->
+<!--        <template v-slot:text>Entsperren</template>-->
+<!--        <template v-slot:icon><img src="/img/lockBlack.svg" /></template>-->
+<!--      </ButtonField>-->
+<!--    </div>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -168,8 +164,8 @@ export default defineComponent({
   data() {
     return {
       userOrderRows: [] as Order[],
-      user: Object as User,
-      ban: Object as Ban,
+      user: {} as User,
+      ban: {} as Ban,
     };
   },
   async beforeMount() {
@@ -203,7 +199,7 @@ export default defineComponent({
     async banUser() {
       initLoad();
       try {
-        let reason = (this.$refs.reason as HTMLTextAreaElement).value;
+        let reason = this.ban.reason;
         let ban = await this.$http.post<BanUserRequest, AxiosResponse<Ban>>(
           `/admin/ban/user/${this.$route.params.id}/ban`,
           {
@@ -212,6 +208,7 @@ export default defineComponent({
         );
         this.toast.success("Benutzer wurde erfolgreich gesperrt.");
         this.ban = ban.data;
+        this.user.enabled = false;
       } catch (e) {
         this.toast.error("Fehler beim sperren des Benutzers.");
       }
@@ -225,19 +222,14 @@ export default defineComponent({
         );
         this.toast.success("Benutzer wurde erfolgreich entsperrt.");
         this.ban = ban.data;
+        this.user.enabled = true;
       } catch (e) {
         this.toast.error("Fehler beim entsperren des Benutzers.");
       }
       endLoad();
     },
-  },
-  computed: {
-    isBanned() {
-      return (
-        this.ban.disabled_at == null &&
-        ban.disabled_by == null &&
-        ban.disabled_for == null
-      );
+    getActionVerb() {
+      return this.user.enabled || state.isLoading ? "Sperren" : "Entsperren";
     },
   },
 });

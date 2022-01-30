@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\ActionNotAllowedForAdministratorException;
+use App\Exceptions\UserBannedException;
+use App\Exceptions\UserNotBannedException;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\Users\UserServiceInterface;
 use Illuminate\Http\JsonResponse;
-use Request;
+use Illuminate\Http\Request;
 
 class BanController extends Controller
 {
@@ -15,7 +18,7 @@ class BanController extends Controller
         $ban = [
             'disabled_at' => $user->disabled_at,
             'disabled_by' => $user->disabled_by,
-            'disabled_for' => $user->reason_for_disabling,
+            'reason' => $user->reason_for_disabling,
         ];
 
         return response()->json($ban);
@@ -23,23 +26,39 @@ class BanController extends Controller
 
     public function ban(Request $request, User $user, UserServiceInterface $userService): JsonResponse
     {
-        $userService->ban($user, $request->get('reason'));
-        $ban = [
-            'disabled_at' => $user->disabled_at,
-            'disabled_by' => $user->disabled_by,
-            'disabled_for' => $user->reason_for_disabling,
-        ];
-        return response()->json($ban);
+        $data = $request->validate([
+            'reason' => ['required'],
+        ]);
+
+        try {
+            $userService->ban($user, $data['reason']);
+            $ban = [
+                'disabled_at' => $user->disabled_at,
+                'disabled_by' => $user->disabled_by,
+                'reason' => $user->reason_for_disabling,
+            ];
+            return response()->json($ban);
+        } catch (ActionNotAllowedForAdministratorException) {
+            return response()->json(['errors' => ['user' => ['Dieser User ist ein Administrator und kann daher nicht verändert werden.']]], 400);
+        } catch (UserBannedException) {
+            return response()->json(['errors' => ['user' => ['Dieser User ist bereits gebannt.']]], 400);
+        }
     }
 
     public function unban(User $user, UserServiceInterface $userService): JsonResponse
     {
-        $userService->unban($user);
-        $ban = [
-            'disabled_at' => $user->disabled_at,
-            'disabled_by' => $user->disabled_by,
-            'disabled_for' => $user->reason_for_disabling,
-        ];
-        return response()->json($ban);
+        try {
+            $userService->unban($user);
+            $ban = [
+                'disabled_at' => $user->disabled_at,
+                'disabled_by' => $user->disabled_by,
+                'reason' => $user->reason_for_disabling,
+            ];
+            return response()->json($ban);
+        } catch (ActionNotAllowedForAdministratorException) {
+            return response()->json(['errors' => ['user' => ['Dieser User ist ein Administrator und kann daher nicht verändert werden.']]], 400);
+        } catch (UserNotBannedException) {
+            return response()->json(['errors' => ['user' => ['Dieser User ist nicht gebannt.']]], 400);
+        }
     }
 }

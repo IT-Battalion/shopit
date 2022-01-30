@@ -25,6 +25,7 @@ export interface User {
   email?: string,
   lang?: string,
   is_admin?: boolean,
+  enabled?: boolean,
   isLoggedIn?: boolean,
 }
 
@@ -36,6 +37,7 @@ export interface UserManagementUser {
   email?: string,
   isAdmin?: boolean,
   detail?: string,
+  enabled?: boolean,
 }
 
 export interface ProductCategory {
@@ -240,7 +242,7 @@ export interface BanUserRequest {
 
 export interface Ban {
   disabled_at?: string,
-  disabled_for?: string,
+  reason?: string,
   disabled_by?: User,
 }
 

@@ -1,12 +1,16 @@
 <template>
   <div class="flex flex-col items-center justify-center w-full">
-    <img
-      :src="profilePicture"
-      class="w-2/5 mx-auto bg-gray-800 rounded-full md:w-1/5"
-    />
+    <div class="w-2/5 md:w-1/5 aspect-[1/1] mx-auto">
+      <LoadingImage
+        :src="profilePicture"
+        class="w-full mx-auto bg-gray-800 rounded-full"
+        v-if="!loading"
+      />
+      <Skeletor v-else class="aspect-[1/1] rounded-full" />
+    </div>
     <div>
       <h1 class="mt-10 text-5xl font-bold text-center text-white">
-        {{ user.name }}
+        {{ user.firstname }} {{ user.lastname }}
       </h1>
       <hr
         class="hidden w-1/6 mx-auto my-10 border-2 rounded-full  md:shown border-linecolor"
@@ -15,9 +19,7 @@
         <h2 v-if="user.is_admin">Administrator</h2>
         <h2 v-else>Benutzer</h2>
         <h2 class="mt-3">
-          {{ user.username }}
-          <wbr/>
-          <span class="text-gray-600">{{
+          {{ user.username }}<wbr/><span class="text-gray-600">{{
               email
             }}</span>
         </h2>
@@ -41,13 +43,19 @@ import {defineComponent} from "@vue/runtime-core";
 import {logout} from "../request";
 import {User} from "../types/api";
 import {PropType} from "vue";
+import LoadingImage from "./LoadingImage.vue";
 
 export default defineComponent({
+  components: {LoadingImage},
   props: {
     user: {
       type: Object as PropType<User>,
       required: true,
-    }
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     profilePicture() {
