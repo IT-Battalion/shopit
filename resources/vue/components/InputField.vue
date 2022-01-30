@@ -4,7 +4,7 @@
     <input
       class="px-3 py-2 text-white bg-gray-900 shadow appearance-none rounded-xl"
       ref="input"
-      :value="value"
+      v-model="fieldValue"
       :type="type"
       :placeholder="placeholder"
       :step="step"
@@ -42,13 +42,24 @@ export default defineComponent({
     errorIcon: String,
     errorMessage: String,
   },
+  emits: ["update:value"],
+  data() {
+    return {
+      fieldValue: this.value
+    };
+  },
   methods: {
     getValue() {
       return (this.$refs.input as HTMLInputElement).value;
     },
     setValue(value: any) {
       (this.$refs.input as HTMLInputElement).value = value;
-    }
+    },
+  },
+  watch: {
+    fieldValue(val) {
+      this.$emit("update:value", val);
+    },
   },
 });
 </script>
