@@ -1,4 +1,4 @@
-@extends('layouts.invoice')
+@extends('layouts.document')
 @section('main-content')
     <div class="flex flex-col">
         <div class="flex flex-col text-lg">

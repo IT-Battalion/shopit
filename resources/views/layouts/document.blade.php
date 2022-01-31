@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0,initial-scale=1.0, height=device-height">
     <title>ShopIT</title>
-    <link rel="stylesheet" type="text/css" href="/css/vendor.css">
+    <link rel="stylesheet" type="text/css" href="{{ public_path('css/vendor-pdf.css') }}">
     {{-- <style>
         html,
         body {
@@ -23,9 +23,9 @@
             <h1 class="mb-3 text-4xl font-bold">Lernen im Aufbruch</h1>
             <p>Wexstraße 19-23, 1200 Wien</p>
             <p>ZVR-Nummer: 1129819755</p>
-            <img src="{{resource_path('assets/images/logoBlack.svg')}}" alt="Logo ShopIT" class="h-16">
+            <img src="{{ resource_path('assets/images/logoBlack.svg') }}" alt="Logo ShopIT" class="h-16">
         </div>
-        <img src="{{resource_path('assets/images/lernenImAufbruch.svg')}}" alt="Logo Lernen im Aufbruch" class="justify-self-end">
+        <img src="{{ resource_path('assets/images/lernenImAufbruch.svg') }}" alt="Logo Lernen im Aufbruch" class="justify-self-end">
     </div>
     <div class="grid items-center grid-cols-2 grid-rows-1">
         <div class="flex flex-col my-16 font-semibold justify-items-start">

@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const mixPdf = require('laravel-mix');
 const path = require('path');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 require('laravel-mix-bundle-analyzer');
@@ -39,7 +40,8 @@ mix
         'mitt',
         'lodash',])
     .postCss('resources/assets/tailwind.css', 'public/css/vendor.css', [
-        require('tailwindcss'),
+        require('tailwindcss')('./tailwind.config.js'),
+        require('autoprefixer'),
     ])
     .css('node_modules/vue-skeletor/dist/vue-skeletor.css', 'public/css/vendor.css')
     .sass('resources/scss/vue-good-tables.sass', 'public/css/vendor.css')
@@ -49,6 +51,11 @@ mix
     .copyDirectory('resources/locales', 'public/locales')
     .sourceMaps()
     //.browserSync('localhost:80');
+
+mixPdf
+    .postCss('resources/assets/tailwind-pdf.css', 'public/css/vendor-pdf.css', [
+        require('tailwindcss')('./tailwind-pdf.config.js'),
+    ]);
 
 if (!mix.inProduction()) {
     mix.bundleAnalyzer();

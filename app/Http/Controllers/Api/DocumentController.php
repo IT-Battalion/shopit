@@ -10,7 +10,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class DocumentController extends Controller
 {
     public function bill(DocumentRequest $request, Order $order) {
-        $pdf = Pdf::loadView('bill', ['order' => $order]);
+        $pdf = Pdf::loadView('documents.bill', ['order' => $order]);
 
         if ($request->has('download'))
             return $pdf->download('bill.pdf');
@@ -19,7 +19,7 @@ class DocumentController extends Controller
     }
 
     public function voucher(DocumentRequest $request, Order $order) {
-        $pdf = Pdf::loadView('voucher', ['order' => $order]);
+        $pdf = Pdf::loadView('documents.voucher', ['order' => $order]);
 
         if ($request->has('download'))
             return $pdf->download('voucher.pdf');
