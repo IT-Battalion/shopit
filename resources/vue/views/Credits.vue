@@ -184,12 +184,6 @@ export default defineComponent({
         creatorLink: "https://thenounproject.com/tozicon/",
       },
       {
-        iconName: "Waiting",
-        iconLink: "https://thenounproject.com/icon/waiting-3053732/",
-        creator: "Adrien Coquet",
-        creatorLink: "https://thenounproject.com/coquet_adrien/",
-      },
-      {
         iconName: "pick up",
         iconLink: "https://thenounproject.com/icon/pick-up-4058544/",
         creator: "Adrien Coquet",
@@ -260,6 +254,12 @@ export default defineComponent({
         iconLink: "https://thenounproject.com/icon/back-3540090/",
         creator: "designvector",
         creatorLink: "https://thenounproject.com/designvector10/",
+      },
+      {
+        iconName: "Checklist",
+        iconLink: "https://thenounproject.com/icon/checklist-4551439/",
+        creator: "VectorsLab",
+        creatorLink: "https://thenounproject.com/vectorslab933/",
       },
     ];
     return { credits };
