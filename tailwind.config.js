@@ -15,6 +15,7 @@ module.exports = {
                 elevatedDark: "#242536",
                 linecolor: "#20202B",
                 sidenavSelected: "#9891ce",
+                whiteHighlight: "#F5F2F2",
             },
             gridTemplateRows: {
               '[auto,auto,1fr]': 'auto auto 1fr',
