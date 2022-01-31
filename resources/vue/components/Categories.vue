@@ -34,21 +34,58 @@
             >
               <div class="w-screen max-w-md">
                 <div
-                  class="flex flex-col h-full overflow-y-scroll shadow-xl  bg-backgroundColor"
+                  class="
+                    flex flex-col
+                    h-full
+                    overflow-y-scroll
+                    shadow-xl
+                    bg-backgroundColor
+                  "
                 >
                   <div
-                    class="flex items-center justify-center flex-1 px-4 py-6 overflow-y-auto  sm:px-6"
+                    class="
+                      flex
+                      items-center
+                      justify-center
+                      flex-1
+                      px-4
+                      py-6
+                      overflow-y-auto
+                      sm:px-6
+                    "
                   >
                     <button
                       type="button"
-                      class="absolute z-10 p-2 -m-2 text-gray-400  hover:text-gray-500 bottom-5"
+                      class="
+                        absolute
+                        z-10
+                        p-2
+                        -m-2
+                        text-gray-400
+                        hover:text-gray-500
+                        bottom-5
+                      "
                       @click="isOpen = false"
                     >
                       <span class="sr-only">Close panel</span>
-                      <XIcon class="w-6 h-6" aria-hidden="true" />
+                      <img
+                        src="/img/Xgray.svg"
+                        class="w-6 h-6"
+                        aria-hidden="true"
+                      />
                     </button>
                     <div
-                      class="absolute bottom-0 flex flex-col justify-center w-56 pl-4 overflow-auto text-white  sidebar"
+                      class="
+                        absolute
+                        bottom-0
+                        flex flex-col
+                        justify-center
+                        w-56
+                        pl-4
+                        overflow-auto
+                        text-white
+                        sidebar
+                      "
                     >
                       <div
                         v-for="category in categories"

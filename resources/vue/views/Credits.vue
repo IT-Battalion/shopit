@@ -261,6 +261,12 @@ export default defineComponent({
         creator: "VectorsLab",
         creatorLink: "https://thenounproject.com/vectorslab933/",
       },
+      {
+        iconName: "categories",
+        iconLink: "https://thenounproject.com/icon/categories-4485664/",
+        creator: "Riyan Resdian",
+        creatorLink: "https://thenounproject.com/yaicon/",
+      },
     ];
     return { credits };
   },

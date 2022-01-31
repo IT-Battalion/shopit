@@ -1,18 +1,29 @@
 <template>
-  <div
-    class="fixed bottom-0 z-10 flex items-center justify-center w-screen h-auto mx-auto overflow-hidden "
-  >
+  <div class="fixed bottom-0 z-10 w-screen h-auto mx-auto overflow-hidden">
     <div class="w-full mx-auto">
       <div class="shadow-lg sm:px-5 bg-elevatedDark rounded-t-2xl">
-        <div class="flex">
-          <router-link :to="{ name: 'Products' }" class="flex-1 group">
+        <div class="grid grid-rows-1 grid-cols-4 place-items-center">
+          <router-link :to="{ name: 'Products' }">
             <div>
               <a
                 href="#"
-                class="flex items-end justify-center w-full px-3 pt-2 mx-auto text-center text-gray-400  group-hover:text-indigo-500"
+                class="
+                  flex
+                  items-end
+                  justify-center
+                  w-full
+                  px-3
+                  pt-2
+                  mx-auto
+                  text-center text-gray-400
+                  group-hover:text-indigo-500
+                "
               >
                 <span class="block px-1 pt-1 pb-1">
-                  <HomeIcon class="block w-8 h-8 pt-1 mx-auto mb-1"></HomeIcon>
+                  <img
+                    src="/img/homeGray.svg"
+                    class="block w-8 h-8 pt-1 mx-auto mb-1"
+                  />
                   <span class="block pb-2 text-xs">Home</span>
                   <span
                     class="block w-5 h-1 mx-auto group-hover:bg-indigo-500"
@@ -21,51 +32,108 @@
               </a>
             </div>
           </router-link>
-          <Categories ref="categories" class="flex-1 group">
+          <Categories ref="categories">
             <div @click="setOpenCategories(true)">
               <a
                 href="#"
-                class="flex items-end justify-center w-full px-3 pt-2 mx-auto text-center text-gray-400  group-hover:text-indigo-500"
+                class="
+                  flex
+                  items-end
+                  justify-center
+                  w-full
+                  px-3
+                  pt-2
+                  mx-auto
+                  text-center text-gray-400
+                  group-hover:text-indigo-500
+                "
               >
                 <span class="block px-1 pt-1 pb-1">
-                  <CollectionIcon
-                    class="block w-8 h-8 pt-1 mx-auto mb-1"
-                  ></CollectionIcon>
+                  <img
+                    src="/img/categoryGray.svg"
+                    class="block w-7 h-7 pt-1 mx-auto mb-1 mt-1"
+                  />
                   <span class="block pb-2 text-xs">Kategorien</span>
                   <span
-                    class="block w-5 h-1 mx-auto rounded-full  group-hover:bg-indigo-500"
+                    class="
+                      block
+                      w-5
+                      h-1
+                      mx-auto
+                      rounded-full
+                      group-hover:bg-indigo-500
+                    "
                   ></span>
                 </span>
               </a>
             </div>
           </Categories>
-          <Shoppingcart ref="shoppingCart" class="flex-1 group">
+          <Shoppingcart ref="shoppingCart">
             <div
-              class="flex items-end justify-center w-full px-3 pt-2 mx-auto text-center text-gray-400 cursor-pointer  group-hover:text-indigo-500"
+              class="
+                flex
+                items-end
+                justify-center
+                w-full
+                px-3
+                pt-2
+                mx-auto
+                text-center text-gray-400
+                cursor-pointer
+                group-hover:text-indigo-500
+              "
               @click="setOpen(true)"
             >
               <span class="block px-1 pt-1 pb-1">
-                <ShoppingCartIcon
+                <img
+                  src="/img/shoppingCartGray.svg"
                   class="block w-8 h-8 pt-1 mx-auto mb-1"
-                ></ShoppingCartIcon>
+                />
                 <span class="block pb-2 text-xs">Korb</span>
                 <span
-                  class="block w-5 h-1 mx-auto rounded-full  group-hover:bg-indigo-500"
+                  class="
+                    block
+                    w-5
+                    h-1
+                    mx-auto
+                    rounded-full
+                    group-hover:bg-indigo-500
+                  "
                 ></span>
               </span>
             </div>
           </Shoppingcart>
-          <router-link :to="{ name: 'Profile' }" class="flex-1 group">
+          <router-link :to="{ name: 'Profile' }">
             <div>
               <a
                 href="#"
-                class="flex items-end justify-center w-full px-3 pt-2 mx-auto text-center text-gray-400  group-hover:text-indigo-500"
+                class="
+                  flex
+                  items-end
+                  justify-center
+                  w-full
+                  px-3
+                  pt-2
+                  mx-auto
+                  text-center text-gray-400
+                  group-hover:text-indigo-500
+                "
               >
                 <span class="block px-1 pt-1 pb-1">
-                  <UserIcon class="block w-8 h-8 pt-1 mx-auto mb-1"></UserIcon>
+                  <img
+                    src="/img/profileGray.svg"
+                    class="block w-8 h-8 pt-1 mx-auto mb-1"
+                  />
                   <span class="block pb-2 text-xs">Profil</span>
                   <span
-                    class="block w-5 h-1 mx-auto rounded-full  group-hover:bg-indigo-500"
+                    class="
+                      block
+                      w-5
+                      h-1
+                      mx-auto
+                      rounded-full
+                      group-hover:bg-indigo-500
+                    "
                   ></span>
                 </span>
               </a>
@@ -83,12 +151,6 @@ import { defineComponent } from "@vue/runtime-core";
 import useUser from "../stores/user";
 import Shoppingcart from "./Shoppingcart.vue";
 import Categories from "./Categories.vue";
-import {
-  HomeIcon,
-  UserIcon,
-  ShoppingCartIcon,
-  CollectionIcon,
-} from "@heroicons/vue/solid";
 
 export default defineComponent({
   components: {
@@ -97,10 +159,6 @@ export default defineComponent({
     MenuItem,
     MenuItems,
     Shoppingcart,
-    HomeIcon,
-    UserIcon,
-    ShoppingCartIcon,
-    CollectionIcon,
     Categories,
   },
   setup() {

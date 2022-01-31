@@ -46,7 +46,7 @@
                           @click="isOpen = false"
                         >
                           <span class="sr-only">Close panel</span>
-                          <XIcon class="w-6 h-6" aria-hidden="true" />
+                          <img src="/img/Xgray.svg" class="w-6 h-6" />
                         </button>
                       </div>
                     </div>
@@ -55,14 +55,15 @@
                       <ul role="list" class="-my-6" ref="entryList">
                         <template v-if="!shoppingCartData.changingProducts">
                           <li
-                            v-for="(entry, index) in shoppingCartData.shoppingCart.products"
+                            v-for="(entry, index) in shoppingCartData
+                              .shoppingCart.products"
                             :key="entry.product.id"
                             class="flex py-10"
                           >
                             <ShoppingcartItem
                               :shopping-cart-entry="entry"
                               :index="index"
-                              @linkClick="this.isOpen = false"
+                              @linkClick="isOpen = false"
                             />
                           </li>
                         </template>
@@ -106,7 +107,9 @@
                       "
                     >
                       <p>Zwischensumme (Netto)</p>
-                      <p v-if="!shoppingCartData.isLoading">{{ shoppingCartData.shoppingCart.subtotal }}</p>
+                      <p v-if="!shoppingCartData.isLoading">
+                        {{ shoppingCartData.shoppingCart.subtotal }}
+                      </p>
                       <Skeletor
                         :pill="true"
                         class="w-1/4"
@@ -125,7 +128,9 @@
                       v-if="shoppingCartData.shoppingCart.discount !== '0,-€'"
                     >
                       <p>Rabatt (Coupon)</p>
-                      <p v-if="!shoppingCartData.isLoading">-{{ shoppingCartData.shoppingCart.discount }}</p>
+                      <p v-if="!shoppingCartData.isLoading">
+                        -{{ shoppingCartData.shoppingCart.discount }}
+                      </p>
                       <Skeletor
                         :pill="true"
                         class="w-1/4"
@@ -143,7 +148,9 @@
                       "
                     >
                       <p>USt</p>
-                      <p v-if="!shoppingCartData.isLoading">{{ shoppingCartData.shoppingCart.tax }}</p>
+                      <p v-if="!shoppingCartData.isLoading">
+                        {{ shoppingCartData.shoppingCart.tax }}
+                      </p>
                       <Skeletor
                         :pill="true"
                         class="w-1/4"
@@ -162,7 +169,9 @@
                       "
                     >
                       <p>Gesamt</p>
-                      <p v-if="!shoppingCartData.isLoading">{{ shoppingCartData.shoppingCart.total }}</p>
+                      <p v-if="!shoppingCartData.isLoading">
+                        {{ shoppingCartData.shoppingCart.total }}
+                      </p>
                       <Skeletor
                         :pill="true"
                         class="w-1/4"
@@ -240,12 +249,20 @@ import {
   TransitionChild,
   TransitionRoot,
 } from "@headlessui/vue";
-import { XIcon } from "@heroicons/vue/outline";
-import { AddToShoppingCartMessage, RemoveFromShoppingCartMessage } from "../types/api";
+import {
+  AddToShoppingCartMessage,
+  RemoveFromShoppingCartMessage,
+} from "../types/api";
 import ShoppingcartItem from "./ShoppingcartItem.vue";
 import useUser from "../stores/user";
-import {addToCart, loadCart, removeProductFromCart, updatePrices, useShoppingCart} from "../stores/shoppingCart";
-import {useToast} from "vue-toastification";
+import {
+  addToCart,
+  loadCart,
+  removeProductFromCart,
+  updatePrices,
+  useShoppingCart,
+} from "../stores/shoppingCart";
+import { useToast } from "vue-toastification";
 
 export default defineComponent({
   components: {
@@ -255,10 +272,9 @@ export default defineComponent({
     DialogTitle,
     TransitionChild,
     TransitionRoot,
-    XIcon,
   },
   data() {
-    const {user} = useUser();
+    const { user } = useUser();
     return {
       isOpen: false,
       shoppingCartData: useShoppingCart(),
@@ -267,44 +283,61 @@ export default defineComponent({
     };
   },
   async beforeMount() {
-    this.$globalBus.on('shopping-cart.open', this.open);
-    this.$globalBus.on('shopping-cart.close', this.close);
-    this.$globalBus.on('shopping-cart.toggle', this.toggle);
-    this.$globalBus.on('shopping-cart.set-open', this.setOpen);
+    this.$globalBus.on("shopping-cart.open", this.open);
+    this.$globalBus.on("shopping-cart.close", this.close);
+    this.$globalBus.on("shopping-cart.toggle", this.toggle);
+    this.$globalBus.on("shopping-cart.set-open", this.setOpen);
 
-    this.$echo.private(`app.user.${this.user.id}.shopping-cart`)
-      .listen('ProductAddedToShoppingCartEvent', async (message: AddToShoppingCartMessage) => {
-        await addToCart(async () => {
-          return {
-            product: message.product,
-            count: message.count,
-            selectedAttributes: message.selected_attributes,
-            productPrice: message.price,
-          };
-        });
-        useToast().info('Ein Produkt wurde dem Einkaufswagen hinzugefügt.');
-        updatePrices(message.subtotal, message.discount, message.tax, message.total);
-      })
-      .listen('ProductRemovedFromShoppingCartEvent', async (message: RemoveFromShoppingCartMessage) => {
-        console.log(message);
-        await removeProductFromCart(async () => {
-          return {
-            product: message.product,
-            selectedAttributes: message.selected_attributes,
-          }
-        });
-        useToast().info('Ein Produkt wurde aus dem Einkaufswagen entfernt.');
-        updatePrices(message.subtotal, message.discount, message.tax, message.total);
-      });
+    this.$echo
+      .private(`app.user.${this.user.id}.shopping-cart`)
+      .listen(
+        "ProductAddedToShoppingCartEvent",
+        async (message: AddToShoppingCartMessage) => {
+          await addToCart(async () => {
+            return {
+              product: message.product,
+              count: message.count,
+              selectedAttributes: message.selected_attributes,
+              productPrice: message.price,
+            };
+          });
+          useToast().info("Ein Produkt wurde dem Einkaufswagen hinzugefügt.");
+          updatePrices(
+            message.subtotal,
+            message.discount,
+            message.tax,
+            message.total
+          );
+        }
+      )
+      .listen(
+        "ProductRemovedFromShoppingCartEvent",
+        async (message: RemoveFromShoppingCartMessage) => {
+          console.log(message);
+          await removeProductFromCart(async () => {
+            return {
+              product: message.product,
+              selectedAttributes: message.selected_attributes,
+            };
+          });
+          useToast().info("Ein Produkt wurde aus dem Einkaufswagen entfernt.");
+          updatePrices(
+            message.subtotal,
+            message.discount,
+            message.tax,
+            message.total
+          );
+        }
+      );
   },
   async created() {
     await loadCart();
   },
   async unmounted() {
-    this.$globalBus.off('shopping-cart.open', this.open);
-    this.$globalBus.off('shopping-cart.close', this.close);
-    this.$globalBus.off('shopping-cart.toggle', this.toggle);
-    this.$globalBus.off('shopping-cart.set-open', this.setOpen);
+    this.$globalBus.off("shopping-cart.open", this.open);
+    this.$globalBus.off("shopping-cart.close", this.close);
+    this.$globalBus.off("shopping-cart.toggle", this.toggle);
+    this.$globalBus.off("shopping-cart.set-open", this.setOpen);
 
     this.$echo.leave(`app.user.${this.user.id}.shopping-cart`);
   },
