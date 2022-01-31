@@ -80,7 +80,9 @@ class OrderController extends Controller
 
         $this->fireOrderChangeEvent($order);
 
-        return response()->json($order);
+        return response()->json([
+            'order_id' => $order->id,
+        ]);
     }
 
     /**

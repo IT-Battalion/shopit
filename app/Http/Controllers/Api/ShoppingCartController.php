@@ -26,32 +26,7 @@ class ShoppingCartController extends Controller
 
     public function all(): JsonResponse
     {
-        /** @var User $user */
-        $user = Auth::user()->with([
-            'shopping_cart.pivot.productClothingAttribute',
-            'shopping_cart.pivot.productDimensionAttribute',
-            'shopping_cart.pivot.productVolumeAttribute',
-            'shopping_cart.pivot.productColorAttribute',
-        ])->firstOrFail();
-        $shoppingCart = $user->shopping_cart;
-
-        $shoppingCartProducts = $shoppingCart
-            ->map(function (Product $product) {
-                return [
-                    'product' => $product->jsonPreview(),
-                    'count' => $product->pivot->count,
-                    'price' => $product->gross_price->mul($product->pivot->count),
-                    'selected_attributes' => $product->pivot->product_attributes,
-                ];
-            });
-
-        $prices = $this->shoppingCart->calculateShoppingCartPrice();
-
-        $shoppingCart = [
-            'products' => $shoppingCartProducts,
-            'coupon' => Auth::user()->coupon?->code ?? '',
-            ...$prices,
-        ];
+        $shoppingCart = $this->shoppingCart->getShoppingCart();
 
         return response()->json($shoppingCart);
     }

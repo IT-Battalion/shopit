@@ -7,7 +7,7 @@ use App\Models\Order;
 interface ConvertableToOrder
 {
     /**
-     * Find an existing equivalent object for {@link Order}s or
+     * Find an existing equivalent object for @link Orders or
      * create a new equivalent object
      * @return mixed
      */
@@ -15,7 +15,7 @@ interface ConvertableToOrder
     public function getOrderEquivalent(array $attributes = []);
 
     /**
-     * Find an existing equivalent object for {@link Order}s
+     * Find an existing equivalent object for @link Orders
      * @return mixed
      */
 

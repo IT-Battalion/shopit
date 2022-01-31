@@ -11,15 +11,15 @@ interface ProductAttributeToOrder extends Attribute, ConvertableToOrder
     public function shoppingCartEntries();
 
     /**
-     * Find an existing equivalent {@link OrderProductAttribute} or
-     * create an equivalent {@link OrderProductAttribute}
+     * Find an existing equivalent @link OrderProductAttribute or
+     * create an equivalent @link OrderProductAttribute
      * @return mixed
      */
 
     public function getOrderEquivalent(array $attributes = []): OrderProductAttribute;
 
     /**
-     * Find an existing equivalent {@link OrderProductAttribute}
+     * Find an existing equivalent @link OrderProductAttribute
      * @return OrderProductAttribute|null
      */
 

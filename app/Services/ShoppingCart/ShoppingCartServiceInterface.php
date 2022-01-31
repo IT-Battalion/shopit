@@ -11,6 +11,13 @@ use JetBrains\PhpStorm\ArrayShape;
 interface ShoppingCartServiceInterface
 {
     /**
+     * Gets the shopping cart of a user
+     * @param User|null $user the shopping carts owner
+     * @return array the shopping cart
+     */
+    public function getShoppingCart(User $user = null);
+
+    /**
      * Adds a Product into the Shopping Cart of a User.
      * @param Product $product The Product which should be added to the Shopping Cart.
      * @param Collection $attributes the product's attributes (color, size, ...)

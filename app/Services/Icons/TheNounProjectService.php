@@ -207,7 +207,7 @@ class TheNounProjectService implements IconServiceInterface
 
     /**
      * @param array $iconData
-     * @return ApiIcon|bool returns the {@link ApiIcon} generated from the $iconData or false if the icon doesn't have
+     * @return ApiIcon|bool returns the @link ApiIcon generated from the $iconData or false if the icon doesn't have
      *                      a preview url
      * @throws MalformedIconDataException Gets thrown when you try to parse an icon from invalid data
      */

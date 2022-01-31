@@ -147,7 +147,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import ShoppingcartItem from "../components/ShoppingcartItem.vue";
-import { Order, ShoppingCartPrices } from "../types/api";
+import {Order, ShoppingCart, ShoppingCartPrices} from "../types/api";
 import { AxiosResponse } from "axios";
 import { useRouter } from "vue-router";
 import { endLoad, initLoad, state } from "../loader";
@@ -245,13 +245,26 @@ export default defineComponent({
       this.shoppingCartData.changingCoupon = false;
     },
     async order() {
-      let response: AxiosResponse<Order> = await this.$http.post(
-        "/user/orders"
-      );
-      await this.router.replace({
-        name: "Order Detail",
-        params: { id: response.data.id },
-      });
+      initLoad();
+      try {
+        let response: AxiosResponse<{order_id: number}> = await this.$http.post(
+          "/user/orders"
+        );
+
+        this.toast.success('Die Bestellung war erfolgreich');
+
+        let navigation = this.router.replace({
+          name: "Order Detail",
+          params: { id: response.data.order_id },
+        });
+
+        let loadShoppingCart = loadCart();
+
+        Promise.all([navigation, loadShoppingCart]).then();
+      } catch (e) {
+        this.toast.error('Die Bestellung konnte nicht erfolgreich durchgeführt werden.');
+      }
+      endLoad();
     },
   },
   setup() {

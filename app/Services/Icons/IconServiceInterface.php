@@ -15,7 +15,7 @@ interface IconServiceInterface
      * @param int|null $page the page is an offset calculated with  $limit * $page
      * @param int|null $limit the maximum number of icons to search for
      * @param array $options Additional implementation specific options
-     * @return ApiIcon[] The API response in form of an array of {@link ApiIcon}s
+     * @return ApiIcon[] The API response in form of an array of @link ApiIcons
      */
 
     public function findByName(
@@ -32,7 +32,7 @@ interface IconServiceInterface
      * @param int|null $page the page is an offset calculated with  $limit * $page
      * @param int|null $limit the maximum number of icons to search for
      * @param array $options Additional implementation specific options
-     * @return ApiIcon[] The API response in form of an array of {@link ApiIcon}s
+     * @return ApiIcon[] The API response in form of an array of @link ApiIcons
      */
 
     public function findByNameThroughApi(
@@ -48,7 +48,7 @@ interface IconServiceInterface
      * @param int|null $offset the number of icons to skip from the result
      * @param int|null $page the page is an offset calculated with  $limit * $page
      * @param int|null $limit the maximum number of icons to search for
-     * @return ApiIcon[] The API response in form of an array of {@link ApiIcon}s
+     * @return ApiIcon[] The API response in form of an array of @link ApiIcons
      */
 
     public function findByNameInDatabase(

@@ -6,6 +6,7 @@ use App\Exceptions\IllegalArgumentException;
 use App\Exceptions\InvalidAttributeException;
 use App\Models\Product;
 use App\Models\User;
+use App\Services\Attributes\AttributeServiceInterface;
 use App\Types\AttributeType;
 use App\Types\Money;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -17,6 +18,42 @@ use Throwable;
 
 class ShoppingCartService implements ShoppingCartServiceInterface
 {
+
+    /**
+     * @inheritdoc
+     */
+    public function getShoppingCart(User $user = null) {
+        $user = $user ?? Auth::user();
+
+        /** @var User $user */
+        $user = $user->with([
+            'shopping_cart.pivot.productClothingAttribute',
+            'shopping_cart.pivot.productDimensionAttribute',
+            'shopping_cart.pivot.productVolumeAttribute',
+            'shopping_cart.pivot.productColorAttribute',
+        ])->firstOrFail();
+        $shoppingCart = $user->shopping_cart;
+
+        $shoppingCartProducts = $shoppingCart
+            ->map(function (Product $product) {
+                return [
+                    'product' => $product->jsonPreview(),
+                    'count' => $product->pivot->count,
+                    'price' => $product->gross_price->mul($product->pivot->count),
+                    'selected_attributes' => $product->pivot->product_attributes,
+                ];
+            });
+
+        $prices = $this->calculateShoppingCartPrice();
+
+        $shoppingCart = [
+            'products' => $shoppingCartProducts,
+            'coupon' => Auth::user()->coupon?->code ?? '',
+            ...$prices,
+        ];
+
+        return $shoppingCart;
+    }
 
     /**
      * @throws IllegalArgumentException
@@ -74,6 +111,10 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         $user = $user ?? Auth::user();
 
         $shopping_cart = $user->shopping_cart();
+
+        /** @var AttributeServiceInterface $attributeService */
+        $attributeService = app()->make(AttributeServiceInterface::class);
+        $attributes = $attributeService->getIdsOfSelectedAttributes($attributes);
 
         foreach (AttributeType::cases() as $type) {
             $shopping_cart = $shopping_cart

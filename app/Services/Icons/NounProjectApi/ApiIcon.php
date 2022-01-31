@@ -46,7 +46,7 @@ class ApiIcon
 
     public string $artist;
     /**
-     * @var string The mimetype of the icon image (main see {@link $icon_url})
+     * @var string The mimetype of the icon image (main see @link $icon_url)
      */
 
     public string $mimetype;

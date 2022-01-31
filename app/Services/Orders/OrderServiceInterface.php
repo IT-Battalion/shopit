@@ -16,14 +16,14 @@ interface OrderServiceInterface
     public function createOrder(User $customer = null): Order;
 
     /**
-     * Increments the {@link OrderStatus} of an {@link Order}
+     * Increments the @link OrderStatus of an @link Order
      * @param Order $order the order to change
      * @return void
      */
     public function incrementOrderStatus(Order $order);
 
     /**
-     * Decrements the {@link OrderStatus} of an {@link Order}
+     * Decrements the @link OrderStatus of an @link Order
      * @param Order $order the order to change
      * @return void
      */
