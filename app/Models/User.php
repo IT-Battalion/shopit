@@ -3,11 +3,8 @@
 namespace App\Models;
 
 use App\Events\UserBannedEvent;
-use App\Events\UserBanningEvent;
 use App\Events\UserUnbannedEvent;
-use App\Events\UserUnbanningEvent;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -108,6 +105,11 @@ class User extends Authenticatable implements LdapAuthenticatable
         return $query->where('enabled', '=', true);
     }
 
+    public function scopeNotAdmin(Builder $query): Builder
+    {
+        return $query->where('is_admin', false);
+    }
+
     public function banWith(Admin $admin)
     {
         $this->disabled_by_id = $admin->id;
@@ -127,7 +129,8 @@ class User extends Authenticatable implements LdapAuthenticatable
         return $this->belongsTo(Admin::class, 'disabled_by_id');
     }
 
-    public function getBannableAttribute(): bool {
+    public function getBannableAttribute(): bool
+    {
         return !$this->is_admin;
     }
 
@@ -145,7 +148,8 @@ class User extends Authenticatable implements LdapAuthenticatable
             ->using(ShoppingCartEntry::class);
     }
 
-    public function asAdmin(): Admin {
+    public function asAdmin(): Admin
+    {
         return Admin::find($this->id);
     }
 }

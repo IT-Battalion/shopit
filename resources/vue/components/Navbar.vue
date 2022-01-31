@@ -27,35 +27,32 @@
         <ul class="flex text-white">
           <li class="flex flex-row items-center justify-center px-2 py-1 ml-5">
             <Menu as="div" class="relative inline-block text-left">
-              <div>
-                <MenuButton
-                  class="
-                    inline-flex
-                    items-center
-                    justify-center
-                    w-full
-                    px-4
-                    py-2
-                    text-sm
-                    font-medium
-                    text-white
-                    rounded-md
-                    shadow-sm
-                    focus:outline-none focus:ring-2 focus:ring-highlighted
-                  "
-                >
-                  <img
-                    :src="profilePicture"
-                    class="object-scale-down h-12 mr-4 bg-gray-800 rounded-full"
-                  />
-                  {{ user.name.value }}
-                  <img
-                    src="/img/dropdown.svg"
-                    alt=""
-                    class="object-scale-down ml-4 h-7"
-                  />
-                </MenuButton>
-              </div>
+              <MenuButton
+                class="
+                  inline-flex
+                  items-center
+                  justify-center
+                  w-full
+                  px-4
+                  py-2
+                  text-sm
+                  font-medium
+                  text-white
+                  rounded-md
+                  focus:outline-none focus:ring-2 focus:ring-highlighted
+                "
+              >
+                <img
+                  :src="profilePicture"
+                  class="object-scale-down h-12 mr-4 bg-gray-800 rounded-full"
+                />
+                {{ user.name.value }}
+                <img
+                  src="/img/dropdown.svg"
+                  alt=""
+                  class="object-scale-down ml-4 h-7"
+                />
+              </MenuButton>
 
               <transition
                 enter-active-class="transition duration-100 ease-out"

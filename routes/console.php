@@ -98,10 +98,16 @@ Artisan::command('clean', function () {
     }
 });*/
 
-Artisan::command('user:get {--admin}', function ($admin) {
+Artisan::command('user:get {--admin} {--normal}', function ($admin, $normal) {
     if ($admin) {
         $this->info(Admin::inRandomOrder()->first()->username);
+    } else if ($normal) {
+        $this->info(User::notAdmin()->inRandomOrder()->first()->username);
     } else {
         $this->info(User::inRandomOrder()->first()->username);
     }
+});
+
+Artisan::command('admin:get', function () {
+    $this->info(Admin::inRandomOrder()->first()->username);
 });

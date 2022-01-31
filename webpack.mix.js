@@ -21,7 +21,7 @@ mix
     .copyDirectory('resources/assets/images/', 'public/img/')
     .copyDirectory('resources/locales', 'public/locales')
     .vue({version: 3})
-    .extract(['vue'])
+    .extract()
     .postCss('resources/assets/tailwind.css', 'public/css/vendor.css', [
         require('tailwindcss'),
     ])
@@ -31,3 +31,7 @@ mix
     //.sass('resources/assets/scss/shopit.scss', 'public/css/shopit.css')
     .sourceMaps()
     //.browserSync('localhost:80');
+
+if (!mix.inProduction()) {
+    mix.bundleAnalyzer();
+}
