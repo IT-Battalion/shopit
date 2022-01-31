@@ -1,6 +1,6 @@
 <template>
   <button
-    class="flex flex-row items-center justify-center h-10 py-1 my-auto text-black bg-white  rounded-3xl hover:bg-gray-300 px-7"
+    class="flex flex-row gap-3 items-center justify-center h-10 py-1 my-auto text-black bg-white  rounded-3xl hover:bg-gray-300 px-7"
     :type="type"
     :disabled="loading || iconSpinner"
   >
@@ -19,9 +19,7 @@
         d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
       />
     </svg>
-    <span v-if="!loading" class="mr-3">
-      <slot name="text" />
-    </span>
+    <slot name="text" v-if="!loading" />
     <span
       v-if="!loading && !iconSpinner"
       class="flex items-center justify-center w-7 h-7"
