@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
@@ -12,6 +13,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use function RingCentral\Psr7\mimetype_from_extension;
 
+/**
+ * https://pqina.nl/filepond/docs/api/server/
+ */
 class ImageUploader extends Controller
 {
     protected string $tmpPath = 'product' . DIRECTORY_SEPARATOR . 'images';
@@ -155,5 +159,73 @@ class ImageUploader extends Controller
             abort(422, 'Error deleting File');
         }
         return response();
+    }
+
+    /**
+     * FilePond uses the restore end point to restore temporary server files. This might be useful in a situation where the user closes the browser window but hadn't finished completing the form. Temporary files can be set with the files property.
+     *
+     * Step one and two now look like this.
+     *
+     * 1. FilePond requests restore of file with id 12345 using a GET request
+     * 2. server returns a file object with header Content-Disposition: inline;
+     *      filename="my-file.jpg"
+     * @param Request $request
+     * @return Application|Response|ResponseFactory
+     */
+    public function restore(Request $request): Response|Application|ResponseFactory
+    {
+        $id = $request->getContent();
+
+        $filePath = Crypt::decryptString($id);
+        $basePath = Storage::disk('local')->path($this->tmpPath);
+        if (!Str::startsWith($filePath, $basePath)) {
+            abort(501, 'Invalid File Path');
+        }
+        try {
+            $file = Storage::disk('local')->get($filePath);
+            $response = $filePath;
+            return response($file, 200, [
+                'Content-Disposition' => 'inline; filename="' . $response . '"',
+            ]);
+        } catch (FileNotFoundException $e) {
+            abort(422, 'Error finding File');
+        }
+    }
+
+    /**
+     * The restore end point is used to restore a temporary file,
+     * the load end point is used to restore already uploaded server
+     * files. These files might be located in a database or somewhere
+     * on the server file system. Either way they might not be
+     * directly accessible from the web.
+     *
+     * For situations where a user might want to edit an existing
+     * file selection we can use the load end point to restore those files.
+     *
+     * 1. FilePond requests restore of file with id 12345 or a file
+     *      name using a GET request
+     * 2. server returns a file object with header Content-Disposition:
+     *      inline; filename="my-file.jpg"
+     * @param Request $request
+     * @return Application|Response|ResponseFactory
+     */
+    public function load(Request $request): ResponseFactory|Application|Response
+    {
+        $id = $request->getContent();
+
+        $filePath = Crypt::decryptString($id);
+        $basePath = Storage::disk('local')->path($this->tmpPath);
+        if (!Str::startsWith($filePath, $basePath)) {
+            abort(501, 'Invalid File Path');
+        }
+        try {
+            $file = Storage::disk('local')->get($filePath);
+            $response = $filePath;
+            return response($file, 200, [
+                'Content-Disposition' => 'inline; filename="' . $response . '"',
+            ]);
+        } catch (FileNotFoundException $e) {
+            abort(422, 'Error finding File');
+        }
     }
 }
