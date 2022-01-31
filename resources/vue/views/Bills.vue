@@ -44,7 +44,7 @@ import "vue-good-table-next/dist/vue-good-table-next.css";
 import {Invoice} from "../types/api";
 import {AxiosResponse} from "axios";
 import {endLoad, initLoad} from "../loader";
-import {OrderStatusLables} from "../types/api-values";
+import {OrderStatusLabels} from "../types/api-values";
 
 export default defineComponent({
   name: "Bills",
@@ -53,7 +53,7 @@ export default defineComponent({
   },
   data() {
     return {
-      statusLables: OrderStatusLables,
+      statusLables: OrderStatusLabels,
       columns: [
         {
           label: "ID",

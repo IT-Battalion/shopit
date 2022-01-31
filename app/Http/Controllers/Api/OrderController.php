@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\OrderCreatedEvent;
+use App\Events\OrderHandedOverEvent;
+use App\Events\OrderPaidEvent;
+use App\Events\OrderProductsOrderedEvent;
+use App\Events\OrderProductsReceivedEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
 use App\Models\User;
 use App\Services\Orders\OrderServiceInterface;
 use App\Types\OrderStatus;
+use App\Types\ValueChangeStep;
 use Auth;
-use Carbon\Carbon;
-use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Collection;
 
 class OrderController extends Controller
 {
@@ -72,7 +75,11 @@ class OrderController extends Controller
     public function store(OrderServiceInterface $orderService): JsonResponse
     {
         $order = $orderService->createOrder();
+
         $order = $order->refresh();
+
+        $this->fireOrderChangeEvent($order);
+
         return response()->json($order);
     }
 
@@ -109,46 +116,36 @@ class OrderController extends Controller
      *
      * @param UpdateOrderRequest $request
      * @param Order $order
+     * @param OrderServiceInterface $orderService
      * @return JsonResponse
      */
-    public function update(UpdateOrderRequest $request, Order $order): JsonResponse
+    public function update(UpdateOrderRequest $request, Order $order, OrderServiceInterface $orderService): JsonResponse
     {
-        $data = collect($request->validated());
-        $status = OrderStatus::from($data['status']);
-        debug($status);
-        debug($order->status);
+        $data = $request->validated();
+        $direction = ValueChangeStep::from($data['direction']);
 
-        if ($order->status === $status) {
-            return response()->json($order);
+        if ($direction === ValueChangeStep::INCREMENT) {
+            $orderService->incrementOrderStatus($order);
+        } else {
+            $orderService->decrementOrderStatus($order);
         }
 
-        try {
-            if ($status->value > $order->status->value) { // increment status
-                debug('increment');
-                $columns = $this->getStatusColums($status, now(), Auth::id());
-            } else {
-                debug('decrement');
-                $columns = $this->getStatusColums($order->status); // empty current status columns
-            }
-        } catch (Exception $e) {
-            return response()->json(['errors' => ['status' => [$e->getMessage()]]], 400);
-        }
+        $this->fireOrderChangeEvent($order);
 
-        $order->update($data->merge($columns)->all());
         $order->refresh();
         return response()->json($order);
     }
 
-    /**
-     * @throws Exception
-     */
-    private function getStatusColums(OrderStatus $status, Carbon $time = null, int $admin_id = null): Collection {
-        return match ($status) {
-            OrderStatus::CREATED => throw new Exception('Unexpected order status for columns: ' . $status->name),
-            OrderStatus::PAID => collect(['paid_at' => $time, 'transaction_confirmed_by_id' => $admin_id]),
-            OrderStatus::ORDERED => collect(['products_ordered_at' => $time, 'products_ordered_by_id' => $admin_id]),
-            OrderStatus::RECEIVED => collect(['products_received_at' => $time, 'products_received_by_id' => $admin_id]),
-            OrderStatus::HANDED_OVER => collect(['handed_over_at' => $time, 'handed_over_by_id' => $admin_id]),
+    private function fireOrderChangeEvent(Order $order): void
+    {
+        $eventClass = match ($order->status) {
+            OrderStatus::CREATED => OrderCreatedEvent::class,
+            OrderStatus::PAID => OrderPaidEvent::class,
+            OrderStatus::ORDERED => OrderProductsOrderedEvent::class,
+            OrderStatus::RECEIVED => OrderProductsReceivedEvent::class,
+            OrderStatus::HANDED_OVER => OrderHandedOverEvent::class,
         };
+
+        broadcast(new $eventClass($order))->toOthers();
     }
 }

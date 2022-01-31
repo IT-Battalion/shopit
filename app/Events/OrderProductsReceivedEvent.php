@@ -5,10 +5,11 @@ namespace App\Events;
 use App\Models\Order;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class OrderDeliveredEvent
+class OrderProductsReceivedEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -17,7 +18,7 @@ class OrderDeliveredEvent
      *
      * @return void
      */
-    public function __construct(public Order $model)
+    public function __construct(public Order $order)
     {
         //TODO: send email
     }
@@ -29,6 +30,8 @@ class OrderDeliveredEvent
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('app.order.' . $this->model->id);
+        return [
+            new PrivateChannel('app.order.' . $this->order->id),
+            new PrivateChannel("app.user.{$this->order->customer->id}.orders")];
     }
 }

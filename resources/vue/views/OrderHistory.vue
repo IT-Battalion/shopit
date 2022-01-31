@@ -40,7 +40,7 @@ import "vue-good-table-next/dist/vue-good-table-next.css";
 import {Order} from "../types/api";
 import {endLoad, initLoad} from "../loader";
 import {AxiosResponse} from "axios";
-import {OrderStatus, OrderStatusLables} from "../types/api-values";
+import {OrderStatus, OrderStatusLabels} from "../types/api-values";
 import {useRoute} from "vue-router";
 
 export default defineComponent({
@@ -80,7 +80,7 @@ export default defineComponent({
         },
       ],
       rows: [] as Order[],
-      statusLables: OrderStatusLables,
+      statusLables: OrderStatusLabels,
     };
   },
   async beforeMount() {

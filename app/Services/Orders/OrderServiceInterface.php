@@ -18,8 +18,14 @@ interface OrderServiceInterface
     /**
      * Increments the {@link OrderStatus} of an {@link Order}
      * @param Order $order the order to change
-     * @param $newStatus the new
-     * @return mixed
+     * @return void
      */
     public function incrementOrderStatus(Order $order);
+
+    /**
+     * Decrements the {@link OrderStatus} of an {@link Order}
+     * @param Order $order the order to change
+     * @return void
+     */
+    public function decrementOrderStatus(Order $order);
 }

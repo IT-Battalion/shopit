@@ -58,7 +58,7 @@ import { defineComponent } from "@vue/runtime-core";
 import { Ban, BanUserRequest, Order, User } from "../types/api";
 import { endLoad, initLoad, state } from "../loader";
 import { AxiosResponse } from "axios";
-import { OrderStatusLables } from "../types/api-values";
+import { OrderStatusLabels } from "../types/api-values";
 import Profile from "../components/Profile.vue";
 import ButtonField from "../components/ButtonField.vue";
 import { useToast } from "vue-toastification";
@@ -72,7 +72,7 @@ export default defineComponent({
   setup() {
     return {
       toast: useToast(),
-      statusLables: OrderStatusLables,
+      statusLables: OrderStatusLabels,
       userOrderColumns: [
         {
           label: "ID",

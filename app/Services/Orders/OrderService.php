@@ -2,13 +2,6 @@
 
 namespace App\Services\Orders;
 
-use App\Events\OrderDeliveredEvent;
-use App\Events\OrderOrderedEvent;
-use App\Events\OrderPaidEvent;
-use App\Events\OrderReceivedEvent;
-use App\Exceptions\OrderNotOrderedException;
-use App\Exceptions\OrderNotPaidException;
-use App\Exceptions\OrderNotReceivedException;
 use App\Exceptions\ShoppingCartEmptyException;
 use App\Models\Order;
 use App\Models\Product;
@@ -16,6 +9,7 @@ use App\Models\ShoppingCartEntry;
 use App\Models\User;
 use App\Services\ShoppingCart\ShoppingCartServiceInterface;
 use App\Types\OrderStatus;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class OrderService implements OrderServiceInterface
@@ -78,67 +72,42 @@ class OrderService implements OrderServiceInterface
         return $order;
     }
 
-    public function markOrderAsPaid(Order $order): Order
+    /**
+     * @param Order $order
+     * @return void
+     */
+    public function incrementOrderStatus(Order $order)
     {
-        $order->paid_at = now();
-        $order->transaction_confirmed_by_id = Auth::user()->id;
-        $order->status = OrderStatus::PAID;
-        $order->save();
-        event(new OrderPaidEvent($order));
-        return $order;
+        $newStatus = OrderStatus::from($order->status->value + 1);
+
+        $columns = $this->getStatusColums($newStatus, now(), Auth::id());
+
+        $order->update(array_merge($columns,
+            ['status' => $newStatus]));
+    }
+
+    private function getStatusColums(OrderStatus $status, Carbon $time = null, int $admin_id = null): array
+    {
+        return match ($status) {
+            OrderStatus::CREATED => ['created_at' => now(), 'created_by' => $admin_id],
+            OrderStatus::PAID => ['paid_at' => $time, 'transaction_confirmed_by_id' => $admin_id],
+            OrderStatus::ORDERED => ['products_ordered_at' => $time, 'products_ordered_by_id' => $admin_id],
+            OrderStatus::RECEIVED => ['products_received_at' => $time, 'products_received_by_id' => $admin_id],
+            OrderStatus::HANDED_OVER => ['handed_over_at' => $time, 'handed_over_by_id' => $admin_id],
+        };
     }
 
     /**
-     * @throws OrderNotPaidException
+     * @param Order $order
+     * @return void
      */
-    public function markOrderAsOrdered(Order $order): Order
+    public function decrementOrderStatus(Order $order)
     {
-        if (!$order->isPaid()) {
-            throw new OrderNotPaidException('Die Bestellung wurde noch nicht bezahlt.');
-        }
+        $newStatus = OrderStatus::from($order->status->value - 1);
 
-        $order->products_ordered_at = now();
-        $order->products_ordered_by_id = Auth::user()->id;
-        $order->status = OrderStatus::ORDERED;
-        $order->save();
+        $columns = $this->getStatusColums($order->status);
 
-        event(new OrderOrderedEvent($order));
-        return $order;
-    }
-
-    /**
-     * @throws OrderNotOrderedException
-     */
-    public function markOrderAsReceived(Order $order): Order
-    {
-        if (!$order->isOrdered()) {
-            throw new OrderNotOrderedException('Die Bestellung wurde noch nicht von einem Administrator bestellt.');
-        }
-
-        $order->products_received_at = now();
-        $order->products_received_by_id = Auth::user()->id;
-        $order->status = OrderStatus::RECEIVED;
-        $order->save();
-
-        event(new OrderReceivedEvent($order));
-        return $order;
-    }
-
-    /**
-     * @throws OrderNotReceivedException
-     */
-    public function markOrderAsDelivered(Order $order): Order
-    {
-        if (!$order->isReceived()) {
-            throw new OrderNotReceivedException('Die Bestellung wurde noch nicht von einem Administrator erhalten.');
-        }
-
-        $order->handed_over_at = now();
-        $order->handed_over_by_id = Auth::user()->id;
-        $order->status = OrderStatus::HANDED_OVER;
-        $order->save();
-
-        event(new OrderDeliveredEvent($order));
-        return $order;
+        $order->update(array_merge($columns,
+            ['status' => $newStatus]));
     }
 }

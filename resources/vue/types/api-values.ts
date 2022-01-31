@@ -16,11 +16,11 @@ export enum ClothingSize {
 }
 
 export const clothingSizeLabels = [
-  'XS',
-  'S',
-  'M',
-  'L',
-  'XL',
+  "XS",
+  "S",
+  "M",
+  "L",
+  "XL",
 ];
 
 export enum OrderStatus {
@@ -31,13 +31,18 @@ export enum OrderStatus {
   HANDED_OVER = 4,
 }
 
-export const OrderStatusLables = [
-  'erstellt',
-  'bezahlt',
-  'bestellt',
-  'erhalten',
-  'übergeben',
+export const OrderStatusLabels = [
+  "erstellt",
+  "bezahlt",
+  "bestellt",
+  "erhalten",
+  "übergeben",
 ];
+
+export enum ValueChangeStep {
+  INCREMENT = "increment",
+  DECREMENT = "decrement",
+}
 
 export class ProductProcessCreateProcessStorage implements TemporaryProductCreateStorage {
   attributes: {
@@ -86,11 +91,11 @@ export class ProductProcessCreateProcessStorage implements TemporaryProductCreat
       }
     };
     this.category = null;
-    this.description = '';
+    this.description = "";
     this.highlighted = false;
     this.images = [];
     this.price = 0;
-    this.title = '';
+    this.title = "";
   }
 
   getClothingAttributeValue(): string[] {
@@ -162,7 +167,7 @@ export class ProductProcessCreateProcessStorage implements TemporaryProductCreat
   }
 
   static load(): ProductProcessCreateProcessStorage {
-    let json = window.localStorage.getItem('product');
+    let json = window.localStorage.getItem("product");
     if (json !== null) {
       return JSON.parse(json);
     }
