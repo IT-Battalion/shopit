@@ -51,12 +51,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Orders
     Route::prefix('orders')->name('orders.')->group(function () {
         Route::view('/', 'vue')->name('orders.index');
-        Route::view('/{id}', 'vue')->name('orders.show');
-        Route::view('/{id}/created', 'vue')->name('orders.created');
-        Route::view('/{id}/pay', 'vue')->name('orders.pay');
-        Route::view('/{id}/ordered', 'vue')->name('orders.created');
-        Route::view('/{id}/received', 'vue')->name('orders.created');
-        Route::view('/{id}/handed-over', 'vue')->name('orders.created');
+        Route::view('/{order}', 'vue')->name('orders.show');
+        Route::get('/{order}/bill', [DocumentController::class, 'bill']);
+        Route::get('/{order}/voucher', [DocumentController::class, 'voucher']);
     });
 
     // Usermanagement

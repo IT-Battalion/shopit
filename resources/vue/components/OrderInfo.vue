@@ -147,7 +147,7 @@ export default defineComponent({
         "Wurde bestellt",
         "Wurde bezahlt",
         "Wird geliefert",
-        "Ist aholbereit",
+        "Ist abholbereit",
         "Wurde übergeben",
       ];
       if (this.order?.status! in labels) return labels[this.order?.status!];
@@ -155,8 +155,8 @@ export default defineComponent({
     },
     nextStepText() {
       const labels = [
-        "Die Bestellung wurde jetzt von Ihnen aufgageben. Im nächsten Schritt müssen Sie zu einem Administator bezahlen gehen.",
-        "Die Produkte werden jetzt von einem Administrator bestellt. Sie erhalten eine E-Mail, wenn die Produtke bestellt wurden.",
+        "Die Bestellung wurde jetzt von Ihnen aufgegeben. Im nächsten Schritt müssen Sie zu einem Administrator bezahlen gehen.",
+        "Ein Administrator hat die Bezahlung bestätigt. Die Produkte werden jetzt von einem Administrator bestellt. Sie erhalten eine E-Mail, wenn die Produkte bestellt wurden.",
         "Die Produkte wurden von einem Administrator bestellt und kommen demnächst an.",
         "Die Produkte sind angekommen und sind auf H923 abholbereit.",
         "Der Prozess ist abgeschlossen und die Produkte wurden übergeben.",
