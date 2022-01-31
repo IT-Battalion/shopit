@@ -17,19 +17,27 @@
         placeholder: 'Search this table',
       }"
       :sort-options="{
-        initialSortBy: {field: 'created_at', type: 'desc'},
+        initialSortBy: { field: 'created_at', type: 'desc' },
         enabled: true,
       }"
     >
       <template #table-row="props">
-        <router-link v-if="props.column.field === 'detail'"
-                     :to="{name: 'Invoice detail', params: {id: props.formattedRow['id']}}"><img
-          class='object-scale-down h-7 w-full'
-          src='/img/info-white.svg'/></router-link>
-        <router-link v-if="props.column.field === 'download'"
-                     :to="{name: 'Invoice detail', params: {id: props.formattedRow['id']}}"><img
-          class='object-scale-down h-7 w-full'
-          src='/img/download.svg'/></router-link>
+        <router-link
+          v-if="props.column.field === 'detail'"
+          :to="{
+            name: 'Invoice detail',
+            params: { id: props.formattedRow['id'] },
+          }"
+          ><img class="object-scale-down h-7 w-full" src="/img/info-white.svg"
+        /></router-link>
+        <router-link
+          v-if="props.column.field === 'download'"
+          :to="{
+            name: 'Invoice detail',
+            params: { id: props.formattedRow['id'] },
+          }"
+          ><img class="object-scale-down h-7 w-full" src="/img/download.svg"
+        /></router-link>
         <span v-if="props.column.field === 'status'">
           {{ statusLables[props.formattedRow[props.column.field]] }}
         </span>
@@ -39,18 +47,14 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "@vue/runtime-core";
-import "vue-good-table-next/dist/vue-good-table-next.css";
-import {Invoice} from "../types/api";
-import {AxiosResponse} from "axios";
-import {endLoad, initLoad} from "../loader";
-import {OrderStatusLabels} from "../types/api-values";
+import { defineComponent } from "@vue/runtime-core";
+import { Invoice } from "../types/api";
+import { AxiosResponse } from "axios";
+import { endLoad, initLoad } from "../loader";
+import { OrderStatusLabels } from "../types/api-values";
 
 export default defineComponent({
   name: "Bills",
-  components: {
-    "vue-good-table": require("vue-good-table-next").VueGoodTable,
-  },
   data() {
     return {
       statusLables: OrderStatusLabels,
@@ -84,7 +88,7 @@ export default defineComponent({
         },
         {
           label: "Download",
-          field: 'download',
+          field: "download",
           html: true,
         },
       ],

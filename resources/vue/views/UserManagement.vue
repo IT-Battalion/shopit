@@ -8,18 +8,26 @@
       theme="shopit"
       max-height="400px"
       :pagination-options="{
-      enabled: true,
-      perPage: 5
+        enabled: true,
+        perPage: 5,
       }"
       :search-options="{
         enabled: true,
         trigger: 'enter',
         placeholder: 'Search this table',
-      }">
+      }"
+    >
       <template #table-row="detail">
-        <router-link :to="{name: 'User detail', params: {id: detail.formattedRow['id']}}"
-                     v-if="detail.column.field === 'detail'"><img src='/img/info-white.svg'
-                                                                                  class='object-scale-down h-7 w-full'/>
+        <router-link
+          :to="{
+            name: 'User detail',
+            params: { id: detail.formattedRow['id'] },
+          }"
+          v-if="detail.column.field === 'detail'"
+          ><img
+            src="/img/info-white.svg"
+            class="object-scale-down h-7 w-full"
+          />
         </router-link>
       </template>
     </vue-good-table>
@@ -27,16 +35,12 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "@vue/runtime-core";
-import "vue-good-table-next/dist/vue-good-table-next.css";
-import {endLoad, initLoad} from "../loader";
-import {AxiosResponse} from "axios";
-import {UserManagementUser} from "../types/api";
+import { defineComponent } from "@vue/runtime-core";
+import { endLoad, initLoad } from "../loader";
+import { AxiosResponse } from "axios";
+import { UserManagementUser } from "../types/api";
 
 export default defineComponent({
-  components: {
-    "vue-good-table": require("vue-good-table-next").VueGoodTable,
-  },
   data() {
     return {
       columns: [
@@ -77,10 +81,12 @@ export default defineComponent({
   methods: {
     async loadUsers() {
       initLoad();
-      let response: AxiosResponse<UserManagementUser[]> = await this.$http.get('/admin/users');
+      let response: AxiosResponse<UserManagementUser[]> = await this.$http.get(
+        "/admin/users"
+      );
       this.rows = response.data;
       endLoad();
     },
-  }
+  },
 });
 </script>

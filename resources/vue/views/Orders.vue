@@ -17,14 +17,18 @@
         placeholder: 'Search this table',
       }"
       :sort-options="{
-        initialSortBy: {field: 'created_at', type: 'desc'},
+        initialSortBy: { field: 'created_at', type: 'desc' },
         enabled: true,
       }"
     >
       <template #table-row="props">
-        <router-link :to="getLink(props.formattedRow['status'], props.formattedRow['id'])"
-                     v-if="props.column.field === 'detail'"><img src='/img/info-white.svg'
-                                                                                 class='object-scale-down h-7 w-full'/>
+        <router-link
+          :to="getLink(props.formattedRow['status'], props.formattedRow['id'])"
+          v-if="props.column.field === 'detail'"
+          ><img
+            src="/img/info-white.svg"
+            class="object-scale-down h-7 w-full"
+          />
         </router-link>
         <span v-if="props.column.field === 'status'">
           {{ statusLables[props.formattedRow[props.column.field]] }}
@@ -35,18 +39,13 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "@vue/runtime-core";
-import {AxiosResponse} from "axios";
-import "vue-good-table-next/dist/vue-good-table-next.css";
-import {endLoad, initLoad} from "../loader";
-import {Order} from "../types/api";
-import {OrderStatus, OrderStatusLabels} from "../types/api-values";
-
+import { defineComponent } from "@vue/runtime-core";
+import { AxiosResponse } from "axios";
+import { endLoad, initLoad } from "../loader";
+import { Order } from "../types/api";
+import { OrderStatus, OrderStatusLabels } from "../types/api-values";
 
 export default defineComponent({
-  components: {
-    "vue-good-table": require("vue-good-table-next").VueGoodTable,
-  },
   data() {
     return {
       columns: [
@@ -88,13 +87,15 @@ export default defineComponent({
   methods: {
     async loadOrders() {
       initLoad();
-      let response: AxiosResponse<Order[]> = await this.$http.get('/admin/orders');
+      let response: AxiosResponse<Order[]> = await this.$http.get(
+        "/admin/orders"
+      );
       this.rows = response.data;
       endLoad();
     },
     getLink(status: OrderStatus, id: number) {
-      return {name: "Admin Order Detail", params: {id}};
-    }
-  }
+      return { name: "Admin Order Detail", params: { id } };
+    },
+  },
 });
 </script>

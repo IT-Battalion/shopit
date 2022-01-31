@@ -11,23 +11,25 @@ import { redirectToLogin } from "./util";
 import { MqResponsive, Vue3Mq } from "vue3-mq";
 import { Skeletor } from "vue-skeletor";
 import 'vue-skeletor/dist/vue-skeletor.css';
-import mitt, {Emitter} from "mitt";
+import mitt, { Emitter } from "mitt";
 import { UnwrapNestedRefs } from "@vue/reactivity";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
-import {getCSRFCookie} from "./request";
+import { getCSRFCookie } from "./request";
+import VueGoodTablePlugin from 'vue-good-table-next';
+import 'vue-good-table-next/dist/vue-good-table-next.css'
 
 declare global {
-  interface Window {
-    axios: AxiosInstance,
-    _: LoDashStatic,
-    pusher: Pusher,
-    echo: Echo,
-    initialConfig: GlobalConfig,
-    // @ts-ignore
-    config: UnwrapNestedRefs<GlobalConfig>,
-    eventBus: Emitter<any>,
-  }
+    interface Window {
+        axios: AxiosInstance,
+        _: LoDashStatic,
+        pusher: Pusher,
+        echo: Echo,
+        initialConfig: GlobalConfig,
+        // @ts-ignore
+        config: UnwrapNestedRefs<GlobalConfig>,
+        eventBus: Emitter<any>,
+    }
 }
 
 window.config = reactive(window.initialConfig);
@@ -113,6 +115,7 @@ createdApp
     //    .use(i18n)
     .use(Vue3Mq, { preset: "tailwind" })
     .use(Toast)
+    .use(VueGoodTablePlugin)
     .component('mq-responsive', MqResponsive)
     .component(Skeletor.name, Skeletor)
     .mount("#app");

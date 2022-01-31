@@ -67,7 +67,6 @@ export default defineComponent({
   components: {
     Profile,
     ButtonField,
-    "vue-good-table": require("vue-good-table-next").VueGoodTable,
   },
   setup() {
     return {
