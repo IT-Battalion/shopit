@@ -26,7 +26,7 @@
               class="text-white border-0 bg-elevatedDark w-28"
             />
             <button
-              class="w-8 h-8 ml-3"
+              class="w-8 h-8 ml-5"
               @click="
                 editCategory(category.id);
                 showInput.set(category.name, false);
@@ -35,7 +35,7 @@
               <img src="/img/check.svg" alt="check" class="w-8 h-8"/>
             </button>
           </template>
-          <button class="mx-5" @click="deleteCategory(category.id)">
+          <button class="ml-5" @click="deleteCategory(category.id)">
             <img src="/img/bin.svg" alt="delete" class="w-8 h-8"/>
           </button>
         </div>
