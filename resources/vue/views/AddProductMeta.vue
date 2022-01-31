@@ -55,7 +55,7 @@ export default defineComponent({
   },
   data() {
     return {
-      productCreateStorage: {} as TemporaryProductCreateStorage as ProductProcessCreateProcessStorage,
+      productCreateStorage: {} as ProductProcessCreateProcessStorage as TemporaryProductCreateStorage,
       errorTitle: "",
       errorPrice: "",
       highlighted: {} as HTMLInputElement,
@@ -79,13 +79,13 @@ export default defineComponent({
     async forward() {
       this.errorTitle = "";
       this.errorPrice = "";
-      if (this.title.getValue() && this.price.getValue()) {
+      if (this.title.getValue() && this.price.getValue() && this.price.getValue() > 0) {
         await this.saveToLocalStorage();
         await this.$router.push({name: "Add Product images"});
       } else {
         if (!this.title.getValue())
           this.errorTitle = "Produkttitel ist erforderlich!";
-        if (!this.price.getValue())
+        if (!this.price.getValue() || this.price.getValue() < 1)
           this.errorPrice = "Produktpreis ist erforderlich!";
       }
     },

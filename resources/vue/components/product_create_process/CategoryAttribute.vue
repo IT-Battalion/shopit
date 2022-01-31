@@ -56,14 +56,22 @@ export default defineComponent({
   data() {
     return {
       selected: {} as ProductCategory,
+      temp: {} as ProductCategory,
       categories: [] as ProductCategory[],
+      isLoading: true,
     }
   },
-  beforeMount() {
+  async beforeMount() {
     initLoad();
-    loadCategories().then(value => {
+    await loadCategories().then(value => {
       this.categories = value;
-      if (this.selected.name == undefined || this.selected.id == undefined) this.selected = this.categories[0];
+      if ((this.selected.name == undefined || this.selected.id == undefined) && (this.temp.name == undefined || this.temp.id == undefined)) {
+        this.selected = this.categories[0];
+      }
+      this.isLoading = false;
+      if (this.temp.name != undefined || this.temp.id != undefined) {
+        this.selected = this.temp;
+      }
     }).finally(endLoad);
   },
   methods: {
@@ -71,7 +79,7 @@ export default defineComponent({
       return this.selected;
     },
     setSelected(value: ProductCategory) {
-      this.selected = value;
+      this.isLoading ? this.temp = value : this.selected = value;
     }
   },
 });

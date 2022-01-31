@@ -39,7 +39,7 @@ const Pond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePrev
 export default defineComponent({
   data() {
     return {
-      productCreateStorage: {} as TemporaryProductCreateStorage as ProductProcessCreateProcessStorage,
+      productCreateStorage: {} as ProductProcessCreateProcessStorage as TemporaryProductCreateStorage,
       myFiles: [] as string[],
       server: {
         url: "/api/admin/productImage",

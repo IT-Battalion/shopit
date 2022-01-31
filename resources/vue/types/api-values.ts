@@ -98,78 +98,78 @@ export class ProductProcessCreateProcessStorage implements TemporaryProductCreat
     this.title = "";
   }
 
-  getClothingAttributeValue(): string[] {
+  public getClothingAttributeValue(): string[] {
     return this.attributes.clothing.value;
   }
 
-  getColorAttributeValue(): Map<string, string> {
+  public getColorAttributeValue(): Map<string, string> {
     return this.attributes.colors.value;
   }
 
-  getDimensionAttributeValue(): Set<DimensionAttribute> {
+  public getDimensionAttributeValue(): Set<DimensionAttribute> {
     return this.attributes.dimensions.value;
   }
 
-  getVolumeAttributeValue(): Set<VolumeAttribute> {
+  public getVolumeAttributeValue(): Set<VolumeAttribute> {
     return this.attributes.volumes.value;
   }
 
-  isClothingAttributeEnabled(): boolean {
+  public isClothingAttributeEnabled(): boolean {
     return this.attributes.clothing.enabled;
   }
 
-  isColorAttributeEnabled(): boolean {
+  public isColorAttributeEnabled(): boolean {
     return this.attributes.colors.enabled;
   }
 
-  isDimensionAttributeEnabled(): boolean {
+  public isDimensionAttributeEnabled(): boolean {
     return this.attributes.dimensions.enabled;
   }
 
-  isVolumeAttributeEnabled(): boolean {
+  public isVolumeAttributeEnabled(): boolean {
     return this.attributes.volumes.enabled;
   }
 
-  setColorAttributeEnabled(value: boolean): void {
+  public setColorAttributeEnabled(value: boolean): void {
     this.attributes.colors.enabled = value;
   }
 
-  setDimensionAttributeEnabled(value: boolean): void {
+  public setDimensionAttributeEnabled(value: boolean): void {
     this.attributes.dimensions.enabled = value;
   }
 
-  setClothingAttributeEnabled(value: boolean): void {
+  public setClothingAttributeEnabled(value: boolean): void {
     this.attributes.clothing.enabled = value;
   }
 
-  setVolumeAttributeEnabled(value: boolean): void {
+  public setVolumeAttributeEnabled(value: boolean): void {
     this.attributes.volumes.enabled = value;
   }
 
-  setClothingAttributeValue(value: string[]): void {
+  public setClothingAttributeValue(value: string[]): void {
     this.attributes.clothing.value = value;
   }
 
-  setColorAttributeValue(value: Map<string, string>): void {
+  public setColorAttributeValue(value: Map<string, string>): void {
     this.attributes.colors.value = value;
   }
 
-  setDimensionAttributeValue(value: Set<DimensionAttribute>): void {
+  public setDimensionAttributeValue(value: Set<DimensionAttribute>): void {
     this.attributes.dimensions.value = value;
   }
 
-  setVolumeAttributeValue(value: Set<VolumeAttribute>): void {
+  public setVolumeAttributeValue(value: Set<VolumeAttribute>): void {
     this.attributes.volumes.value = value;
   }
 
-  static save(object: ProductProcessCreateProcessStorage): void {
+  static save(object: TemporaryProductCreateStorage): void {
     window.localStorage.setItem("product", JSON.stringify(object));
   }
 
-  static load(): ProductProcessCreateProcessStorage {
+  static load(): TemporaryProductCreateStorage {
     let json = window.localStorage.getItem("product");
     if (json !== null) {
-      return JSON.parse(json);
+      return JSON.parse(json) as TemporaryProductCreateStorage;
     }
     return new ProductProcessCreateProcessStorage();
   }

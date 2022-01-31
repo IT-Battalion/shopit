@@ -44,7 +44,7 @@ export default defineComponent({
   },
   data() {
     return {
-      productCreateStorage: {} as TemporaryProductCreateStorage as ProductProcessCreateProcessStorage,
+      productCreateStorage: {} as ProductProcessCreateProcessStorage as TemporaryProductCreateStorage,
       toast: useToast(),
       quilleditor: QuillEditor,
     };

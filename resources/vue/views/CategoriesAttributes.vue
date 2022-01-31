@@ -84,7 +84,7 @@ export default defineComponent({
   },
   data() {
     return {
-      productCreateStorage: {} as TemporaryProductCreateStorage as ProductProcessCreateProcessStorage,
+      productCreateStorage: {} as ProductProcessCreateProcessStorage as TemporaryProductCreateStorage,
       checkDimension: false,
       checkClothing: false,
       checkVolume: false,
@@ -115,7 +115,7 @@ export default defineComponent({
       await this.$router.push({name: "Add Product description"});
     },
     async insertStoredData() {
-      this.selectedCategory.setSelected(this.productCreateStorage.category);
+      this.selectedCategory.setSelected(this.productCreateStorage.category ?? this.selectedCategory.getSelected());
 
       this.checkDimension = this.productCreateStorage.isDimensionAttributeEnabled();
       this.checkClothing = this.productCreateStorage.isClothingAttributeEnabled();
