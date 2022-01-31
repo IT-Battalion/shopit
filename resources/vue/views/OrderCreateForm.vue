@@ -14,7 +14,11 @@
         </li>
       </template>
       <template v-else>
-        <li v-for="index in 3" :key="index" class="flex px-8 py-10 my-12 sm:bg-elevatedDark rounded-3xl">
+        <li
+          v-for="index in 3"
+          :key="index"
+          class="flex px-8 py-10 my-12 sm:bg-elevatedDark rounded-3xl"
+        >
           <div class="flex-shrink-0 w-24 overflow-hidden rounded-md h-28">
             <Skeletor
               class="object-cover object-center w-full h-full"
@@ -31,7 +35,7 @@
         </li>
       </template>
     </ul>
-    <div class="px-14 px-10 py-6 mt-5 sm:bg-elevatedDark rounded-3xl">
+    <div class="py-6 mt-5 sm:px-14 sm:bg-elevatedDark rounded-3xl">
       <div class="flex justify-between my-2 text-base text-gray-200 font-base">
         <p>Zwischensumme (Netto)</p>
         <p v-if="!state.isLoading">
