@@ -3,24 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use App\Services\Images\ImageServiceInterface;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use function RingCentral\Psr7\mimetype_from_extension;
 
 /**
  * https://pqina.nl/filepond/docs/api/server/
  */
 class ImageUploader extends Controller
 {
-    protected string $tmpPath = 'product' . DIRECTORY_SEPARATOR . 'images';
-    protected array $allowedMimeTypes = ['image/jpeg', 'image/png'];
-
     /**
      * Asynchronously uploading files with FilePond is called processing.
      * In short, FilePond sends a file to the server and expects the server
@@ -109,23 +102,17 @@ class ImageUploader extends Controller
      *
      * Everything continues like normal.
      * @param Request $request
+     * @param ImageServiceInterface $imageService
      * @return Application|ResponseFactory|Response
      */
-    public function process(Request $request): Response|Application|ResponseFactory
+    public function process(Request $request, ImageServiceInterface $imageService): Response|Application|ResponseFactory
     {
         $file = $request->file('uploadImages');
         if (!isset($file)) {
             abort(422); //Unprocessable Entity (WebDAV; RFC 4918)
         }
         $file = is_array($file) ? $file[0] : $file;
-        if (!in_array(mimetype_from_extension($file->extension()), $this->allowedMimeTypes, true)) {
-            abort(415); //Unsupported Media Type (RFC 7231)
-        }
-        if (!($tmpFile = $file->storeAs($this->tmpPath, now()->timestamp . '_' . $file->getClientOriginalName(), 'local'))) {
-            abort(507); //Insufficient Storage (WebDAV; RFC 4918)
-        }
-        $id = Storage::disk('local')->path($tmpFile);
-        $response = Crypt::encryptString($id);
+        $response = $imageService->saveImage($file);
         return response($response, 200, [
             'Content-Type' => 'text/plain',
         ]);
@@ -144,19 +131,14 @@ class ImageUploader extends Controller
      * we're going to give the client the power to influence
      * the server file system that power should be very minimal.
      * @param Request $request
+     * @param ImageServiceInterface $imageService
      * @return Application|Response|ResponseFactory
      */
-    public function revert(Request $request): Response|Application|ResponseFactory
+    public function revert(Request $request, ImageServiceInterface $imageService): Response|Application|ResponseFactory
     {
         $id = $request->getContent();
-
-        $filePath = Crypt::decryptString($id);
-        $basePath = Storage::disk('local')->path($this->tmpPath);
-        if (!Str::startsWith($filePath, $basePath)) {
-            abort(501, 'Invalid File Path');
-        }
-        if (!Storage::disk('local')->delete($filePath)) {
-            abort(422, 'Error deleting File');
+        if (!$imageService->deleteImage($id)) {
+            abort(500);
         }
         return response();
     }
@@ -170,26 +152,15 @@ class ImageUploader extends Controller
      * 2. server returns a file object with header Content-Disposition: inline;
      *      filename="my-file.jpg"
      * @param Request $request
+     * @param ImageServiceInterface $imageService
      * @return Application|Response|ResponseFactory
      */
-    public function restore(Request $request): Response|Application|ResponseFactory
+    public function restore(Request $request, ImageServiceInterface $imageService): Response|Application|ResponseFactory
     {
         $id = $request->getContent();
-
-        $filePath = Crypt::decryptString($id);
-        $basePath = Storage::disk('local')->path($this->tmpPath);
-        if (!Str::startsWith($filePath, $basePath)) {
-            abort(501, 'Invalid File Path');
-        }
-        try {
-            $file = Storage::disk('local')->get($filePath);
-            $response = $filePath;
-            return response($file, 200, [
-                'Content-Disposition' => 'inline; filename="' . $response . '"',
-            ]);
-        } catch (FileNotFoundException $e) {
-            abort(422, 'Error finding File');
-        }
+        return response('', 200, [
+            'Content-Disposition' => 'inline; filename="' . $imageService->restoreImage($id) . '"',
+        ]);
     }
 
     /**
@@ -207,25 +178,15 @@ class ImageUploader extends Controller
      * 2. server returns a file object with header Content-Disposition:
      *      inline; filename="my-file.jpg"
      * @param Request $request
+     * @param ImageServiceInterface $imageService
      * @return Application|Response|ResponseFactory
      */
-    public function load(Request $request): ResponseFactory|Application|Response
+    public function load(Request $request, ImageServiceInterface $imageService): ResponseFactory|Application|Response
     {
         $id = $request->getContent();
 
-        $filePath = Crypt::decryptString($id);
-        $basePath = Storage::disk('local')->path($this->tmpPath);
-        if (!Str::startsWith($filePath, $basePath)) {
-            abort(501, 'Invalid File Path');
-        }
-        try {
-            $file = Storage::disk('local')->get($filePath);
-            $response = $filePath;
-            return response($file, 200, [
-                'Content-Disposition' => 'inline; filename="' . $response . '"',
-            ]);
-        } catch (FileNotFoundException $e) {
-            abort(422, 'Error finding File');
-        }
+        return response('', 200, [
+            'Content-Disposition' => 'inline; filename="' . $imageService->loadImage($id) . '"',
+        ]);
     }
 }

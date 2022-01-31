@@ -43,4 +43,11 @@ return [
     'category' => [
         'colors' => ['ff7651', '31a8e2', '6c5fcf'],
     ],
+
+    'image' => [
+        'allowedMimeTypes' => ['image/jpeg', 'image/png'],
+        'temporaryPath' => 'tmp' . DIRECTORY_SEPARATOR . 'images',
+        'permanentPath' => 'product' . DIRECTORY_SEPARATOR . 'images',
+        'disk' => 'local',
+    ]
 ];
