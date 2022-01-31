@@ -11,7 +11,7 @@ import {RouteLocationNormalizedLoaded, useRoute} from "vue-router";
 import {endLoad, initLoad} from "../loader";
 import {AxiosResponse} from "axios";
 import {defineComponent} from "vue";
-import {OrderStatus, ValueChangeStep} from "../types/api-values";
+import {ValueChangeStep} from "../types/api-values";
 import {user} from "../stores/user";
 import {useToast} from "vue-toastification";
 

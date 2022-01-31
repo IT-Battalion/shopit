@@ -59,7 +59,7 @@ export default defineComponent({
       },
       {
         name: "Produkte werden bestellt",
-        icon_url: "/img/waiting.svg",
+        icon_url: "/img/list.svg",
         step: OrderStatus.PAID,
       },
       {
