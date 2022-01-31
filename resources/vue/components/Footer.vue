@@ -28,12 +28,12 @@
           "
         >
           <img class="w-16 h-16" src="/img/lernenImAufbruch.svg" />
-          <p class="flex flex-row opacity-60">
-            Wexstraße 19-23 1200 Wien
-          </p>
+          <p class="flex flex-row opacity-60">Wexstraße 19-23 1200 Wien</p>
         </div>
         <div class="flex flex-col w-full space-y-4 sm:w-2/5">
-          <span class="flex flex-row text-lg font-medium opacity-60">Kontakt</span>
+          <span class="flex flex-row text-lg font-medium opacity-60"
+            >Kontakt</span
+          >
           <a
             href="mailto:info@shopit.tgm.ac.at"
             class="
@@ -58,7 +58,8 @@
           >
         </div>
         <div class="flex flex-col w-full space-y-4 sm:w-1/5">
-          <span class="flex flex-row mt-4 text-lg font-medium opacity-60 sm:mt-0"
+          <span
+            class="flex flex-row mt-4 text-lg font-medium opacity-60 sm:mt-0"
             >Links</span
           >
           <a
@@ -71,7 +72,7 @@
               decoration-solid
             "
             >TGM HIT
-            <ExternalLinkIcon class="w-5 h-5 pl-1" />
+            <img src="/img/externalLinkGray.svg" class="w-5 h-5 pl-1" />
           </a>
           <a
             href="https://lernenimaufbruch.at/impressum.html"
@@ -81,12 +82,14 @@
               opacity-60
               hover:opacity-100
               decoration-solid
-            ">Impressum
-            <ExternalLinkIcon class="w-5 h-5 pl-1"/>
+            "
+            >Impressum
+            <img src="/img/externalLinkGray.svg" class="w-5 h-5 pl-1" />
           </a>
         </div>
         <div class="flex flex-col w-full space-y-4 sm:w-1/5">
-          <span class="flex flex-row mt-4 text-lg font-medium opacity-60 sm:mt-0"
+          <span
+            class="flex flex-row mt-4 text-lg font-medium opacity-60 sm:mt-0"
             >Mentions</span
           >
           <router-link
@@ -101,7 +104,7 @@
             "
           >
             Icon Credits
-            <ExternalLinkIcon class="w-5 h-5 pl-1" />
+            <img src="/img/externalLinkGray.svg" class="w-5 h-5 pl-1" />
           </router-link>
           <router-link
             :to="{ name: 'contributors' }"
@@ -113,7 +116,7 @@
               decoration-solid
             "
             >Contributors
-            <ExternalLinkIcon class="w-5 h-5 pl-1" />
+            <img src="/img/externalLinkGray.svg" class="w-5 h-5 pl-1" />
           </router-link>
         </div>
       </div>
@@ -123,14 +126,3 @@
     </div>
   </div>
 </template>
-<script lang="ts">
-import {defineComponent} from "@vue/runtime-core";
-import {ExternalLinkIcon, HomeIcon} from "@heroicons/vue/solid";
-
-export default defineComponent({
-  components: {
-    HomeIcon,
-    ExternalLinkIcon,
-  },
-});
-</script>

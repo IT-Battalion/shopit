@@ -197,9 +197,9 @@ export default defineComponent({
       },
       {
         iconName: "External Link",
-        iconLink: "https://thenounproject.com/icon/external-link-4132385/",
-        creator: "IcoMoon",
-        creatorLink: "https://thenounproject.com/icomoonpack/",
+        iconLink: "https://thenounproject.com/icon/external-link-2084007/",
+        creator: "shashank singh",
+        creatorLink: "https://thenounproject.com/rshashank19/",
       },
       {
         iconName: "add",
@@ -266,6 +266,12 @@ export default defineComponent({
         iconLink: "https://thenounproject.com/icon/categories-4485664/",
         creator: "Riyan Resdian",
         creatorLink: "https://thenounproject.com/yaicon/",
+      },
+      {
+        iconName: "Scroll",
+        iconLink: "https://thenounproject.com/icon/scroll-3320070/",
+        creator: "The Icon Z",
+        creatorLink: "https://thenounproject.com/theiconz/",
       },
     ];
     return { credits };

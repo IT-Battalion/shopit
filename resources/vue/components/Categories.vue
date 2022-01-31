@@ -124,7 +124,6 @@ import {
   TransitionChild,
   TransitionRoot,
 } from "@headlessui/vue";
-import { XIcon } from "@heroicons/vue/outline";
 
 export default defineComponent({
   components: {
@@ -133,7 +132,6 @@ export default defineComponent({
     DialogTitle,
     TransitionChild,
     TransitionRoot,
-    XIcon,
   },
   data() {
     return {
