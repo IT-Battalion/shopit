@@ -1,15 +1,13 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
-import Login from "../views/Login.vue";
-import Main from "../views/layout/Main.vue";
 import {user} from "../stores/user";
 import {endLoad, endLoad as complete, initLoad, onLoaded, reset} from "../loader";
-import Home from "../views/layout/Home.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/login",
     name: "Login",
-    component: Login,
+    component: () =>
+      import(/* webpackChunkName: "login" */ "../views/Login.vue"),
     meta: {
       redirectWhenAuthenticated: true,
       redirectTo: "Home",
@@ -18,7 +16,8 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "Main",
-    component: Main,
+    component: () =>
+      import(/* webpackChunkName: "products" */ "../views/layout/Main.vue"),
     meta: {
       requiresAuth: true,
     },
@@ -30,7 +29,8 @@ const routes: Array<RouteRecordRaw> = [
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        component: Home,
+        component: () =>
+          import(/* webpackChunkName: "products" */ "../views/layout/Home.vue"),
 
         children: [
           {

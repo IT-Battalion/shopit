@@ -16,7 +16,7 @@
             v-if="!showInput.get(category.name)"
             @click="showInput.set(category.name, true)"
             class="cursor-pointer"
-            >{{ category.name }}</span
+          >{{ category.name }}</span
           >
           <template v-else>
             <input
@@ -32,11 +32,11 @@
                 showInput.set(category.name, false);
               "
             >
-              <img src="/img/check.svg" alt="check" class="w-8 h-8" />
+              <img src="/img/check.svg" alt="check" class="w-8 h-8"/>
             </button>
           </template>
           <button class="mx-5" @click="deleteCategory(category.id)">
-            <img src="/img/bin.svg" alt="delete" class="w-8 h-8" />
+            <img src="/img/bin.svg" alt="delete" class="w-8 h-8"/>
           </button>
         </div>
       </div>
@@ -46,7 +46,7 @@
       v-else
     >
       <div v-for="i in 5" :key="i" class="w-40 h-16 m-5">
-        <Skeletor :pill="true" />
+        <Skeletor :pill="true"/>
       </div>
     </div>
     <div class="w-full">
@@ -54,9 +54,9 @@
         Kategorie Hinzufügen
       </h2>
       <div class="flex flex-row items-center justify-center w-full gap-4">
-        <InputField ref="categorynamecreate" />
+        <InputField ref="categorynamecreate"/>
         <ButtonField class="mt-8" @click="createCategory">
-          <template v-slot:icon><img src="/img/addBlack.svg" /></template>
+          <template v-slot:icon><img src="/img/addBlack.svg"/></template>
         </ButtonField>
       </div>
     </div>
@@ -64,27 +64,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
-import { ChevronDownIcon } from "@heroicons/vue/solid";
-import { endLoad, initLoad } from "../loader";
+import {defineComponent} from "vue";
+import {Popover, PopoverButton, PopoverPanel} from "@headlessui/vue";
+import {endLoad, initLoad, state} from "../loader";
 import ButtonField from "../components/ButtonField.vue";
-import { useToast } from "vue-toastification";
-import {
-  CreateCategoryRequest,
-  EditCategoryRequest,
-  ProductCategory,
-} from "../types/api";
-import { AxiosResponse } from "axios";
+import {useToast} from "vue-toastification";
+import {CreateCategoryRequest, EditCategoryRequest, ProductCategory,} from "../types/api";
+import {AxiosResponse} from "axios";
 import InputField from "../components/InputField.vue";
-import { state } from "../loader";
 
 export default defineComponent({
   components: {
     Popover,
     PopoverButton,
     PopoverPanel,
-    ChevronDownIcon,
     ButtonField,
     InputField,
   },
@@ -117,10 +110,8 @@ export default defineComponent({
       initLoad();
       try {
         let name = (this.$refs.categoryname as HTMLInputElement[])[0].value;
-        let category = await this.$http.put<
-          EditCategoryRequest,
-          AxiosResponse<ProductCategory>
-        >(`/admin/category/${catID}`, {
+        let category = await this.$http.put<EditCategoryRequest,
+          AxiosResponse<ProductCategory>>(`/admin/category/${catID}`, {
           name,
         });
         this.categories.forEach((value, index, array) => {
@@ -158,10 +149,8 @@ export default defineComponent({
           this.$refs.categorynamecreate as typeof InputField
         ).getValue();
         console.log(name);
-        let category = await this.$http.post<
-          CreateCategoryRequest,
-          AxiosResponse<ProductCategory>
-        >(`/admin/category/`, {
+        let category = await this.$http.post<CreateCategoryRequest,
+          AxiosResponse<ProductCategory>>(`/admin/category/`, {
           name,
         });
         this.categories.push(category.data);

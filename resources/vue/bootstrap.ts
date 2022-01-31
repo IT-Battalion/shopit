@@ -75,9 +75,6 @@ window.echo = new Echo({
     disableStats: true,
 });
 
-require('jszip');
-require('pdfmake');
-
 // Init csrf
 getCSRFCookie();
 
