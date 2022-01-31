@@ -1,8 +1,5 @@
 <?php
 
-use App\Exceptions\OrderNotOrderedException;
-use App\Exceptions\OrderNotPaidException;
-use App\Exceptions\OrderNotReceivedException;
 use App\Exceptions\ShoppingCartEmptyException;
 use App\Models\Admin;
 use App\Models\CouponCode;
@@ -11,6 +8,7 @@ use App\Models\OrderProductImage;
 use App\Models\ProductCategory;
 use App\Models\User;
 use App\Services\Orders\OrderServiceInterface;
+use App\Types\OrderStatus;
 use function Pest\Laravel\actingAs;
 
 beforeEach(function () {
@@ -21,6 +19,7 @@ beforeEach(function () {
 
 test('create order with 0 products in shopping cart', function () {
     $service = $this->app->make(OrderServiceInterface::class);
+    /** @var User $user */
     $user = User::factory()->create();
     actingAs($user);
 
@@ -28,7 +27,9 @@ test('create order with 0 products in shopping cart', function () {
 })->throws(ShoppingCartEmptyException::class);
 
 test('create order with products in shopping cart', function () {
+    /** @var OrderServiceInterface $service */
     $service = $this->app->make(OrderServiceInterface::class);
+    /** @var User $user */
     $user = User::factory()->create();
     $products = saturateShoppingCart($user)->all();
     actingAs($user);
@@ -51,11 +52,29 @@ test('create order with products in shopping cart', function () {
         expect($product->productAttributes->flatten()->all())->toHaveLength(0);
     }
     expect($user->shopping_cart()->count())->toBe(0);
+
+    expect($order->isPaid())->toBeFalse();
+    expect($order->isOrdered())->toBeFalse();
+    expect($order->isReceived())->toBeFalse();
+    expect($order->isHandedOver())->toBeFalse();
+    expect($order->transaction_confirmed_by)->toBeNull();
+    expect($order->products_ordered_by)->toBeNull();
+    expect($order->products_received_by)->toBeNull();
+    expect($order->handed_over_by)->toBeNull();
+    expect($order->paid_at)->toBeNull();
+    expect($order->products_ordered_at)->toBeNull();
+    expect($order->products_received_by)->toBeNull();
+    expect($order->handed_over_at)->toBeNull();
+
+    expect($order->status)->toBe(OrderStatus::CREATED);
 });
 
-test('mark order as paid', function () {
+test('increment order status of new order', function () {
+    /** @var Admin $admin */
     $admin = Admin::factory()->create();
+    /** @var OrderServiceInterface $service */
     $service = $this->app->make(OrderServiceInterface::class);
+    /** @var User $user */
     $user = User::factory()->create();
     actingAs($user);
 
@@ -63,15 +82,28 @@ test('mark order as paid', function () {
     $order = $service->createOrder($user);
 
     actingAs($admin);
-    $order = $service->markOrderAsPaid($order);
+    $service->incrementOrderStatus($order);
 
-    expect(isset($order->paid_at))->toBeTrue();
+    expect($order->isPaid())->toBeTrue();
+    expect($order->isOrdered())->toBeFalse();
+    expect($order->isReceived())->toBeFalse();
+    expect($order->isHandedOver())->toBeFalse();
     expect($order->transaction_confirmed_by->id)->toBe($admin->id);
+    expect($order->products_ordered_by)->toBeNull();
+    expect($order->products_received_by)->toBeNull();
+    expect($order->handed_over_by)->toBeNull();
+    expect($order->paid_at)->toBeObject();
+    expect($order->products_ordered_at)->toBeNull();
+    expect($order->products_received_by)->toBeNull();
+    expect($order->handed_over_at)->toBeNull();
 });
 
-test('mark order as ordered', function () {
+test('increment order status of order', function () {
+    /** @var Admin $admin */
     $admin = Admin::factory()->create();
+    /** @var OrderServiceInterface $service */
     $service = $this->app->make(OrderServiceInterface::class);
+    /** @var User $user */
     $user = User::factory()->create();
     actingAs($user);
 
@@ -79,34 +111,32 @@ test('mark order as ordered', function () {
     $order = $service->createOrder($user);
 
     actingAs($admin);
-    $order = $service->markOrderAsPaid($order);
-    $order = $service->markOrderAsOrdered($order);
+    $service->incrementOrderStatus($order);
+    $service->incrementOrderStatus($order);
+    $service->incrementOrderStatus($order);
 
+    expect($order->isPaid())->toBeTrue();
     expect($order->isOrdered())->toBeTrue();
-    expect($order->products_ordered_by->id)->toBe($admin->id);
-});
-
-test('mark order as received', function () {
-    $admin = Admin::factory()->create();
-    $service = $this->app->make(OrderServiceInterface::class);
-    $user = User::factory()->create();
-    actingAs($user);
-
-    saturateShoppingCart($user);
-    $order = $service->createOrder($user);
-
-    actingAs($admin);
-    $order = $service->markOrderAsPaid($order);
-    $order = $service->markOrderAsOrdered($order);
-    $order = $service->markOrderAsReceived($order);
-
     expect($order->isReceived())->toBeTrue();
-    expect($order->products_received_by->id)->toBe($admin->id);
+    expect($order->isHandedOver())->toBeFalse();
+    expect($order->transaction_confirmed_by?->id)->toBe($admin->id);
+    expect($order->products_ordered_by?->id)->toBe($admin->id);
+    expect($order->products_received_by?->id)->toBe($admin->id);
+    expect($order->handed_over_by)->toBeNull();
+    expect($order->paid_at)->toBeObject();
+    expect($order->products_ordered_at)->toBeObject();
+    expect($order->products_received_by)->toBeObject();
+    expect($order->handed_over_at)->toBeNull();
+
+    expect($order->status)->toBe(OrderStatus::RECEIVED);
 });
 
-test('mark order as delivered', function () {
+test('finish order status of order', function () {
+    /** @var Admin $admin */
     $admin = Admin::factory()->create();
+    /** @var OrderServiceInterface $service */
     $service = $this->app->make(OrderServiceInterface::class);
+    /** @var User $user */
     $user = User::factory()->create();
     actingAs($user);
 
@@ -114,18 +144,33 @@ test('mark order as delivered', function () {
     $order = $service->createOrder($user);
 
     actingAs($admin);
-    $order = $service->markOrderAsPaid($order);
-    $order = $service->markOrderAsOrdered($order);
-    $order = $service->markOrderAsReceived($order);
-    $order = $service->markOrderAsDelivered($order);
+    $service->incrementOrderStatus($order);
+    $service->incrementOrderStatus($order);
+    $service->incrementOrderStatus($order);
+    $service->incrementOrderStatus($order);
 
+    expect($order->isPaid())->toBeTrue();
+    expect($order->isOrdered())->toBeTrue();
+    expect($order->isReceived())->toBeTrue();
     expect($order->isHandedOver())->toBeTrue();
-    expect($order->handed_over_by->id)->toBe($admin->id);
+    expect($order->transaction_confirmed_by?->id)->toBe($admin->id);
+    expect($order->products_ordered_by?->id)->toBe($admin->id);
+    expect($order->products_received_by?->id)->toBe($admin->id);
+    expect($order->handed_over_by?->id)->toBe($admin->id);
+    expect($order->paid_at)->toBeObject();
+    expect($order->products_ordered_at)->toBeObject();
+    expect($order->products_received_by)->toBeObject();
+    expect($order->handed_over_at)->toBeObject();
+
+    expect($order->status)->toBe(OrderStatus::HANDED_OVER);
 });
 
-test('mark order as ordered which has not been paid yet', function () {
+test('increment order status of order over maximum', function () {
+    /** @var Admin $admin */
     $admin = Admin::factory()->create();
+    /** @var OrderServiceInterface $service */
     $service = $this->app->make(OrderServiceInterface::class);
+    /** @var User $user */
     $user = User::factory()->create();
     actingAs($user);
 
@@ -133,12 +178,19 @@ test('mark order as ordered which has not been paid yet', function () {
     $order = $service->createOrder($user);
 
     actingAs($admin);
-    $service->markOrderAsOrdered($order);
-})->throws(OrderNotPaidException::class);
+    $service->incrementOrderStatus($order);
+    $service->incrementOrderStatus($order);
+    $service->incrementOrderStatus($order);
+    $service->incrementOrderStatus($order);
+    $service->incrementOrderStatus($order);
+})->throws(Error::class);
 
-test('mark order as received which has not been ordered yet', function () {
+test('decrement order status of new order', function () {
+    /** @var Admin $admin */
     $admin = Admin::factory()->create();
+    /** @var OrderServiceInterface $service */
     $service = $this->app->make(OrderServiceInterface::class);
+    /** @var User $user */
     $user = User::factory()->create();
     actingAs($user);
 
@@ -146,13 +198,15 @@ test('mark order as received which has not been ordered yet', function () {
     $order = $service->createOrder($user);
 
     actingAs($admin);
-    $order = $service->markOrderAsPaid($order);
-    $service->markOrderAsReceived($order);
-})->throws(OrderNotOrderedException::class);
+    $service->decrementOrderStatus($order);
+})->throws(Error::class);
 
-test('mark order as delivered which has not been received yet', function () {
+test('decrement order status of order', function () {
+    /** @var Admin $admin */
     $admin = Admin::factory()->create();
+    /** @var OrderServiceInterface $service */
     $service = $this->app->make(OrderServiceInterface::class);
+    /** @var User $user */
     $user = User::factory()->create();
     actingAs($user);
 
@@ -160,7 +214,62 @@ test('mark order as delivered which has not been received yet', function () {
     $order = $service->createOrder($user);
 
     actingAs($admin);
-    $order = $service->markOrderAsPaid($order);
-    $order = $service->markOrderAsOrdered($order);
-    $service->markOrderAsDelivered($order);
-})->throws(OrderNotReceivedException::class);
+    $service->incrementOrderStatus($order);
+    $service->incrementOrderStatus($order);
+    $service->incrementOrderStatus($order);
+    $service->decrementOrderStatus($order);
+    $service->decrementOrderStatus($order);
+
+    expect($order->isPaid())->toBeTrue();
+    expect($order->isOrdered())->toBeFalse();
+    expect($order->isReceived())->toBeFalse();
+    expect($order->isHandedOver())->toBeFalse();
+    expect($order->transaction_confirmed_by->id)->toBe($admin->id);
+    expect($order->products_ordered_by)->toBeNull();
+    expect($order->products_received_by)->toBeNull();
+    expect($order->handed_over_by)->toBeNull();
+    expect($order->paid_at)->toBeObject();
+    expect($order->products_ordered_at)->toBeNull();
+    expect($order->products_received_by)->toBeNull();
+    expect($order->handed_over_at)->toBeNull();
+
+    expect($order->status)->toBe(OrderStatus::PAID);
+});
+
+test('decrement order status of order back to CREATED', function () {
+    /** @var Admin $admin */
+    $admin = Admin::factory()->create();
+    /** @var OrderServiceInterface $service */
+    $service = $this->app->make(OrderServiceInterface::class);
+    /** @var User $user */
+    $user = User::factory()->create();
+    actingAs($user);
+
+    saturateShoppingCart($user);
+    $order = $service->createOrder($user);
+
+    actingAs($admin);
+    $service->incrementOrderStatus($order);
+    $service->incrementOrderStatus($order);
+    $service->incrementOrderStatus($order);
+    $service->incrementOrderStatus($order);
+    $service->decrementOrderStatus($order);
+    $service->decrementOrderStatus($order);
+    $service->decrementOrderStatus($order);
+    $service->decrementOrderStatus($order);
+
+    expect($order->isPaid())->toBeFalse();
+    expect($order->isOrdered())->toBeFalse();
+    expect($order->isReceived())->toBeFalse();
+    expect($order->isHandedOver())->toBeFalse();
+    expect($order->transaction_confirmed_by)->toBeNull();
+    expect($order->products_ordered_by)->toBeNull();
+    expect($order->products_received_by)->toBeNull();
+    expect($order->handed_over_by)->toBeNull();
+    expect($order->paid_at)->toBeNull();
+    expect($order->products_ordered_at)->toBeNull();
+    expect($order->products_received_by)->toBeNull();
+    expect($order->handed_over_at)->toBeNull();
+
+    expect($order->status)->toBe(OrderStatus::CREATED);
+});

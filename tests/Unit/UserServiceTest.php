@@ -26,6 +26,7 @@ test('user can be banned', function () {
 test('user can be unbanned', function () {
     $admin = Admin::inRandomOrder()->first()->get()->first();
     $this->actingAs($admin);
+    /** @var UserService $service */
     $service = $this->app->make(UserService::class);
 
     $user = User::factory()->disabled()->create();

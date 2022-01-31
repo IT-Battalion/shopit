@@ -41,7 +41,7 @@ class User extends Authenticatable implements LdapAuthenticatable
         'enabled',
         'reason_for_disabling',
         'disabled_at',
-        'disabled_by',
+        'disabled_by_id',
         'deleted_at',
         'guid',
         'domain',

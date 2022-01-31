@@ -2,19 +2,19 @@
   <h2 class="w-full my-16 text-3xl font-bold text-center text-white">
     Bestellübersicht
   </h2>
-  <div class="w-full p-10 sm:bg-elevatedDark rounded-3xl md:w-1/2">
-    <ul role="list" class="-my-6 divide-y divide-elevatedColor" ref="entryList">
+  <div class="w-full md:w-1/2">
+    <ul role="list" class="-my-6">
       <template v-if="!shoppingCartData.changingProducts">
         <li
           v-for="(entry, index) in shoppingCartData.shoppingCart.products"
           :key="entry.product.id"
-          class="flex py-6"
+          class="flex px-8 py-10 my-12 sm:bg-elevatedDark rounded-3xl"
         >
           <ShoppingcartItem :shopping-cart-entry="entry" :index="index" />
         </li>
       </template>
       <template v-else>
-        <li v-for="index in 3" :key="index" class="flex py-6">
+        <li v-for="index in 3" :key="index" class="flex px-8 py-10 my-12 sm:bg-elevatedDark rounded-3xl">
           <div class="flex-shrink-0 w-24 overflow-hidden rounded-md h-28">
             <Skeletor
               class="object-cover object-center w-full h-full"
@@ -31,7 +31,7 @@
         </li>
       </template>
     </ul>
-    <div class="px-4 px-6 py-6 mt-5 border-t border-elevatedColor">
+    <div class="px-14 px-10 py-6 mt-5 sm:bg-elevatedDark rounded-3xl">
       <div class="flex justify-between my-2 text-base text-gray-200 font-base">
         <p>Zwischensumme (Netto)</p>
         <p v-if="!state.isLoading">

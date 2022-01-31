@@ -80,16 +80,16 @@ class OrderService implements OrderServiceInterface
     {
         $newStatus = OrderStatus::from($order->status->value + 1);
 
-        $columns = $this->getStatusColums($newStatus, now(), Auth::id());
+        $columns = $this->getStatusColumns($newStatus, now(), Auth::id());
 
         $order->update(array_merge($columns,
             ['status' => $newStatus]));
     }
 
-    private function getStatusColums(OrderStatus $status, Carbon $time = null, int $admin_id = null): array
+    private function getStatusColumns(OrderStatus $status, Carbon $time = null, int $admin_id = null): array
     {
         return match ($status) {
-            OrderStatus::CREATED => ['created_at' => now(), 'created_by' => $admin_id],
+            OrderStatus::CREATED => ['created_at' => $time, 'customer_id' => $admin_id],
             OrderStatus::PAID => ['paid_at' => $time, 'transaction_confirmed_by_id' => $admin_id],
             OrderStatus::ORDERED => ['products_ordered_at' => $time, 'products_ordered_by_id' => $admin_id],
             OrderStatus::RECEIVED => ['products_received_at' => $time, 'products_received_by_id' => $admin_id],
@@ -105,7 +105,7 @@ class OrderService implements OrderServiceInterface
     {
         $newStatus = OrderStatus::from($order->status->value - 1);
 
-        $columns = $this->getStatusColums($order->status);
+        $columns = $this->getStatusColumns($order->status);
 
         $order->update(array_merge($columns,
             ['status' => $newStatus]));

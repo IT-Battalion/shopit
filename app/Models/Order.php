@@ -23,11 +23,12 @@ class Order extends Model
         'order_coupon_code_id',
         'status',
 
-        'authorizing_admin',
-        'products_received_at',
-        'products_received_by_id',
         'paid_at',
         'transaction_confirmed_by_id',
+        'products_ordered_at',
+        'products_ordered_by_id',
+        'products_received_at',
+        'products_received_by_id',
         'handed_over_at',
         'handed_over_by_id',
 
@@ -106,22 +107,22 @@ class Order extends Model
 
     public function isPaid()
     {
-        return $this->status === OrderStatus::PAID;
+        return $this->status->value >= OrderStatus::PAID->value;
     }
 
     public function isOrdered()
     {
-        return $this->status === OrderStatus::ORDERED;
+        return $this->status->value >= OrderStatus::ORDERED->value;
     }
 
     public function isReceived()
     {
-        return $this->status === OrderStatus::RECEIVED;
+        return $this->status->value >= OrderStatus::RECEIVED->value;
     }
 
     public function isHandedOver()
     {
-        return $this->status === OrderStatus::HANDED_OVER;
+        return $this->status->value >= OrderStatus::HANDED_OVER->value;
     }
 
     public function products(): HasMany
