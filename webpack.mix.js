@@ -1,5 +1,6 @@
 const mix = require('laravel-mix');
 const path = require('path');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 require('laravel-mix-bundle-analyzer');
 
 /*
@@ -17,11 +18,26 @@ mix
     .alias({
         '@': path.join(__dirname, 'resources/vue'),
     })
-    .ts('resources/vue/bootstrap.ts', 'public/js/app.min.js')
-    .copyDirectory('resources/assets/images/', 'public/img/')
-    .copyDirectory('resources/locales', 'public/locales')
+    .ts('resources/vue/bootstrap.ts', 'public/js/app.js')
+    .babelConfig({
+        plugins: [
+            'babel-plugin-lodash',
+        ],
+    })
+    .webpackConfig(webpack => {
+        return {
+            plugins: [
+                new LodashModuleReplacementPlugin,
+            ],
+        }
+    })
     .vue({version: 3})
-    .extract()
+    .extract([
+        'vue-good-table-next', 'vue-skeletor', 'vue-toastification',
+        'laravel-echo', 'pusher-js', 'axios',
+        'laravel-mix',
+        'mitt',
+        'lodash',])
     .postCss('resources/assets/tailwind.css', 'public/css/vendor.css', [
         require('tailwindcss'),
     ])
@@ -29,6 +45,8 @@ mix
     .sass('resources/scss/vue-good-tables.sass', 'public/css/vendor.css')
     .sass('resources/scss/app.scss', 'public/css/vendor.css')
     //.sass('resources/assets/scss/shopit.scss', 'public/css/shopit.css')
+    .copyDirectory('resources/assets/images/', 'public/img/')
+    .copyDirectory('resources/locales', 'public/locales')
     .sourceMaps()
     //.browserSync('localhost:80');
 

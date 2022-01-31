@@ -23,7 +23,7 @@
     <div id="app"></div>
     <script src="/js/vendor.js" defer></script>
     <script src="/js/manifest.js" defer></script>
-    <script src="/js/app.min.js" defer></script>
+    <script src="/js/app.js" defer></script>
 </body>
 
 </html>

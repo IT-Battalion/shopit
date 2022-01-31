@@ -1,6 +1,5 @@
 import { AxiosInstance, default as axios } from "axios";
 import Echo from 'laravel-echo';
-import { LoDashStatic } from "lodash";
 import Pusher from "pusher-js";
 import { GlobalConfig } from "./types/config";
 import { createApp, reactive } from "vue";
@@ -22,7 +21,6 @@ import 'vue-good-table-next/dist/vue-good-table-next.css'
 declare global {
     interface Window {
         axios: AxiosInstance,
-        _: LoDashStatic,
         pusher: Pusher,
         echo: Echo,
         initialConfig: GlobalConfig,
@@ -33,8 +31,6 @@ declare global {
 }
 
 window.config = reactive(window.initialConfig);
-
-window._ = require('lodash');
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
