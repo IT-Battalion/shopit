@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\DocumentController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Models\OrderProductImage;
@@ -82,13 +83,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 
 // Order
-Route::prefix('order')->name('order.')->group(function () {
-    Route::view('{id}/created', 'vue')->name('created');
-    Route::view('{id}/pay', 'vue')->name('pay');
-    Route::view('{id}/ordered', 'vue')->name('ordered');
-    Route::view('{id}/receive', 'vue')->name('receive');
-    Route::view('{id}/handed-over', 'vue')->name('handed-over');
-    Route::view('{id}', 'vue')->name('show');
+Route::prefix('orders/')->name('order.')->group(function () {
+    Route::view('{order}/', 'vue')->name('show');
+    Route::get('{order}/bill', [DocumentController::class, 'bill']);
+    Route::get('{order}/voucher', [DocumentController::class, 'voucher']);
 });
 
 Route::view('/shopping-cart/', 'vue')->name('shopping-cart');

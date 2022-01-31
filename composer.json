@@ -13,6 +13,7 @@
         "ext-bcmath": "*",
         "ext-json": "*",
         "ajcastro/eager-load-pivot-relations": "^0.2.2",
+        "barryvdh/laravel-dompdf": "^1.0",
         "beyondcode/laravel-websockets": "^1.12",
         "directorytree/ldaprecord-laravel": "^2.3",
         "fideloper/proxy": "^4.4",
