@@ -50,8 +50,8 @@ class LoginController extends Controller
             'password' => $data['password'],
         ];
 
-        if (!Auth::attempt($credentials, $data['remember'])) {
-            abort(401, 'Benutzername oder Passwort falsch.');
+        if (!Auth::attempt($credentials, $data['remember'] ?? false)) {
+            abort(401, 'Benutzername oder Passwort ist falsch.');
         }
 
         return response()->json([
@@ -65,7 +65,7 @@ class LoginController extends Controller
                 'lang',
                 'is_admin',
                 'enabled',
-                ]),
+            ]),
         ]);
     }
 }

@@ -16,16 +16,13 @@
       <div
         class="inset-0 flex flex-col items-center justify-center w-full h-full mb-10  md:w-1/2 login-form__elevation sm:mb-0"
       >
-        <div class="flex flex-row" v-if="!state.isLoading">
-          <img
+        <div class="flex flex-row">
+          <LoadingImage
             src="/img/logo.svg"
             alt="ShopIT Logo"
             class="w-1/4 mb-10 sm:mr-5"
           />
-          <img src="/img/IT_logo.png" alt="IT Logo" class="w-3/4 mb-10" />
-        </div>
-        <div v-else>
-          <Skeletor :pill="true" class="w-full h-16" />
+          <LoadingImage src="/img/IT_logo.png" alt="IT Logo" class="w-3/4 mb-10" />
         </div>
         <h1
           class="mb-2 text-xl text-white  sm:text-2xl lg:text-4xl whitespace-nowrap"
@@ -64,10 +61,6 @@
             Angemeldet bleiben
           </label>
         </div>
-        <!-- only call `submitForm()` when the `key` is `Enter` -->
-        <span class="mb-10 text-red-400" v-if="user.error.value">
-          {{ user.error.value }}
-        </span>
         <ButtonField buttonType="submit" :iconSpinner="state.isLoading">
           <template v-slot:text>
             <span>Anmelden</span>
@@ -94,9 +87,14 @@ import useUser from "../stores/user";
 import userStore from "../stores/user";
 import InputField from "./InputField.vue";
 import ButtonField from "./ButtonField.vue";
+import LoadingImage from "./LoadingImage.vue";
+import {useToast} from "vue-toastification";
+import { AxiosError } from "axios";
+import {HttpStatusCode} from "../types/api-values";
+import {join} from "lodash";
 
 export default defineComponent({
-  components: { InputField, ButtonField },
+  components: {LoadingImage, InputField, ButtonField },
   data() {
     return {
       stayLogedIn: false,
@@ -111,41 +109,62 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute();
-    const { user, login } = useUser();
     const router = useRouter();
+    const { user, login } = useUser();
+    const toast = useToast();
     return {
       user,
       login,
       userStore,
       route,
       router,
+      toast,
       state,
     };
   },
   methods: {
     clearForm() {
-      this.user.error.value = "";
       this.form.username = "";
       this.form.password = "";
     },
-    onSubmit() {
+    async onSubmit() {
       this.errorUsername = "";
       this.errorPassword = "";
       if (this.form.username && this.form.password) {
         console.log(this.form);
-        this.user.error.value = "";
 
-        this.login(
-          this.form.username,
-          this.form.password,
-          this.form.stayLogedIn
-        ).then((_) => {
+        try {
+          await this.login(
+            this.form.username,
+            this.form.password,
+            this.form.stayLogedIn
+          );
+          this.toast.success("Erfolgreich angemeldet.");
           const next = (this.route.params.nextUrl as string) || "/";
 
-          this.router.replace({
+          await this.router.replace({
             path: next,
           });
-        });
+        } catch (e) {
+          if ("response" in (e as AxiosError)) {
+            const error = e as AxiosError;
+            console.log(error.response);
+            this.toast.error(error.response?.data.message);
+
+            switch (error.response?.status) {
+              case HttpStatusCode.Unauthorized:
+                this.errorUsername = this.errorPassword = error.response?.data.message;
+                break;
+              case HttpStatusCode.UnprocessableEntity:
+                const errors = error.response?.data.errors as {username: string[], password: string[]};
+                this.errorUsername = join(errors.username, ", ");
+                this.errorPassword = join(errors.password, ", ");
+                break;
+            }
+          } else {
+            throw e;
+          }
+        }
       } else {
         if (!this.form.username)
           this.errorUsername = "Der Benutzername ist erforderlich!";

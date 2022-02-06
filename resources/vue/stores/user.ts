@@ -4,6 +4,7 @@ import {redirectToLogin} from "../util";
 import {endLoad, initLoad} from "../loader";
 import {getCSRFCookie} from "../request";
 import {useToast} from "vue-toastification";
+import {User} from "../types/api";
 
 export const user = reactive({
   id: window.initialConfig.user.id ?? "",
@@ -15,16 +16,12 @@ export const user = reactive({
   lang: window.initialConfig.user.lang ?? "",
   isAdmin: window.initialConfig.user.is_admin ?? false,
   isLoggedIn: window.initialConfig.user.isLoggedIn ?? false,
-
-  error: "",
 })
 
 const actions = {
   async login(username: string, password: string, stayLoggedIn: boolean) {
     initLoad();
-    let toast = useToast();
     return Request.login(username, password, stayLoggedIn).then(responseUser => {
-      user.error = "";
       user.isLoggedIn = true;
       user.id = responseUser.id;
       user.username = responseUser.username;
@@ -34,18 +31,9 @@ const actions = {
       user.email = responseUser.email;
       user.lang = responseUser.lang;
       user.isAdmin = responseUser.is_admin;
-      toast.success("Erfolgreich eingeloggt.");
 
       getCSRFCookie();
       return true;
-    }).catch(err => {
-      if (err.response.status === 401) {
-        user.error = err.response.data.message;
-        toast.error(user.error);
-      } else {
-        toast.error("Fehler beim Anmelden.");
-      }
-      return err;
     }).finally(endLoad);
   },
   async logout() {

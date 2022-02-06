@@ -17,9 +17,6 @@ module.exports = {
             gridTemplateRows: {
               '[auto,auto,1fr]': 'auto auto 1fr',
             },
-            animation: {
-                'pulse-emphasized': 'pulse-emphasized 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            },
             transitionProperty: {
                 'size': 'width, height, font-size',
             },

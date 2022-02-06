@@ -1,11 +1,7 @@
 <template>
   <svg
     v-if="loading"
-    class="w-5 h-5 animate-spin animate-reverse"
-    style="
-      animation-direction: alternate-reverse;
-      animation-timing-function: ease-in-out;
-    "
+    class="w-5 h-5 animate-spin"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"

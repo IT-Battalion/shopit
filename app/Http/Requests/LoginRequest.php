@@ -26,7 +26,17 @@ class LoginRequest extends FormRequest
         return [
             'username' => ['required', 'string', 'min:1'],
             'password' => ['required', 'string', 'min:1'],
-            'remember' => ['nullable', 'boolean'],
+            'remember' => ['boolean'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'username.required' => 'Der Benutzername ist erforderlich!',
+            'username.min' => 'Der Benutzername muss mindestens ein Zeichen enthalten.',
+            'password.required' => 'Das Passwort ist erforderlich!',
+            'password.min' => 'Das Passwort muss mindestens ein Zeichen enthalten.',
         ];
     }
 }
