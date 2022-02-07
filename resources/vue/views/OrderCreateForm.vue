@@ -3,12 +3,12 @@
     Bestellübersicht
   </h2>
   <div class="w-full md:w-1/2">
-    <ul role="list" class="-my-6">
+    <ul role="list">
       <template v-if="!shoppingCartData.changingProducts">
         <li
           v-for="(entry, index) in shoppingCartData.shoppingCart.products"
           :key="entry.product.id"
-          class="flex px-8 py-10 my-12 sm:bg-elevatedDark rounded-3xl"
+          class="flex px-6 py-10 my-12 sm:bg-elevatedDark rounded-3xl"
         >
           <ShoppingcartItem :shopping-cart-entry="entry" :index="index" />
         </li>
@@ -17,7 +17,7 @@
         <li
           v-for="index in 3"
           :key="index"
-          class="flex px-8 py-10 my-12 sm:bg-elevatedDark rounded-3xl"
+          class="flex px-6 py-10 my-12 sm:bg-elevatedDark rounded-3xl"
         >
           <div class="flex-shrink-0 w-24 overflow-hidden rounded-md h-28">
             <Skeletor

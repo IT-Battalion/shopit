@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[this.class]"
-    class="flex flex-col gap-2 my-4 text-xs font-light text-white"
+    class="flex flex-col gap-2 my-4 text-xs text-white"
   >
     <div v-if="attributes['3']" class="flex flex-row">
       <span>Farbe: {{ attributes[3].name }}</span>

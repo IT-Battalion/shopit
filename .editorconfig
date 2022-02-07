@@ -16,3 +16,5 @@ indent_size = 2
 
 [*.{vue, ts}]
 indent_size = 2
+ij_typescript_force_quote_style = true
+ij_typescript_use_double_quotes = true

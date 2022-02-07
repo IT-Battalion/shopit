@@ -13,12 +13,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 
 class Product extends Model implements ConvertableToOrder
 {
-    use HasFactory, TracksModification, EagerLoadPivotTrait;
+    use EagerLoadPivotTrait;
+    use HasFactory;
+    use TracksModification;
 
     /**
      * The attributes that are mass assignable.
@@ -63,11 +66,12 @@ class Product extends Model implements ConvertableToOrder
 
     // attributes
 
-    public function areAttributesAvailable(\Illuminate\Support\Collection $attributes): bool
+    public function areAttributesAvailable(Collection $attributes): bool
     {
         foreach ($attributes as $type => $attribute) {
-            if (!$this->isAttributeAvailable($type, $attribute))
+            if (!$this->isAttributeAvailable($type, $attribute)) {
                 return false;
+            }
         }
 
         return true;
@@ -122,7 +126,16 @@ class Product extends Model implements ConvertableToOrder
         return null;
     }
 
-    #[ArrayShape(['id' => "int", 'name' => "string", 'description' => "string", 'price' => "\App\Types\Money", 'tax' => "mixed", 'thumbnail' => "int[]|null[]", 'images' => "mixed", 'attributes' => "\Illuminate\Database\Eloquent\Collection"])]
+    #[ArrayShape([
+        'id' => "int",
+        'name' => "string",
+        'description' => "string",
+        'price' => "\App\Types\Money",
+        'tax' => "mixed",
+        'thumbnail' => "int[]|null[]",
+        'images' => "mixed",
+        'attributes' => "\Illuminate\Database\Eloquent\Collection"
+    ])]
     public function jsonSerialize(): array
     {
         return [

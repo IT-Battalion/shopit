@@ -15,6 +15,7 @@ use App\Models\ProductVolumeAttribute;
 use App\Types\Money;
 use Auth;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 
 class ProductController extends Controller
 {
@@ -25,14 +26,17 @@ class ProductController extends Controller
      */
     public function index(): JsonResponse
     {
-        $products = ProductCategory::whereHas('products')
-            ->with('products')
-            ->get()
-            ->mapWithKeys(function (ProductCategory $category) {
-                return [
-                    $category->name => $category->products->map(fn(Product $product) => $product->jsonPreview()),
-                ];
-            });
+        $products = Cache::rememberForever('products', function () {
+            return ProductCategory::whereHas('products')
+                ->with('products')
+                ->get()
+                ->mapWithKeys(function (ProductCategory $category) {
+                    return [
+                        $category->name => $category->products->map(fn(Product $product) => $product->jsonPreview()),
+                    ];
+                });
+        }
+        );
 
         return response()->json($products);
     }
@@ -100,10 +104,6 @@ class ProductController extends Controller
      */
     public function show(Product $product): JsonResponse
     {
-        //$product = Product::whereId($nameOrId)->first() ?? Product::whereName($nameOrId)->first();
-
-        //abort_if(is_null($product), 404);
-
         return response()->json([
             'name' => $product->name,
             'description' => $product->description,

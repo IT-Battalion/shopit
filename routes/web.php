@@ -93,8 +93,6 @@ Route::view('/shopping-cart/', 'vue')->name('shopping-cart');
 
 Route::permanentRedirect('/home', url('/'));
 
-// custom login/logout Routes because we have the auth middleware installed on the whole 'web' route domain
-// therefore we needed the withoutMiddle() function to disable the auth middleware for the login routes
 Broadcast::routes();
 
 Route::namespace('Auth')->group(function () {
