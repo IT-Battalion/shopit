@@ -4,9 +4,9 @@
   </h2>
   <div class="w-full md:w-1/2">
     <ul role="list">
-      <template v-if="!shoppingCartState.changingProducts">
+      <template v-if="!changingProducts">
         <li
-          v-for="(entry, index) in shoppingCartState.shoppingCart.products"
+          v-for="(entry, index) in products"
           :key="entry.product.id"
           class="flex px-6 py-10 my-12 sm:bg-elevatedDark rounded-3xl"
         >
@@ -38,29 +38,29 @@
     <div class="py-6 mt-5 sm:px-14 sm:bg-elevatedDark rounded-3xl">
       <div class="flex justify-between my-2 text-base text-gray-200 font-base">
         <p>Zwischensumme (Netto)</p>
-        <p v-if="!state.isLoading">
-          {{ shoppingCartState.shoppingCart.subtotal }}
+        <p v-if="!isLoading">
+          {{ subtotal }}
         </p>
         <Skeletor v-else :pill="true" class="w-1/4" height="1rem"/>
       </div>
       <div
-        v-if="shoppingCartState.shoppingCart.discount !== '0,-€'"
+        v-if="discount !== '0,-€'"
         class="flex justify-between my-2 text-base text-gray-200 font-base"
       >
         <p>Rabatt (Coupon)</p>
-        <p v-if="!state.isLoading">
-          -{{ shoppingCartState.shoppingCart.discount }}
+        <p v-if="!isLoading">
+          -{{ discount }}
         </p>
         <Skeletor v-else :pill="true" class="w-1/4" height="1rem"/>
       </div>
       <div class="flex justify-between my-2 text-base text-gray-200 font-base">
         <p>USt</p>
-        <p v-if="!state.isLoading">{{ shoppingCartState.shoppingCart.tax }}</p>
+        <p v-if="!isLoading">{{ tax }}</p>
         <Skeletor v-else :pill="true" class="w-1/4" height="1rem"/>
       </div>
       <div class="flex justify-between my-2 text-base font-medium text-white">
         <p>Gesamt</p>
-        <p v-if="!state.isLoading">{{ shoppingCartState.shoppingCart.total }}</p>
+        <p v-if="!isLoading">{{ total }}</p>
         <Skeletor v-else :pill="true" class="w-1/4" height="1rem"/>
       </div>
       <div class="flex flex-col my-12 space-y-2">
@@ -73,7 +73,7 @@
         >
           <input
             id="coupon"
-            v-model="shoppingCartState.shoppingCart.coupon"
+            v-model="localCoupon"
             :class="
               state.isLoading
                 ? 'border-gray-300 text-gray-400 bg-elevatedDark cursor-not-allowed'
@@ -81,7 +81,7 @@
                 ? 'border-emerald-300 text-emerald-400 bg-elevatedDark cursor-not-allowed'
                 : 'border-indigo-500 text-white bg-elevatedDark border focus:ring-2 focus:ring-elevatedDark'
             "
-            :disabled="shoppingCartState.isLoading"
+            :disabled="isLoading"
             :readonly="applied"
             class="w-full px-4 py-2 ml-0 placeholder-green-600 border rounded-lg  focus:outline-none focus:ring-2 focus:ring-indigo-200"
             type="text"
@@ -157,7 +157,7 @@ import {useRouter} from "vue-router";
 import {endLoad, initLoad, state} from "../loader";
 import {useToast} from "vue-toastification";
 import Spinner from "@/components/Spinner.vue";
-import {mapMutations} from "vuex";
+import {mapGetters, mapMutations} from "vuex";
 
 export default defineComponent({
   components: {
@@ -166,15 +166,36 @@ export default defineComponent({
   },
   data() {
     return {
+      localCoupon: "",
       state,
       agb: false,
       applied: false,
     };
   },
   computed: {
-    shoppingCartState() {
-      console.debug(this.$store.state.shoppingCartState);
-      return this.$store.state.shoppingCartState;
+    changingProducts() {
+      return this.$store.state.shoppingCartState.changingProducts;
+    },
+    products() {
+      return this.$store.state.shoppingCartState.shoppingCart.products;
+    },
+    ...mapGetters([
+      "isLoading",
+    ]),
+    subtotal() {
+      return this.$store.state.shoppingCartState.shoppingCart.subtotal;
+    },
+    discount() {
+      return this.$store.state.shoppingCartState.shoppingCart.discount;
+    },
+    tax() {
+      return this.$store.state.shoppingCartState.shoppingCart.tax;
+    },
+    total() {
+      return this.$store.state.shoppingCartState.shoppingCart.total;
+    },
+    coupon() {
+      return this.$store.state.shoppingCartState.shoppingCart.coupon;
     },
   },
   async mounted() {
@@ -182,7 +203,7 @@ export default defineComponent({
   },
   methods: {
     async addCoupon() {
-      if (this.shoppingCartState.changingCoupon) return;
+      if (this.$store.state.shoppingCartState.changingCoupon) return;
 
       this.changeCoupon();
       initLoad();
@@ -191,12 +212,12 @@ export default defineComponent({
         let response: AxiosResponse<ShoppingCartPrices> = await this.$http.post(
           "/user/shopping-cart/coupon",
           {
-            code: this.shoppingCartState.shoppingCart.coupon,
+            code: this.localCoupon,
           }
         );
         let data = response.data;
 
-        this.updatePrices(data.subtotal, data.discount, data.tax, data.total);
+        this.updatePrices(data);
         this.toast.success("Der Coupon Code wurde erfolgreich hinzugefügt!");
 
         this.applied = true;
@@ -220,7 +241,7 @@ export default defineComponent({
       endLoad();
     },
     async resetCoupon() {
-      if (this.shoppingCartState.changingCoupon) return;
+      if (this.$store.state.shoppingCartState.changingCoupon) return;
 
       this.changeCoupon();
       initLoad();
@@ -231,7 +252,7 @@ export default defineComponent({
         );
         let data = response.data;
 
-        this.updatePrices(data.subtotal, data.discount, data.tax, data.total);
+        this.updatePrices(data);
         this.toast.warning("Der Coupon Code wurde entfernt!");
         this.applied = false;
 
@@ -257,7 +278,7 @@ export default defineComponent({
           params: {id: response.data.order_id},
         });
 
-        let loadShoppingCart = await this.loadCart();
+        let loadShoppingCart = this.loadCart();
 
         await Promise.all([navigation, loadShoppingCart]);
       } catch (e) {
@@ -267,13 +288,21 @@ export default defineComponent({
     },
     async loadCart() {
       await this.$store.dispatch("loadCart");
-      this.applied = !!this.$store.state.shoppingCartState.shoppingCart?.coupon?.length
+      let coupon = this.$store.state.shoppingCartState.shoppingCart?.coupon;
+      this.applied = !!coupon?.length;
+      this.localCoupon = coupon || "";
     },
     ...mapMutations([
       "updatePrices",
       "changeCoupon",
       "couponChanged",
     ]),
+  },
+  watch: {
+    coupon(value) {
+      this.applied = !!value?.length;
+      this.localCoupon = value || "";
+    }
   },
   setup() {
     let router = useRouter();

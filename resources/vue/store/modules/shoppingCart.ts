@@ -1,4 +1,4 @@
-import {Money, Product, SelectedAttributes, ShoppingCart, ShoppingCartEntry} from "../../types/api";
+import {Product, SelectedAttributes, ShoppingCart, ShoppingCartEntry, ShoppingCartPrices} from "../../types/api";
 import {cloneDeep, isEqual, toInteger, toPlainObject} from "lodash";
 import {Module} from "vuex";
 import {State} from "../index";
@@ -76,9 +76,12 @@ const shoppingCartState: Module<ShoppingCartState, State> = {
       state.shoppingCart = newShoppingCart;
     },
 
-    updatePrices(state, newPrices: { subtotal: Money, discount: Money, tax: Money, total: Money }) {
-      state.shoppingCart = Object.assign(state.shoppingCart, newPrices);
-    }
+    updatePrices(state, newPrices: ShoppingCartPrices) {
+      state.shoppingCart.subtotal = newPrices.subtotal;
+      state.shoppingCart.discount = newPrices.discount;
+      state.shoppingCart.tax = newPrices.tax;
+      state.shoppingCart.total = newPrices.total;
+    },
   },
 
   actions: {
@@ -103,11 +106,11 @@ const shoppingCartState: Module<ShoppingCartState, State> = {
     },
 
     async loadCart({commit}) {
-      commit("changeProducts");
       if (!loadingProducts) {
         loadingProducts = window.axios.get("/user/shopping-cart")
           .then((response) => {
             commit("replaceShoppingCart", response.data);
+            loadingProducts = undefined;
           });
       }
       await loadingProducts;

@@ -11,6 +11,8 @@ use App\Services\ShoppingCart\ShoppingCartServiceInterface;
 use App\Types\OrderStatus;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class OrderService implements OrderServiceInterface
 {
@@ -20,6 +22,7 @@ class OrderService implements OrderServiceInterface
 
     /**
      * @throws ShoppingCartEmptyException
+     * @throws Throwable
      */
     public function createOrder(User $customer = null): Order
     {
@@ -27,49 +30,58 @@ class OrderService implements OrderServiceInterface
 
         $products = $customer->shopping_cart;
 
-        if ($products->count() === 0) throw new ShoppingCartEmptyException('Eine Bestellung kann nicht von einem leeren Einkaufswagen zusammengestellt werden.');
+        if ($products->count() === 0) {
+            throw new ShoppingCartEmptyException(
+                'Eine Bestellung kann nicht von einem leeren Einkaufswagen zusammengestellt werden.'
+            );
+        }
 
         $coupon = $customer->coupon?->id;
 
         $prices = $this->shoppingCartService->calculateShoppingCartPrice($customer);
 
-        $order = Order::create([
-            'customer_id' => $customer->id,
-            'coupon_code_id' => $coupon,
-            'status' => OrderStatus::CREATED,
-            'subtotal' => $prices['subtotal'],
-            'discount' => $prices['discount'],
-            'tax' => $prices['tax'],
-            'total' => $prices['total'],
-        ]);
-
-        /** @var Product $product */
-        foreach ($products as $product) {
-            /** @var ShoppingCartEntry $metadata */
-            $metadata = $product->pivot;
-
-            // convert product to order product
-            $orderProduct = $product->getOrderEquivalent([
-                'count' => $product->pivot->count,
-                'order_id' => $order->id,
+        return DB::transaction(function () use ($customer, $coupon, $prices, $products) {
+            $order = Order::create([
+                'customer_id' => $customer->id,
+                'coupon_code_id' => $coupon,
+                'status' => OrderStatus::CREATED,
+                'subtotal' => $prices['subtotal'],
+                'discount' => $prices['discount'],
+                'tax' => $prices['tax'],
+                'total' => $prices['total'],
             ]);
 
-            // convert images and set thumbnail
-            foreach ($product->images as $image) {
-                $orderImage = $image->getOrderEquivalent();
+            /** @var Product $product */
+            foreach ($products as $product) {
+                /** @var ShoppingCartEntry $metadata */
+                $metadata = $product->pivot;
 
-                if ($product->thumbnail === $image->id) {
-                    $orderProduct->thumbnail_id = $orderImage->id;
-                    $orderProduct->save();
+                // convert product to order product
+                $orderProduct = $product->getOrderEquivalent([
+                    'count' => $product->pivot->count,
+                    'order_id' => $order->id,
+                ]);
+
+                // convert images and set thumbnail
+                foreach ($product->images as $image) {
+                    $orderImage = $image->getOrderEquivalent();
+
+                    if ($product->thumbnail === $image->id) {
+                        $orderProduct->thumbnail_id = $orderImage->id;
+                        $orderProduct->save();
+                    }
                 }
+
+                $newAttributes = $metadata->convertAttributesToOrder();
+                $orderProduct->product_attributes = $newAttributes;
             }
 
-            $newAttributes = $metadata->convertAttributesToOrder();
-            $orderProduct->product_attributes = $newAttributes;
+            $customer->shopping_cart_coupon_id = null;
+            $customer->shopping_cart()->detach();
+            $customer->save();
 
-            $this->shoppingCartService->removeProduct($product, $metadata->product_attributes, user: $customer);
-        }
-        return $order;
+            return $order;
+        });
     }
 
     /**
@@ -82,8 +94,12 @@ class OrderService implements OrderServiceInterface
 
         $columns = $this->getStatusColumns($newStatus, now(), Auth::id());
 
-        $order->update(array_merge($columns,
-            ['status' => $newStatus]));
+        $order->update(
+            array_merge(
+                $columns,
+                ['status' => $newStatus]
+            )
+        );
     }
 
     private function getStatusColumns(OrderStatus $status, Carbon $time = null, int $admin_id = null): array
@@ -107,7 +123,11 @@ class OrderService implements OrderServiceInterface
 
         $columns = $this->getStatusColumns($order->status);
 
-        $order->update(array_merge($columns,
-            ['status' => $newStatus]));
+        $order->update(
+            array_merge(
+                $columns,
+                ['status' => $newStatus]
+            )
+        );
     }
 }

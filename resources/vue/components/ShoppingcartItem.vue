@@ -96,7 +96,7 @@ export default defineComponent({
             descriptor.selectedAttributes
           );
           let prices = response.data;
-          this.updatePrices(prices.subtotal, prices.discount, prices.tax, prices.total);
+          this.updatePrices(prices);
           return toInteger(this.index);
         });
       } catch (e) {

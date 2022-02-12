@@ -52,10 +52,9 @@
 
                     <div class="mt-8 flow-root">
                       <ul ref="entryList" class="-my-6" role="list">
-                        <template v-if="!shoppingCartState.changingProducts">
+                        <template v-if="!changingProducts">
                           <li
-                            v-for="(entry, index) in shoppingCartState
-                              .shoppingCart.products"
+                            v-for="(entry, index) in products"
                             :key="entry.product.id"
                             class="flex py-10"
                           >
@@ -106,8 +105,8 @@
                       "
                     >
                       <p>Zwischensumme (Netto)</p>
-                      <p v-if="!shoppingCartState.isLoading">
-                        {{ shoppingCartState.shoppingCart.subtotal }}
+                      <p v-if="!isLoading">
+                        {{ subtotal }}
                       </p>
                       <Skeletor
                         v-else
@@ -117,7 +116,7 @@
                       />
                     </div>
                     <div
-                      v-if="shoppingCartState.shoppingCart.discount !== '0,-€'"
+                      v-if="discount !== '0,-€'"
                       class="
                         flex
                         justify-between
@@ -127,8 +126,8 @@
                       "
                     >
                       <p>Rabatt (Coupon)</p>
-                      <p v-if="!shoppingCartState.isLoading">
-                        -{{ shoppingCartState.shoppingCart.discount }}
+                      <p v-if="!isLoading">
+                        -{{ discount }}
                       </p>
                       <Skeletor
                         v-else
@@ -147,8 +146,8 @@
                       "
                     >
                       <p>USt</p>
-                      <p v-if="!shoppingCartState.isLoading">
-                        {{ shoppingCartState.shoppingCart.tax }}
+                      <p v-if="!isLoading">
+                        {{ tax }}
                       </p>
                       <Skeletor
                         v-else
@@ -169,7 +168,7 @@
                     >
                       <p>Gesamt</p>
                       <p v-if="!isLoading">
-                        {{ shoppingCartState.shoppingCart.total }}
+                        {{ total }}
                       </p>
                       <Skeletor
                         v-else
@@ -247,6 +246,7 @@ import {AddToShoppingCartMessage, RemoveFromShoppingCartMessage, ShoppingCartEnt
 import ShoppingcartItem from "./ShoppingcartItem.vue";
 import {useToast} from "vue-toastification";
 import {mapActions, mapGetters, mapMutations} from "vuex";
+import {pick} from "lodash";
 
 export default defineComponent({
   components: {
@@ -267,9 +267,23 @@ export default defineComponent({
     user() {
       return this.$store.state.userState.user;
     },
-    shoppingCartState() {
-      console.log(this.$store.state.shoppingCartState);
-      return this.$store.state.shoppingCartState;
+    changingProducts() {
+      return this.$store.state.shoppingCartState.changingProducts;
+    },
+    products() {
+      return this.$store.state.shoppingCartState.shoppingCart.products;
+    },
+    subtotal() {
+      return this.$store.state.shoppingCartState.shoppingCart.subtotal;
+    },
+    discount() {
+      return this.$store.state.shoppingCartState.shoppingCart.discount;
+    },
+    tax() {
+      return this.$store.state.shoppingCartState.shoppingCart.tax;
+    },
+    total() {
+      return this.$store.state.shoppingCartState.shoppingCart.total;
     },
     ...mapGetters([
       "isLoading",
@@ -295,18 +309,12 @@ export default defineComponent({
             } as ShoppingCartEntry;
           });
           useToast().info("Ein Produkt wurde dem Einkaufswagen hinzugefügt.");
-          this.updatePrices(
-            message.subtotal,
-            message.discount,
-            message.tax,
-            message.total
-          );
+          this.updatePrices(pick(message, ["subtotal", "discount", "tax", "total"]));
         }
       )
       .listen(
         "ProductRemovedFromShoppingCartEvent",
         async (message: RemoveFromShoppingCartMessage) => {
-          console.log(message);
           await this.removeProductFromCart(async () => {
             return {
               product: message.product,
@@ -314,12 +322,7 @@ export default defineComponent({
             };
           });
           useToast().info("Ein Produkt wurde aus dem Einkaufswagen entfernt.");
-          this.updatePrices(
-            message.subtotal,
-            message.discount,
-            message.tax,
-            message.total
-          );
+          this.updatePrices(pick(message, ["subtotal", "discount", "tax", "total"]));
         }
       );
   },

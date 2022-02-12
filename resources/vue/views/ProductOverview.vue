@@ -161,7 +161,7 @@ import AttributeSelector from "../components/AttributeSelector.vue";
 import InputField from "../components/InputField.vue";
 import {AttributeType} from "../types/api-values";
 import {addToShoppingCart} from "../request";
-import {cloneDeep} from "lodash";
+import {cloneDeep, pick} from "lodash";
 import ButtonField from "../components/ButtonField.vue";
 import {mapActions, mapMutations} from "vuex";
 
@@ -232,7 +232,7 @@ export default defineComponent({
           );
           const data = response.data;
 
-          this.updatePrices(data.subtotal, data.discount, data.tax, data.total);
+          this.updatePrices(pick(data, ["subtotal", "discount", "tax", "total"]));
           this.buttonLoading = false;
           return {
             product: cloneDeep(this.product),
@@ -254,7 +254,6 @@ export default defineComponent({
   },
   watch: {
     $route(to: RouteLocationNormalizedLoaded, from) {
-      console.log(to, from);
       if (to.name === "Product") {
         this.loadProduct(to.params.name as string);
       }
