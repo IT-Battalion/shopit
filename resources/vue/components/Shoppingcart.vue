@@ -242,11 +242,12 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import {Dialog, DialogOverlay, DialogTitle, TransitionChild, TransitionRoot,} from "@headlessui/vue";
-import {AddToShoppingCartMessage, RemoveFromShoppingCartMessage, ShoppingCartEntry,} from "../types/api";
+import {AddToShoppingCartMessage, Order, RemoveFromShoppingCartMessage, ShoppingCartEntry,} from "../types/api";
 import ShoppingcartItem from "./ShoppingcartItem.vue";
 import {useToast} from "vue-toastification";
 import {mapActions, mapGetters, mapMutations} from "vuex";
 import {pick} from "lodash";
+import OrderCreatedToast from "./toasts/OrderCreatedToast.vue";
 
 export default defineComponent({
   components: {
@@ -256,6 +257,12 @@ export default defineComponent({
     DialogTitle,
     TransitionChild,
     TransitionRoot,
+  },
+  setup() {
+    const toast = useToast();
+    return {
+      toast,
+    }
   },
   data() {
     return {
@@ -308,7 +315,7 @@ export default defineComponent({
               price: message.price,
             } as ShoppingCartEntry;
           });
-          useToast().info("Ein Produkt wurde dem Einkaufswagen hinzugefügt.");
+          this.toast.info("Ein Produkt wurde dem Einkaufswagen hinzugefügt.", {onClick: this.openFromToast});
           this.updatePrices(pick(message, ["subtotal", "discount", "tax", "total"]));
         }
       )
@@ -321,7 +328,7 @@ export default defineComponent({
               selectedAttributes: message.selectedAttributes,
             };
           });
-          useToast().info("Ein Produkt wurde aus dem Einkaufswagen entfernt.");
+          this.toast.info("Ein Produkt wurde aus dem Einkaufswagen entfernt.", {onClick: this.openFromToast});
           this.updatePrices(pick(message, ["subtotal", "discount", "tax", "total"]));
         }
       );
@@ -329,9 +336,18 @@ export default defineComponent({
       .private(`app.user.${this.user?.id}.orders`)
       .listen(
         "OrderCreatedEvent",
-        async () => {
+        async (data: { order: Order }) => {
+          const {order} = data;
+
           await this.loadCart();
-          useToast().info("Es wurde eine Bestellung aufgegeben.");
+
+          const link = this.$router.resolve({name: "Order Detail", params: {id: order.id}}).href;
+          this.toast.info({
+            component: OrderCreatedToast,
+            props: {
+              link,
+            },
+          }, {timeout: false});
         }
       );
   },
@@ -351,6 +367,10 @@ export default defineComponent({
     open() {
       this.isOpen = true;
     },
+    openFromToast(closeToast: Function) {
+      this.open();
+      closeToast();
+    },
     close() {
       this.isOpen = false;
     },
@@ -367,7 +387,7 @@ export default defineComponent({
     ]),
     ...mapMutations([
       "updatePrices",
-    ])
+    ]),
   },
   watch: {
     $route(_a, _b) {

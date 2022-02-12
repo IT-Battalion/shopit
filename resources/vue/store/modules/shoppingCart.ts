@@ -46,7 +46,7 @@ const shoppingCartState: Module<ShoppingCartState, State> = {
     changeOrCreateEntry(state, entry: ShoppingCartEntry) {
       for (let currentEntry of state.shoppingCart.products) {
         if (entry.product.name === entry.product.name &&
-          isEqual(toPlainObject(cloneDeep(currentEntry.selectedAttributes)), entry.selectedAttributes)) {
+          isEqual(toPlainObject(cloneDeep(currentEntry.selectedAttributes)), toPlainObject(entry.selectedAttributes))) {
           currentEntry.price = entry.price;
           currentEntry.count = entry.count;
           return;
