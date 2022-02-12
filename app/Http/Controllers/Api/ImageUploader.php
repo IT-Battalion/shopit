@@ -82,7 +82,7 @@ class ImageUploader extends Controller
      *      size, the Upload-Name header contains the file name.
      * 6. FilePond sends chunks until all chunks have been uploaded succesfully.
      * 7. server creates the file if all chunks have been received succesfully.
-     * 8. FilePond stores the unique id 12345 as the server id of this file.
+     * 8. FilePond store the unique id 12345 as the server id of this file.
      * 9. client submits the FilePond parent form containing the hidden
      *      input field with the unique id
      * 10. server uses the unique id to move tmp/12345/my-file.jpg to

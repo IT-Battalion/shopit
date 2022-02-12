@@ -5,13 +5,13 @@
       <h3 class="text-sm font-medium text-white">Color</h3>
 
       <RadioGroup v-model="selectedColor" class="mt-4">
-        <RadioGroupLabel class="sr-only"> Choose a color </RadioGroupLabel>
+        <RadioGroupLabel class="sr-only"> Choose a color</RadioGroupLabel>
         <div class="flex items-center space-x-3">
           <RadioGroupOption
             v-for="(color, index) in attributes[3]"
             :key="color.name"
-            :value="index"
             v-slot="{ active, checked }"
+            :value="index"
           >
             <div
               :class="[
@@ -38,7 +38,7 @@
     </div>
 
     <!-- Sizes -->
-    <div class="mt-10" v-if="attributes[0].length > 0">
+    <div v-if="attributes[0].length > 0" class="mt-10">
       <div class="flex items-center justify-between">
         <h3 class="text-sm font-medium text-white">Größe</h3>
         <!--        <a-->
@@ -49,15 +49,15 @@
       </div>
 
       <RadioGroup v-model="selectedSize" class="mt-4">
-        <RadioGroupLabel class="sr-only"> Choose a size </RadioGroupLabel>
+        <RadioGroupLabel class="sr-only"> Choose a size</RadioGroupLabel>
         <div class="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
           <RadioGroupOption
-            as="template"
             v-for="(size, index) in attributes[0]"
             :key="size.size"
-            :value="index"
             v-slot="{ checked }"
             :title="clothingSizeValues[size.size]"
+            :value="index"
+            as="template"
           >
             <div
               class="shadow-sm text-white cursor-pointer group relative rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase focus:outline-none sm:flex-1 sm:py-6 hover:scale-105 focus:scale-105"
@@ -79,7 +79,7 @@
     </div>
 
     <!-- Dimension -->
-    <div class="mt-10" v-if="attributes[1].length > 0">
+    <div v-if="attributes[1].length > 0" class="mt-10">
       <div class="flex items-center justify-between">
         <h3 class="text-sm font-medium text-white">Dimensionen</h3>
         <!--        <a-->
@@ -90,14 +90,14 @@
       </div>
 
       <RadioGroup v-model="selectedDimension" class="mt-4">
-        <RadioGroupLabel class="sr-only"> Choose a size </RadioGroupLabel>
+        <RadioGroupLabel class="sr-only"> Choose a size</RadioGroupLabel>
         <div class="flex flex-row flex-wrap gap-4">
           <RadioGroupOption
-            as="template"
             v-for="(dimension, index) in attributes[1]"
             :key="dimension.type"
-            :value="index"
             v-slot="{ checked }"
+            :value="index"
+            as="template"
           >
             <div
               :class="[
@@ -106,9 +106,9 @@
               ]"
             >
               <RadioGroupLabel as="p">
-                <div>{{ dimension.width.value }}{{ dimension.width.unit }} x</div>
-                <div>{{ dimension.height.value }}{{ dimension.height.unit }} x</div>
-                <div>{{ dimension.depth.value }}{{ dimension.depth.unit }}</div>
+                <span>{{ dimension.width.value }}{{ dimension.width.unit }} x</span>
+                <span>{{ dimension.height.value }}{{ dimension.height.unit }} x</span>
+                <span>{{ dimension.depth.value }}{{ dimension.depth.unit }}</span>
               </RadioGroupLabel>
               <div
                 :class="[
@@ -124,7 +124,7 @@
     </div>
 
     <!-- Volume -->
-    <div class="mt-10" v-if="attributes[2].length > 0">
+    <div v-if="attributes[2].length > 0" class="mt-10">
       <div class="flex items-center justify-between">
         <h3 class="text-sm font-medium text-white">Volumen</h3>
         <!--        <a-->
@@ -135,15 +135,15 @@
       </div>
 
       <RadioGroup v-model="selectedVolume" class="mt-4">
-        <RadioGroupLabel class="sr-only"> Choose a size </RadioGroupLabel>
+        <RadioGroupLabel class="sr-only"> Choose a size</RadioGroupLabel>
         <div class="flex flex-row flex-wrap gap-4">
           <RadioGroupOption
-            as="template"
             v-for="(volume, index) in attributes[2]"
             :key="volume.type"
-            :value="index"
             v-slot="{ active, checked }"
             :title="volume.volume.value + volume.volume.unit"
+            :value="index"
+            as="template"
           >
             <div
               class="shadow-sm text-gray-300 cursor-pointer min-w-[2rem] group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase focus:outline-none sm:flex-1 sm:py-6 hover:scale-105 focus:scale-105"
@@ -167,10 +167,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
-import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
-import { Attributes, SelectedAttributes } from "../types/api";
-import { AttributeType, clothingSizeLabels } from "../types/api-values";
+import {defineComponent} from "@vue/runtime-core";
+import {RadioGroup, RadioGroupLabel, RadioGroupOption} from "@headlessui/vue";
+import {Attributes, SelectedAttributes} from "../types/api";
+import {AttributeType, clothingSizeLabels} from "../types/api-values";
 
 export default defineComponent({
   components: {
@@ -179,7 +179,7 @@ export default defineComponent({
     RadioGroupOption,
   },
   props: {
-    productattributes: { type: Object as () => Attributes, required: true },
+    productattributes: {type: Object as () => Attributes, required: true},
   },
   data() {
     return {
@@ -209,7 +209,7 @@ export default defineComponent({
         selectedAttributes[AttributeType.DIMENSION] =
           this.productattributes[AttributeType.DIMENSION][
             this.selectedDimension
-          ];
+            ];
       }
       if (this.selectedVolume in this.productattributes[AttributeType.VOLUME]) {
         selectedAttributes[AttributeType.VOLUME] =

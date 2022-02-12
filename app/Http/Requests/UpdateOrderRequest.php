@@ -16,7 +16,7 @@ class UpdateOrderRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::user()->is_admin;
+        return Auth::user()->isAdmin;
     }
 
     /**

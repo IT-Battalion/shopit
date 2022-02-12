@@ -1,6 +1,6 @@
 <template>
-  <OrderProcess :order="order" />
-  <OrderInfo class="w-full" :order="order" @refresh="loadOrder" @confirm="confirmStep" @previous="previousStep" />
+  <OrderProcess :order="order"/>
+  <OrderInfo :order="order" class="w-full" @confirm="confirmStep" @previous="previousStep" @refresh="loadOrder"/>
 </template>
 
 <script lang="ts">
@@ -12,11 +12,10 @@ import {endLoad, initLoad} from "../loader";
 import {AxiosResponse} from "axios";
 import {defineComponent} from "vue";
 import {ValueChangeStep} from "../types/api-values";
-import {user} from "../stores/user";
 import {useToast} from "vue-toastification";
 
 export default defineComponent({
-  name: 'User Order Detail',
+  name: "User Order Detail",
   components: {
     OrderProcess,
     OrderInfo,
@@ -41,12 +40,17 @@ export default defineComponent({
       order: {} as Order,
     };
   },
+  computed: {
+    user() {
+      return this.$store.state.userState.user;
+    },
+  },
   methods: {
     async loadOrder() {
       let id = this.route.params.id;
 
       initLoad();
-      let response = await this.$http.get<void, AxiosResponse<Order>>(`/${user.isAdmin ? 'admin' : 'user'}/orders/${id}`);
+      let response = await this.$http.get<void, AxiosResponse<Order>>(`/${this.user?.isAdmin ? "admin" : "user"}/orders/${id}`);
       this.order = response.data;
       endLoad();
     },
@@ -89,7 +93,7 @@ export default defineComponent({
       let channel = this.$echo.private(`app.order.${orderId}`);
 
       for (let eventName of events) {
-        channel.listen(eventName.toString(), (event: {order: Order}) => {
+        channel.listen(eventName.toString(), (event: { order: Order }) => {
           this.order = event.order;
         });
       }
@@ -100,10 +104,10 @@ export default defineComponent({
     },
   },
   watch: {
-      $route(to: RouteLocationNormalizedLoaded, from: RouteLocationNormalizedLoaded) {
-        this.unsubscribe(from.params.id as string);
-        this.subscribe(to.params.id as string);
-      }
+    $route(to: RouteLocationNormalizedLoaded, from: RouteLocationNormalizedLoaded) {
+      this.unsubscribe(from.params.id as string);
+      this.subscribe(to.params.id as string);
+    }
   },
 });
 </script>

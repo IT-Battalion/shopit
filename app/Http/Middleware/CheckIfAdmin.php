@@ -17,7 +17,7 @@ class CheckIfAdmin
      */
     public function handle($request, Closure $next)
     {
-        if (!auth()->check() || !auth()->user()->is_admin)
+        if (!auth()->check() || !auth()->user()->isAdmin)
         {
             throw new NotAnAdminException();
         }

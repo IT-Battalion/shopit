@@ -25,27 +25,29 @@ class ProductRemovedFromShoppingCartEvent implements ShouldBroadcast
      * @return void
      */
     public function __construct(
-        Product                 $product,
-        public array|Collection $selected_attributes,
-        public Money            $subtotal,
-        public Money            $discount,
-        public Money            $tax,
-        public Money            $total,
-        private int|User|null   $user = null)
-    {
+        Product $product,
+        public array|Collection $selectedAttributes,
+        public Money $subtotal,
+        public Money $discount,
+        public Money $tax,
+        public Money $total,
+        private int|User|null $user = null
+    ) {
         if (is_null($user)) {
             $this->user = Auth::user();
-        } else if (is_int($this->user)) {
-            $this->user = User::find($this->user);
+        } else {
+            if (is_int($this->user)) {
+                $this->user = User::find($this->user);
+            }
         }
 
         $this->product = $product->jsonSerialize();
 
-        if (is_array($this->selected_attributes)) {
-            $this->selected_attributes = collect($this->selected_attributes);
+        if (is_array($this->selectedAttributes)) {
+            $this->selectedAttributes = collect($this->selectedAttributes);
         }
 
-        $this->selected_attributes = $this->selected_attributes->map(function ($attribute) {
+        $this->selectedAttributes = $this->selectedAttributes->map(function ($attribute) {
             return $attribute->jsonSerialize();
         });
     }

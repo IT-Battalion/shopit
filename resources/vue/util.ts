@@ -1,10 +1,10 @@
 import router from "./router";
-import {toNumber} from "lodash";
+import {pick, toNumber} from "lodash";
 
 export function redirectToLogin() {
   return router.push({
-    name: 'Login',
-    params: {nextUrl: router.currentRoute.value.fullPath},
+    name: "Login",
+    state: {to: JSON.stringify(pick(router.currentRoute.value, ["query", "hash", "path", "replace", "force", "state", "name", "params"]))},
   });
 }
 

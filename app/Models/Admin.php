@@ -31,7 +31,7 @@ class Admin extends User
         'employeeType',
         'class',
         'lang',
-        'is_admin',
+        'isAdmin',
         'enabled',
         'reason_for_disabling',
         'disabled_at',
@@ -46,7 +46,7 @@ class Admin extends User
         parent::boot();
 
         static::addGlobalScope('admin', function ($query) {
-            $query->where('is_admin', '=', true);
+            $query->where('isAdmin', '=', true);
         });
     }
 

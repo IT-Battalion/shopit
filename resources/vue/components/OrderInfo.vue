@@ -13,27 +13,27 @@
         <p v-if="order.discount !== undefined">
           {{ order.subtotal }}
         </p>
-        <Skeletor :pill="true" class="w-1/4" height="1rem" v-else />
+        <Skeletor v-else :pill="true" class="w-1/4" height="1rem"/>
       </div>
       <div
-        class="flex justify-between my-2 text-base text-gray-200 font-base"
         v-if="order.discount !== '0,-€' && order.discount !== undefined"
+        class="flex justify-between my-2 text-base text-gray-200 font-base"
       >
         <p>Rabatt (Coupon)</p>
         <p v-if="order.discount !== undefined">-{{ order.discount }}</p>
-        <Skeletor :pill="true" class="w-1/4" height="1rem" v-else />
+        <Skeletor v-else :pill="true" class="w-1/4" height="1rem"/>
       </div>
       <div class="flex justify-between my-2 text-base text-gray-200 font-base">
         <p>USt</p>
         <p v-if="order.discount !== undefined">{{ order.tax }}</p>
-        <Skeletor :pill="true" class="w-1/4" height="1rem" v-else />
+        <Skeletor v-else :pill="true" class="w-1/4" height="1rem"/>
       </div>
       <div class="flex justify-between my-2 text-base font-medium text-white">
         <p>Gesamt</p>
         <p v-if="order.discount !== undefined">{{ order.total }}</p>
-        <Skeletor :pill="true" class="w-1/4" height="1rem" v-else />
+        <Skeletor v-else :pill="true" class="w-1/4" height="1rem"/>
       </div>
-      <FileList />
+      <FileList/>
     </div>
     <div class="flex gap-6 mt-12">
       <ButtonField
@@ -42,12 +42,12 @@
         @click="previousStep"
       >
         <template v-slot:text
-          ><span>{{
+        ><span>{{
             showLoading(state.isLoading, "Hoppalla zurück")
           }}</span></template
         >
         <template v-slot:icon
-          ><img src="/img/backBlack.svg" class="w-5 h-5 m-1"
+        ><img class="w-5 h-5 m-1" src="/img/backBlack.svg"
         /></template>
       </ButtonField>
       <ButtonField :iconSpinner="state.isLoading" @click="refresh">
@@ -55,18 +55,20 @@
         <template v-slot:icon>
           <svg
             class="w-5 h-5"
-            xmlns="http://www.w3.org/2000/svg"
             fill="none"
-            viewBox="0 0 24 24"
             stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
           >
             <path
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-            /></svg
-        ></template>
+            />
+          </svg
+          >
+        </template>
       </ButtonField>
       <ButtonField
         v-if="user.isAdmin && order.status !== lastStatus"
@@ -74,29 +76,28 @@
         @click="confirmStep"
       >
         <template v-slot:text
-          ><span>{{
+        ><span>{{
             showLoading(state.isLoading, confirmText)
           }}</span></template
         >
-        <template v-slot:icon><img src="/img/doneBlack.svg" /></template>
+        <template v-slot:icon><img src="/img/doneBlack.svg"/></template>
       </ButtonField>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
-import { Order } from "../types/api";
-import { state } from "../loader";
-import { getZahlwort } from "../util";
+import {defineComponent, PropType} from "vue";
+import {Order} from "../types/api";
+import {state} from "../loader";
+import {getZahlwort} from "../util";
 import FileList from "./FileList.vue";
 import ButtonField from "./ButtonField.vue";
-import { user } from "../stores/user";
-import { OrderStatus } from "../types/api-values";
+import {OrderStatus} from "../types/api-values";
 
 export default defineComponent({
   name: "OrderInfo",
-  components: { ButtonField, FileList },
+  components: {ButtonField, FileList},
   props: {
     order: {
       type: Object as PropType<Order>,
@@ -110,7 +111,6 @@ export default defineComponent({
   },
   data() {
     return {
-      user,
       state,
     };
   },
@@ -137,6 +137,9 @@ export default defineComponent({
     },
   },
   computed: {
+    user() {
+      return this.$store.state.userState.user;
+    },
     confirmText() {
       const labels = ["Bezahlt", "Bestellt", "Erhalten", "Übergeben"];
       if (this.order?.status! in labels) return labels[this.order?.status!];

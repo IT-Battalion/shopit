@@ -1,6 +1,7 @@
-import {ProductCategory, User} from "./api";
+import {ProductCategory} from "./api";
+import {UserState} from "../store/modules/user";
 
 export interface GlobalConfig {
   categories: ProductCategory[]
-  user: User,
+  userState: UserState,
 }

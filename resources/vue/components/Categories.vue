@@ -1,7 +1,7 @@
 <template>
   <div>
     <slot></slot>
-    <TransitionRoot as="template" :show="isOpen">
+    <TransitionRoot :show="isOpen" as="template">
       <Dialog
         as="div"
         class="fixed inset-0 z-30 overflow-hidden"
@@ -55,7 +55,6 @@
                     "
                   >
                     <button
-                      type="button"
                       class="
                         absolute
                         z-10
@@ -65,13 +64,14 @@
                         hover:text-gray-500
                         bottom-5
                       "
+                      type="button"
                       @click="isOpen = false"
                     >
                       <span class="sr-only">Close panel</span>
                       <img
-                        src="/img/Xgray.svg"
-                        class="w-6 h-6"
                         aria-hidden="true"
+                        class="w-6 h-6"
+                        src="/img/Xgray.svg"
                       />
                     </button>
                     <div
@@ -94,13 +94,14 @@
                         @click="isOpen = false"
                       >
                         <span
-                          class="object-scale-down w-8 h-8 mr-4 rounded"
                           :style="'background-color:#' + category.color"
+                          class="object-scale-down w-8 h-8 mr-4 rounded"
                         ></span>
                         <router-link
-                          class="my-1 text-left"
                           :to="'/#' + category.name"
-                          >{{ category.name }}</router-link
+                          class="my-1 text-left"
+                        >{{ category.name }}
+                        </router-link
                         >
                       </div>
                     </div>
@@ -116,14 +117,8 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent } from "vue";
-import {
-  Dialog,
-  DialogOverlay,
-  DialogTitle,
-  TransitionChild,
-  TransitionRoot,
-} from "@headlessui/vue";
+import {defineComponent} from "vue";
+import {Dialog, DialogOverlay, DialogTitle, TransitionChild, TransitionRoot,} from "@headlessui/vue";
 
 export default defineComponent({
   components: {
@@ -143,7 +138,7 @@ export default defineComponent({
     toggle() {
       this.isOpen = !this.isOpen;
     },
-    setOpen(isOpen: boolean) {
+    setShoppingCart(isOpen: boolean) {
       this.isOpen = isOpen;
     },
   },

@@ -1,33 +1,34 @@
-import { AxiosInstance, default as axios } from "axios";
-import Echo from 'laravel-echo';
+import {AxiosInstance, default as axios} from "axios";
+import Echo from "laravel-echo";
 import Pusher from "pusher-js";
-import { GlobalConfig } from "./types/config";
-import { createApp, reactive } from "vue";
+import {GlobalConfig} from "./types/config";
+import {createApp, reactive} from "vue";
 // @ts-ignore
 import App from "./App.vue";
 import router from "./router";
-import { redirectToLogin } from "./util";
-import { MqResponsive, Vue3Mq } from "vue3-mq";
-import { Skeletor } from "vue-skeletor";
-import 'vue-skeletor/dist/vue-skeletor.css';
-import mitt, { Emitter } from "mitt";
-import { UnwrapNestedRefs } from "@vue/reactivity";
+import {redirectToLogin} from "./util";
+import {MqResponsive, Vue3Mq} from "vue3-mq";
+import {Skeletor} from "vue-skeletor";
+import "vue-skeletor/dist/vue-skeletor.css";
+import mitt, {Emitter} from "mitt";
+import {UnwrapNestedRefs} from "@vue/reactivity";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
-import { getCSRFCookie } from "./request";
-import VueGoodTablePlugin from 'vue-good-table-next';
-import 'vue-good-table-next/dist/vue-good-table-next.css'
+import {getCSRFCookie} from "./request";
+import VueGoodTablePlugin from "vue-good-table-next";
+import "vue-good-table-next/dist/vue-good-table-next.css"
+import {key, store} from "./store";
 
 declare global {
-    interface Window {
-        axios: AxiosInstance,
-        pusher: Pusher,
-        echo: Echo,
-        initialConfig: GlobalConfig,
-        // @ts-ignore
-        config: UnwrapNestedRefs<GlobalConfig>,
-        eventBus: Emitter<any>,
-    }
+  interface Window {
+    axios: AxiosInstance,
+    pusher: Pusher,
+    echo: Echo,
+    initialConfig: GlobalConfig,
+    // @ts-ignore
+    config: UnwrapNestedRefs<GlobalConfig>,
+    eventBus: Emitter<any>,
+  }
 }
 
 window.config = reactive(window.initialConfig);
@@ -39,19 +40,19 @@ window.config = reactive(window.initialConfig);
  */
 
 window.axios = axios.create({
-    headers: {
-        'X-Requested-With': 'XMLHttpRequest',
-    },
-    baseURL: '/api'
+  headers: {
+    "X-Requested-With": "XMLHttpRequest",
+  },
+  baseURL: "/api"
 });
 
 window.axios.interceptors.response.use(res => res, err => {
-    if ("response" in err && err.response.status === 401) {
-        redirectToLogin().then(r => console.log(r));
-        return Promise.reject(err);
-    }
-
+  if ("response" in err && err.response.status === 401) {
+    redirectToLogin().then(r => console.log(r));
     return Promise.reject(err);
+  }
+
+  return Promise.reject(err);
 });
 
 /**
@@ -60,17 +61,17 @@ window.axios.interceptors.response.use(res => res, err => {
  * allows your team to easily build robust real-time web applications.
  */
 
-window.pusher = require('pusher-js');
+window.pusher = require("pusher-js");
 
 window.echo = new Echo({
-    broadcaster: 'pusher',
-    key: process.env.MIX_PUSHER_APP_KEY,
-    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-    wsHost: window.location.hostname,
-    wsPort: process.env.MIX_PUSHER_APP_PORT,
-    useTLS: false,
-    forceTLS: false,
-    disableStats: true,
+  broadcaster: "pusher",
+  key: process.env.MIX_PUSHER_APP_KEY,
+  cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+  wsHost: window.location.hostname,
+  wsPort: process.env.MIX_PUSHER_APP_PORT,
+  useTLS: false,
+  forceTLS: false,
+  disableStats: true,
 });
 
 // Init csrf
@@ -107,14 +108,15 @@ window.eventBus = bus;
 
 let createdApp = createApp(App);
 createdApp
-    .use(router)
-    //    .use(i18n)
-    .use(Vue3Mq, { preset: "tailwind" })
-    .use(Toast)
-    .use(VueGoodTablePlugin)
-    .component('mq-responsive', MqResponsive)
-    .component(Skeletor.name, Skeletor)
-    .mount("#app");
+  .use(store, key)
+  .use(router)
+  //    .use(i18n)
+  .use(Vue3Mq, {preset: "tailwind"})
+  .use(Toast)
+  .use(VueGoodTablePlugin)
+  .component("mq-responsive", MqResponsive)
+  .component(Skeletor.name, Skeletor)
+  .mount("#app");
 
 createdApp.config.globalProperties.$http = window.axios;
 createdApp.config.globalProperties.$globalBus = bus;

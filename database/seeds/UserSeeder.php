@@ -26,11 +26,11 @@ class UserSeeder extends Seeder
     public function run()
     {
         User::factory()
-            ->state(["is_admin" => true])
+            ->state(["isAdmin" => true])
             ->count(self::ADMIN_COUNT)
             ->create();
         User::factory()
-            ->state(["is_admin" => false])
+            ->state(["isAdmin" => false])
             ->count(self::NORMAL_USER_COUNT)
             ->create();
     }

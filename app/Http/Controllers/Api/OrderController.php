@@ -95,7 +95,7 @@ class OrderController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
-        if (!$user->is_admin && $user->id !== $order->customer_id) {
+        if (!$user->isAdmin && $user->id !== $order->customer_id) {
             abort(404);
         }
         return response()->json($order);

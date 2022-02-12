@@ -4,15 +4,16 @@
 
 <script lang="ts">
 import {defineComponent} from "@vue/runtime-core";
-import {user} from "../stores/user";
 import Profile from "../components/Profile.vue";
 
 export default defineComponent({
   components: {
     Profile
   },
-  data() {
-    return {user};
+  computed: {
+    user() {
+      return this.$store.state.userState.user!;
+    }
   },
 });
 </script>

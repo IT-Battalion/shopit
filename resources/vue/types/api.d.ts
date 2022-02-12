@@ -6,38 +6,15 @@ export interface LoginRequestData {
   remember: boolean,
 }
 
-export interface LoginResponseData {
+export interface User {
   id: number,
-  redirect_to: string,
   username: string,
   firstname: string,
   lastname: string,
   email: string,
   lang: string,
-  is_admin: boolean,
-}
-
-export interface User {
-  id?: number,
-  username?: string,
-  firstname?: string,
-  lastname?: string,
-  email?: string,
-  lang?: string,
-  is_admin?: boolean,
-  enabled?: boolean,
-  isLoggedIn?: boolean,
-}
-
-export interface UserManagementUser {
-  id?: number,
-  username?: string,
-  firstname?: string,
-  lastname?: string,
-  email?: string,
-  isAdmin?: boolean,
-  detail?: string,
-  enabled?: boolean,
+  isAdmin: boolean,
+  enabled: boolean,
 }
 
 export interface ProductCategory {
@@ -116,13 +93,13 @@ export interface Product {
 
 export interface ShoppingCartDescriptor {
   name: string,
-  selected_attributes: SelectedAttributes,
+  selectedAttributes: SelectedAttributes,
   count: number,
 }
 
 export interface ShoppingCartEntry {
   product: Product,
-  selected_attributes: SelectedAttributes,
+  selectedAttributes: SelectedAttributes,
   count: number,
   price: Money,
 }
@@ -134,12 +111,6 @@ export interface ShoppingCart {
   discount: string,
   tax: string,
   total: string,
-}
-
-export interface AddToShoppingCartRequest {
-  name: string,
-  count: number,
-  selected_attributes: SelectedAttributes,
 }
 
 export interface AddToShoppingCartResponse {
@@ -154,7 +125,7 @@ export interface AddToShoppingCartResponse {
 export interface AddToShoppingCartMessage {
   product: Product,
   count: number,
-  selected_attributes: SelectedAttributes,
+  selectedAttributes: SelectedAttributes,
   subtotal: Money,
   discount: Money,
   tax: Money,
@@ -164,7 +135,7 @@ export interface AddToShoppingCartMessage {
 
 export interface RemoveFromShoppingCartMessage {
   product: Product,
-  selected_attributes: SelectedAttributes,
+  selectedAttributes: SelectedAttributes,
   subtotal: Money,
   discount: Money,
   tax: Money,
@@ -175,7 +146,7 @@ export interface RemoveFromShoppingCartMessage {
 export interface RemoveFromShoppingCartRequest {
   name: string,
   count: number,
-  selected_attributes: SelectedAttributes,
+  selectedAttributes: SelectedAttributes,
 }
 
 export interface ShoppingCartPrices {

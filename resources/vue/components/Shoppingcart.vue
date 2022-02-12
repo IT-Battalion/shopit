@@ -1,7 +1,6 @@
 <template>
   <div>
-    <slot></slot>
-    <TransitionRoot as="template" :show="isOpen">
+    <TransitionRoot :show="isOpen" as="template">
       <Dialog
         as="div"
         class="fixed inset-0 z-30 overflow-hidden"
@@ -41,28 +40,28 @@
                       </DialogTitle>
                       <div class="flex items-center ml-3 h-7">
                         <button
-                          type="button"
                           class="p-2 -m-2 text-gray-200 hover:text-gray-400"
+                          type="button"
                           @click="isOpen = false"
                         >
                           <span class="sr-only">Close panel</span>
-                          <img src="/img/Xgray.svg" class="w-6 h-6" />
+                          <img class="w-6 h-6" src="/img/Xgray.svg"/>
                         </button>
                       </div>
                     </div>
 
                     <div class="mt-8 flow-root">
-                      <ul role="list" class="-my-6" ref="entryList">
-                        <template v-if="!shoppingCartData.changingProducts">
+                      <ul ref="entryList" class="-my-6" role="list">
+                        <template v-if="!shoppingCartState.changingProducts">
                           <li
-                            v-for="(entry, index) in shoppingCartData
+                            v-for="(entry, index) in shoppingCartState
                               .shoppingCart.products"
                             :key="entry.product.id"
                             class="flex py-10"
                           >
                             <ShoppingcartItem
-                              :shopping-cart-entry="entry"
                               :index="index"
+                              :shopping-cart-entry="entry"
                               @linkClick="isOpen = false"
                             />
                           </li>
@@ -79,16 +78,16 @@
                               "
                             >
                               <Skeletor
-                                class="object-cover object-center w-full h-full"
-                                :pill="false"
                                 :circle="false"
+                                :pill="false"
+                                class="object-cover object-center w-full h-full"
                                 size="100%"
                               />
                             </div>
 
                             <div class="flex flex-col flex-1 ml-4">
-                              <Skeletor :pill="true" class="mt-2 mb-4" />
-                              <Skeletor :pill="true" width="80%" />
+                              <Skeletor :pill="true" class="mt-2 mb-4"/>
+                              <Skeletor :pill="true" width="80%"/>
                             </div>
                           </li>
                         </template>
@@ -107,17 +106,18 @@
                       "
                     >
                       <p>Zwischensumme (Netto)</p>
-                      <p v-if="!shoppingCartData.isLoading">
-                        {{ shoppingCartData.shoppingCart.subtotal }}
+                      <p v-if="!shoppingCartState.isLoading">
+                        {{ shoppingCartState.shoppingCart.subtotal }}
                       </p>
                       <Skeletor
+                        v-else
                         :pill="true"
                         class="w-1/4"
                         height="1rem"
-                        v-else
                       />
                     </div>
                     <div
+                      v-if="shoppingCartState.shoppingCart.discount !== '0,-€'"
                       class="
                         flex
                         justify-between
@@ -125,17 +125,16 @@
                         text-base text-gray-200
                         font-base
                       "
-                      v-if="shoppingCartData.shoppingCart.discount !== '0,-€'"
                     >
                       <p>Rabatt (Coupon)</p>
-                      <p v-if="!shoppingCartData.isLoading">
-                        -{{ shoppingCartData.shoppingCart.discount }}
+                      <p v-if="!shoppingCartState.isLoading">
+                        -{{ shoppingCartState.shoppingCart.discount }}
                       </p>
                       <Skeletor
+                        v-else
                         :pill="true"
                         class="w-1/4"
                         height="1rem"
-                        v-else
                       />
                     </div>
                     <div
@@ -148,14 +147,14 @@
                       "
                     >
                       <p>USt</p>
-                      <p v-if="!shoppingCartData.isLoading">
-                        {{ shoppingCartData.shoppingCart.tax }}
+                      <p v-if="!shoppingCartState.isLoading">
+                        {{ shoppingCartState.shoppingCart.tax }}
                       </p>
                       <Skeletor
+                        v-else
                         :pill="true"
                         class="w-1/4"
                         height="1rem"
-                        v-else
                       />
                     </div>
                     <div
@@ -169,14 +168,14 @@
                       "
                     >
                       <p>Gesamt</p>
-                      <p v-if="!shoppingCartData.isLoading">
-                        {{ shoppingCartData.shoppingCart.total }}
+                      <p v-if="!isLoading">
+                        {{ shoppingCartState.shoppingCart.total }}
                       </p>
                       <Skeletor
+                        v-else
                         :pill="true"
                         class="w-1/4"
                         height="1rem"
-                        v-else
                       />
                     </div>
                     <p class="mt-3 text-sm text-gray-500">
@@ -200,6 +199,7 @@
                           shadow-sm
                           hover:bg-indigo-700
                         "
+                        @click="isOpen = false"
                       >
                         Bestellen
                       </router-link>
@@ -215,17 +215,17 @@
                       <p>
                         oder
                         <button
-                          type="button"
                           class="
                             font-medium
                             text-indigo-600
                             hover:text-indigo-500
                           "
+                          type="button"
                           @click="isOpen = false"
                         >
                           weiter einkaufen<span aria-hidden="true">
                             &rarr;</span
-                          >
+                        >
                         </button>
                       </p>
                     </div>
@@ -241,28 +241,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import {
-  Dialog,
-  DialogOverlay,
-  DialogTitle,
-  TransitionChild,
-  TransitionRoot,
-} from "@headlessui/vue";
-import {
-  AddToShoppingCartMessage,
-  RemoveFromShoppingCartMessage,
-} from "../types/api";
+import {defineComponent} from "vue";
+import {Dialog, DialogOverlay, DialogTitle, TransitionChild, TransitionRoot,} from "@headlessui/vue";
+import {AddToShoppingCartMessage, RemoveFromShoppingCartMessage, ShoppingCartEntry,} from "../types/api";
 import ShoppingcartItem from "./ShoppingcartItem.vue";
-import useUser from "../stores/user";
-import {
-  addToCart,
-  loadCart,
-  removeProductFromCart,
-  updatePrices,
-  useShoppingCart,
-} from "../stores/shoppingCart";
-import { useToast } from "vue-toastification";
+import {useToast} from "vue-toastification";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 
 export default defineComponent({
   components: {
@@ -274,35 +258,44 @@ export default defineComponent({
     TransitionRoot,
   },
   data() {
-    const { user } = useUser();
     return {
       isOpen: false,
-      shoppingCartData: useShoppingCart(),
-      scrollBeforeLoad: { top: 0, left: 0 },
-      user,
+      scrollBeforeLoad: {top: 0, left: 0},
     };
+  },
+  computed: {
+    user() {
+      return this.$store.state.userState.user;
+    },
+    shoppingCartState() {
+      console.log(this.$store.state.shoppingCartState);
+      return this.$store.state.shoppingCartState;
+    },
+    ...mapGetters([
+      "isLoading",
+    ]),
   },
   async beforeMount() {
     this.$globalBus.on("shopping-cart.open", this.open);
     this.$globalBus.on("shopping-cart.close", this.close);
     this.$globalBus.on("shopping-cart.toggle", this.toggle);
-    this.$globalBus.on("shopping-cart.set-open", this.setOpen);
+    this.$globalBus.on("shopping-cart.set-open", this.setShoppingCart);
 
     this.$echo
-      .private(`app.user.${this.user.id}.shopping-cart`)
+      .private(`app.user.${this.user?.id}.shopping-cart`)
       .listen(
         "ProductAddedToShoppingCartEvent",
         async (message: AddToShoppingCartMessage) => {
-          await addToCart(async () => {
+          await this.addToCart(async () => {
             return {
               product: message.product,
               count: message.count,
-              selectedAttributes: message.selected_attributes,
-              productPrice: message.price,
-            };
+              selectedAttributes: message.selectedAttributes,
+              price: message.price,
+            } as ShoppingCartEntry;
           });
           useToast().info("Ein Produkt wurde dem Einkaufswagen hinzugefügt.");
-          updatePrices(
+          this.updatePrices(
             message.subtotal,
             message.discount,
             message.tax,
@@ -314,14 +307,14 @@ export default defineComponent({
         "ProductRemovedFromShoppingCartEvent",
         async (message: RemoveFromShoppingCartMessage) => {
           console.log(message);
-          await removeProductFromCart(async () => {
+          await this.removeProductFromCart(async () => {
             return {
               product: message.product,
-              selectedAttributes: message.selected_attributes,
+              selectedAttributes: message.selectedAttributes,
             };
           });
           useToast().info("Ein Produkt wurde aus dem Einkaufswagen entfernt.");
-          updatePrices(
+          this.updatePrices(
             message.subtotal,
             message.discount,
             message.tax,
@@ -331,15 +324,15 @@ export default defineComponent({
       );
   },
   async created() {
-    await loadCart();
+    await this.loadCart();
   },
   async unmounted() {
     this.$globalBus.off("shopping-cart.open", this.open);
     this.$globalBus.off("shopping-cart.close", this.close);
     this.$globalBus.off("shopping-cart.toggle", this.toggle);
-    this.$globalBus.off("shopping-cart.set-open", this.setOpen);
+    this.$globalBus.off("shopping-cart.set-open", this.setShoppingCart);
 
-    this.$echo.leave(`app.user.${this.user.id}.shopping-cart`);
+    this.$echo.leave(`app.user.${this.user?.id}.shopping-cart`);
   },
   methods: {
     open() {
@@ -351,9 +344,17 @@ export default defineComponent({
     toggle() {
       this.isOpen = !this.isOpen;
     },
-    setOpen(isOpen: boolean) {
+    setShoppingCart(isOpen: boolean) {
       this.isOpen = isOpen;
     },
+    ...mapActions([
+      "addToCart",
+      "removeProductFromCart",
+      "loadCart",
+    ]),
+    ...mapMutations([
+      "updatePrices",
+    ])
   },
   watch: {
     $route(_a, _b) {

@@ -18,11 +18,11 @@
       >
         <div class="flex flex-row">
           <LoadingImage
-            src="/img/logo.svg"
             alt="ShopIT Logo"
             class="w-1/4 mb-10 sm:mr-5"
+            src="/img/logo.svg"
           />
-          <LoadingImage src="/img/IT_logo.png" alt="IT Logo" class="w-3/4 mb-10" />
+          <LoadingImage alt="IT Logo" class="w-3/4 mb-10" src="/img/IT_logo.png"/>
         </div>
         <h1
           class="mb-2 text-xl text-white  sm:text-2xl lg:text-4xl whitespace-nowrap"
@@ -34,45 +34,45 @@
         </p>
       </div>
       <form
-        @submit.prevent="onSubmit"
         class="flex flex-col items-center justify-center w-full md:w-1/2"
+        @submit.prevent="onSubmit"
       >
         <InputField
-          labelName="Benutzername"
           v-model:value="form.username"
           :errorMessage="errorUsername"
           class="w-10/12"
+          labelName="Benutzername"
         />
         <InputField
-          labelName="Passwort"
           v-model:value="form.password"
           :errorMessage="errorPassword"
-          type="password"
           class="w-10/12"
+          labelName="Passwort"
+          type="password"
         />
         <div class="flex flex-row items-center justify-center mt-5 mb-10">
           <input
-            type="checkbox"
-            name="stayLogedIn"
             id="stayLogedIn"
-            v-model="stayLogedIn"
+            v-model="stayLoggedIn"
+            name="stayLogedIn"
+            type="checkbox"
           />
-          <label for="stayLogedIn" class="my-auto ml-2 text-center text-white">
+          <label class="my-auto ml-2 text-center text-white" for="stayLogedIn">
             Angemeldet bleiben
           </label>
         </div>
-        <ButtonField buttonType="submit" :iconSpinner="state.isLoading">
+        <ButtonField :iconSpinner="state.isLoading" buttonType="submit">
           <template v-slot:text>
             <span>Anmelden</span>
           </template>
-          <template v-slot:icon><img src="/img/lockBlack.svg" /></template>
+          <template v-slot:icon><img src="/img/lockBlack.svg"/></template>
         </ButtonField>
       </form>
       <div class="w-full my-5 text-center md:my-0">
         <a
           class="text-white underline  opacity-60 hover:opacity-100 decoration-solid"
           href="https://lernenimaufbruch.at/impressum.html"
-          >Impressum
+        >Impressum
         </a>
       </div>
     </div>
@@ -80,28 +80,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent} from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { state } from "../loader";
-import useUser from "../stores/user";
-import userStore from "../stores/user";
+import {defineComponent} from "vue";
+import {useRoute, useRouter} from "vue-router";
+import {state} from "../loader";
 import InputField from "./InputField.vue";
 import ButtonField from "./ButtonField.vue";
 import LoadingImage from "./LoadingImage.vue";
 import {useToast} from "vue-toastification";
-import { AxiosError } from "axios";
+import {AxiosError} from "axios";
 import {HttpStatusCode} from "../types/api-values";
-import {join} from "lodash";
+import {cloneDeep, join} from "lodash";
+import {mapActions} from "vuex";
+import {redirectRouteAfterLogin} from "../router";
 
 export default defineComponent({
-  components: {LoadingImage, InputField, ButtonField },
+  components: {LoadingImage, InputField, ButtonField},
   data() {
     return {
-      stayLogedIn: false,
+      stayLoggedIn: false,
       form: {
         username: "",
         password: "",
-        stayLogedIn: false,
+        stayLoggedIn: false,
       },
       errorUsername: "",
       errorPassword: "",
@@ -110,17 +110,18 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const router = useRouter();
-    const { user, login } = useUser();
     const toast = useToast();
     return {
-      user,
-      login,
-      userStore,
       route,
       router,
       toast,
       state,
     };
+  },
+  computed: {
+    user() {
+      return this.$store.state.userState.user;
+    }
   },
   methods: {
     clearForm() {
@@ -128,23 +129,24 @@ export default defineComponent({
       this.form.password = "";
     },
     async onSubmit() {
-      this.errorUsername = "";
-      this.errorPassword = "";
-      if (this.form.username && this.form.password) {
-        console.log(this.form);
+      let {username, password, stayLoggedIn} = cloneDeep(this.form);
+      username = username.trim();
+      password = password.trim();
 
+      if (username && password) {
         try {
-          await this.login(
-            this.form.username,
-            this.form.password,
-            this.form.stayLogedIn
-          );
-          this.toast.success("Erfolgreich angemeldet.");
-          const next = (this.route.params.nextUrl as string) || "/";
-
-          await this.router.replace({
-            path: next,
+          await this.login({
+            username,
+            password,
+            stayLoggedIn,
           });
+
+          this.toast.success("Erfolgreich angemeldet.");
+          const lastActiveRoute = redirectRouteAfterLogin();
+
+          await this.router.replace(lastActiveRoute);
+
+          this.clearForm();
         } catch (e) {
           if ("response" in (e as AxiosError)) {
             const error = e as AxiosError;
@@ -156,7 +158,7 @@ export default defineComponent({
                 this.errorUsername = this.errorPassword = error.response?.data.message;
                 break;
               case HttpStatusCode.UnprocessableEntity:
-                const errors = error.response?.data.errors as {username: string[], password: string[]};
+                const errors = error.response?.data.errors as { username: string[], password: string[] };
                 this.errorUsername = join(errors.username, ", ");
                 this.errorPassword = join(errors.password, ", ");
                 break;
@@ -166,12 +168,15 @@ export default defineComponent({
           }
         }
       } else {
-        if (!this.form.username)
+        if (!username)
           this.errorUsername = "Der Benutzername ist erforderlich!";
-        if (!this.form.password)
+        if (!password)
           this.errorPassword = "Das Passwort ist erforderlich!";
       }
     },
+    ...mapActions([
+      "login",
+    ]),
   },
 });
 </script>

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use LdapRecord\Laravel\Auth\ListensForLdapBindFailure;
@@ -25,20 +24,12 @@ class LoginController extends Controller
     use ListensForLdapBindFailure;
 
     /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected string $redirectTo = RouteServiceProvider::HOME;
-
-    /**
      * Create a new controller instance.
      *
      * @return void
      */
     public function __construct()
     {
-
     }
 
     public function login(LoginRequest $request): JsonResponse
@@ -55,7 +46,6 @@ class LoginController extends Controller
         }
 
         return response()->json([
-            'redirect_to' => $this->redirectTo,
             ...Auth::user()->only([
                 'id',
                 'username',
@@ -63,7 +53,7 @@ class LoginController extends Controller
                 'lastname',
                 'email',
                 'lang',
-                'is_admin',
+                'isAdmin',
                 'enabled',
             ]),
         ]);

@@ -24,11 +24,11 @@ Broadcast::channel('app.user.{id}.shopping-cart', function (User $user, $id) {
 });
 
 Broadcast::channel('app.order.{order}', function (User $user, Order $order) {
-    return $user->id === $order->customer_id || $user->is_admin;
+    return $user->id === $order->customer_id || $user->isAdmin;
 });
 
 Broadcast::channel('app.admin.orders', function (User $user) {
-    return $user->is_admin;
+    return $user->isAdmin;
 });
 
 Broadcast::channel('app.user.{id}.orders', function (User $user, int $id) {

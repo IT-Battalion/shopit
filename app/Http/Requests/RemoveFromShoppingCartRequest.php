@@ -27,15 +27,15 @@ class RemoveFromShoppingCartRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'exists:products'],
             'count' => ['required', 'numeric', 'gte:-1'],
-            'selected_attributes' => ['required', 'array'],
-            'selected_attributes.*.id' => ['numeric'],
-            'selected_attributes.*.type' => ['numeric', 'between:0,3'],
+            'selectedAttributes' => ['required', 'array'],
+            'selectedAttributes.*.id' => ['numeric'],
+            'selectedAttributes.*.type' => ['numeric', 'between:0,3'],
         ];
     }
 
     public function getSelectedAttributes()
     {
-        return collect($this['selected_attributes'])
+        return collect($this['selectedAttributes'])
             ->mapWithKeys(function ($selectedAttribute) {
                 return [
                     $selectedAttribute['type'] => $selectedAttribute['id'],

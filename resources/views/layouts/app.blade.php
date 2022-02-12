@@ -8,9 +8,6 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0,initial-scale=1.0, height=device-height">
     <title>ShopIT</title>
     <link rel="stylesheet" type="text/css" href="/css/vendor.css">
-    <script src="/js/vendor.js" defer></script>
-    <script src="/js/manifest.js" defer></script>
-    <script src="/js/app.js" defer></script>
     <style>
         html,
         body {
@@ -19,10 +16,13 @@
 
     </style>
     @yield('head-content')
+    <script src="/js/vendor.js" defer></script>
+    <script src="/js/manifest.js" defer></script>
+    <script src="/js/app.js" defer></script>
 </head>
 
 <body>
-    <div id="app"></div>
+<div id="app"></div>
 </body>
 
 </html>

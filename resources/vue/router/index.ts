@@ -1,6 +1,12 @@
-import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
-import {user} from "../stores/user";
+import {createRouter, createWebHistory, RouteLocationRaw, RouteRecordRaw} from "vue-router";
 import {endLoad, endLoad as complete, initLoad, onLoaded, reset} from "../loader";
+import {store} from "../store";
+import {pick} from "lodash";
+
+export function redirectRouteAfterLogin(): RouteLocationRaw {
+  const lastActiveRoute = history.state.to!;
+  return lastActiveRoute ? JSON.parse(lastActiveRoute) : {name: "Home"};
+}
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -253,31 +259,6 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!user.isLoggedIn) {
-      next({
-        name: "Login",
-        params: { nextUrl: to.fullPath }
-      });
-      return;
-    }
-
-    if (to.matched.some(record => record.meta.requiresAdmin) && !user.isAdmin) {
-      next(false);
-      return;
-    }
-  }
-  if (to.matched.some(record => record.meta.redirectWhenAuthenticated)
-    && user.isLoggedIn) {
-    next({
-      name: to.meta.redirectTo as string,
-    });
-    return;
-  }
-  next();
-});
-
-router.beforeEach((to, from, next) => {
   reset();
   const showLoader = "initLoad" in to.meta ? to.meta.initLoad : true;
   if (showLoader) {
@@ -285,7 +266,37 @@ router.beforeEach((to, from, next) => {
   }
 
   next();
-})
+});
+
+router.beforeEach(async (to, from, next) => {
+  await (store as any).restored;
+  next();
+});
+
+router.beforeEach((to, from, next) => {
+  const {user, isLoggedIn} = store.state.userState;
+
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!isLoggedIn) {
+      router.push({
+        name: "Login",
+        state: {to: JSON.stringify(pick(to, ["query", "hash", "path", "replace", "force", "state", "name", "params"]))},
+      }).then(next);
+      return;
+    }
+
+    if (to.matched.some(record => record.meta.requiresAdmin) && !user?.isAdmin) {
+      next(false);
+      return;
+    }
+  }
+  if (to.matched.some(record => record.meta.redirectWhenAuthenticated)
+    && isLoggedIn) {
+    next(redirectRouteAfterLogin());
+    return;
+  }
+  next();
+});
 
 router.afterEach(route => {
   const showLoader = "initLoad" in route.meta ? route.meta.initLoad : true;

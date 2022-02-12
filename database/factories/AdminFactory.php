@@ -24,7 +24,7 @@ class AdminFactory extends UserFactory
     public function definition(): array
     {
         return array_merge(parent::definition(), [
-            'is_admin' => true,
+            'isAdmin' => true,
         ]);
     }
 }

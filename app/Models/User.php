@@ -34,7 +34,7 @@ class User extends Authenticatable implements LdapAuthenticatable
         'firstname',
         'lastname',
         'lang',
-        'is_admin',
+        'isAdmin',
         'enabled',
         'reason_for_disabling',
         'disabled_at',
@@ -62,7 +62,7 @@ class User extends Authenticatable implements LdapAuthenticatable
      * @var array
      */
     protected $casts = [
-        'is_admin' => 'bool',
+        'isAdmin' => 'bool',
         'enabled' => 'bool',
     ];
 
@@ -107,7 +107,7 @@ class User extends Authenticatable implements LdapAuthenticatable
 
     public function scopeNotAdmin(Builder $query): Builder
     {
-        return $query->where('is_admin', false);
+        return $query->where('isAdmin', false);
     }
 
     public function banWith(Admin $admin)
@@ -131,7 +131,7 @@ class User extends Authenticatable implements LdapAuthenticatable
 
     public function getBannableAttribute(): bool
     {
-        return !$this->is_admin;
+        return !$this->isAdmin;
     }
 
     public function shopping_cart(): BelongsToMany

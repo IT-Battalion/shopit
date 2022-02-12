@@ -22,16 +22,17 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     /**
      * @inheritdoc
      */
-    public function getShoppingCart(User $user = null) {
-        $user = $user ?? Auth::user();
+    public function getShoppingCart(User $user = null)
+    {
+        $user_id = $user->id ?? Auth::id();
 
         /** @var User $user */
-        $user = $user->with([
+        $user = User::with([
             'shopping_cart.pivot.productClothingAttribute',
             'shopping_cart.pivot.productDimensionAttribute',
             'shopping_cart.pivot.productVolumeAttribute',
             'shopping_cart.pivot.productColorAttribute',
-        ])->firstOrFail();
+        ])->where('id', $user_id)->firstOrFail();
         $shoppingCart = $user->shopping_cart;
 
         $shoppingCartProducts = $shoppingCart
@@ -40,7 +41,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                     'product' => $product->jsonPreview(),
                     'count' => $product->pivot->count,
                     'price' => $product->gross_price->mul($product->pivot->count),
-                    'selected_attributes' => $product->pivot->product_attributes,
+                    'selectedAttributes' => $product->pivot->product_attributes,
                 ];
             });
 
@@ -53,6 +54,49 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         ];
 
         return $shoppingCart;
+    }
+
+    /**
+     * @param User|null $user
+     * @return array
+     */
+    #[ArrayShape([
+        'subtotal' => "\App\Types\Money",
+        'tax' => "\App\Types\Money",
+        'discount' => "\App\Types\Money",
+        'total' => "\App\Types\Money"
+    ])]
+    public function calculateShoppingCartPrice(User $user = null): array
+    {
+        $user = $user ?? Auth::user();
+        $discount = $user?->coupon->discount ?? '0';
+
+        $taxPrices = $user->shopping_cart()->lazy()->reduce(function (array $carry, Product $product) {
+            if (!isset($carry[$product->tax])) {
+                $carry[$product->tax] = new Money('0');
+            }
+            $carry[$product->tax] = $carry[$product->tax]->add($product->price->mul($product->pivot->count));
+            return $carry;
+        }, []);
+
+        $subtotal = new Money('0');
+        $totalTax = new Money('0');
+
+        foreach ($taxPrices as $tax => $price) {
+            $subtotal = $subtotal->add($price);
+            $totalTax = $totalTax->add($price->mul($tax, '1'));
+        }
+
+        $totalDiscount = $subtotal->mul($discount);
+        $totalTax = $totalTax->mul(bcsub('1', $discount));
+        $total = $subtotal->sub($totalDiscount)->add($totalTax);
+
+        return [
+            'subtotal' => $subtotal,
+            'tax' => $totalTax,
+            'discount' => $totalDiscount,
+            'total' => $total,
+        ];
     }
 
     /**
@@ -76,7 +120,10 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         }
 
         if ($this->hasProductInShoppingCart($product, $attributes, user: $user)) {
-            self::getProductInShoppingCartQuery($product, $attributes, $user)->withPivot('count')->increment('count', $amount);
+            self::getProductInShoppingCartQuery($product, $attributes, $user)->withPivot('count')->increment(
+                'count',
+                $amount
+            );
             self::getProductInShoppingCartQuery($product, $attributes, $user)->wherePivot('count', '<=', 0)->detach();
         } else {
             self::addProductToShoppingCart($amount, $attributes, $user, $product);
@@ -88,8 +135,12 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     /**
      * @throws IllegalArgumentException
      */
-    public function hasProductInShoppingCart(Product $product, Collection $attributes, int $amount = -1, User $user = null): bool
-    {
+    public function hasProductInShoppingCart(
+        Product $product,
+        Collection $attributes,
+        int $amount = -1,
+        User $user = null
+    ): bool {
         $user = $user ?? Auth::user();
 
         if ($amount < -1) {
@@ -106,8 +157,11 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         return $this->getAmountOfProduct($product, $attributes) === $amount;
     }
 
-    private static function getProductInShoppingCartQuery(Product $product, Collection $attributes, User $user = null): BelongsToMany
-    {
+    private static function getProductInShoppingCartQuery(
+        Product $product,
+        Collection $attributes,
+        User $user = null
+    ): BelongsToMany {
         $user = $user ?? Auth::user();
 
         $shopping_cart = $user->shopping_cart();
@@ -196,7 +250,10 @@ class ShoppingCartService implements ShoppingCartServiceInterface
             return 0;
         }
 
-        self::getProductInShoppingCartQuery($product, $attributes, $user)->withPivot('count')->decrement('count', $amount);
+        self::getProductInShoppingCartQuery($product, $attributes, $user)->withPivot('count')->decrement(
+            'count',
+            $amount
+        );
         self::getProductInShoppingCartQuery($product, $attributes, $user)->wherePivot('count', '<=', 0)->detach();
 
         return self::getAmountOfProduct($product, $attributes, $user);
@@ -225,7 +282,10 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                     self::getProductInShoppingCartQuery($product, $attributes, $user)->detach($product);
                 }
 
-                self::getProductInShoppingCartQuery($product, $attributes, $user)->updateExistingPivot($product, ['count' => $amount]);
+                self::getProductInShoppingCartQuery($product, $attributes, $user)->updateExistingPivot(
+                    $product,
+                    ['count' => $amount]
+                );
             } else {
                 if ($amount === 0) {
                     return;
@@ -247,19 +307,26 @@ class ShoppingCartService implements ShoppingCartServiceInterface
             ->groupBy(function (Product $product) {
                 return $product->tax;
             })
-            ->reduce(function (Money $carry, Collection $products, string $tax) use ($includeCoupon, $includeTax, $discount) {
-                $price = $products->reduce(function (Money $carry, Product $product) {
-                    $netto = $product->price;
-                    $amount = $product->pivot->count;
-                    return $carry->add($netto->mul($amount));
-                }, new Money('0'));
+            ->reduce(
+                function (Money $carry, Collection $products, string $tax) use (
+                    $includeCoupon,
+                    $includeTax,
+                    $discount
+                ) {
+                    $price = $products->reduce(function (Money $carry, Product $product) {
+                        $netto = $product->price;
+                        $amount = $product->pivot->count;
+                        return $carry->add($netto->mul($amount));
+                    }, new Money('0'));
 
-                if ($includeTax) {
-                    $price = $price->mul(bcadd('1', $tax));
-                }
+                    if ($includeTax) {
+                        $price = $price->mul(bcadd('1', $tax));
+                    }
 
-                return $carry->add($price);
-            }, new Money('0'));
+                    return $carry->add($price);
+                },
+                new Money('0')
+            );
 
         if ($includeCoupon) {
             $price = $price->mul(bcsub('1', $discount));
@@ -313,46 +380,13 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         return $discountPrice;
     }
 
-    /**
-     * @param User|null $user
-     * @return array
-     */
-    #[ArrayShape(['subtotal' => "\App\Types\Money", 'tax' => "\App\Types\Money", 'discount' => "\App\Types\Money", 'total' => "\App\Types\Money"])]
-    public function calculateShoppingCartPrice(User $user = null): array
-    {
-        $user = $user ?? Auth::user();
-        $discount = $user?->coupon->discount ?? '0';
-
-        $taxPrices = $user->shopping_cart()->lazy()->reduce(function (array $carry, Product $product) {
-            if (!isset($carry[$product->tax])) {
-                $carry[$product->tax] = new Money('0');
-            }
-            $carry[$product->tax] = $carry[$product->tax]->add($product->price->mul($product->pivot->count));
-            return $carry;
-        }, []);
-
-        $subtotal = new Money('0');
-        $totalTax = new Money('0');
-
-        foreach ($taxPrices as $tax => $price) {
-            $subtotal = $subtotal->add($price);
-            $totalTax = $totalTax->add($price->mul($tax, '1'));
-        }
-
-        $totalDiscount = $subtotal->mul($discount);
-        $totalTax = $totalTax->mul(bcsub('1', $discount));
-        $total = $subtotal->sub($totalDiscount)->add($totalTax);
-
-        return [
-            'subtotal' => $subtotal,
-            'tax' => $totalTax,
-            'discount' => $totalDiscount,
-            'total' => $total,
-        ];
-    }
-
-    public function calculatePriceOfProduct(Product $product, Collection $attributes, bool $includeTaxes, bool $includeCoupon, User $user = null): Money
-    {
+    public function calculatePriceOfProduct(
+        Product $product,
+        Collection $attributes,
+        bool $includeTaxes,
+        bool $includeCoupon,
+        User $user = null
+    ): Money {
         $user = $user ?? Auth::user();
 
         $product_price = $product->price;

@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('firstname');
             $table->string('lastname');
             $table->string('lang')->default('de-AT');
-            $table->boolean('is_admin')->default(false);
+            $table->boolean('isAdmin')->default(false);
             $table->boolean('enabled')->default(true);
             $table->string('reason_for_disabling')->nullable();
             $table->timestamp('disabled_at')->index()->nullable();

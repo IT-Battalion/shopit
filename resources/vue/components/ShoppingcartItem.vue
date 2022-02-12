@@ -13,8 +13,8 @@
       @click="clickedLink"
     >
       <LoadingImage
-        :src="'/product-image/' + entry.product.thumbnail.id"
         :alt="entry.product.name"
+        :src="'/product-image/' + entry.product.thumbnail.id"
         class="object-cover object-center w-full h-full"
       />
     </router-link>
@@ -35,15 +35,15 @@
           {{ entry.price }}
         </p>
       </div>
-      <Attributes :selected-attributes="entry.selected_attributes" />
+      <Attributes :selected-attributes="entry.selectedAttributes"/>
     </div>
     <div class="flex items-end justify-between flex-1 text-sm">
       <p class="text-gray-200">{{ count }} Stück</p>
 
       <div class="flex">
         <button
-          type="button"
           class="font-medium text-indigo-600 hover:text-indigo-500"
+          type="button"
           @click="remove"
         >
           Entfernen
@@ -54,18 +54,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
-import { PropType } from "vue";
-import {
-  SelectedAttributes,
-  ShoppingCartDescriptor,
-  ShoppingCartEntry,
-} from "../types/api";
+import {defineComponent} from "@vue/runtime-core";
+import {PropType} from "vue";
+import {ShoppingCartDescriptor, ShoppingCartEntry,} from "../types/api";
 import LoadingImage from "./LoadingImage.vue";
 import Attributes from "./Attributes.vue";
-import { removeFromShoppingCart } from "../request";
-import {removeIndexFromCart, updatePrices} from "../stores/shoppingCart";
+import {removeFromShoppingCart} from "../request";
 import {toInteger} from "lodash";
+import {mapActions, mapMutations} from "vuex";
 
 export default defineComponent({
   props: {
@@ -89,18 +85,18 @@ export default defineComponent({
     async remove() {
       let descriptor: ShoppingCartDescriptor = {
         name: this.entry.product.name,
-        selected_attributes: this.entry.selected_attributes,
+        selectedAttributes: this.entry.selectedAttributes,
         count: this.count,
       };
       try {
-        await removeIndexFromCart(async () => {
+        await this.removeIndexFromCart(async () => {
           const response = await removeFromShoppingCart(
-          descriptor.name,
-          descriptor.count,
-          descriptor.selected_attributes
-        );
+            descriptor.name,
+            descriptor.count,
+            descriptor.selectedAttributes
+          );
           let prices = response.data;
-          updatePrices(prices.subtotal, prices.discount, prices.tax, prices.total);
+          this.updatePrices(prices.subtotal, prices.discount, prices.tax, prices.total);
           return toInteger(this.index);
         });
       } catch (e) {
@@ -110,7 +106,13 @@ export default defineComponent({
     clickedLink() {
       this.$emit("linkClick");
     },
+    ...mapMutations([
+      "updatePrices",
+    ]),
+    ...mapActions([
+      "removeIndexFromCart",
+    ]),
   },
-  components: { Attributes, LoadingImage },
+  components: {Attributes, LoadingImage},
 });
 </script>

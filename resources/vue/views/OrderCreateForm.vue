@@ -4,13 +4,13 @@
   </h2>
   <div class="w-full md:w-1/2">
     <ul role="list">
-      <template v-if="!shoppingCartData.changingProducts">
+      <template v-if="!shoppingCartState.changingProducts">
         <li
-          v-for="(entry, index) in shoppingCartData.shoppingCart.products"
+          v-for="(entry, index) in shoppingCartState.shoppingCart.products"
           :key="entry.product.id"
           class="flex px-6 py-10 my-12 sm:bg-elevatedDark rounded-3xl"
         >
-          <ShoppingcartItem :shopping-cart-entry="entry" :index="index" />
+          <ShoppingcartItem :index="index" :shopping-cart-entry="entry"/>
         </li>
       </template>
       <template v-else>
@@ -21,16 +21,16 @@
         >
           <div class="flex-shrink-0 w-24 overflow-hidden rounded-md h-28">
             <Skeletor
-              class="object-cover object-center w-full h-full"
-              :pill="false"
               :circle="false"
+              :pill="false"
+              class="object-cover object-center w-full h-full"
               size="100%"
             />
           </div>
 
           <div class="flex flex-col flex-1 ml-4">
-            <Skeletor :pill="true" class="mt-2 mb-4" />
-            <Skeletor :pill="true" width="80%" />
+            <Skeletor :pill="true" class="mt-2 mb-4"/>
+            <Skeletor :pill="true" width="80%"/>
           </div>
         </li>
       </template>
@@ -39,33 +39,33 @@
       <div class="flex justify-between my-2 text-base text-gray-200 font-base">
         <p>Zwischensumme (Netto)</p>
         <p v-if="!state.isLoading">
-          {{ shoppingCartData.shoppingCart.subtotal }}
+          {{ shoppingCartState.shoppingCart.subtotal }}
         </p>
-        <Skeletor :pill="true" class="w-1/4" height="1rem" v-else />
+        <Skeletor v-else :pill="true" class="w-1/4" height="1rem"/>
       </div>
       <div
+        v-if="shoppingCartState.shoppingCart.discount !== '0,-€'"
         class="flex justify-between my-2 text-base text-gray-200 font-base"
-        v-if="shoppingCartData.shoppingCart.discount !== '0,-€'"
       >
         <p>Rabatt (Coupon)</p>
         <p v-if="!state.isLoading">
-          -{{ shoppingCartData.shoppingCart.discount }}
+          -{{ shoppingCartState.shoppingCart.discount }}
         </p>
-        <Skeletor :pill="true" class="w-1/4" height="1rem" v-else />
+        <Skeletor v-else :pill="true" class="w-1/4" height="1rem"/>
       </div>
       <div class="flex justify-between my-2 text-base text-gray-200 font-base">
         <p>USt</p>
-        <p v-if="!state.isLoading">{{ shoppingCartData.shoppingCart.tax }}</p>
-        <Skeletor :pill="true" class="w-1/4" height="1rem" v-else />
+        <p v-if="!state.isLoading">{{ shoppingCartState.shoppingCart.tax }}</p>
+        <Skeletor v-else :pill="true" class="w-1/4" height="1rem"/>
       </div>
       <div class="flex justify-between my-2 text-base font-medium text-white">
         <p>Gesamt</p>
-        <p v-if="!state.isLoading">{{ shoppingCartData.shoppingCart.total }}</p>
-        <Skeletor :pill="true" class="w-1/4" height="1rem" v-else />
+        <p v-if="!state.isLoading">{{ shoppingCartState.shoppingCart.total }}</p>
+        <Skeletor v-else :pill="true" class="w-1/4" height="1rem"/>
       </div>
       <div class="flex flex-col my-12 space-y-2">
-        <label for="coupon" class="font-medium text-gray-200 select-none"
-          >Coupon Code</label
+        <label class="font-medium text-gray-200 select-none" for="coupon"
+        >Coupon Code</label
         >
         <form
           class="flex flex-row items-center"
@@ -73,10 +73,7 @@
         >
           <input
             id="coupon"
-            type="text"
-            v-model="shoppingCartData.shoppingCart.coupon"
-            :readonly="applied"
-            :disabled="shoppingCartData.isLoading"
+            v-model="shoppingCartState.shoppingCart.coupon"
             :class="
               state.isLoading
                 ? 'border-gray-300 text-gray-400 bg-elevatedDark cursor-not-allowed'
@@ -84,34 +81,37 @@
                 ? 'border-emerald-300 text-emerald-400 bg-elevatedDark cursor-not-allowed'
                 : 'border-indigo-500 text-white bg-elevatedDark border focus:ring-2 focus:ring-elevatedDark'
             "
+            :disabled="shoppingCartState.isLoading"
+            :readonly="applied"
             class="w-full px-4 py-2 ml-0 placeholder-green-600 border rounded-lg  focus:outline-none focus:ring-2 focus:ring-indigo-200"
+            type="text"
           />
           <button
-            class="w-8 h-8 ml-3"
             v-show="!applied && !state.isLoading"
+            class="w-8 h-8 ml-3"
             title="Coupon Code verifizieren"
           >
             <img
-              src="/img/done.svg"
               alt="Coupon Code verifizieren"
               class="w-8 h-8"
+              src="/img/done.svg"
               type="submit"
             />
           </button>
           <Spinner
+            :loading="state.isLoading"
             class="w-6 h-6 m-1 ml-4"
             color="#fff"
-            :loading="state.isLoading"
           />
           <button
-            class="w-6 h-6 my-1 ml-5"
             v-show="applied && !state.isLoading"
+            class="w-6 h-6 my-1 ml-5"
             title="Coupon Code entfernen"
           >
             <img
-              src="/img/X.svg"
               alt="Coupon Code entfernen"
               class="w-4 h-4"
+              src="/img/X.svg"
               type="submit"
             />
           </button>
@@ -119,27 +119,27 @@
       </div>
       <div class="flex flex-row items-center justify-center my-3">
         <input
-          type="checkbox"
-          name="agb"
           id="agb"
-          class="checked:bg-highlighted"
           v-model="agb"
+          class="checked:bg-highlighted"
+          name="agb"
+          type="checkbox"
         />
-        <label for="agb" class="my-auto ml-2 text-center text-gray-200">
+        <label class="my-auto ml-2 text-center text-gray-200" for="agb">
           Hiermit stimme ich den AGB zu.
         </label>
       </div>
       <div class="flex justify-center mt-6">
         <button
-          @click="order()"
-          :disabled="!agb"
           :class="
             agb
               ? 'bg-highlighted hover:bg-indigo-700'
               : 'cursor-not-allowed bg-slate-400'
           "
-          class="flex items-center justify-center px-6 py-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm "
+          :disabled="!agb"
           :title="!agb ? 'Sie müssen zuerst den AGB zustimmen' : ''"
+          class="flex items-center justify-center px-6 py-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm "
+          @click="order()"
         >
           Bestellen
         </button>
@@ -149,19 +149,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import ShoppingcartItem from "../components/ShoppingcartItem.vue";
-import {Order, ShoppingCart, ShoppingCartPrices} from "../types/api";
-import { AxiosResponse } from "axios";
-import { useRouter } from "vue-router";
-import { endLoad, initLoad, state } from "../loader";
-import { useToast } from "vue-toastification";
+import {ShoppingCartPrices} from "../types/api";
+import {AxiosResponse} from "axios";
+import {useRouter} from "vue-router";
+import {endLoad, initLoad, state} from "../loader";
+import {useToast} from "vue-toastification";
 import Spinner from "@/components/Spinner.vue";
-import {
-  loadCart,
-  shoppingCartData,
-  updatePrices,
-} from "../stores/shoppingCart";
+import {mapMutations} from "vuex";
 
 export default defineComponent({
   components: {
@@ -170,38 +166,37 @@ export default defineComponent({
   },
   data() {
     return {
-      shoppingCartData,
       state,
       agb: false,
       applied: false,
     };
   },
+  computed: {
+    shoppingCartState() {
+      console.debug(this.$store.state.shoppingCartState);
+      return this.$store.state.shoppingCartState;
+    },
+  },
   async mounted() {
     await this.loadCart();
   },
   methods: {
-    async loadCart() {
-      initLoad();
-      await loadCart();
-      this.applied = this.shoppingCartData.shoppingCart.coupon.length !== 0;
-      endLoad();
-    },
     async addCoupon() {
-      if (this.shoppingCartData.changingCoupon) return;
+      if (this.shoppingCartState.changingCoupon) return;
 
-      this.shoppingCartData.changingCoupon = true;
+      this.changeCoupon();
       initLoad();
 
       try {
         let response: AxiosResponse<ShoppingCartPrices> = await this.$http.post(
           "/user/shopping-cart/coupon",
           {
-            code: this.shoppingCartData.shoppingCart.coupon,
+            code: this.shoppingCartState.shoppingCart.coupon,
           }
         );
         let data = response.data;
 
-        updatePrices(data.subtotal, data.discount, data.tax, data.total);
+        this.updatePrices(data.subtotal, data.discount, data.tax, data.total);
         this.toast.success("Der Coupon Code wurde erfolgreich hinzugefügt!");
 
         this.applied = true;
@@ -221,13 +216,13 @@ export default defineComponent({
           this.toast.error(e.errorMessage);
         }
       }
-      this.shoppingCartData.changingCoupon = false;
+      this.couponChanged();
       endLoad();
     },
     async resetCoupon() {
-      if (this.shoppingCartData.changingCoupon) return;
+      if (this.shoppingCartState.changingCoupon) return;
 
-      this.shoppingCartData.changingCoupon = true;
+      this.changeCoupon();
       initLoad();
 
       try {
@@ -236,7 +231,7 @@ export default defineComponent({
         );
         let data = response.data;
 
-        updatePrices(data.subtotal, data.discount, data.tax, data.total);
+        this.updatePrices(data.subtotal, data.discount, data.tax, data.total);
         this.toast.warning("Der Coupon Code wurde entfernt!");
         this.applied = false;
 
@@ -245,31 +240,40 @@ export default defineComponent({
         this.toast.error(e);
       }
       this.$globalBus.emit("shopping-cart.end-load");
+      this.couponChanged();
       endLoad();
-      this.shoppingCartData.changingCoupon = false;
     },
     async order() {
       initLoad();
       try {
-        let response: AxiosResponse<{order_id: number}> = await this.$http.post(
+        let response: AxiosResponse<{ order_id: number }> = await this.$http.post(
           "/user/orders"
         );
 
-        this.toast.success('Die Bestellung war erfolgreich');
+        this.toast.success("Die Bestellung war erfolgreich");
 
         let navigation = this.router.replace({
           name: "Order Detail",
-          params: { id: response.data.order_id },
+          params: {id: response.data.order_id},
         });
 
-        let loadShoppingCart = loadCart();
+        let loadShoppingCart = await this.loadCart();
 
-        Promise.all([navigation, loadShoppingCart]).then();
+        await Promise.all([navigation, loadShoppingCart]);
       } catch (e) {
-        this.toast.error('Die Bestellung konnte nicht erfolgreich durchgeführt werden.');
+        this.toast.error("Die Bestellung konnte nicht erfolgreich durchgeführt werden.");
       }
       endLoad();
     },
+    async loadCart() {
+      await this.$store.dispatch("loadCart");
+      this.applied = !!this.$store.state.shoppingCartState.shoppingCart?.coupon?.length
+    },
+    ...mapMutations([
+      "updatePrices",
+      "changeCoupon",
+      "couponChanged",
+    ]),
   },
   setup() {
     let router = useRouter();

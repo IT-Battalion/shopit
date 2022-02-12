@@ -20,7 +20,7 @@
         :to="{ name: 'Products' }"
         class="inline-flex items-center text-2xl font-semibold text-white"
       >
-        <img src="/img/logo.svg" class="w-16 mr-4" alt="logo-img"/>
+        <img alt="logo-img" class="w-16 mr-4" src="/img/logo.svg"/>
         <span>ShopIT</span>
       </router-link>
       <div>
@@ -46,11 +46,11 @@
                   :src="profilePicture"
                   class="object-scale-down h-12 mr-4 bg-gray-800 rounded-full"
                 />
-                {{ user.name.value }}
+                {{ name }}
                 <img
-                  src="/img/dropdown.svg"
                   alt=""
                   class="object-scale-down ml-4 h-7"
+                  src="/img/dropdown.svg"
                 />
               </MenuButton>
 
@@ -87,16 +87,16 @@
                       "
                     >
                       <span class="text-white block px-5 py-4 text-sm"
-                        ><img
-                          src="/img/profile.svg"
-                          class="object-scale-down mr-4 h-7"
-                        />Profil</span
+                      ><img
+                        class="object-scale-down mr-4 h-7"
+                        src="/img/profile.svg"
+                      />Profil</span
                       >
                     </MenuItem>
                   </router-link>
                   <router-link
+                    v-if="this.isAdmin"
                     :to="{ name: 'Admin' }"
-                    v-if="this.user.isAdmin.value"
                   >
                     <MenuItem
                       class="
@@ -107,10 +107,10 @@
                       "
                     >
                       <span class="text-white block px-5 py-4 text-sm"
-                        ><img
-                          src="/img/wheel-chair.svg"
-                          class="object-scale-down mr-4 h-7"
-                        />Admin Panel</span
+                      ><img
+                        class="object-scale-down mr-4 h-7"
+                        src="/img/wheel-chair.svg"
+                      />Admin Panel</span
                       >
                     </MenuItem>
                   </router-link>
@@ -124,10 +124,10 @@
                   >
                     <span
                       class="text-white block px-5 py-4 text-sm cursor-pointer"
-                      @click="logout()"
+                      @click="logout"
                     ><img
-                      src="/img/logout.svg"
                       class="object-scale-down mr-3 ml-1 h-7"
+                      src="/img/logout.svg"
                     />Abmelden</span
                     >
                   </MenuItem>
@@ -136,14 +136,12 @@
             </Menu>
           </li>
           <li class="flex flex-row items-center justify-center px-2 py-1 ml-5">
-            <Shoppingcart>
-              <img
-                src="/img/shoppingCart.svg"
-                alt=""
-                class="object-scale-down h-8 mr-4 cursor-pointer"
-                @click="setOpen(true)"
-              />
-            </Shoppingcart>
+            <img
+              alt=""
+              class="object-scale-down h-8 mr-4 cursor-pointer"
+              src="/img/shoppingCart.svg"
+              @click="setShoppingCart(true)"
+            />
           </li>
         </ul>
       </div>
@@ -152,10 +150,9 @@
 </template>
 
 <script lang="ts">
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
-import { defineComponent } from "@vue/runtime-core";
-import useUser from "../stores/user";
-import Shoppingcart from "./Shoppingcart.vue";
+import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
+import {defineComponent} from "@vue/runtime-core";
+import {mapActions, mapGetters} from "vuex";
 
 export default defineComponent({
   components: {
@@ -163,23 +160,27 @@ export default defineComponent({
     MenuButton,
     MenuItem,
     MenuItems,
-    Shoppingcart,
-  },
-  setup() {
-    let { user, logout } = useUser();
-    return { user, logout };
   },
   computed: {
     profilePicture() {
       return `https://avatars.dicebear.com/api/micah/${
-        (this as any).user.username.value
+        this.$store.state.userState.user?.username
       }.svg`;
     },
+    isAdmin() {
+      return this.$store.state.userState.user?.isAdmin;
+    },
+    ...mapGetters([
+      "name",
+    ]),
   },
   methods: {
-    setOpen(isOpen: boolean) {
-      this.$globalBus.emit('shopping-cart.set-open', isOpen);
+    setShoppingCart(isOpen: boolean) {
+      this.$globalBus.emit("shopping-cart.set-open", isOpen);
     },
+    ...mapActions([
+      "logout",
+    ]),
   },
 });
 </script>

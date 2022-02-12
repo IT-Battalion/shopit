@@ -6,7 +6,6 @@
           <router-link :to="{ name: 'Products' }">
             <div>
               <a
-                href="#"
                 class="
                   flex
                   items-end
@@ -18,11 +17,12 @@
                   text-center text-gray-400
                   group-hover:text-indigo-500
                 "
+                href="#"
               >
                 <span class="block px-1 pt-1 pb-1">
                   <img
-                    src="/img/homeGray.svg"
                     class="block w-8 h-8 pt-1 mx-auto mb-1"
+                    src="/img/homeGray.svg"
                   />
                   <span class="block pb-2 text-xs">Home</span>
                   <span
@@ -35,7 +35,6 @@
           <Categories ref="categories">
             <div @click="setOpenCategories(true)">
               <a
-                href="#"
                 class="
                   flex
                   items-end
@@ -47,11 +46,12 @@
                   text-center text-gray-400
                   group-hover:text-indigo-500
                 "
+                href="#"
               >
                 <span class="block px-1 pt-1 pb-1">
                   <img
-                    src="/img/categoryGray.svg"
                     class="block w-7 h-7 pt-1 mx-auto mb-1 mt-1"
+                    src="/img/categoryGray.svg"
                   />
                   <span class="block pb-2 text-xs">Kategorien</span>
                   <span
@@ -68,45 +68,42 @@
               </a>
             </div>
           </Categories>
-          <Shoppingcart ref="shoppingCart">
-            <div
-              class="
-                flex
-                items-end
-                justify-center
-                w-full
-                px-3
-                pt-2
-                mx-auto
-                text-center text-gray-400
-                cursor-pointer
-                group-hover:text-indigo-500
-              "
-              @click="setOpen(true)"
-            >
-              <span class="block px-1 pt-1 pb-1">
-                <img
-                  src="/img/shoppingCartGray.svg"
-                  class="block w-8 h-8 pt-1 mx-auto mb-1"
-                />
-                <span class="block pb-2 text-xs">Korb</span>
-                <span
-                  class="
-                    block
-                    w-5
-                    h-1
-                    mx-auto
-                    rounded-full
-                    group-hover:bg-indigo-500
-                  "
-                ></span>
-              </span>
-            </div>
-          </Shoppingcart>
+          <div
+            class="
+              flex
+              items-end
+              justify-center
+              w-full
+              px-3
+              pt-2
+              mx-auto
+              text-center text-gray-400
+              cursor-pointer
+              group-hover:text-indigo-500
+            "
+            @click="setShoppingCart(true)"
+          >
+            <span class="block px-1 pt-1 pb-1">
+              <img
+                class="block w-8 h-8 pt-1 mx-auto mb-1"
+                src="/img/shoppingCartGray.svg"
+              />
+              <span class="block pb-2 text-xs">Korb</span>
+              <span
+                class="
+                  block
+                  w-5
+                  h-1
+                  mx-auto
+                  rounded-full
+                  group-hover:bg-indigo-500
+                "
+              ></span>
+            </span>
+          </div>
           <router-link :to="{ name: 'Profile' }">
             <div>
               <a
-                href="#"
                 class="
                   flex
                   items-end
@@ -118,11 +115,12 @@
                   text-center text-gray-400
                   group-hover:text-indigo-500
                 "
+                href="#"
               >
                 <span class="block px-1 pt-1 pb-1">
                   <img
-                    src="/img/profileGray.svg"
                     class="block w-8 h-8 pt-1 mx-auto mb-1"
+                    src="/img/profileGray.svg"
                   />
                   <span class="block pb-2 text-xs">Profil</span>
                   <span
@@ -146,9 +144,8 @@
 </template>
 
 <script lang="ts">
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
-import { defineComponent } from "@vue/runtime-core";
-import useUser from "../stores/user";
+import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
+import {defineComponent} from "@vue/runtime-core";
 import Shoppingcart from "./Shoppingcart.vue";
 import Categories from "./Categories.vue";
 
@@ -161,16 +158,12 @@ export default defineComponent({
     Shoppingcart,
     Categories,
   },
-  setup() {
-    const { user, logout } = useUser();
-    return { user, logout };
-  },
   methods: {
-    setOpen(isOpen: boolean) {
-      (this.$refs.shoppingCart as typeof Shoppingcart).setOpen(isOpen);
+    setShoppingCart(isOpen: boolean) {
+      this.$globalBus.emit("shopping-cart.set-open", isOpen);
     },
     setOpenCategories(isOpen: boolean) {
-      (this.$refs.categories as typeof Categories).setOpen(isOpen);
+      (this.$refs.categories as typeof Categories).setShoppingCart(isOpen);
     },
   },
 });
@@ -178,18 +171,23 @@ export default defineComponent({
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;800&display=swap");
+
 body {
   font-family: "Poppins", sans-serif;
 }
+
 .hover\:w-full:hover {
   width: 100%;
 }
+
 .group:hover .group-hover\:w-full {
   width: 100%;
 }
+
 .group:hover .group-hover\:inline-block {
   display: inline-block;
 }
+
 .group:hover .group-hover\:flex-grow {
   flex-grow: 1;
 }
