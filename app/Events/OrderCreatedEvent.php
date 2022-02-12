@@ -11,7 +11,9 @@ use Illuminate\Queue\SerializesModels;
 
 class OrderCreatedEvent implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     /**
      * Create a new event instance.
@@ -33,6 +35,7 @@ class OrderCreatedEvent implements ShouldBroadcast
         return [
             new PrivateChannel('app.admin.orders'),
             new PrivateChannel('app.order.' . $this->order->id),
-            new PrivateChannel("app.user.{$this->order->customer->id}.orders")];
+            new PrivateChannel("app.user.{$this->order->customer->id}.orders")
+        ];
     }
 }

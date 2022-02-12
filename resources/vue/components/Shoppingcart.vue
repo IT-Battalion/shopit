@@ -325,6 +325,15 @@ export default defineComponent({
           this.updatePrices(pick(message, ["subtotal", "discount", "tax", "total"]));
         }
       );
+    this.$echo
+      .private(`app.user.${this.user?.id}.orders`)
+      .listen(
+        "OrderCreatedEvent",
+        async () => {
+          await this.loadCart();
+          useToast().info("Es wurde eine Bestellung aufgegeben.");
+        }
+      );
   },
   async created() {
     await this.loadCart();
@@ -336,6 +345,7 @@ export default defineComponent({
     this.$globalBus.off("shopping-cart.set-open", this.setShoppingCart);
 
     this.$echo.leave(`app.user.${this.user?.id}.shopping-cart`);
+    this.$echo.leave(`app.user.${this.user?.id}.orders`);
   },
   methods: {
     open() {
