@@ -95,7 +95,7 @@
             />
             <ButtonField
               v-if="!state.isLoading"
-              :iconSpinner="buttonLoading"
+              :loading="buttonLoading"
               class="mt-10 row-span-full"
               @click="addProduct"
             >

@@ -38,7 +38,7 @@
     <div class="flex gap-6 mt-12">
       <ButtonField
         v-if="user.isAdmin && order.status !== firstStatus"
-        :icon-spinner="state.isLoading"
+        :loading="state.isLoading"
         @click="previousStep"
       >
         <template v-slot:text
@@ -50,7 +50,7 @@
         ><img class="w-5 h-5 m-1" src="/img/backBlack.svg"
         /></template>
       </ButtonField>
-      <ButtonField :iconSpinner="state.isLoading" @click="refresh">
+      <ButtonField :loading="state.isLoading" @click="refresh">
         <template v-slot:text><span>Neu laden</span></template>
         <template v-slot:icon>
           <svg
@@ -72,7 +72,7 @@
       </ButtonField>
       <ButtonField
         v-if="user.isAdmin && order.status !== lastStatus"
-        :icon-spinner="state.isLoading"
+        :loading="state.isLoading"
         @click="confirmStep"
       >
         <template v-slot:text

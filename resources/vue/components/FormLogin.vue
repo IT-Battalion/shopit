@@ -61,7 +61,7 @@
             Angemeldet bleiben
           </label>
         </div>
-        <ButtonField :iconSpinner="state.isLoading" buttonType="submit">
+        <ButtonField :loading="state.isLoading" type="submit">
           <template v-slot:text>
             <span>Anmelden</span>
           </template>

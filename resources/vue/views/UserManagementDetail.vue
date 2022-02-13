@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Profile :loading="state.isLoading" :user="user" />
+    <Profile :loading="state.isLoading" :user="user"/>
     <h2 class="mt-24 mb-6 text-3xl font-bold text-white">Bestellungen</h2>
     <vue-good-table
       :columns="userOrderColumns"
@@ -29,24 +29,24 @@
       </h2>
       <div class="flex flex-row gap-4">
         <div class="flex flex-col w-1/2 gap-2">
-          <label for="reason" class="text-sm text-gray-400">Grund</label>
+          <label class="text-sm text-gray-400" for="reason">Grund</label>
           <textarea
-            class="text-white bg-elevatedDark rounded-2xl"
             id="reason"
             v-model="ban.reason"
             :disabled="!user.enabled"
+            class="text-white bg-elevatedDark rounded-2xl"
           ></textarea>
         </div>
         <ButtonField
-          name="Sperren"
           :acceptName="true"
-          :icon-spinner="state.isLoading"
+          :loading="state.isLoading"
+          name="Sperren"
           @click="user.enabled ? banUser() : unbanUser()"
         >
           <template v-slot:text
-            ><span>{{ getActionVerb() }}</span></template
+          ><span>{{ getActionVerb() }}</span></template
           >
-          <template v-slot:icon><img src="/img/lockBlack.svg" /></template>
+          <template v-slot:icon><img src="/img/lockBlack.svg"/></template>
         </ButtonField>
       </div>
     </div>
@@ -54,14 +54,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
-import { Ban, BanUserRequest, Order, User } from "../types/api";
-import { endLoad, initLoad, state } from "../loader";
-import { AxiosResponse } from "axios";
-import { OrderStatusLabels } from "../types/api-values";
+import {defineComponent} from "@vue/runtime-core";
+import {Ban, BanUserRequest, Order, User} from "../types/api";
+import {endLoad, initLoad, state} from "../loader";
+import {AxiosResponse} from "axios";
+import {OrderStatusLabels} from "../types/api-values";
 import Profile from "../components/Profile.vue";
 import ButtonField from "../components/ButtonField.vue";
-import { useToast } from "vue-toastification";
+import {useToast} from "vue-toastification";
 
 export default defineComponent({
   components: {
