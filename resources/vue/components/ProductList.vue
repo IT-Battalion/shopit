@@ -57,14 +57,14 @@ import {defineComponent} from "@vue/runtime-core";
 import {endLoad, initLoad, initProgress, state} from "../loader";
 
 export default defineComponent({
+  created() {
+    this.loadProducts().then();
+  },
   data() {
     return {
       categories: {} as { [key: string]: Product[] },
       state: state,
     };
-  },
-  beforeMount() {
-    this.loadProducts();
   },
   components: {
     ProductCard,

@@ -82,7 +82,7 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import {useRoute, useRouter} from "vue-router";
-import {state} from "../loader";
+import {endLoad, initLoad, state} from "../loader";
 import InputField from "./InputField.vue";
 import ButtonField from "./ButtonField.vue";
 import LoadingImage from "./LoadingImage.vue";
@@ -135,6 +135,7 @@ export default defineComponent({
 
       if (username && password) {
         try {
+          initLoad();
           await this.login({
             username,
             password,
@@ -147,6 +148,7 @@ export default defineComponent({
           await this.router.replace(lastActiveRoute);
 
           this.clearForm();
+          endLoad();
         } catch (e) {
           if ("response" in (e as AxiosError)) {
             const error = e as AxiosError;

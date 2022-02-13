@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Api\BanController;
 use App\Http\Controllers\Api\HighlightedProductController;
-use App\Http\Controllers\api\ImageUploader;
+use App\Http\Controllers\Api\ImageUploadController;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ShoppingCartController;
@@ -71,6 +71,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     // Product Routes
     Route::apiResource('product', 'ProductController')->only(['store', 'update', 'destroy']);
-    Route::post('productImage', [ImageUploader::class, 'process']);
-    Route::delete('productImage', [ImageUploader::class, 'revert']);
+    Route::post('productImage', [ImageUploadController::class, 'process']);
+    Route::delete('productImage', [ImageUploadController::class, 'revert']);
 });

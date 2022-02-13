@@ -83,7 +83,7 @@
             <AttributeSelector
               v-if="!state.isLoading"
               ref="selectedAttributes"
-              :productattributes="product.attributes"
+              :productAttributes="product.attributes"
             />
 
             <InputField
@@ -180,18 +180,18 @@ export default defineComponent({
     InputField,
     ButtonField,
   },
-  data() {
-    return {
-      state: state,
-      product: Object as any as Product,
-      buttonLoading: false,
-    };
-  },
-  async beforeMount() {
+  async created() {
     const route = useRoute();
     const name = route.params.name as string;
-
     await this.loadProduct(name);
+  },
+  data() {
+    return {
+      state,
+      product: {attributes: {}} as Product, // if attributes aren't given before the AttributeSelector component loads
+                                            // its type check for the productAttributes prop will fail
+      buttonLoading: false,
+    };
   },
   methods: {
     async loadProduct(name: string) {

@@ -1,7 +1,7 @@
 <template>
   <!-- Colors -->
   <div>
-    <div v-if="attributes[3].length > 0">
+    <div v-if="attributes[3]?.length > 0">
       <h3 class="text-sm font-medium text-white">Color</h3>
 
       <RadioGroup v-model="selectedColor" class="mt-4">
@@ -38,7 +38,7 @@
     </div>
 
     <!-- Sizes -->
-    <div v-if="attributes[0].length > 0" class="mt-10">
+    <div v-if="attributes[0]?.length > 0" class="mt-10">
       <div class="flex items-center justify-between">
         <h3 class="text-sm font-medium text-white">Größe</h3>
         <!--        <a-->
@@ -79,7 +79,7 @@
     </div>
 
     <!-- Dimension -->
-    <div v-if="attributes[1].length > 0" class="mt-10">
+    <div v-if="attributes[1]?.length > 0" class="mt-10">
       <div class="flex items-center justify-between">
         <h3 class="text-sm font-medium text-white">Dimensionen</h3>
         <!--        <a-->
@@ -124,7 +124,7 @@
     </div>
 
     <!-- Volume -->
-    <div v-if="attributes[2].length > 0" class="mt-10">
+    <div v-if="attributes[2]?.length > 0" class="mt-10">
       <div class="flex items-center justify-between">
         <h3 class="text-sm font-medium text-white">Volumen</h3>
         <!--        <a-->
@@ -171,6 +171,7 @@ import {defineComponent} from "@vue/runtime-core";
 import {RadioGroup, RadioGroupLabel, RadioGroupOption} from "@headlessui/vue";
 import {Attributes, SelectedAttributes} from "../types/api";
 import {AttributeType, clothingSizeLabels} from "../types/api-values";
+import {PropType} from "vue";
 
 export default defineComponent({
   components: {
@@ -179,7 +180,10 @@ export default defineComponent({
     RadioGroupOption,
   },
   props: {
-    productattributes: {type: Object as () => Attributes, required: true},
+    productAttributes: {
+      type: Object as PropType<Attributes>,
+      default: {},
+    },
   },
   data() {
     return {
@@ -187,33 +191,33 @@ export default defineComponent({
       selectedSize: 0,
       selectedDimension: 0,
       selectedVolume: 0,
-      attributes: this.productattributes,
+      attributes: this.productAttributes,
       clothingSizeValues: clothingSizeLabels,
     };
   },
   computed: {
     selectedAttributes() {
       let selectedAttributes: SelectedAttributes = {};
-      if (this.selectedColor in this.productattributes[AttributeType.COLOR]) {
+      if (this.selectedColor in this.productAttributes[AttributeType.COLOR]) {
         selectedAttributes[AttributeType.COLOR] =
-          this.productattributes[AttributeType.COLOR][this.selectedColor];
+          this.productAttributes[AttributeType.COLOR][this.selectedColor];
       }
-      if (this.selectedSize in this.productattributes[AttributeType.CLOTHING]) {
+      if (this.selectedSize in this.productAttributes[AttributeType.CLOTHING]) {
         selectedAttributes[AttributeType.CLOTHING] =
-          this.productattributes[AttributeType.CLOTHING][this.selectedSize];
+          this.productAttributes[AttributeType.CLOTHING][this.selectedSize];
       }
       if (
         this.selectedDimension in
-        this.productattributes[AttributeType.DIMENSION]
+        this.productAttributes[AttributeType.DIMENSION]
       ) {
         selectedAttributes[AttributeType.DIMENSION] =
-          this.productattributes[AttributeType.DIMENSION][
+          this.productAttributes[AttributeType.DIMENSION][
             this.selectedDimension
             ];
       }
-      if (this.selectedVolume in this.productattributes[AttributeType.VOLUME]) {
+      if (this.selectedVolume in this.productAttributes[AttributeType.VOLUME]) {
         selectedAttributes[AttributeType.VOLUME] =
-          this.productattributes[AttributeType.VOLUME][this.selectedVolume];
+          this.productAttributes[AttributeType.VOLUME][this.selectedVolume];
       }
       return selectedAttributes;
     },

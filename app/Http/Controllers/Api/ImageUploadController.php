@@ -12,7 +12,7 @@ use Illuminate\Http\Response;
 /**
  * https://pqina.nl/filepond/docs/api/server/
  */
-class ImageUploader extends Controller
+class ImageUploadController extends Controller
 {
     /**
      * Asynchronously uploading files with FilePond is called processing.

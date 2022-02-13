@@ -124,7 +124,7 @@
                   >
                     <span
                       class="text-white block px-5 py-4 text-sm cursor-pointer"
-                      @click="logout"
+                      @click="logout()"
                     ><img
                       class="object-scale-down mr-3 ml-1 h-7"
                       src="/img/logout.svg"
