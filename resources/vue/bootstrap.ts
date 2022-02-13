@@ -12,7 +12,7 @@ import {Skeletor} from "vue-skeletor";
 import "vue-skeletor/dist/vue-skeletor.css";
 import mitt, {Emitter} from "mitt";
 import {UnwrapNestedRefs} from "@vue/reactivity";
-import Toast from "vue-toastification";
+import Toast, {useToast} from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import {getCSRFCookie} from "./request";
 import VueGoodTablePlugin from "vue-good-table-next";
@@ -48,8 +48,13 @@ window.axios = axios.create({
 
 window.axios.interceptors.response.use(res => res, err => {
   if ("response" in err && err.response.status === 401) {
-    redirectToLogin().then(r => console.log(r));
-    return Promise.reject(err);
+    const toast = useToast();
+
+    store.commit("loggedIn", false);
+    toast.info("Der Server hat gemeldet, dass Sie nicht mehr angemeldet sind.");
+    return redirectToLogin().then(() => {
+      return Promise.reject(err)
+    }).then();
   }
 
   return Promise.reject(err);
@@ -106,8 +111,8 @@ const i18n = createI18n({
 const bus = mitt();
 window.eventBus = bus;
 
-let createdApp = createApp(App);
-createdApp
+let app = createApp(App);
+app
   .use(store, key)
   .use(router)
   //    .use(i18n)
@@ -118,8 +123,8 @@ createdApp
   .component(Skeletor.name, Skeletor)
   .mount("#app");
 
-createdApp.config.globalProperties.$http = window.axios;
-createdApp.config.globalProperties.$globalBus = bus;
-createdApp.config.globalProperties.$echo = window.echo;
+app.config.globalProperties.$http = window.axios;
+app.config.globalProperties.$globalBus = bus;
+app.config.globalProperties.$echo = window.echo;
 
 //loadLocale(i18n, userLocale);

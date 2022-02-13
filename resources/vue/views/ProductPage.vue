@@ -124,6 +124,7 @@
           <div>
             <div class="space-y-6">
               <p v-if="!state.isLoading" class="text-base text-white">
+                {{ product.description }}
               </p>
               <div v-else>
                 <div class="w-2/3">

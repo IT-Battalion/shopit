@@ -53,7 +53,7 @@ const routes: Array<RouteRecordRaw> = [
             path: "products/:name",
             name: "Product",
             component: () =>
-              import(/* webpackChunkName: "products" */ "../views/ProductOverview.vue"),
+              import(/* webpackChunkName: "products" */ "../views/ProductPage.vue"),
             meta: {
               initLoad: false,
               endLoad: false,
