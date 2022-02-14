@@ -7,45 +7,45 @@
         class="flex flex-col items-center justify-center  p-7 bg-elevatedDark rounded-2xl"
       >
         <div class="flex flex-row items-center gap-4">
-          <input type="checkbox" v-model="checkDimension"/>
-          <h2 class="w-full text-2xl font-bold text-center text-white">
+          <input id="checkDimensionen" v-model="checkDimension" type="checkbox"/>
+          <label class="w-full text-2xl font-bold text-center text-white" for="checkDimensionen">
             Dimensionen
-          </h2>
+          </label>
         </div>
-        <DimensionAttribute v-if="checkDimension" class="w-full mx-5" ref="product_dimension"/>
+        <DimensionAttribute v-if="checkDimension" ref="product_dimension" class="w-full mx-5"/>
       </div>
       <div
         class="flex flex-col items-center justify-center  p-7 bg-elevatedDark rounded-2xl"
       >
         <div class="flex flex-row items-center gap-4">
-          <input type="checkbox" v-model="checkClothing"/>
-          <h2 class="w-full text-2xl font-bold text-center text-white">
+          <input id="checkClothing" v-model="checkClothing" type="checkbox"/>
+          <label class="w-full text-2xl font-bold text-center text-white" for="checkClothing">
             Kleidungsgrößen
-          </h2>
+          </label>
         </div>
-        <ClothingAttribute v-if="checkClothing" class="w-full" ref="product_clothing"/>
+        <ClothingAttribute v-if="checkClothing" ref="product_clothing" class="w-full"/>
       </div>
       <div
         class="flex flex-col items-center justify-center gap-4  p-7 bg-elevatedDark rounded-2xl"
       >
         <div class="flex flex-row items-center gap-4">
-          <input type="checkbox" v-model="checkVolume"/>
-          <h2 class="w-full text-2xl font-bold text-center text-white">
+          <input id="checkVolume" v-model="checkVolume" type="checkbox"/>
+          <label class="w-full text-2xl font-bold text-center text-white" for="checkVolume">
             Volumen
-          </h2>
+          </label>
         </div>
-        <VolumeAttribute v-if="checkVolume" class="w-full" ref="product_volume"/>
+        <VolumeAttribute v-if="checkVolume" ref="product_volume" class="w-full"/>
       </div>
       <div
         class="flex flex-col items-center justify-center gap-4  p-7 bg-elevatedDark rounded-2xl"
       >
         <div class="flex flex-row items-center gap-4">
-          <input type="checkbox" v-model="checkColor"/>
-          <h2 class="w-full text-2xl font-bold text-center text-white">
+          <input id="checkColor" v-model="checkColor" type="checkbox"/>
+          <label class="w-full text-2xl font-bold text-center text-white" for="checkColor">
             Farbauswahl
-          </h2>
+          </label>
         </div>
-        <ColorAttribute v-if="checkColor" class="w-full" ref="product_color"/>
+        <ColorAttribute v-if="checkColor" ref="product_color" class="w-full"/>
       </div>
     </div>
     <div class="flex justify-end mt-10 sm:mr-20">
