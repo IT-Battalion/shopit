@@ -1,5 +1,4 @@
 const mix = require('laravel-mix');
-const mixPdf = require('laravel-mix');
 const path = require('path');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 require('laravel-mix-bundle-analyzer');
@@ -32,7 +31,7 @@ mix
             ],
         }
     })
-    .vue({version: 3})
+    .vue({ version: 3 })
     .extract([
         'vue-good-table-next', 'vue-skeletor', 'vue-toastification',
         'laravel-echo', 'pusher-js', 'axios',
@@ -46,16 +45,12 @@ mix
     .css('node_modules/vue-skeletor/dist/vue-skeletor.css', 'public/css/vendor.css')
     .sass('resources/scss/vue-good-tables.sass', 'public/css/vendor.css')
     .sass('resources/scss/app.scss', 'public/css/vendor.css')
-    //.sass('resources/assets/scss/shopit.scss', 'public/css/shopit.css')
+    .sass('resources/scss/document.scss', 'public/css/vendor-pdf.css')
+    // .sass('resources/scss/shopit.scss', 'public/css/shopit.css')
     .copyDirectory('resources/assets/images/', 'public/img/')
     .copyDirectory('resources/locales', 'public/locales')
     .sourceMaps()
-    //.browserSync('localhost:80');
-
-mixPdf
-    .postCss('resources/assets/tailwind-pdf.css', 'public/css/vendor-pdf.css', [
-        require('tailwindcss')('./tailwind-pdf.config.js'),
-    ]);
+//.browserSync('localhost:80');
 
 if (!mix.inProduction()) {
     mix.bundleAnalyzer();

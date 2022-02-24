@@ -1,0 +1,131 @@
+#formData {
+    display: flex;
+    flex-direction: column;
+}
+
+#greeting {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+}
+
+#greeting h1 {
+    margin-bottom: 0.75rem;
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    font-weight: 700;
+}
+
+#adress {
+    display: flex;
+    flex-direction: row;
+    gap: 5rem;
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+}
+
+#addressing {
+    display: flex;
+    flex-direction: column;
+}
+
+#adressing h3 {
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 500;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+}
+
+#paymentMethod {
+    display: flex;
+    flex-direction: column;
+}
+
+#paymentMethod h3 {
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 500;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+}
+
+#priceTable {
+    text-align: center;
+    border-width: 1px;
+    border-collapse: collapse;
+    table-layout: auto;
+    --tw-border-opacity: 1;
+    border-color: rgb(100 116 139 / var(--tw-border-opacity));
+}
+
+#priceTable span {
+    font-weight: 700;
+}
+
+#couponTable {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(1, minmax(0, 1fr));
+    padding-left: 1.25rem/* 20px */;
+    padding-right: 1.25rem/* 20px */;
+    --tw-bg-opacity: 1;
+    background-color: rgb(245 242 242 / var(--tw-bg-opacity));
+}
+
+#coupon {
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    margin-top: 0.75rem/* 12px */;
+    margin-bottom: 0.75rem/* 12px */;
+}
+
+#coupon h3 {
+    grid-column-start: 1;
+    font-size: 1.25rem/* 20px */;
+    line-height: 1.75rem/* 28px */;
+    justify-self: center;
+}
+
+#nat {
+    grid-column-start: 1;
+    grid-row-start: 2;
+    padding: 0.75rem;
+    font-size: 1.25rem/* 20px */;
+    line-height: 1.75rem/* 28px */;
+    justify-self: center;
+}
+
+#productDiscount {
+    grid-column-start: 2;
+    grid-row-start: 2;
+    justify-self: start;
+}
+
+#costs {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    margin-top: 0.75rem/* 12px */;
+    margin-bottom: 0.75rem/* 12px */;
+    margin-right: 2rem/* 32px */;
+    justify-self: end;
+}
+
+#totalCost {
+    font-weight: 600;
+    font-size: 1.125rem/* 18px */;
+    line-height: 1.75rem/* 28px */;
+}
+
+#mwst {
+    margin-top:1.25rem;
+    font-size: 0.875rem/* 14px */;
+    line-height: 1.25rem/* 20px */;
+    text-align: center;
+}

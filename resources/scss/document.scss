@@ -1,0 +1,79 @@
+@import url("bill.scss");
+
+body {
+    padding: 4rem;
+}
+
+#firstHeader {
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(1, minmax(0, 1fr));
+}
+
+#firstHeader img {
+    justify-self: end;
+}
+
+#address {
+    display: flex;
+    flex-direction: column;
+    justify-items: start;
+}
+
+#address h1 {
+    margin-bottom: 0.75rem;
+    font-size: 2.25rem/* 36px */;
+    line-height: 2.5rem/* 40px */;
+    font-weight: 700;
+}
+
+#address img {
+    height: 4rem;
+}
+
+#secondHeader {
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(1, minmax(0, 1fr));
+}
+
+#secondHeader span {
+    font-size: 1.5rem/* 24px */;
+    line-height: 2rem/* 32px */;
+    justify-self: end;
+}
+
+#billData {
+    display: flex;
+    flex-direction: column;
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+    font-weight: 600;
+    justify-items: start;
+}
+
+footer {
+    margin-top: 4rem;
+    font-weight: 500;
+    border-top-width: 4px;
+
+    & > p {
+        margin-top: 2rem/* 32px */;
+        margin-bottom: 2rem/* 32px */;
+        text-align: center;
+    }
+}
+
+#footerContent {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(1, minmax(0, 1fr));
+    place-items: center;
+
+    & > div {
+        display: flex;
+        flex-direction: column;
+    }
+}
