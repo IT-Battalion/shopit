@@ -80,6 +80,7 @@
         "vue-router": "^4.0.12",
         "vue-skeletor": "^1.0.6",
         "vue-toastification": "^2.0.0-rc.5",
+        "vue3-html2pdf": "^1.1.2",
         "vue3-mq": "^3.0.1",
         "vuex": "^4.0.2",
         "vuex-persist": "^3.1.3"
