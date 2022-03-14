@@ -2,15 +2,7 @@
   <div class="grid justify-center h-full">
     <h1 class="mb-10 text-4xl font-bold text-center text-white">Kategorien</h1>
     <div
-      class="
-        flex flex-row flex-wrap
-        justify-center
-        w-full
-        mx-auto
-        my-auto
-        text-white
-        justify-items-center
-      "
+      class="flex flex-row flex-wrap justify-center w-full mx-auto my-auto text-white  justify-items-center"
       v-if="!isLoading"
     >
       <div
@@ -50,15 +42,7 @@
       </div>
     </div>
     <div
-      class="
-        flex flex-row flex-wrap
-        justify-center
-        w-full
-        mx-auto
-        my-auto
-        text-white
-        justify-items-center
-      "
+      class="flex flex-row flex-wrap justify-center w-full mx-auto my-auto text-white  justify-items-center"
       v-else
     >
       <div v-for="i in 5" :key="i" class="w-40 h-16 m-5">
@@ -74,7 +58,6 @@
         <ButtonField class="mt-8" @click="createCategory">
           <template v-slot:icon><img src="/img/addBlack.svg" /></template>
         </ButtonField>
-        <DialogModal />
       </div>
     </div>
   </div>
@@ -93,7 +76,6 @@ import {
 } from "../types/api";
 import { AxiosResponse } from "axios";
 import InputField from "../components/InputField.vue";
-import DialogModal from "../components/DialogModal.vue";
 
 export default defineComponent({
   components: {
@@ -102,7 +84,6 @@ export default defineComponent({
     PopoverPanel,
     ButtonField,
     InputField,
-    DialogModal,
   },
   setup() {
     return {
