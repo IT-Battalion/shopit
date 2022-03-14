@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AddProductProcessBar/>
+    <ProductProcessBar/>
     <div class="flex flex-col items-center justify-center mt-10 gap-y-10">
       <CategoryAttribute ref="category"/>
       <div
@@ -58,7 +58,7 @@
 
 <script lang="ts">
 import {defineComponent} from "@vue/runtime-core";
-import AddProductProcessBar from "../components/product_create_process/AddProductProcessBar.vue";
+import ProductProcessBar from "../components/product_create_process/ProductProcessBar.vue";
 import {TemporaryProductCreateStorage} from "../types/api";
 import CancelButton from "../components/buttons/CancelButton.vue";
 import ForwardButton from "../components/buttons/ForwardButton.vue";
@@ -77,7 +77,7 @@ export default defineComponent({
     VolumeAttribute,
     ColorAttribute,
     DimensionAttribute,
-    AddProductProcessBar,
+    ProductProcessBar,
     BackwardButton,
     ForwardButton,
     CancelButton,
