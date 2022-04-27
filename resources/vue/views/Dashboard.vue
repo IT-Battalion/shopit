@@ -4,7 +4,7 @@
       AGB
     </h2>
     <div>
-      <QuillEditor ref="agb" theme="snow" toolbar="essential"/>
+      <v-md-editor :text="agb" height="50%" @save="saveAGB"/>
     </div>
     <ButtonField class="px-6 py-4 mx-2" @click="save('agb')">
       <template v-slot:text>Save</template>
@@ -14,7 +14,7 @@
       Impressum
     </h2>
     <div>
-      <QuillEditor ref="impressum" theme="snow" toolbar="essential"/>
+      <v-md-editor :text="impressum" height="50%" @save="saveImpressum"/>
     </div>
     <ButtonField class="px-6 py-4 mx-2" @click="save('impressum')">
       <template v-slot:text>Save</template>
@@ -32,17 +32,22 @@ export default defineComponent({
   components: {QuillEditor},
   data() {
     return {
-      agbText: QuillEditor,
-      impressumText: QuillEditor,
+      agb: "",
+      impressum: ""
     }
   },
   async mounted() {
-    this.agbText = this.$refs.agb as typeof QuillEditor;
-    this.impressumText = this.$refs.impressum as typeof QuillEditor;
+    //TODO: load agb & impressum text if exists
   },
   methods: {
-    async save(value: string) {
+    async saveImpressum(text: string) {
       initLoad();
+      //TODO: logic
+      endLoad();
+    },
+    async saveAGB(text: string) {
+      initLoad();
+      //TODO: logic
       endLoad();
     },
   },

@@ -18,6 +18,35 @@ import {getCSRFCookie} from "./request";
 import VueGoodTablePlugin from "vue-good-table-next";
 import "vue-good-table-next/dist/vue-good-table-next.css"
 import {key, store} from "./store";
+import VMdEditor from "@kangc/v-md-editor/lib/codemirror-editor";
+import "@kangc/v-md-editor/lib/style/codemirror-editor.css";
+import githubTheme from "@kangc/v-md-editor/lib/theme/github.js";
+import "@kangc/v-md-editor/lib/theme/style/github.css";
+import hljs from "highlight.js";
+// import Highlight  from '@/types/highlight'
+import Codemirror from "codemirror";
+// mode
+import "codemirror/mode/markdown/markdown";
+import "codemirror/mode/javascript/javascript";
+import "codemirror/mode/css/css";
+import "codemirror/mode/htmlmixed/htmlmixed";
+import "codemirror/mode/vue/vue";
+// edit
+import "codemirror/addon/edit/closebrackets";
+import "codemirror/addon/edit/closetag";
+import "codemirror/addon/edit/matchbrackets";
+// placeholder
+import "codemirror/addon/display/placeholder";
+// active-line
+import "codemirror/addon/selection/active-line";
+// scrollbar
+import "codemirror/addon/scroll/simplescrollbars";
+import "codemirror/addon/scroll/simplescrollbars.css";
+// style
+import "codemirror/lib/codemirror.css";
+import enUS from "@kangc/v-md-editor/lib/lang/en-US";
+import VMdPreview from "@kangc/v-md-editor/lib/preview";
+import "@kangc/v-md-editor/lib/style/preview.css";
 
 declare global {
   interface Window {
@@ -108,6 +137,17 @@ const i18n = createI18n({
     locale: userLocale,
 });*/
 
+
+VMdEditor.Codemirror = Codemirror;
+VMdEditor.use(githubTheme, {
+  Hljs: hljs,
+});
+VMdEditor.lang.use("en-US", enUS);
+
+VMdPreview.use(githubTheme, {
+  Hljs: hljs,
+});
+
 const bus = mitt();
 window.eventBus = bus;
 
@@ -115,6 +155,8 @@ let app = createApp(App);
 app
   .use(store, key)
   .use(router)
+  .use(VMdEditor)
+  .use(VMdPreview)
   //    .use(i18n)
   .use(Vue3Mq, {preset: "tailwind"})
   .use(Toast)

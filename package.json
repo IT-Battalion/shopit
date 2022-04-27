@@ -17,6 +17,7 @@
         "@tailwindcss/forms": "^0.4.0",
         "@tailwindcss/line-clamp": "^0.3.0",
         "@tailwindcss/typography": "^0.5.0",
+        "@types/prismjs": "^1.26.0",
         "@types/tailwindcss": "^3.0.1",
         "@typescript-eslint/eslint-plugin": "^5.3.1",
         "@typescript-eslint/parser": "^5.3.1",
@@ -59,6 +60,7 @@
     },
     "dependencies": {
         "@headlessui/vue": "^1.4.2",
+        "@kangc/v-md-editor": "^2.3.15",
         "@types/lodash": "^4.14.177",
         "@vue-hero-icons/solid": "^1.7.2",
         "@vueform/multiselect": "^2.3.1",
