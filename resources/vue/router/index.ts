@@ -205,8 +205,13 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/impressum/",
         name: "impressum",
-        component: () => import("../views/Impressum.vue")
+        component: () => import(/* webpackChunkName: "credits" */ "../views/Impressum.vue")
       },
+      {
+        path: "/agb/",
+        name: "agb",
+        component: () => import(/* webpackChunkName: "credits" */ "../views/AGB.vue")
+      }
     ],
   },
 ];

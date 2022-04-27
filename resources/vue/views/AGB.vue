@@ -1,8 +1,5 @@
 <template>
-  <div>
-    <h1>Impressum</h1>
-    <v-md-preview :text="text" height="100%"/>
-  </div>
+  <v-md-preview :text="text"/>
 </template>
 
 <script>

@@ -126,7 +126,7 @@
           type="checkbox"
         />
         <label class="my-auto ml-2 text-center text-gray-200" for="agb">
-          Hiermit stimme ich den AGB zu.
+          Hiermit bestätige ich, dass ich die geltenden #link hier# AGB's gelesen und verstanden habe.
         </label>
       </div>
       <div class="flex justify-center mt-6">

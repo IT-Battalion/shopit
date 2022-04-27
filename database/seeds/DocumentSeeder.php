@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\document;
 use Illuminate\Database\Seeder;
 
 class DocumentSeeder extends Seeder
@@ -13,6 +14,6 @@ class DocumentSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\document::factory()->count(1)->create();
+        document::factory()->count(1)->create();
     }
 }

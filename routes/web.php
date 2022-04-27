@@ -30,6 +30,8 @@ Route::view('/login', 'vue');
 //Credits
 Route::view('/credits', 'vue');
 Route::view('/contributors', 'vue');
+Route::view('/agb', 'vue');
+Route::view('/impressum', 'vue');
 
 // Main Content
 Route::view('/', 'vue')->name('home');
