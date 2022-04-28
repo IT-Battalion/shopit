@@ -126,7 +126,9 @@
           type="checkbox"
         />
         <label class="my-auto ml-2 text-center text-gray-200" for="agb">
-          Hiermit bestätige ich, dass ich die geltenden #link hier# AGB's gelesen und verstanden habe.
+          Hiermit bestätige ich, dass ich die geltenden
+          <router-link :to="{name: 'agb'}">AGB's</router-link>
+          gelesen und verstanden habe.
         </label>
       </div>
       <div class="flex justify-center mt-6">
