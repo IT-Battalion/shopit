@@ -5,7 +5,7 @@
       Produktbeschreibung
     </h2>
     <div>
-      <QuillEditor ref="desc" theme="snow" toolbar="essential"/>
+      <v-md-editor :text="description" height="50%"/>
     </div>
     <div class="flex mt-10 sm:mr-20">
       <CancelButton/>
@@ -46,20 +46,19 @@ export default defineComponent({
     return {
       productCreateStorage: {} as ProductProcessCreateProcessStorage as TemporaryProductCreateStorage,
       toast: useToast(),
-      quilleditor: QuillEditor,
+      description: ""
     };
   },
   async mounted() {
     this.productCreateStorage = ProductProcessCreateProcessStorage.load();
-    this.quilleditor = this.$refs.desc as typeof QuillEditor;
     await this.insertStoredData();
   },
   methods: {
     async insertStoredData() {
-      this.quilleditor.setContents(this.productCreateStorage.description); //https://en.wikipedia.org/wiki/Operational_transformation
+
     },
     async saveToLocalStorage() {
-      this.productCreateStorage.description = this.quilleditor.getContents(); //https://en.wikipedia.org/wiki/Operational_transformation
+
       ProductProcessCreateProcessStorage.save(this.productCreateStorage);
     },
     async backward() {
