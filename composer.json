@@ -24,6 +24,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "psr/log": "^1.0",
+        "rockett/weasyprint": "^6.1",
         "symfony/mailer": "^6.0.0"
     },
     "require-dev": {
