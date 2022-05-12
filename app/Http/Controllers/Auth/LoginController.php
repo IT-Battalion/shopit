@@ -37,7 +37,7 @@ class LoginController extends Controller
         $data = $request->validated();
 
         $credentials = [
-            'username' => $data['username'],
+            'sAMAccountName' => $data['username'],
             'password' => $data['password'],
         ];
 
