@@ -1,18 +1,20 @@
 <template>
   <mq-responsive target="lg+">
-    <div class="flex flex-row items-center justify-center w-full gap-5 h-28" :class="state.isLoading ? 'animate-pulse-emphasized' : ''">
+    <div :class="state.isLoading ? 'animate-pulse-emphasized' : ''"
+         class="flex flex-row items-center justify-center w-full gap-5 h-28">
       <template v-for="process in orderProcess" :key="process.name">
         <div class="flex flex-col items-center transition-opacity transition-size">
-          <img :src="process.icon_url" :alt="process.name"
-               class="transition-size transition-opacity ease-overshoot"
-               :class="imageClasses(process.step, current)"/>
-          <span class="mt-3 text-base text-center transition-opacity transition-size text-white" :class="textClasses(process.step, current)">{{
+          <img :alt="process.name" :class="imageClasses(process.step, current)"
+               :src="process.icon_url"
+               class="transition-size transition-opacity ease-overshoot"/>
+          <span :class="textClasses(process.step, current)"
+                class="mt-3 text-base text-center transition-opacity transition-size text-white">{{
               process.name
             }}</span>
         </div>
         <span
-          class="rounded-full transition-opacity bg-white w-16 h-1 opacity-80"
           v-if="process.name !== 'Abgeschlossen'"
+          class="rounded-full transition-opacity bg-white w-16 h-1 opacity-80"
         />
       </template>
     </div>
@@ -20,10 +22,10 @@
   <mq-responsive target="md-">
     <div class="flex flex-col items-center gap-5 ml-auto mr-0">
       <template v-for="process in orderProcess" :key="process.name">
-        <img :src="process.icon_url" :alt="process.name" class="w-8 h-8"/>
+        <img :alt="process.name" :src="process.icon_url" class="w-8 h-8"/>
         <span
-          class="w-1 h-10 bg-white rounded-full"
           v-if="process.name !== 'Abgeschlossen'"
+          class="w-1 h-10 bg-white rounded-full"
         />
       </template>
     </div>
@@ -48,7 +50,7 @@ export default defineComponent({
   data() {
     const orderProcess = [
       {
-        name: "Bestellt",
+        name: "Bestellen",
         icon_url: "/img/webshop.svg",
         step: -1,
       },

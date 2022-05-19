@@ -41,6 +41,13 @@ Route::view('/products/{name}', 'vue')->name('products.show');
 Route::prefix('profile')->name('profil.')->group(function () {
     Route::view('/', 'vue')->name('profile');
     Route::view('/order-history', 'vue')->name('orders.index');
+
+    // Order
+    Route::prefix('orders/')->name('order.')->group(function () {
+        Route::view('{order}/', 'vue')->name('show');
+        Route::get('{order}/bill', [DocumentController::class, 'bill']);
+        Route::get('{order}/voucher', [DocumentController::class, 'voucher']);
+    });
 });
 
 // Admin Page
@@ -79,13 +86,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::view('/', 'vue')->name('list');
         Route::view('/{id}', 'vue')->name('show');
     });
-});
-
-// Order
-Route::prefix('orders/')->name('order.')->group(function () {
-    Route::view('{order}/', 'vue')->name('show');
-    Route::get('{order}/bill', [DocumentController::class, 'bill']);
-    Route::get('{order}/voucher', [DocumentController::class, 'voucher']);
 });
 
 Route::view('/shopping-cart/', 'vue')->name('shopping-cart');

@@ -63,13 +63,7 @@ const routes: Array<RouteRecordRaw> = [
             path: "/shopping-cart",
             name: "Create Order",
             component: () =>
-              import(/* webpackChunkName: "orders" */ "../views/OrderCreateForm.vue"),
-          },
-          {
-            path: "/orders/:id",
-            name: "Order Detail",
-            component: () =>
-              import(/* webpackChunkName: "orders" */ "../views/Order.vue"),
+              import(/* webpackChunkName: "products" */ "../views/OrderCreateForm.vue"),
           },
         ]
       },
@@ -90,6 +84,12 @@ const routes: Array<RouteRecordRaw> = [
             name: "OrderHistory",
             component: () =>
               import(/* webpackChunkName: "profile" */ "../views/OrderHistory.vue"),
+          },
+          {
+            path: "/orders/:id",
+            name: "Order Detail",
+            component: () =>
+              import(/* webpackChunkName: "profile" */ "../views/Order.vue"),
           },
         ]
       },
