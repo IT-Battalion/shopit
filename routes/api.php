@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\BanController;
 use App\Http\Controllers\Api\HighlightedProductController;
 use App\Http\Controllers\Api\ImageUploadController;
 use App\Http\Controllers\Api\InvoiceController;
+use App\Http\Controllers\Api\LegalDocumentsController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ShoppingCartController;
 use Illuminate\Http\Request;
@@ -28,6 +29,11 @@ Route::get('/highlighted', [HighlightedProductController::class, 'all']);
 // Product routes
 Route::apiResource('product', 'ProductController')->only(['index', 'show']);
 
+// Legal Documents (AGB, Impressum, ..) routes
+Route::get('/impressum/get', [LegalDocumentsController::class, 'impressum']);
+Route::get('/agb/get', [LegalDocumentsController::class, 'agb']);
+
+// User routes
 Route::prefix('user')->name('user.')->group(function () {
     Route::get('/', function (Request $request) {
         return response()->json($request->user());
@@ -73,4 +79,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::apiResource('product', 'ProductController')->only(['store', 'update', 'destroy']);
     Route::post('productImage', [ImageUploadController::class, 'process']);
     Route::delete('productImage', [ImageUploadController::class, 'revert']);
+
+    // Legal Documents (AGB, Impressum, ..) Routes
+    Route::post('/impressum/set', [LegalDocumentsController::class, 'setimpressum']);
+    Route::post('/agb/set', [LegalDocumentsController::class, 'setagb']);
 });

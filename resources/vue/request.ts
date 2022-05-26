@@ -60,3 +60,17 @@ export async function loadCategories(): Promise<ProductCategory[]> {
   );
   return response.data;
 }
+
+export async function getImpressum(): Promise<String> {
+  let response: AxiosResponse<String> = await window.axios.get(
+    "/impressum/get"
+  );
+  return response.data;
+}
+
+export async function getAGB(): Promise<String> {
+  let response: AxiosResponse<String> = await window.axios.get(
+    "/agb/get"
+  );
+  return response.data;
+}

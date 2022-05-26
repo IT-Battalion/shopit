@@ -69,11 +69,10 @@
         </ButtonField>
       </form>
       <div class="w-full my-5 text-center md:my-0">
-        <a
-          class="text-white underline  opacity-60 hover:opacity-100 decoration-solid"
-          href="https://lernenimaufbruch.at/impressum.html"
-        >Impressum
-        </a>
+        <router-link :to="{name: 'impressum'}"
+                     class="text-white underline  opacity-60 hover:opacity-100 decoration-solid">
+          Impressum
+        </router-link>
       </div>
     </div>
   </div>
