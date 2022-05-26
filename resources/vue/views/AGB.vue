@@ -1,6 +1,6 @@
 <template>
   <h1 class="text-4xl font-bold text-white"> AGB </h1>
-  <v-md-preview :text="text"/>
+  <v-md-preview :text="text" class="text-white"/>
 </template>
 
 <script>

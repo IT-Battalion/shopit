@@ -61,16 +61,28 @@ export async function loadCategories(): Promise<ProductCategory[]> {
   return response.data;
 }
 
-export async function getImpressum(): Promise<String> {
-  let response: AxiosResponse<String> = await window.axios.get(
+export async function getImpressum(): Promise<string> {
+  let response: AxiosResponse<string> = await window.axios.get(
     "/impressum/get"
   );
   return response.data;
 }
 
-export async function getAGB(): Promise<String> {
-  let response: AxiosResponse<String> = await window.axios.get(
+export async function getAGB(): Promise<string> {
+  let response: AxiosResponse<string> = await window.axios.get(
     "/agb/get"
   );
   return response.data;
+}
+
+export async function setImpressum(text: string): Promise<void> {
+  let response: AxiosResponse<string> = await window.axios.post(
+    "/admin/impressum/set", {text: text}
+  );
+}
+
+export async function setAGB(text: string): Promise<void> {
+  let response: AxiosResponse<string> = await window.axios.post(
+    "/admin/agb/set", {text: text}
+  );
 }

@@ -1,53 +1,49 @@
 <template>
-  <div>
+  <h1 class="text-4xl font-bold text-white">Impressum</h1>
+  <div class="mt-3">
     <h2 class="text-2xl font-bold text-white">
       AGB
     </h2>
     <div>
-      <v-md-editor :text="agb" height="50%" @save="saveAGB"/>
+      <v-md-editor height="40rem" @save="saveAGB" v-model="agb"/>
     </div>
-    <ButtonField class="px-6 py-4 mx-2" @click="save('agb')">
-      <template v-slot:text>Save</template>
-      <template v-slot:icon><img src="/img/doneBlack.svg"/></template>
-    </ButtonField>
     <h2 class="text-2xl font-bold text-white">
       Impressum
     </h2>
     <div>
-      <v-md-editor :text="impressum" height="50%" @save="saveImpressum"/>
+      <v-md-editor v-model="impressum" height="40rem" @save="saveImpressum"/>
     </div>
-    <ButtonField class="px-6 py-4 mx-2" @click="save('impressum')">
-      <template v-slot:text>Save</template>
-      <template v-slot:icon><img src="/img/doneBlack.svg"/></template>
-    </ButtonField>
   </div>
 </template>
 
 <script lang="ts">
 import {defineComponent} from "@vue/runtime-core";
-import {QuillEditor} from "@vueup/vue-quill";
 import {endLoad, initLoad} from "../loader";
+import ButtonField from "../components/ButtonField.vue";
+import {getAGB, getImpressum, setAGB, setImpressum} from "../request";
 
 export default defineComponent({
-  components: {QuillEditor},
+  components: {ButtonField},
   data() {
     return {
       agb: "",
-      impressum: ""
+      impressum: "",
     }
   },
-  async mounted() {
-    //TODO: load agb & impressum text if exists
+  beforeMount() {
+    initLoad();
+    getAGB().then(value => this.agb = value);
+    getImpressum().then(value => this.impressum = value).finally(endLoad);
   },
   methods: {
     async saveImpressum(text: string) {
       initLoad();
-      //TODO: logic
+      await setImpressum(text);
       endLoad();
     },
     async saveAGB(text: string) {
       initLoad();
-      //TODO: logic
+      await setAGB(text);
       endLoad();
     },
   },
