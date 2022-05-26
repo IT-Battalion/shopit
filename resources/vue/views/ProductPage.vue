@@ -123,9 +123,7 @@
           <!-- Description and details -->
           <div>
             <div class="space-y-6">
-              <p v-if="!state.isLoading" class="text-base text-white">
-                {{ product.description }}
-              </p>
+              <v-md-preview :text="product.description" v-if="!state.isLoading" class="text-base text-white"/>
               <div v-else>
                 <div class="w-2/3">
                   <Skeletor :pill="true"/>

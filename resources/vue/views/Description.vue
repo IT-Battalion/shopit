@@ -5,7 +5,7 @@
       Produktbeschreibung
     </h2>
     <div>
-      <v-md-editor :text="description" height="50%"/>
+      <v-md-editor :text="description" height="25rem"/>
     </div>
     <div class="flex mt-10 sm:mr-20">
       <CancelButton/>
