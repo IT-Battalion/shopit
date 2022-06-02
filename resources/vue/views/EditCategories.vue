@@ -154,7 +154,6 @@ export default defineComponent({
         let name = (
           this.$refs.categorynamecreate as typeof InputField
         ).getValue();
-        console.log(name);
         let category = await this.$http.post<
           CreateCategoryRequest,
           AxiosResponse<ProductCategory>

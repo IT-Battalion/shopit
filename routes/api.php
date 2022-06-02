@@ -1,12 +1,16 @@
 <?php
 
 use App\Http\Controllers\Api\BanController;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CouponController;
 use App\Http\Controllers\Api\HighlightedProductController;
 use App\Http\Controllers\Api\ImageUploadController;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\LegalDocumentsController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ShoppingCartController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,7 +31,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/highlighted', [HighlightedProductController::class, 'all']);
 
 // Product routes
-Route::apiResource('product', 'ProductController')->only(['index', 'show']);
+Route::apiResource('product', ProductController::class)->only(['index', 'show']);
 
 // Legal Documents (AGB, Impressum, ..) routes
 Route::get('/impressum/get', [LegalDocumentsController::class, 'impressum']);
@@ -58,17 +62,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/invoice', [InvoiceController::class, 'all']);
 
     // User routes
-    Route::apiResource('/users', 'UserController')->only(['index', 'show']);
+    Route::apiResource('/users', UserController::class)->only(['index', 'show']);
 
     // Coupon routes
-    Route::apiResource('/coupons', 'CouponController')->only(['index', 'store']);
+    Route::apiResource('/coupons', CouponController::class)->only(['index', 'store']);
 
     // Orders routes
-    Route::apiResource('orders', 'OrderController')->except(['store', 'delete']);
+    Route::apiResource('orders', OrderController::class)->except(['store', 'delete']);
     Route::get('/orders/user/{user}', [OrderController::class, 'userAdminAll']);
 
     // Category Routes
-    Route::apiResource('category', 'CategoryController')->only(['update', 'store', 'destroy', 'index']);
+    Route::apiResource('category', CategoryController::class)->only(['update', 'store', 'destroy', 'index']);
 
     // Ban Routes
     Route::get('/ban/user/{user}/info', [BanController::class, 'info']);
@@ -76,7 +80,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/ban/user/{user}/unban', [BanController::class, 'unban']);
 
     // Product Routes
-    Route::apiResource('product', 'ProductController')->only(['store', 'update', 'destroy']);
+    Route::apiResource('product', ProductController::class)->only(['store', 'update', 'destroy']);
     Route::post('productImage', [ImageUploadController::class, 'process']);
     Route::delete('productImage', [ImageUploadController::class, 'revert']);
 

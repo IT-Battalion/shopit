@@ -1,4 +1,5 @@
 import {AttributeType, ClothingSize, OrderStatus} from "./api-values";
+import {FilePondFile} from "filepond";
 
 export interface LoginRequestData {
   username: string,
@@ -281,63 +282,19 @@ export interface UpdateProductThumbnailRequest {
   thumbnail_id: number,
 }
 
-export interface TemporaryProductCreateStorage {
-  title: string;
-  price: number;
-  description: string;
-  highlighted: boolean;
-  category: null | ProductCategory;
-  images: string[];
+export interface NewProduct {
+  name: string,
+  price: Money,
+  highlighted: boolean,
+  images: FilePondFile[],
+  category: ProductCategory,
   attributes: {
-    dimensions: {
-      value: Set<DimensionAttribute>;
-      enabled: boolean;
-    };
-    volumes: {
-      value: Set<VolumeAttribute>;
-      enabled: boolean;
-    };
-    clothing: {
-      value: string[];
-      enabled: boolean;
-    };
-    colors: {
-      value: Map<string, string>;
-      enabled: boolean;
-    };
+    dimensions: DimensionAttribute[],
+    volumes: VolumeAttribute[],
+    clothing: ClothingAttribute[],
+    colors: ColorAttribute[],
   };
-
-  isColorAttributeEnabled(): boolean;
-
-  isDimensionAttributeEnabled(): boolean;
-
-  isClothingAttributeEnabled(): boolean;
-
-  isVolumeAttributeEnabled(): boolean;
-
-  setColorAttributeEnabled(value: boolean): void;
-
-  setDimensionAttributeEnabled(value: boolean): void;
-
-  setClothingAttributeEnabled(value: boolean): void;
-
-  setVolumeAttributeEnabled(value: boolean): void;
-
-  getColorAttributeValue(): Map<string, string>;
-
-  getClothingAttributeValue(): string[];
-
-  getVolumeAttributeValue(): Set<VolumeAttribute>;
-
-  getDimensionAttributeValue(): Set<DimensionAttribute>;
-
-  setColorAttributeValue(value: Map<string, string>): void;
-
-  setVolumeAttributeValue(value: Set<VolumeAttribute>): void;
-
-  setClothingAttributeValue(value: string[]): void;
-
-  setDimensionAttributeValue(value: Set<DimensionAttribute>): void;
+  description: string,
 }
 
 export interface TemporaryColor {

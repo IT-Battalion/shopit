@@ -37,7 +37,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import { SelectedAttributes } from "../types/api";
-import { AttributeType, clothingSizeLabels } from "../types/api-values";
+import { clothingSizeLabels } from "../types/api-values";
 
 export default defineComponent({
   props: {

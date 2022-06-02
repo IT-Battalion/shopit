@@ -138,9 +138,9 @@ class ImageUploadController extends Controller
     {
         $id = $request->getContent();
         if (!$imageService->deleteImage($id)) {
-            abort(500);
+            abort(422);
         }
-        return response();
+        return response()->noContent();
     }
 
     /**
@@ -158,9 +158,7 @@ class ImageUploadController extends Controller
     public function restore(Request $request, ImageServiceInterface $imageService): Response|Application|ResponseFactory
     {
         $id = $request->getContent();
-        return response('', 200, [
-            'Content-Disposition' => 'inline; filename="' . $imageService->restoreImage($id) . '"',
-        ]);
+        return response()->stream($imageService->restoreImage($id));
     }
 
     /**
@@ -185,8 +183,6 @@ class ImageUploadController extends Controller
     {
         $id = $request->getContent();
 
-        return response('', 200, [
-            'Content-Disposition' => 'inline; filename="' . $imageService->loadImage($id) . '"',
-        ]);
+        return resposne()->stream($imageService->loadImage($id));
     }
 }

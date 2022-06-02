@@ -11,7 +11,8 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use League\Flysystem\FileNotFoundException;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
+
 use function RingCentral\Psr7\mimetype_from_extension;
 
 class ImageService implements ImageServiceInterface
@@ -23,12 +24,12 @@ class ImageService implements ImageServiceInterface
 
     protected function isImageFromTemporaryPath(string $filePath): bool
     {
-        return Str::startsWith($filePath, Storage::disk(config('shop.image.disk', 'local'))->path(config('shop.image.temporaryPath', 'tmp')));
+        return Str::startsWith($filePath, config('shop.image.temporaryPath', 'tmp').DIRECTORY_SEPARATOR);
     }
 
     protected function isImageFromPermanentPath(string $filePath): bool
     {
-        return Str::startsWith($filePath, Storage::disk(config('shop.image.disk', 'local'))->path(config('shop.image.permanentPath', 'product')));
+        return Str::startsWith($filePath, config('shop.image.permanentPath', 'product').DIRECTORY_SEPARATOR);
     }
 
     /**
@@ -40,12 +41,12 @@ class ImageService implements ImageServiceInterface
         if (!in_array(mimetype_from_extension($file->extension()), config('shop.image.allowedMimeTypes', ['image/jpeg', 'image/png']), true)) {
             throw new InvalidImageMimeTypeException();
         }
-        $stored = $file->storeAs(config('shop.image.temporaryPath', 'tmp'), now()->timestamp . '_' . $file->getClientOriginalName(), config('shop.image.disk', 'local'));
+        $stored = $file->storeAs(config('shop.image.temporaryPath', 'tmp').DIRECTORY_SEPARATOR.auth()->id(), now()->timestamp . '_' . $file->getClientOriginalName(), config('shop.image.disk', 'local'));
         if (!$stored) {
             throw new ImageNotSavedException();
         }
         $filePath = Storage::disk(config('shop.image.disk', 'local'))->path($stored);
-        return $this->decryptEncryptFilePath($filePath);
+        return $this->decryptEncryptFilePath($stored);
     }
 
     /**

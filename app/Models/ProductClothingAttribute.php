@@ -14,6 +14,10 @@ class ProductClothingAttribute extends Model implements ProductAttributeToOrder
 {
     use HasFactory;
 
+    protected $fillable = [
+        'size',
+    ];
+
     protected $casts = [
         'size' => ClothingSize::class,
     ];

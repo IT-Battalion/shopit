@@ -2,7 +2,7 @@
   <button
     :disabled="loading"
     :type="type"
-    class="flex flex-row gap-3 items-center justify-center h-10 py-1 my-auto text-black bg-white  rounded-3xl hover:bg-gray-300 px-7"
+    class="flex flex-row gap-3 items-center justify-center h-10 py-1 my-auto text-black bg-white  rounded-full hover:bg-gray-300 px-7"
   >
     <slot name="text"/>
     <span

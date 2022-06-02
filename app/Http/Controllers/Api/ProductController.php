@@ -12,10 +12,15 @@ use App\Models\ProductColorAttribute;
 use App\Models\ProductDimensionAttribute;
 use App\Models\ProductImage;
 use App\Models\ProductVolumeAttribute;
+use App\Types\ClothingSize;
+use App\Types\Liter;
+use App\Types\Meter;
 use App\Types\Money;
 use Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -50,47 +55,66 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request): JsonResponse
     {
         $data = $request->validated();
+        $values = $data['attributes'];
+        $attributes = [
+            'clothing' => array_map(fn($clothing) => ['size' => ClothingSize::from($clothing['size'])], $values['clothing']),
+            'volumes' => array_map(fn($volume) => ['volume' => new Liter($volume['volume']['value'],$volume['volume']['unit'])], $values['volumes']),
+            'dimensions' => array_map(fn($dimension) => [
+                'width' => new Meter($dimension['width']['value'], $dimension['width']['unit']),
+                'height' => new Meter($dimension['height']['value'], $dimension['height']['unit']),
+                'depth' => new Meter($dimension['depth']['value'], $dimension['depth']['unit']),
+            ], $values['dimensions']),
+            'colors' => $values['colors'],
+        ];
+        $data = array_merge($data, ['attributes' => $attributes]);
+
         $product = Product::create([
-            'name' => $data['title'],
+            'name' => $data['name'],
             'description' => $data['description'],
             'price' => new Money($data['price']),
             'product_category_id' => $data['category']['id'],
         ])->createWith(Auth::user());
-        /*foreach ($data['images'] as $image) {
-            $product_images[] = ProductImage::create([
-                    'path' => '',
-                    'type' => '',
+
+        $thumbnail = null;
+        foreach ($data['images'] as $image) {
+            $tmpPath = Crypt::decryptString($image);
+            $newPath = config('shop.image.permanentPath') . DIRECTORY_SEPARATOR . auth()->id() . DIRECTORY_SEPARATOR . basename($tmpPath);
+
+            Storage::disk(config('shop.image.disk',config('filesystems.default')))->move($tmpPath, $newPath);
+
+            $product_image = ProductImage::create([
+                    'path' => $newPath,
+                    'type' => 'image/jpg',
                     'product_id' => $product->id,
                 ])->createWith(Auth::user());
+            $thumbnail = $thumbnail ?? $product_image;
         }
-        $product->thumbnail_id = $product_images[0]->id;
-        $product->update();*/
-        $attributes = $request['attributes'];
-        if (isset($attributes)) {
-            if ($attributes['color']['enabled']) {
-                $colorVal = $attributes['color']['value']['color']['colors'];
-                foreach ($colorVal as $val) {
-                    $col = substr($val['color'], 1);
-                    $attribute = ProductColorAttribute::create([
-                        'color' => $col,
-                        'name' => $val['name'],
-                    ]);
-                }
-            }
-            if ($attributes['clothing']['enabled']) {
-                $clothingVal = $attributes['clothing']['value']['size'];
-                foreach ($clothingVal as $val) {
-                    $attribute = ProductClothingAttribute::create($val);
-                }
-            }
-            if ($attributes['dimension']['enabled']) {
-                $dimensionVal = $attributes['dimension']['value'];
-                $attribute = ProductDimensionAttribute::create($dimensionVal);
-            }
-            if ($attributes['volume']['enabled']) {
-                $volumeVal = $attributes['volume']['value']['volume'];
-                $attribute = ProductVolumeAttribute::create($volumeVal);
-            }
+        $product->thumbnail_id = $thumbnail->id;
+        $product->save();
+
+        $colorValues = $attributes['colors'];
+        foreach ($colorValues as $val) {
+            $col = substr($val['color'], 1);
+            $attribute = ProductColorAttribute::create([
+                'color' => $col,
+                'name' => $val['name'],
+            ]);
+            $product->productColorAttributes()->attach($attribute);
+        }
+        $clothingValues = $attributes['clothing'];
+        foreach ($clothingValues as $val) {
+            $attribute = ProductClothingAttribute::create($val);
+            $product->productClothingAttributes()->attach($attribute);
+        }
+        $dimensionValues = $attributes['dimensions'];
+        foreach ($dimensionValues as $val) {
+            $attribute = ProductDimensionAttribute::create($val);
+            $product->productDimensionAttributes()->attach($attribute);
+        }
+        $volumeValues = $attributes['volumes'];
+        foreach ($volumeValues as $val) {
+            $attribute = ProductVolumeAttribute::create($val);
+            $product->productVolumeAttributes()->attach($attribute);
         }
         $product = $product->refresh();
         return response()->json($product);

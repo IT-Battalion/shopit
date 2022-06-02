@@ -2,26 +2,27 @@
   <mq-responsive target="lg+">
     <div :class="state.isLoading ? 'animate-pulse-emphasized' : ''"
          class="flex flex-row items-center justify-center w-full gap-5 h-28">
-      <template v-for="process in orderProcess" :key="process.name">
-        <div class="flex flex-col items-center transition-opacity transition-size">
-          <img :alt="process.name" :class="imageClasses(process.step, current)"
+      <template v-for="(process, index) in orderProgressSteps" :key="process.name">
+        <div class="flex flex-col items-center">
+          <img :alt="process.name" :class="imageClasses(process.latestStep, current)"
                :src="process.icon_url"
                class="transition-size transition-opacity ease-overshoot"/>
-          <span :class="textClasses(process.step, current)"
+          <span :class="textClasses(process.latestStep, current)"
                 class="mt-3 text-base text-center transition-opacity transition-size text-white">{{
               process.name
             }}</span>
         </div>
         <span
-          v-if="process.name !== 'Abgeschlossen'"
-          class="rounded-full transition-opacity bg-white w-16 h-1 opacity-80"
+          class="rounded-full bg-white transition-opacity transition-size w-16"
+          :class="index > current ? 'h-1 opacity-80' : 'h-2'"
+          v-if="index < orderProgressSteps.length - 1"
         />
       </template>
     </div>
   </mq-responsive>
   <mq-responsive target="md-">
     <div class="flex flex-col items-center gap-5 ml-auto mr-0">
-      <template v-for="process in orderProcess" :key="process.name">
+      <template v-for="process in orderProgressSteps" :key="process.name">
         <img :alt="process.name" :src="process.icon_url" class="w-8 h-8"/>
         <span
           v-if="process.name !== 'Abgeschlossen'"
@@ -41,47 +42,47 @@ import {PropType} from "vue";
 import {isEmpty} from "lodash";
 
 export default defineComponent({
-  name: "OrderProcess",
+  name: "OrderProgressBar",
   props: {
     order: {
       type: Object as PropType<Order>,
     },
   },
   data() {
-    const orderProcess = [
+    const orderProgressSteps = [
       {
         name: "Bestellen",
         icon_url: "/img/webshop.svg",
-        step: -1,
+        latestStep: -1,
       },
       {
         name: "Bezahlen",
         icon_url: "/img/paying.svg",
-        step: OrderStatus.CREATED,
+        latestStep: OrderStatus.CREATED,
       },
       {
         name: "Produkte werden bestellt",
         icon_url: "/img/list.svg",
-        step: OrderStatus.PAID,
+        latestStep: OrderStatus.PAID,
       },
       {
         name: "Produkte werden geliefert",
         icon_url: "/img/order.svg",
-        step: OrderStatus.ORDERED,
+        latestStep: OrderStatus.ORDERED,
       },
       {
         name: "Abholen",
         icon_url: "/img/pickUp.svg",
-        step: OrderStatus.RECEIVED,
+        latestStep: OrderStatus.RECEIVED,
       },
       {
         name: "Abgeschlossen",
         icon_url: "/img/done.svg",
-        step: OrderStatus.HANDED_OVER,
+        latestStep: OrderStatus.HANDED_OVER,
       },
     ];
     return {
-      orderProcess,
+      orderProgressSteps,
       state,
     };
   },
@@ -95,16 +96,20 @@ export default defineComponent({
   },
   methods: {
     imageClasses(step: number, current: number) {
-      if (state.isLoading || step !== current)
+      if (state.isLoading || step > current)
         return "w-8 h-8 opacity-80";
-
-      return "w-16 h-16";
+      else if (step < current)
+        return "w-8 h-8";
+      else
+        return "w-20 h-20";
     },
     textClasses(step: number, current: number) {
-      if (state.isLoading || step !== current)
+      if (state.isLoading || step > current)
         return "text-sm opacity-80";
-
-      return "text-lg";
+      else if (step < current)
+        return "text-sm";
+      else
+        return "text-lg";
     },
   },
 });

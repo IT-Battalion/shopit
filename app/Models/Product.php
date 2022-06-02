@@ -127,16 +127,15 @@ class Product extends Model implements ConvertableToOrder
     }
 
     #[ArrayShape([
-        'id' => "int",
-        'name' => "string",
-        'description' => "string",
-        'price' => "\App\Types\Money",
+        'id' => "mixed",
+        'name' => "mixed",
+        'description' => "mixed",
+        'price' => "mixed",
         'tax' => "mixed",
-        'thumbnail' => "int[]|null[]",
-        'images' => "mixed",
-        'attributes' => "\Illuminate\Database\Eloquent\Collection"
-    ])]
-    public function jsonSerialize(): array
+        'thumbnail' => "array",
+        'images' => "\Illuminate\Database\Eloquent\Collection",
+        'attributes' => "mixed"
+    ])] public function jsonSerialize(): array
     {
         return [
             'id' => $this->id,
@@ -147,7 +146,7 @@ class Product extends Model implements ConvertableToOrder
             'thumbnail' => [
                 'id' => $this->thumbnail_id,
             ],
-            'images' => $this->images->get('id'),
+            'images' => $this->images()->select('id')->get(),
             'attributes' => $this->product_attributes,
         ];
     }

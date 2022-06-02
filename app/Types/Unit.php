@@ -30,7 +30,7 @@ class Unit implements Castable, JsonSerializable
     }
 
     public function getOptimalUnitStep(): int {
-        return (int) log($this->value, pow(10, $this->unitStep)) - 1;
+        return min((int) log($this->value, pow(10, $this->unitStep)), sizeof($this->units) - 1);
     }
 
     public function getOptimalUnit(): string {
@@ -55,6 +55,10 @@ class Unit implements Castable, JsonSerializable
     public function setValue(int $value): void
     {
         $this->value = $value;
+    }
+
+    public function getUnits() {
+        return $this->units;
     }
 
     public static function castUsing(array $arguments)

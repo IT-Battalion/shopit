@@ -1,10 +1,10 @@
 <template>
-  <OrderProcess :order="order"/>
+  <OrderProgressBar :order="order"/>
   <OrderInfo :order="order" class="w-full" @confirm="confirmStep" @previous="previousStep" @refresh="loadOrder"/>
 </template>
 
 <script lang="ts">
-import OrderProcess from "../components/OrderProcess.vue";
+import OrderProgressBar from "../components/OrderProgressBar.vue";
 import OrderInfo from "../components/OrderInfo.vue";
 import {Order} from "../types/api";
 import {RouteLocationNormalizedLoaded, useRoute} from "vue-router";
@@ -17,7 +17,7 @@ import {useToast} from "vue-toastification";
 export default defineComponent({
   name: "User Order Detail",
   components: {
-    OrderProcess,
+    OrderProgressBar,
     OrderInfo,
   },
   setup() {

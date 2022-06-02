@@ -2,9 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Types\ClothingSize;
+use App\Types\Liter;
+use App\Types\Meter;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreProductRequest extends FormRequest
 {
@@ -26,31 +30,28 @@ class StoreProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required', 'string', 'between:2,20', 'unique:products,name'],
+            'name' => ['required', 'string', 'between:2,20', 'unique:products,name'],
             'price' => ['required', 'numeric', 'min:1'],
             'description' => ['required', 'string', 'min:10'],
             'highlighted' => ['required', 'boolean'],
-            'category.id' => ['required', 'integer', 'numeric', 'exists:product_categories,id'],
+            'category.id' => ['required', 'integer', 'exists:product_categories,id'],
             'images' => ['required', 'min:1', 'array'],
             'attributes' => ['array', 'between:-1,5'],
-            'attributes.clothing' => [Rule::requiredIf(function () {
-                return 'attributes.clothing.enabled';
-            })],
-            'attributes.color' => [Rule::requiredIf(function () {
-                return 'attributes.color.enabled';
-            })],
-            'attributes.volume' => [Rule::requiredIf(function () {
-                return 'attributes.volume.enabled';
-            })],
-            'attributes.dimension' => [Rule::requiredIf(function () {
-                return 'attributes.dimension.enabled';
-            })],
-            'attributes.clothing.value.size' => ['required_if:attributes.clothing.enabled,true'],
-            'attributes.volume.value.volume' => ['required_if:attributes.volume.enabled,true'],
-            'attributes.dimension.value.width' => ['required_if:attributes.dimension.enabled,true'],
-            'attributes.dimension.value.height' => ['required_if:attributes.dimension.enabled,true'],
-            'attributes.dimension.value.depth' => ['required_if:attributes.dimension.enabled,true'],
-            'attributes.color.value.color.colors' => ['required_if:attributes.color.enabled,true'],
+            'attributes.clothing' => ['present', 'array'],
+            'attributes.colors' => ['present', 'array'],
+            'attributes.volumes' => ['present', 'array'],
+            'attributes.dimensions' => ['present', 'array'],
+            'attributes.clothing.*.size' => ['required_with:attributes.clothing',new Enum(ClothingSize::class)],
+            'attributes.volumes.*.volume.value' => ['required_with:attributes.volume','integer'],
+            'attributes.volumes.*.volume.unit' => ['required_with:attributes.volume',Rule::in((new Liter(0))->getUnits())],
+            'attributes.dimensions.*.width.value' => ['required_with:attributes.dimension','integer'],
+            'attributes.dimensions.*.width.unit' => ['required_with:attributes.dimension',Rule::in((new Meter(0))->getUnits())],
+            'attributes.dimensions.*.height.value' => ['required_with:attributes.dimension','integer'],
+            'attributes.dimensions.*.height.unit' => ['required_with:attributes.dimension',Rule::in((new Meter(0))->getUnits())],
+            'attributes.dimensions.*.depth.value' => ['required_with:attributes.dimension','integer'],
+            'attributes.dimensions.*.depth.unit' => ['required_with:attributes.dimension',Rule::in((new Meter(0))->getUnits())],
+            'attributes.colors.*.color' => ['required_with:attributes.color','regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
+            'attributes.colors.*.name' => ['required_with:attributes.color'],
         ];
     }
 }

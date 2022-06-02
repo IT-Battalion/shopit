@@ -3,9 +3,9 @@
     <h2 class="w-full mb-5 text-2xl font-bold text-center text-white">
       Kategorie
     </h2>
-    <div class="z-50 w-72 top-16">
-      <Listbox v-model="selected" ref="product_categories">
-        <div class="relative mt-1">
+    <div class="z-50 top-16 w-full flex justify-center">
+      <Listbox v-model="index">
+        <div class="relative mt-1 w-56">
           <ListboxButton
             class="
               relative
@@ -28,7 +28,7 @@
               sm:text-sm
             "
           >
-            <span class="block truncate">{{ selected.name }}</span>
+            <span class="block truncate">{{ category.name }}</span>
             <span
               class="
                 absolute
@@ -71,9 +71,9 @@
             >
               <ListboxOption
                 v-slot="{ active, selected }"
-                v-for="category in categories"
-                :key="category.name"
-                :value="category"
+                v-for="(element, i) in categories"
+                :key="element.name"
+                :value="i"
                 as="template"
               >
                 <li
@@ -87,7 +87,7 @@
                       selected ? 'font-medium' : 'font-normal',
                       'block truncate',
                     ]"
-                    >{{ category.name }}</span
+                    >{{ element.name }}</span
                   >
                   <span
                     v-if="selected"
@@ -129,6 +129,7 @@ import {
 import { loadCategories } from "../../request";
 import { ProductCategory } from "../../types/api";
 import { endLoad, initLoad } from "../../loader";
+import {PropType} from "vue";
 
 export default defineComponent({
   components: {
@@ -138,12 +139,14 @@ export default defineComponent({
     ListboxLabel,
     ListboxOption,
   },
+  props: {
+    category: Object as PropType<ProductCategory>,
+  },
+  emits: ['update:category'],
   data() {
     return {
-      selected: {} as ProductCategory,
-      temp: {} as ProductCategory,
-      categories: [] as ProductCategory[],
-      isLoading: true,
+      index: 0,
+      categories: [this.category] as ProductCategory[],
     };
   },
   async beforeMount() {
@@ -151,25 +154,13 @@ export default defineComponent({
     await loadCategories()
       .then((value) => {
         this.categories = value;
-        if (
-          (this.selected.name == undefined || this.selected.id == undefined) &&
-          (this.temp.name == undefined || this.temp.id == undefined)
-        ) {
-          this.selected = this.categories[0];
-        }
-        this.isLoading = false;
-        if (this.temp.name != undefined || this.temp.id != undefined) {
-          this.selected = this.temp;
-        }
+        this.$emit('update:category', this.categories[this.index] as ProductCategory);
       })
       .finally(endLoad);
   },
-  methods: {
-    getSelected(): ProductCategory {
-      return this.selected;
-    },
-    setSelected(value: ProductCategory) {
-      this.isLoading ? (this.temp = value) : (this.selected = value);
+  watch: {
+    index(val) {
+      this.$emit('update:category', this.categories[val] as ProductCategory);
     },
   },
 });

@@ -5,12 +5,13 @@
       class="
         flex flex-row flex-wrap
         w-10/12
-        sm:h-[80vh]
+        sm:min-h-[80vh]
         py-10
         px-10
         place-items-center
         bg-elevatedDark
         login-form__container
+        content-center
       "
     >
       <div
@@ -68,9 +69,9 @@
           <template v-slot:icon><img src="/img/lockBlack.svg"/></template>
         </ButtonField>
       </form>
-      <div class="w-full my-5 text-center md:my-0">
+      <div class="w-full my-5 mt-3  text-center md:my-0">
         <router-link :to="{name: 'impressum'}"
-                     class="text-white underline  opacity-60 hover:opacity-100 decoration-solid">
+                     class="text-white underline opacity-60 hover:opacity-100 decoration-solid">
           Impressum
         </router-link>
       </div>

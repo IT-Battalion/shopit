@@ -169,26 +169,8 @@ const routes: Array<RouteRecordRaw> = [
             path: "products/add/",
             name: "Add Product",
             component: () =>
-              import(/* webpackChunkName: "admin" */ "../views/AddProductMeta.vue"),
+              import(/* webpackChunkName: "admin" */ "../views/AddProduct.vue"),
           },
-          {
-            path: "products/add/images",
-            name: "Add Product images",
-            component: () =>
-              import(/* webpackChunkName: "admin" */ "../views/UploadProductImages.vue"),
-          },
-          {
-            path: "products/add/attributes",
-            name: "Add Product attributes",
-            component: () =>
-              import(/* webpackChunkName: "admin" */ "../views/CategoriesAttributes.vue"),
-          },
-          {
-            path: "products/add/description",
-            name: "Add Product description",
-            component: () =>
-              import(/* webpackChunkName: "admin" */ "../views/Description.vue"),
-          }
         ]
       },
       {

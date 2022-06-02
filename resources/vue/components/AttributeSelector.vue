@@ -106,8 +106,8 @@
               ]"
             >
               <RadioGroupLabel as="p">
-                <span>{{ dimension.width.value }}{{ dimension.width.unit }} x</span>
-                <span>{{ dimension.height.value }}{{ dimension.height.unit }} x</span>
+                <span>{{ dimension.width.value }}{{ dimension.width.unit }} x </span>
+                <span>{{ dimension.height.value }}{{ dimension.height.unit }} x </span>
                 <span>{{ dimension.depth.value }}{{ dimension.depth.unit }}</span>
               </RadioGroupLabel>
               <div
