@@ -20,7 +20,6 @@ class OrderStatusObserver
      */
     public function created(Order $order)
     {
-        $this->fireOrderChangeEvent($order);
     }
 
     /**
@@ -31,7 +30,6 @@ class OrderStatusObserver
      */
     public function updated(Order $order)
     {
-        $this->fireOrderChangeEvent($order);
     }
 
     /**
@@ -67,11 +65,4 @@ class OrderStatusObserver
         //
     }
 
-    private function fireOrderChangeEvent(Order $order): void
-    {
-        $event = new OrderStatusChangedEvent($order);
-        event($event);
-        broadcast($event);
-        info("order changed");
-    }
 }

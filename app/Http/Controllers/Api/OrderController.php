@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\OrderStatusChangedEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
@@ -71,6 +72,7 @@ class OrderController extends Controller
         $order = $orderService->createOrder();
 
         $order = $order->refresh();
+        $this->fireOrderChangeEvent($order);
 
         return response()->json([
             'order_id' => $order->id,
@@ -125,6 +127,15 @@ class OrderController extends Controller
         }
 
         $order->refresh();
+        $this->fireOrderChangeEvent($order);
         return response()->json($order);
+    }
+
+    private function fireOrderChangeEvent(Order $order): void
+    {
+        $event = new OrderStatusChangedEvent($order);
+        event($event);
+        broadcast($event);
+        info("order changed");
     }
 }
