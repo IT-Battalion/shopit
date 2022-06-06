@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\HighlightedProduct;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductClothingAttribute;
@@ -17,6 +18,7 @@ use App\Types\Liter;
 use App\Types\Meter;
 use App\Types\Money;
 use Auth;
+use http\Env\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
@@ -117,6 +119,11 @@ class ProductController extends Controller
             $product->productVolumeAttributes()->attach($attribute);
         }
         $product = $product->refresh();
+
+        if ($data['highlighted']) {
+            HighlightedProduct::create(['product_id' => $product->id]);
+        }
+
         return response()->json($product);
     }
 
@@ -162,10 +169,11 @@ class ProductController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Product $product
-     * @return void
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function destroy(Product $product): void
+    public function destroy(Product $product)
     {
         $product->delete();
+        return response('', 204);
     }
 }

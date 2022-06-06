@@ -23,8 +23,7 @@
     <div class="flex flex-row my-5">
       <input
         id="highlighted"
-        :value="highlighted"
-        @update:value="value => $emit('update:highlighted', value)"
+        v-model="localHighlighted"
         class="my-5"
         name="highlighted"
         type="checkbox"
@@ -63,6 +62,7 @@ export default defineComponent({
   emits: ['update:name', 'update:price', 'update:highlighted', 'submit'],
   data() {
     return {
+      localHighlighted: this.highlighted,
       errorName: "",
       errorPrice: "",
     };
@@ -84,6 +84,14 @@ export default defineComponent({
       return this.ready() ? Promise.resolve() : Promise.reject();
     },
   },
+  watch: {
+    highlighted(val: boolean) {
+      this.localHighlighted = val;
+    },
+    localHighlighted(val: boolean) {
+      this.$emit('update:highlighted', val);
+    },
+  }
 });
 </script>
 

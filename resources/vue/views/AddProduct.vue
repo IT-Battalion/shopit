@@ -116,7 +116,6 @@ export default defineComponent({
       }
     },
     async createProduct() {
-      console.log(this.newProduct);
       initLoad();
       try {
         let product = await this.$http.post<NewProduct, AxiosResponse<Product>>(
@@ -124,9 +123,10 @@ export default defineComponent({
           this.newProduct
         );
         this.toast.success("Produkt wurde erfolgreich erstellt.");
-        await this.$router.push({name: "Product detail", params: {name: product.data.name}});
+        await this.$router.push({name: "Product", params: {name: product.data.name}});
       } catch (e) {
         this.toast.error("Fehler beim erstellen des Produktes");
+        console.error(e);
       }
       endLoad();
     }

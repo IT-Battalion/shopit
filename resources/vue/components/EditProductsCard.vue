@@ -22,28 +22,20 @@
         />
       </router-link>
     </div>
-    <div class="grid grid-cols-2 grid-rows-2 justify-items-start">
-      <h3 class="col-span-2 mt-2 text-lg text-white">
+    <div class="flex flex-col justify-items-start">
+      <h3 class="mt-2 text-lg text-white">
         <router-link :to="{ name: 'Product', params: { name: product?.name } }">
           {{ product?.name }}
         </router-link>
       </h3>
-      <router-link
-        :to="{ name: 'Product', params: { name: product?.name } }"
-        class="col-span-1 col-start-1 mt-3"
-      >
-        <ButtonField>
+      <div class="mt-3 flex justify-between w-full">
+        <ButtonField :loading="isLoading">
           <template v-slot:icon><img src="/img/editBlack.svg" /></template>
         </ButtonField>
-      </router-link>
-      <router-link
-        :to="{ name: 'Product', params: { name: product?.name } }"
-        class="col-span-1 col-start-2 justify-self-end mt-3"
-      >
-        <ButtonField>
+        <ButtonField :loading="isLoading" @click="this.delete">
           <template v-slot:icon><img src="/img/binBlack.svg" /></template>
         </ButtonField>
-      </router-link>
+      </div>
     </div>
   </template>
   <template v-else>
@@ -85,25 +77,47 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { Product } from "../types/api";
+import {defineComponent, PropType} from "vue";
+import {NewProduct, Product} from "../types/api";
 import LoadingImage from "./LoadingImage.vue";
 import ButtonField from "./ButtonField.vue";
+import {AxiosResponse} from "axios";
+import {useToast} from "vue-toastification";
+import {endLoad, initLoad} from "../loader";
 
 export default defineComponent({
   components: { LoadingImage, ButtonField },
   props: {
-    product: Object as () => Product,
+    product: Object as PropType<Product>,
     isLoading: Boolean,
     isSkeletor: {
       type: Boolean,
       default: false,
     },
   },
+  setup() {
+    return {
+      toast: useToast(),
+    };
+  },
   emits: ["imageLoaded"],
   methods: {
     imageLoaded() {
       this.$emit("imageLoaded");
+    },
+    async delete() {
+      initLoad();
+      try {
+        await this.$http.delete(
+          "/admin/product/" + this.product?.name,
+        );
+        this.toast.success("Successfully deleted Product " + this.product?.name);
+      } catch (e) {
+        console.error(e);
+        this.toast.error("Failed to delete Product " + this.product?.name);
+      } finally {
+        endLoad();
+      }
     },
   },
 });

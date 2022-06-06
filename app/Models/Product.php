@@ -7,6 +7,7 @@ use App\Contracts\ConvertableToOrder;
 use App\Traits\TracksModification;
 use App\Types\AttributeType;
 use App\Types\Money;
+use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use JetBrains\PhpStorm\ArrayShape;
 
 class Product extends Model implements ConvertableToOrder
@@ -166,11 +168,34 @@ class Product extends Model implements ConvertableToOrder
 
     public function deleteRelated()
     {
+        $this->shopping_carts()->detach();
+
+        $clothingAttributes = $this->productClothingAttributes()->get(['product_clothing_attribute_id']);
+        $this->productClothingAttributes()->detach();
+        ProductClothingAttribute::destroy($clothingAttributes);
+
+        $dimensionAttributes = $this->productDimensionAttributes()->get(['product_dimension_attribute_id']);
+        $this->productDimensionAttributes()->detach();
+        ProductDimensionAttribute::destroy($dimensionAttributes);
+
+        $volumeAttributes = $this->productVolumeAttributes()->get(['product_volume_attribute_id']);
+        $this->productVolumeAttributes()->detach();
+        ProductVolumeAttribute::destroy($volumeAttributes);
+
+        $colorAttributes = $this->productColorAttributes()->get(['product_color_attribute_id']);
+        $this->productColorAttributes()->detach();
+        ProductColorAttribute::destroy($colorAttributes);
+
+        $this->save(['thumbnail_id' => null]);
+        $this->images()->each(function (ProductImage $image) {
+            Storage::disk(config('shop.image.disk'))->delete($image->path);
+        });
         $this->images()->delete();
-        $this->productClothingAttributes()->delete();
-        $this->productDimensionAttributes()->delete();
-        $this->productVolumeAttributes()->delete();
-        $this->productColorAttributes()->delete();
+    }
+
+    public function onDelete(Closure $callback)
+    {
+        $this->deleteRelated();
     }
 
     public function images(): HasMany
@@ -196,6 +221,20 @@ class Product extends Model implements ConvertableToOrder
     public function productColorAttributes(): BelongsToMany
     {
         return $this->belongsToMany(ProductColorAttribute::class, 'color_attribute');
+    }
+
+    public function shopping_carts(): BelongsToMany
+    {
+        return $this
+            ->belongsToMany(User::class, 'shopping_cart', 'product_id')
+            ->withPivot([
+                'count',
+                'product_clothing_attribute_id',
+                'product_dimension_attribute_id',
+                'product_volume_attribute_id',
+                'product_color_attribute_id',
+            ])
+            ->using(ShoppingCartEntry::class);
     }
 
     public function getRouteKeyName()

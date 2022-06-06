@@ -3,6 +3,7 @@
     :disabled="loading"
     :type="type"
     class="flex flex-row gap-3 items-center justify-center h-10 py-1 my-auto text-black bg-white  rounded-full hover:bg-gray-300 px-7"
+    @click="this.$emit('click')"
   >
     <slot name="text"/>
     <span
@@ -43,6 +44,7 @@ export default defineComponent({
       default: "button",
     },
   },
+  emits: ['click'],
   computed: {
     buttonType(): "button" | "submit" | "reset" | undefined {
       const types = ["button", "submit", "reset"];
