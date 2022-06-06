@@ -17,6 +17,7 @@ import {defineComponent} from "@vue/runtime-core";
 import Sidenav from "./Sidenav.vue";
 
 export default defineComponent({
+  name: 'SidenavProfile',
   components: {
     Menu,
     MenuButton,

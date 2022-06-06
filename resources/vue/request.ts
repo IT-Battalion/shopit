@@ -11,8 +11,9 @@ import {
 } from "./types/api"
 
 export function getCSRFCookie() {
-  window.axios.get("/sanctum/csrf-cookie", {baseURL: ""}).catch(_ => {
+  window.axios.get("/sanctum/csrf-cookie", {baseURL: ""}).catch(e => {
     console.error("CSRF couldn't be fetched");
+    console.error(e);
   });
 }
 

@@ -72,7 +72,7 @@ window.axios = axios.create({
   headers: {
     "X-Requested-With": "XMLHttpRequest",
   },
-  baseURL: "/api"
+  baseURL: "/api",
 });
 
 window.axios.interceptors.response.use(res => res, err => {
@@ -100,12 +100,13 @@ window.pusher = require("pusher-js");
 window.echo = new Echo({
   broadcaster: "pusher",
   key: process.env.MIX_PUSHER_APP_KEY,
-  cluster: process.env.MIX_PUSHER_APP_CLUSTER,
   wsHost: window.location.hostname,
   wsPort: process.env.MIX_PUSHER_APP_PORT,
+  wssPort: process.env.MIX_PUSHER_APP_PORT,
   useTLS: false,
   forceTLS: false,
   disableStats: true,
+  enabledTransports: ['ws', 'wss'],
 });
 
 // Init csrf

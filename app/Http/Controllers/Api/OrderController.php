@@ -78,8 +78,6 @@ class OrderController extends Controller
 
         $order = $order->refresh();
 
-        $this->fireOrderChangeEvent($order);
-
         return response()->json([
             'order_id' => $order->id,
         ]);
@@ -132,22 +130,7 @@ class OrderController extends Controller
             $orderService->decrementOrderStatus($order);
         }
 
-        $this->fireOrderChangeEvent($order);
-
         $order->refresh();
         return response()->json($order);
-    }
-
-    private function fireOrderChangeEvent(Order $order): void
-    {
-        $eventClass = match ($order->status) {
-            OrderStatus::CREATED => OrderCreatedEvent::class,
-            OrderStatus::PAID => OrderPaidEvent::class,
-            OrderStatus::ORDERED => OrderProductsOrderedEvent::class,
-            OrderStatus::RECEIVED => OrderProductsReceivedEvent::class,
-            OrderStatus::HANDED_OVER => OrderHandedOverEvent::class,
-        };
-
-        broadcast(new $eventClass($order))->toOthers();
     }
 }

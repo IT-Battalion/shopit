@@ -32,7 +32,7 @@
         <ButtonField :loading="isLoading">
           <template v-slot:icon><img src="/img/editBlack.svg" /></template>
         </ButtonField>
-        <ButtonField :loading="isLoading" @click="this.delete">
+        <ButtonField :loading="isLoading || deleteLoading" @click="this.delete">
           <template v-slot:icon><img src="/img/binBlack.svg" /></template>
         </ButtonField>
       </div>
@@ -100,23 +100,29 @@ export default defineComponent({
       toast: useToast(),
     };
   },
-  emits: ["imageLoaded"],
+  data() {
+    return {
+      deleteLoading: false,
+    };
+  },
+  emits: ['imageLoaded', 'deleted'],
   methods: {
     imageLoaded() {
       this.$emit("imageLoaded");
     },
     async delete() {
-      initLoad();
+      this.deleteLoading = true;
       try {
         await this.$http.delete(
           "/admin/product/" + this.product?.name,
         );
+        this.$emit('deleted');
         this.toast.success("Successfully deleted Product " + this.product?.name);
       } catch (e) {
         console.error(e);
         this.toast.error("Failed to delete Product " + this.product?.name);
       } finally {
-        endLoad();
+        this.deleteLoading = false;
       }
     },
   },

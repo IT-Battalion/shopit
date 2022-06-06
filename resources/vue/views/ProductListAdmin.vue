@@ -23,6 +23,7 @@
             :product="product"
             :isLoading="state.isProgressing"
             @imageLoaded="imageLoaded"
+            @deleted="load"
           />
         </div>
       </div>
@@ -64,19 +65,8 @@ export default defineComponent({
       state: state,
     };
   },
-  async created() {
-    initLoad();
-    let response: AxiosResponse<{ [key: string]: Product[] }> =
-      await this.$http.get("/product");
-    this.categories = response.data;
-
-    let imageCount = 0;
-    for (const key in this.categories) {
-      imageCount += this.categories[key].length;
-    }
-
-    initProgress(imageCount);
-    endLoad();
+  async mounted() {
+    await this.load();
   },
   components: {
     EditProductsCards,
@@ -84,6 +74,20 @@ export default defineComponent({
   methods: {
     imageLoaded() {
       this.state.progressCurrent++;
+    },
+    async load() {
+      initLoad();
+      let response: AxiosResponse<{ [key: string]: Product[] }> =
+        await this.$http.get("/product");
+      this.categories = response.data;
+
+      let imageCount = 0;
+      for (const key in this.categories) {
+        imageCount += this.categories[key].length;
+      }
+
+      initProgress(imageCount);
+      endLoad();
     },
   },
 });

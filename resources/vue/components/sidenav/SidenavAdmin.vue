@@ -25,6 +25,7 @@ import ProductDropDown from "./ProductDropDown.vue";
 import Sidenav from "./Sidenav.vue";
 
 export default defineComponent({
+  name: 'SidenavAdmin',
   components: {
     ProductDropDown,
     Sidenav,

@@ -19,6 +19,7 @@ import { defineComponent } from "vue";
 import Sidenav from "./Sidenav.vue";
 
 export default defineComponent({
+  name: 'SidenavCategories',
   components: {
     Sidenav,
   },
