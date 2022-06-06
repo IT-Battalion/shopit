@@ -72,5 +72,6 @@ class OrderStatusObserver
         $event = new OrderStatusChangedEvent($order);
         event($event);
         broadcast($event);
+        info("order changed");
     }
 }

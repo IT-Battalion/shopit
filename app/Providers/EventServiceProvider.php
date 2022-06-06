@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\OrderStatusChangedEvent;
+use App\Listeners\OrderStatusListener;
 use App\Models\Order;
 use App\Models\Product;
 use App\Observers\OrderStatusObserver;
@@ -18,6 +20,9 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
+        OrderStatusChangedEvent::class => [
+            OrderStatusListener::class,
+        ],
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],

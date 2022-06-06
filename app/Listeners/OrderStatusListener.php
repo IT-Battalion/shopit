@@ -32,9 +32,11 @@ class OrderStatusListener implements ShouldQueue
      */
     public function handle(OrderStatusChangedEvent $event)
     {
-        switch ($event->order->status) {
+        info("listener fired!");
+        info($event->order);
+        switch ($event->order->customer) {
             case OrderStatus::CREATED:
-                Mail::to(auth()->user())->queue(new OrderCreatedMail());
+                Mail::to(auth()->user()->email)->queue(new OrderCreatedMail());
                 break;
             case OrderStatus::PAID:
                 throw new \Exception('To be implemented');
