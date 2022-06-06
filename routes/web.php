@@ -38,7 +38,7 @@ Route::view('/', 'vue')->name('home');
 Route::view('/products/{name}', 'vue')->name('products.show');
 
 // User profile
-Route::prefix('profile')->name('profil.')->group(function () {
+Route::prefix('profile')->name('profile.')->group(function () {
     Route::view('/', 'vue')->name('profile');
     Route::view('/order-history', 'vue')->name('orders.index');
 
