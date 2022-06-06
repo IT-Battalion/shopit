@@ -2,17 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Events\OrderCreatedEvent;
-use App\Events\OrderHandedOverEvent;
-use App\Events\OrderPaidEvent;
-use App\Events\OrderProductsOrderedEvent;
-use App\Events\OrderProductsReceivedEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
 use App\Models\User;
 use App\Services\Orders\OrderServiceInterface;
-use App\Types\OrderStatus;
 use App\Types\ValueChangeStep;
 use Auth;
 use Illuminate\Http\JsonResponse;

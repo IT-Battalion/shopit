@@ -3,17 +3,17 @@
 namespace App\Events;
 
 use App\Models\Order;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class OrderCreatedEvent implements ShouldBroadcast
+class OrderStatusChangedEvent implements ShouldBroadcast, ShouldQueue
 {
-    use Dispatchable;
-    use InteractsWithSockets;
-    use SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * Create a new event instance.
@@ -22,7 +22,7 @@ class OrderCreatedEvent implements ShouldBroadcast
      */
     public function __construct(public Order $order)
     {
-        //TODO: send email
+        //
     }
 
     /**
@@ -33,9 +33,7 @@ class OrderCreatedEvent implements ShouldBroadcast
     public function broadcastOn()
     {
         return [
-            new PrivateChannel('app.admin.orders'),
             new PrivateChannel('app.order.' . $this->order->id),
-            new PrivateChannel("app.user.{$this->order->customer->id}.orders")
-        ];
+            new PrivateChannel("app.user.{$this->order->customer->id}.orders")];
     }
 }

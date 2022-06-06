@@ -7,8 +7,8 @@ use App\Events\OrderHandedOverEvent;
 use App\Events\OrderPaidEvent;
 use App\Events\OrderProductsOrderedEvent;
 use App\Events\OrderProductsReceivedEvent;
+use App\Events\OrderStatusChangedEvent;
 use App\Models\Order;
-use App\Types\OrderStatus;
 
 class OrderStatusObserver
 {
@@ -69,15 +69,8 @@ class OrderStatusObserver
 
     private function fireOrderChangeEvent(Order $order): void
     {
-        $eventClass = match ($order->status) {
-            OrderStatus::CREATED => OrderCreatedEvent::class,
-            OrderStatus::PAID => OrderPaidEvent::class,
-            OrderStatus::ORDERED => OrderProductsOrderedEvent::class,
-            OrderStatus::RECEIVED => OrderProductsReceivedEvent::class,
-            OrderStatus::HANDED_OVER => OrderHandedOverEvent::class,
-        };
-
-        info("Sending event " . $eventClass);
-        broadcast(new $eventClass($order))->toOthers();
+        $event = new OrderStatusChangedEvent($order);
+        event($event);
+        broadcast($event);
     }
 }
