@@ -3,47 +3,47 @@
     <table>
       <thead>
         <tr>
-          <th>Description</th>
-          <th>Price</th>
-          <th>Quantity</th>
-          <th>Subtotal</th>
+          <th>Artikel</th>
+          <th>Größe</th>
+          <th>Farbe</th>
+          <th>Anzahl</th>
+          <th>Betrag</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Website design</td>
-          <td>€34.20</td>
-          <td>100</td>
-          <td>€3,420.00</td>
+          <td>Standard T-Shirt<br>Artikelnummer: 1212121</td>
+          <td>L</td>
+          <td>Schwarz</td>
+          <td>1</td>
+          <td>9.99€<br>Einzelpreis: 9.99€<br>Coupon: 9.99€</td>
         </tr>
         <tr>
-          <td>Website development</td>
-          <td>€45.50</td>
-          <td>100</td>
-          <td>€4,550.00</td>
-        </tr>
-        <tr>
-          <td>Website integration</td>
-          <td>€25.75</td>
-          <td>100</td>
-          <td>€2,575.00</td>
+          <td>Standard T-Shirt<br>Artikelnummer: 1212121</td>
+          <td>L</td>
+          <td>Schwarz</td>
+          <td>1</td>
+          <td>9.99€<br>Einzelpreis: 9.99€<br>Coupon: 9.99€</td>
         </tr>
       </tbody>
     </table>
 
     <table id="total">
-      <thead>
-        <tr>
-          <th>Due by</th>
-          <th>Account number</th>
-          <th>Total due</th>
-        </tr>
-      </thead>
       <tbody>
         <tr>
-          <td>May 10, 2018</td>
-          <td>132 456 789 012</td>
-          <td>€10,545.00</td>
+          <td>Eingelöste Coupons:</td>
+          <td></td>
+          <td>Versandkosten:  10.00€</td>
+        </tr>
+        <tr>
+          <td>NAt-D23-KF4-M66</td>
+          <td></td>
+          <td>Coupon:  4.00€</td>
+        </tr>
+        <tr>
+          <td>10% auf alle Produkte</td>
+          <td></td>
+          <td style="font-weight: bold">Gesamtkosten:  19.99€</td>
         </tr>
       </tbody>
     </table>

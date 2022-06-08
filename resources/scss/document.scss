@@ -2,12 +2,19 @@
   font-family: Pacifico;
   margin: 3cm;
   @bottom-left {
-    color: #1ee494;
-    content: '♥ Thank you!';
+    color: #a9a;
+    font-size: 9pt;
+    content: "Wexstraße 19-23 \a 1200 Wien \a ZVR-Nummer: 34545345";
+    white-space: pre;
+  }
+  @bottom-center {
+    color: #a9a;
+    font-size: 9pt;
+    content: 'Obmann: \a Mag. Dr. Christian Kruisz \a Obmann-Stv.: \a Mag. Lisa Vittori'
   }
   @bottom-right {
     color: #a9a;
-    content: 'contact@courtbouillon.org | courtbouillon.org';
+    content: 'E-Mail: info@shopit.tgm.ac.at \a  @LernenimAufbruch.at';
     font-size: 9pt;
   }
 }
@@ -41,7 +48,8 @@ aside address#from {
   color: #a9a;
   flex: 1;
 }
-aside address#to {
+#pageNumber {
+  margin-top: 6.5em;
   text-align: right;
 }
 
@@ -82,8 +90,7 @@ td {
   padding-top: 7mm;
 }
 td:last-of-type {
-  color: #1ee494;
-  font-weight: bold;
+  color: #14213d;
   text-align: right;
 }
 th, td {
@@ -99,9 +106,9 @@ table#total {
   background: #f6f6f6;
   border-color: #f6f6f6;
   border-style: solid;
-  border-width: 2cm 3cm;
+  border-width: 0.5cm 3cm;
   bottom: 0;
-  font-size: 20pt;
+  font-size: 10pt;
   margin: 0 -3cm;
   position: absolute;
   width: 18cm;
