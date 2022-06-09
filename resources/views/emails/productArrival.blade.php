@@ -157,7 +157,7 @@
           <tr>
             <td style="width:600px;">
               
-      <img height="auto" src="https://s3-eu-west-1.amazonaws.com/topolio/uploads/62a0a4b1a25a1/1654695329.jpg" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="600">
+      <img height="auto" src="{{ $message->embed("resources/assets/images/EmailHeader.png") }}" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="600">
     
             </td>
           </tr>
@@ -222,7 +222,7 @@
             <tr>
               <td align="left" style="font-size:0px;padding:15px 15px 15px 15px;word-break:break-word;">
                 
-      <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1.5;text-align:left;color:#000000;"><p style="font-size: 11px; font-family: Ubuntu, Helvetica, Arial; text-align: center;"><span style="font-family: 'Open Sans', sans-serif; font-size: 20px; color: #ffffff;">Sehr geehrte(r) Manuel Kirchner,</span></p>
+      <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1.5;text-align:left;color:#000000;"><p style="font-size: 11px; font-family: Ubuntu, Helvetica, Arial; text-align: center;"><span style="font-family: 'Open Sans', sans-serif; font-size: 20px; color: #ffffff;">Sehr geehrte(r) {{$order->customer->firstname}} {{$order->customer->lastname}},</span></p>
 <p style="font-size: 11px; font-family: Ubuntu, Helvetica, Arial; text-align: center;"><span style="font-family: 'Open Sans', sans-serif; font-size: 20px; color: #ffffff;">Ihre Produkte sind soeben angekommen.<br></span></p>
 <p style="font-size: 11px; font-family: Ubuntu, Helvetica, Arial; text-align: center;"><span style="font-family: 'Open Sans', sans-serif; font-size: 20px; color: #ffffff;">Bitte begeben Sie sich auf H930, um</span></p>
 <p style="font-size: 11px; font-family: Ubuntu, Helvetica, Arial; text-align: center;"><span style="font-family: 'Open Sans', sans-serif; font-size: 20px; color: #ffffff;">Ihre Lieferung entgegenzunehmen.</span></p></div>
@@ -348,7 +348,7 @@
       <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
         <tr>
           <td align="center" bgcolor="#373c4d" role="presentation" style="border:none;border-radius:24px;cursor:auto;mso-padding-alt:9px 26px 9px 26px;background:#373c4d;" valign="middle">
-            <a href="https://google.com" style="display: inline-block; background: #373c4d; color: #ffffff; font-family: Ubuntu, Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-size: 13px; font-weight: normal; line-height: 100%; margin: 0; text-decoration: none; text-transform: none; padding: 9px 26px 9px 26px; mso-padding-alt: 0px; border-radius: 24px;" target="_blank">
+            <a href="{{route("profile.order.show", $order->id)}}" style="display: inline-block; background: #373c4d; color: #ffffff; font-family: Ubuntu, Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-size: 13px; font-weight: normal; line-height: 100%; margin: 0; text-decoration: none; text-transform: none; padding: 9px 26px 9px 26px; mso-padding-alt: 0px; border-radius: 24px;" target="_blank">
               Hier Klicken!
             </a>
           </td>
