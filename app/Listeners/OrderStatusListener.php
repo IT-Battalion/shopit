@@ -4,7 +4,10 @@ namespace App\Listeners;
 
 use App\Events\OrderStatusChangedEvent;
 use App\Mail\OrderCreatedMail;
-use App\Models\Order;
+use App\Mail\PaymentConfirmationMail;
+use App\Mail\PickUpConfirmationMail;
+use App\Mail\ProductArrivalMail;
+use App\Mail\ProductDeliveryMail;
 use App\Types\OrderStatus;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -39,16 +42,16 @@ class OrderStatusListener implements ShouldQueue
                 Mail::to($event->order->customer->email)->queue(new OrderCreatedMail($event->order));
                 break;
             case OrderStatus::PAID:
-                throw new \Exception('To be implemented');
+                Mail::to($event->order->customer->email)->queue(new PaymentConfirmationMail($event->order));
                 break;
             case OrderStatus::ORDERED:
-                throw new \Exception('To be implemented');
+                Mail::to($event->order->customer->email)->queue(new ProductDeliveryMail($event->order));
                 break;
             case OrderStatus::RECEIVED:
-                throw new \Exception('To be implemented');
+                Mail::to($event->order->customer->email)->queue(new ProductArrivalMail($event->order));
                 break;
             case OrderStatus::HANDED_OVER:
-                throw new \Exception('To be implemented');
+                Mail::to($event->order->customer->email)->queue(new PickUpConfirmationMail($event->order));
         }
     }
 }
