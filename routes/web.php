@@ -35,7 +35,7 @@ Route::view('/impressum', 'vue');
 
 // Main Content
 Route::view('/', 'vue')->name('home');
-Route::view('/products/{name}', 'vue')->name('products.show');
+Route::view('/product/{name}', 'vue')->name('products.show');
 
 // User profile
 Route::prefix('profile')->name('profile.')->group(function () {
@@ -73,7 +73,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     // Products
     Route::prefix('products')->name('products.')->group(function () {
-        Route::view('/edit', 'vue')->name('edit');
+        Route::view('/edit', 'vue')->name('index');
+        Route::view('/edit/{name}', 'vue')->name('edit');
         Route::view('/add', 'vue')->name('store');
     });
 

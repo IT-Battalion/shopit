@@ -98,7 +98,7 @@ export default defineComponent({
   emits: ['update:dimensions'],
   data() {
     return {
-      localDimensions: [] as DimensionAttribute[],
+      localDimensions: this.dimensions as DimensionAttribute[],
       width: {value: 0, unit: 'mm'} as Meter,
       height: {value: 0, unit: 'mm'} as Meter,
       depth: {value: 0, unit: 'mm'} as Meter,

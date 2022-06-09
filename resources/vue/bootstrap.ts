@@ -95,19 +95,19 @@ window.axios.interceptors.response.use(res => res, err => {
  * allows your team to easily build robust real-time web applications.
  */
 
-window.pusher = require("pusher-js");
-
-window.echo = new Echo({
-  broadcaster: "pusher",
-  key: process.env.MIX_PUSHER_APP_KEY,
-  wsHost: window.location.hostname,
-  wsPort: process.env.MIX_PUSHER_APP_PORT,
-  wssPort: process.env.MIX_PUSHER_APP_PORT,
-  useTLS: false,
-  forceTLS: false,
-  disableStats: true,
-  enabledTransports: ['ws', 'wss'],
-});
+// window.pusher = require("pusher-js");
+//
+// window.echo = new Echo({
+//   broadcaster: "pusher",
+//   key: process.env.MIX_PUSHER_APP_KEY,
+//   wsHost: window.location.hostname,
+//   wsPort: process.env.MIX_PUSHER_APP_PORT,
+//   wssPort: process.env.MIX_PUSHER_APP_PORT,
+//   useTLS: false,
+//   forceTLS: false,
+//   disableStats: true,
+//   enabledTransports: ['ws', 'wss'],
+// });
 
 // Init csrf
 getCSRFCookie();

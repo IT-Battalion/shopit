@@ -13,12 +13,14 @@ use App\Models\ProductColorAttribute;
 use App\Models\ProductDimensionAttribute;
 use App\Models\ProductImage;
 use App\Models\ProductVolumeAttribute;
+use App\Services\Products\ProductService;
+use App\Services\Products\ProductServiceInterface;
+use App\Types\AttributeType;
 use App\Types\ClothingSize;
 use App\Types\Liter;
 use App\Types\Meter;
 use App\Types\Money;
 use Auth;
-use http\Env\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
@@ -59,14 +61,14 @@ class ProductController extends Controller
         $data = $request->validated();
         $values = $data['attributes'];
         $attributes = [
-            'clothing' => array_map(fn($clothing) => ['size' => ClothingSize::from($clothing['size'])], $values['clothing']),
-            'volumes' => array_map(fn($volume) => ['volume' => new Liter($volume['volume']['value'],$volume['volume']['unit'])], $values['volumes']),
+            'clothing' => array_map(fn($clothing) => ['size' => ClothingSize::from($clothing['size'])], $values[strval(AttributeType::CLOTHING->value)]),
+            'volumes' => array_map(fn($volume) => ['volume' => new Liter($volume['volume']['value'],$volume['volume']['unit'])], $values[strval(AttributeType::VOLUME->value)]),
             'dimensions' => array_map(fn($dimension) => [
                 'width' => new Meter($dimension['width']['value'], $dimension['width']['unit']),
                 'height' => new Meter($dimension['height']['value'], $dimension['height']['unit']),
                 'depth' => new Meter($dimension['depth']['value'], $dimension['depth']['unit']),
-            ], $values['dimensions']),
-            'colors' => $values['colors'],
+            ], $values[strval(AttributeType::DIMENSION->value)]),
+            'colors' => $values[strval(AttributeType::COLOR->value)],
         ];
         $data = array_merge($data, ['attributes' => $attributes]);
 
@@ -135,20 +137,20 @@ class ProductController extends Controller
      */
     public function show(Product $product): JsonResponse
     {
-        return response()->json([
-            'name' => $product->name,
-            'description' => $product->description,
-            'thumbnail' => ['id' => $product->thumbnail_id],
-            'price' => $product->price,
-            'tax' => $product->tax,
-            'available' => $product->available,
-            'images' => $product->images->map(function (ProductImage $image) {
-                return [
-                    'id' => $image->id,
-                ];
-            }),
-            'attributes' => $product->productAttributes,
-        ]);
+        return response()->json($product);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param Product $product
+     * @return JsonResponse
+     */
+    public function showAdmin(Product $product, ProductServiceInterface $productService): JsonResponse
+    {
+        $result = $product->jsonSerialize();
+        $result['images'] = $productService->getFilePondImages($product);
+        return response()->json($result);
     }
 
     /**
@@ -175,5 +177,9 @@ class ProductController extends Controller
     {
         $product->delete();
         return response('', 204);
+    }
+
+    public function getFilePondIds(Product $product, ProductService $productService) {
+        return response()->json($productService->getFilePondImages($product));
     }
 }

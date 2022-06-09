@@ -80,9 +80,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/ban/user/{user}/unban', [BanController::class, 'unban']);
 
     // Product Routes
+    Route::get('product/{product}', [ProductController::class, 'showAdmin']);
     Route::apiResource('product', ProductController::class)->only(['store', 'update', 'destroy']);
+    Route::get('productImage', [ImageUploadController::class, 'load']);
     Route::post('productImage', [ImageUploadController::class, 'process']);
     Route::delete('productImage', [ImageUploadController::class, 'revert']);
+    Route::get('productImages/{product}', [ProductController::class, 'getFilePondIds']);
 
     // Legal Documents (AGB, Impressum, ..) Routes
     Route::post('/impressum/set', [LegalDocumentsController::class, 'setimpressum']);

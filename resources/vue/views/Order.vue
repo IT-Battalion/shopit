@@ -29,11 +29,11 @@ export default defineComponent({
     }
   },
   async created() {
-    this.subscribe(this.route.params.id as string)
+    // this.subscribe(this.route.params.id as string)
     await this.loadOrder();
   },
   async unmounted() {
-    this.unsubscribe(this.route.params.id as string);
+    // this.unsubscribe(this.route.params.id as string);
   },
   data() {
     return {
@@ -81,32 +81,32 @@ export default defineComponent({
       endLoad();
     },
 
-    subscribe(orderId: string) {
-      const events = [
-        "OrderCreatedEvent",
-        "OrderPaidEvent",
-        "OrderProductsOrderedEvent",
-        "OrderProductsReceivedEvent",
-        "OrderHandedOverEvent",
-      ];
+    // subscribe(orderId: string) {
+    //   const events = [
+    //     "OrderCreatedEvent",
+    //     "OrderPaidEvent",
+    //     "OrderProductsOrderedEvent",
+    //     "OrderProductsReceivedEvent",
+    //     "OrderHandedOverEvent",
+    //   ];
+    //
+    //   let channel = this.$echo.private(`app.order.${orderId}`);
+    //
+    //   for (let eventName of events) {
+    //     channel.listen(eventName.toString(), (event: { order: Order }) => {
+    //       this.order = event.order;
+    //     });
+    //   }
+    // },
 
-      let channel = this.$echo.private(`app.order.${orderId}`);
-
-      for (let eventName of events) {
-        channel.listen(eventName.toString(), (event: { order: Order }) => {
-          this.order = event.order;
-        });
-      }
-    },
-
-    unsubscribe(orderId: string) {
-      this.$echo.leave(`app.order.${orderId}`);
-    },
+    // unsubscribe(orderId: string) {
+    //   this.$echo.leave(`app.order.${orderId}`);
+    // },
   },
   watch: {
     $route(to: RouteLocationNormalizedLoaded, from: RouteLocationNormalizedLoaded) {
-      this.unsubscribe(from.params.id as string);
-      this.subscribe(to.params.id as string);
+      // this.unsubscribe(from.params.id as string);
+      // this.subscribe(to.params.id as string);
     }
   },
 });

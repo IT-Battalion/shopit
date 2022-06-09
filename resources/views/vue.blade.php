@@ -28,6 +28,7 @@
                 '\\"',
                 json_encode(
                     [
+                        'currency' => config('shop.money.currency'),
                         'categories' => ProductCategory::whereHas('products')
                             ->get()
                             ->map(function (ProductCategory $category, int $key) use ($categoryColors) {

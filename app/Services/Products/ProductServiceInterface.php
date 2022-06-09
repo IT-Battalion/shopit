@@ -114,4 +114,11 @@ interface ProductServiceInterface
      * @return bool true if it was successfully removed from highlighted Products else false.
      */
     public function unHighlightProduct(Product $product): bool;
+
+    /**
+     * Returns the filepond identifiers for the images of a product
+     * @param Product $product the product which the images belong to
+     * @return array the filepond identifiers
+     */
+    public function getFilePondImages(Product $product): array;
 }

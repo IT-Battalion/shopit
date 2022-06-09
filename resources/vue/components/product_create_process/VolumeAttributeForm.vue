@@ -59,7 +59,7 @@ export default defineComponent({
   emits: ['update:volumes'],
   data() {
     return {
-      localVolumes: [] as VolumeAttribute[],
+      localVolumes: this.volumes as VolumeAttribute[],
       volume: {value: 0, unit: 'l'} as Liter,
       highlight: -1,
       errorMessage: "",

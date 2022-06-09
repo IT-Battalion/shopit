@@ -17,7 +17,7 @@
         :value="price"
         @update:value="value => {$emit('update:price', value.trim()); this.errorPrice = '';}"
       >
-        <template v-slot:unit>&euro;</template>
+        <template v-slot:unit>{{ currency }}</template>
       </InputField>
     </form>
     <div class="flex flex-row my-5">
@@ -60,6 +60,11 @@ export default defineComponent({
     },
   },
   emits: ['update:name', 'update:price', 'update:highlighted', 'submit'],
+  setup() {
+    return {
+      currency: window.config.currency,
+    };
+  },
   data() {
     return {
       localHighlighted: this.highlighted,

@@ -302,54 +302,54 @@ export default defineComponent({
     this.$globalBus.on("shopping-cart.toggle", this.toggle);
     this.$globalBus.on("shopping-cart.set-open", this.setShoppingCart);
 
-    this.$echo
-      .private(`app.user.${this.user?.id}.shopping-cart`)
-      .listen(
-        "ProductAddedToShoppingCartEvent",
-        async (message: AddToShoppingCartMessage) => {
-          await this.addToCart(async () => {
-            return {
-              product: message.product,
-              count: message.count,
-              selectedAttributes: message.selectedAttributes,
-              price: message.price,
-            } as ShoppingCartEntry;
-          });
-          this.toast.info("Ein Produkt wurde dem Einkaufswagen hinzugefügt.", {onClick: this.openFromToast});
-          this.updatePrices(pick(message, ["subtotal", "discount", "tax", "total"]));
-        }
-      )
-      .listen(
-        "ProductRemovedFromShoppingCartEvent",
-        async (message: RemoveFromShoppingCartMessage) => {
-          await this.removeProductFromCart(async () => {
-            return {
-              product: message.product,
-              selectedAttributes: message.selectedAttributes,
-            };
-          });
-          this.toast.info("Ein Produkt wurde aus dem Einkaufswagen entfernt.", {onClick: this.openFromToast});
-          this.updatePrices(pick(message, ["subtotal", "discount", "tax", "total"]));
-        }
-      );
-    this.$echo
-      .private(`app.user.${this.user?.id}.orders`)
-      .listen(
-        "OrderCreatedEvent",
-        async (data: { order: Order }) => {
-          const {order} = data;
-
-          await this.loadCart();
-
-          const link = this.$router.resolve({name: "Order Detail", params: {id: order.id}}).href;
-          this.toast.info({
-            component: OrderCreatedToast,
-            props: {
-              link,
-            },
-          }, {timeout: false});
-        }
-      );
+    // this.$echo
+    //   .private(`app.user.${this.user?.id}.shopping-cart`)
+    //   .listen(
+    //     "ProductAddedToShoppingCartEvent",
+    //     async (message: AddToShoppingCartMessage) => {
+    //       await this.addToCart(async () => {
+    //         return {
+    //           product: message.product,
+    //           count: message.count,
+    //           selectedAttributes: message.selectedAttributes,
+    //           price: message.price,
+    //         } as ShoppingCartEntry;
+    //       });
+    //       this.toast.info("Ein Produkt wurde dem Einkaufswagen hinzugefügt.", {onClick: this.openFromToast});
+    //       this.updatePrices(pick(message, ["subtotal", "discount", "tax", "total"]));
+    //     }
+    //   )
+    //   .listen(
+    //     "ProductRemovedFromShoppingCartEvent",
+    //     async (message: RemoveFromShoppingCartMessage) => {
+    //       await this.removeProductFromCart(async () => {
+    //         return {
+    //           product: message.product,
+    //           selectedAttributes: message.selectedAttributes,
+    //         };
+    //       });
+    //       this.toast.info("Ein Produkt wurde aus dem Einkaufswagen entfernt.", {onClick: this.openFromToast});
+    //       this.updatePrices(pick(message, ["subtotal", "discount", "tax", "total"]));
+    //     }
+    //   );
+    // this.$echo
+    //   .private(`app.user.${this.user?.id}.orders`)
+    //   .listen(
+    //     "OrderCreatedEvent",
+    //     async (data: { order: Order }) => {
+    //       const {order} = data;
+    //
+    //       await this.loadCart();
+    //
+    //       const link = this.$router.resolve({name: "Order Detail", params: {id: order.id}}).href;
+    //       this.toast.info({
+    //         component: OrderCreatedToast,
+    //         props: {
+    //           link,
+    //         },
+    //       }, {timeout: false});
+    //     }
+    //   );
   },
   async created() {
     await this.loadCart();
@@ -360,8 +360,8 @@ export default defineComponent({
     this.$globalBus.off("shopping-cart.toggle", this.toggle);
     this.$globalBus.off("shopping-cart.set-open", this.setShoppingCart);
 
-    this.$echo.leave(`app.user.${this.user?.id}.shopping-cart`);
-    this.$echo.leave(`app.user.${this.user?.id}.orders`);
+    // this.$echo.leave(`app.user.${this.user?.id}.shopping-cart`);
+    // this.$echo.leave(`app.user.${this.user?.id}.orders`);
   },
   methods: {
     open() {

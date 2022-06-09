@@ -1,5 +1,5 @@
 import {AttributeType, ClothingSize, OrderStatus} from "./api-values";
-import {FilePondFile} from "filepond";
+import {FilePondFile, FilePondInitialFile} from "filepond";
 
 export interface LoginRequestData {
   username: string,
@@ -70,10 +70,10 @@ export type SelectedAttributes = {
 };
 
 export type Attributes = {
-  [AttributeType.CLOTHING]: [ClothingAttribute],
-  [AttributeType.DIMENSION]: [DimensionAttribute],
-  [AttributeType.VOLUME]: [VolumeAttribute],
-  [AttributeType.COLOR]: [ColorAttribute],
+  [AttributeType.CLOTHING]: ClothingAttribute[],
+  [AttributeType.DIMENSION]: DimensionAttribute[],
+  [AttributeType.VOLUME]: VolumeAttribute[],
+  [AttributeType.COLOR]: ColorAttribute[],
 }
 
 export interface Product {
@@ -81,16 +81,17 @@ export interface Product {
   name: string,
   description: string,
   price: Money,
+  highlighted: boolean,
   tax: string,
-  available: number,
+  category: ProductCategory,
   thumbnail: {
     id: number,
   },
-  images: [{
-    id: number,
-  }],
+  images: ProductImage[],
   attributes: Attributes,
 }
+
+type ProductImage = {id: number} | FilePondInitialFile | FilePondFile;
 
 export interface ShoppingCartDescriptor {
   name: string,
@@ -225,10 +226,6 @@ export interface CreateProductRequest {
   product_category_id: number,
 }
 
-export interface ProductImage {
-  path: string,
-}
-
 export interface CreateProductImageRequest {
   product_id: number,
   image: string,
@@ -288,12 +285,7 @@ export interface NewProduct {
   highlighted: boolean,
   images: FilePondFile[],
   category: ProductCategory,
-  attributes: {
-    dimensions: DimensionAttribute[],
-    volumes: VolumeAttribute[],
-    clothing: ClothingAttribute[],
-    colors: ColorAttribute[],
-  };
+  attributes: Attributes;
   description: string,
 }
 

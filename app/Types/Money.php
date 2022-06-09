@@ -156,7 +156,7 @@ class Money implements Castable, JsonSerializable, Jsonable
 
     public function jsonSerialize(): string
     {
-        return str_replace(',00', ',-', str_replace('.', ',', bcround($this->amount, 2))) . config('shop.money.currency');
+        return str_replace(',00', ',-', str_replace('.', ',', bcround($this->amount, 2)));
     }
 
     public function toJson($options = 0)

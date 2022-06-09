@@ -95,6 +95,10 @@ class Product extends Model implements ConvertableToOrder
         return $this->belongsTo(ProductCategory::class, 'product_category_id');
     }
 
+    public function highlightedProduct() {
+        return $this->hasOne(HighlightedProduct::class);
+    }
+
     public function scopeAvailable(Builder $query): Builder
     {
         return $query->where('available', '>', '0')->orWhere('available', '=', '-1');
@@ -133,7 +137,9 @@ class Product extends Model implements ConvertableToOrder
         'name' => "mixed",
         'description' => "mixed",
         'price' => "mixed",
+        'highlighted' => 'boolean',
         'tax' => "mixed",
+        'category' => "\\App\\Models\\ProductCategory",
         'thumbnail' => "array",
         'images' => "\Illuminate\Database\Eloquent\Collection",
         'attributes' => "mixed"
@@ -144,7 +150,9 @@ class Product extends Model implements ConvertableToOrder
             'name' => $this->name,
             'description' => $this->name,
             'price' => $this->gross_price,
+            'highlighted' => $this->highlightedProduct()->exists(),
             'tax' => str_replace('.', ',', bcround(bcmul($this->tax, '100'))),
+            'category' => $this->category,
             'thumbnail' => [
                 'id' => $this->thumbnail_id,
             ],

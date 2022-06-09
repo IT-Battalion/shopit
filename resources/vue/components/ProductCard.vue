@@ -21,7 +21,7 @@
       <p
         class="col-span-1 row-start-2 my-auto text-base font-medium text-gray-300 "
       >
-        {{ product?.price }}
+        {{ product?.price }}{{ currency }}
       </p>
       <router-link
         :to="{ name: 'Product', params: { name: product?.name } }"
@@ -86,6 +86,11 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+  },
+  setup() {
+    return {
+      currency: window.config.currency,
+    };
   },
   emits: ["imageLoaded"],
   methods: {

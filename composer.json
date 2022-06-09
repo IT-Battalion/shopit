@@ -25,7 +25,7 @@
         "laravel/tinker": "^2.5",
         "psr/log": "^1.0",
         "rockett/weasyprint": "^6.1",
-        "symfony/mailer": "^6.0.0"
+        "symfony/mailer": "^6.0.0",
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",

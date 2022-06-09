@@ -1,18 +1,18 @@
 <template>
   <div>
     <ProductProcessBar :step="selectedStep" :latest-step="latestStep" @changeStep="changeStep" />
-    <form>
-      <ProductGeneralForm ref="general" v-model:price="newProduct.price" v-model:name="newProduct.name" v-model:highlighted="newProduct.highlighted" v-show="selectedStep === 0" @submit="forward" />
-      <ProductImages ref="images" v-model:images="newProduct.images" v-show="selectedStep === 1" />
-      <CategoriesAttributes ref="attributes" v-model:category="newProduct.category" v-model:attributes="newProduct.attributes" v-show="selectedStep === 2" />
-      <Description ref="description" v-model:description="newProduct.description" v-show="selectedStep === 3" />
+    <form v-if="!productLoading">
+      <ProductGeneralForm ref="general" v-model:price="product.price" v-model:name="product.name" v-model:highlighted="product.highlighted" v-show="selectedStep === 0" @submit="forward" />
+      <ProductImages ref="images" v-model:images="product.images" v-show="selectedStep === 1"/>
+      <CategoriesAttributes ref="attributes" v-model:category="product.category" v-model:attributes="product.attributes" v-show="selectedStep === 2" />
+      <Description ref="description" v-model:description="product.description" v-show="selectedStep === 3" />
     </form>
     <div class="flex justify-end mt-10 sm:mr-20">
       <CancelButton/>
       <BackwardButton v-if="selectedStep !== 0" @click="backward"/>
       <ForwardButton v-if="selectedStep !== 3" @click="forward"/>
-      <ButtonField v-if="selectedStep === 3" class="px-8 py-8 mx-2" @click="createProduct">
-        <template v-slot:text>Erstellen</template>
+      <ButtonField v-if="selectedStep === 3" class="px-8 py-8 mx-2" @click="editProduct">
+        <template v-slot:text>Bearbeiten</template>
         <template v-slot:icon><img src="/img/doneBlack.svg"/></template>
       </ButtonField>
     </div>
@@ -30,11 +30,13 @@ import ProductGeneralForm from "../components/product_create_process/ProductGene
 import ProductImages from "../components/product_create_process/ProductImages.vue";
 import CategoriesAttributes from "../components/product_create_process/CategoriesAttributes.vue";
 import Description from "../components/product_create_process/Description.vue";
-import {endLoad, initLoad} from "../loader";
+import {endLoad, initLoad, initProgress} from "../loader";
 import {AxiosResponse} from "axios";
 import {useToast} from "vue-toastification";
 import ButtonField from "../components/ButtonField.vue";
+import {RouteLocationNormalizedLoaded, useRoute} from "vue-router";
 import {AttributeType} from "../types/api-values";
+import {FilePondInitialFile} from "filepond";
 
 export default defineComponent({
   components: {
@@ -54,14 +56,17 @@ export default defineComponent({
     };
   },
   data() {
+    let route = useRoute();
     return {
-      latestStep: 0,
+      latestStep: 3,
       selectedStep: 0,
-      newProduct: {
+      name: route.params.name as string,
+      productLoading: false,
+      product: {
         id: 0,
-        name: '',
-        description: '',
-        price: '' as Money,
+        name: route.params.name as string,
+        description: 'Loading...',
+        price: 'Loading...' as Money,
         highlighted: false,
         tax: 0,
         images: [],
@@ -80,18 +85,32 @@ export default defineComponent({
           [AttributeType.COLOR]: [],
         },
       } as Product,
-      steps: [] as any[],
     };
   },
   mounted() {
-    this.steps = [
-      this.$refs.general,
-      this.$refs.images,
-      this.$refs.attributes,
-      this.$refs.description,
-    ];
+    this.loadProduct(this.name);
+  },
+  computed: {
+    steps() {
+      return [
+        this.$refs.general,
+        this.$refs.images,
+        this.$refs.attributes,
+        this.$refs.description,
+      ];
+    },
   },
   methods: {
+    async loadProduct(name: string) {
+      initLoad();
+      this.productLoading = true;
+      let response = await this.$http.get<undefined, AxiosResponse<Product>>("/admin/product/" + name);
+
+      this.product = response.data;
+      this.product.images = this.product.images.map<FilePondInitialFile>((value: FilePondInitialFile) => {return {source: value.source, options: {type: 'local'}}});
+      this.productLoading = false;
+      endLoad();
+    },
     async validateSelectedStep(): Promise<void> {
       return (this.steps[this.selectedStep] as any).validate() as Promise<void>;
     },
@@ -121,21 +140,27 @@ export default defineComponent({
         }).catch((_)=>{});
       }
     },
-    async createProduct() {
+    async editProduct() {
       initLoad();
       try {
-        let product = await this.$http.post<NewProduct, AxiosResponse<Product>>(
-          "/admin/product",
-          this.newProduct
+        await this.$http.put<NewProduct, AxiosResponse<Product>>(
+          "/admin/product/" + this.product.name,
+          this.product
         );
         this.toast.success("Produkt wurde erfolgreich erstellt.");
-        await this.$router.push({name: "Product", params: {name: product.data.name}});
       } catch (e) {
         this.toast.error("Fehler beim erstellen des Produktes");
         console.error(e);
       }
       endLoad();
     }
+  },
+  watch: {
+    $route(to: RouteLocationNormalizedLoaded, from) {
+      if (to.name === "Edit Product") {
+        this.loadProduct(to.params.name as string);
+      }
+    },
   },
 });
 </script>

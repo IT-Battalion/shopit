@@ -29,9 +29,11 @@
         </router-link>
       </h3>
       <div class="mt-3 flex justify-between w-full">
-        <ButtonField :loading="isLoading">
-          <template v-slot:icon><img src="/img/editBlack.svg" /></template>
-        </ButtonField>
+        <router-link :to="{name: 'Edit Product', params: {name: product?.name}}">
+          <ButtonField :loading="isLoading">
+            <template v-slot:icon><img src="/img/editBlack.svg" /></template>
+          </ButtonField>
+        </router-link>
         <ButtonField :loading="isLoading || deleteLoading" @click="this.delete">
           <template v-slot:icon><img src="/img/binBlack.svg" /></template>
         </ButtonField>

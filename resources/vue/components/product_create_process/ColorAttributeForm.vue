@@ -26,7 +26,6 @@
     <p class="text-red-400 text-base font-semibold mb-3" v-if="error !== ''">{{ error }}</p>
     <div class="flex flex-row max-w-full overflow-x-auto gap-x-2 shrink-0">
       <div v-for="(color, index) in colors" :key="color.color">
-        <Log :debug="color"/>
         <span
           @click="removeColor(index)"
           :style="'background-color:' + color.color"
@@ -68,8 +67,9 @@ export default defineComponent({
   },
   emits: ['update:colors'],
   data() {
+    console.debug(this.colors);
     return {
-      localColors: [] as ColorAttribute[],
+      localColors: this.colors as ColorAttribute[],
       colorName: "",
       color: "#ffffff" as Color,
       highlight: -1,
@@ -128,6 +128,11 @@ export default defineComponent({
     return {
       toast,
     };
+  },
+  watch: {
+    colors(val) {
+      console.debug(val);
+    },
   },
 });
 </script>

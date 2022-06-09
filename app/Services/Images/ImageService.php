@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
-use function RingCentral\Psr7\mimetype_from_extension;
-
 class ImageService implements ImageServiceInterface
 {
     protected function decryptEncryptFilePath(string $filePath, bool $encrypt = true): string
@@ -29,7 +27,7 @@ class ImageService implements ImageServiceInterface
 
     protected function isImageFromPermanentPath(string $filePath): bool
     {
-        return Str::startsWith($filePath, config('shop.image.permanentPath', 'product').DIRECTORY_SEPARATOR);
+        return Str::startsWith(config('shop.image.permanentPath', 'product').DIRECTORY_SEPARATOR, $filePath);
     }
 
     /**
@@ -38,8 +36,8 @@ class ImageService implements ImageServiceInterface
      */
     public function saveImage(UploadedFile $file): false|string
     {
-        if (!in_array(mimetype_from_extension($file->extension()), config('shop.image.allowedMimeTypes', ['image/jpeg', 'image/png']), true)) {
-            throw new InvalidImageMimeTypeException();
+    if (!in_array($file->getMimeType(), config('shop.image.allowedMimeTypes', ['image/jpeg', 'image/png']), true)) {
+        throw new InvalidImageMimeTypeException();
         }
         $stored = $file->storeAs(config('shop.image.temporaryPath', 'tmp').DIRECTORY_SEPARATOR.auth()->id(), now()->timestamp . '_' . $file->getClientOriginalName(), config('shop.image.disk', 'local'));
         if (!$stored) {
@@ -80,14 +78,14 @@ class ImageService implements ImageServiceInterface
 
     /**
      * @throws FileNotFoundException
-     * @throws InvalidImageFilePathException
+     * @throws \League\Flysystem\FilesystemException|InvalidImageFilePathException
      */
-    public function loadImage(string $filePath): string
+    public function loadImage(string $filePath): mixed
     {
         $stored = $this->decryptEncryptFilePath($filePath, false);
         if ($this->isImageFromPermanentPath($stored)) {
             throw new InvalidImageFilePathException();
         }
-        return Storage::disk(config('shop.image.disk', 'local'))->getMetadata($stored)['name'];
+        return Storage::disk(config('shop.image.disk', 'local'))->download($stored);
     }
 }

@@ -50,7 +50,7 @@ const routes: Array<RouteRecordRaw> = [
             }
           },
           {
-            path: "products/:name",
+            path: "product/:name",
             name: "Product",
             component: () =>
               import(/* webpackChunkName: "products" */ "../views/ProductPage.vue"),
@@ -161,7 +161,7 @@ const routes: Array<RouteRecordRaw> = [
           },
           {
             path: "products/edit",
-            name: "Edit Product",
+            name: "Edit Products",
             component: () =>
               import(/* webpackChunkName: "admin" */ "../views/ProductListAdmin.vue"),
           },
@@ -170,6 +170,12 @@ const routes: Array<RouteRecordRaw> = [
             name: "Add Product",
             component: () =>
               import(/* webpackChunkName: "admin" */ "../views/AddProduct.vue"),
+          },
+          {
+            path: "products/edit/:name",
+            name: "Edit Product",
+            component: () =>
+              import(/* webpackChunkName: "admin" */ "../views/EditProduct.vue"),
           },
         ]
       },

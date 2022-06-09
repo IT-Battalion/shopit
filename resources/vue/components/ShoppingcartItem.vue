@@ -75,6 +75,11 @@ export default defineComponent({
     },
   },
   emits: ["linkClick"],
+  setup() {
+    return {
+      currency: window.config.currency,
+    }
+  },
   data() {
     return {
       entry: this.shoppingCartEntry,

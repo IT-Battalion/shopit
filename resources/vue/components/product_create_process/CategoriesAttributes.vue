@@ -8,7 +8,7 @@
         <p class="w-full text-2xl font-bold text-center text-white">
           Dimensionen
         </p>
-        <DimensionAttributeForm v-model:dimensions="attributes.dimensions" />
+        <DimensionAttributeForm v-model:dimensions="attributes[attributeType.DIMENSION]" />
       </div>
       <div
         class="flex flex-col items-center justify-center  p-7 bg-elevatedDark rounded-2xl"
@@ -18,7 +18,7 @@
             Kleidungsgrößen
           </label>
         </div>
-        <ClothingAttributeForm v-model:clothing-sizes="attributes.clothing" class="w-full"/>
+        <ClothingAttributeForm v-model:clothing-sizes="attributes[attributeType.CLOTHING]" class="w-full"/>
       </div>
       <div
         class="flex flex-col items-center justify-center gap-4  p-7 bg-elevatedDark rounded-2xl"
@@ -28,7 +28,7 @@
             Volumen
           </label>
         </div>
-        <VolumeAttributeForm v-model:volumes="attributes.volumes" />
+        <VolumeAttributeForm v-model:volumes="attributes[attributeType.VOLUME]" />
       </div>
       <div
         class="flex flex-col items-center justify-center gap-4  p-7 bg-elevatedDark rounded-2xl"
@@ -38,7 +38,7 @@
             Farbauswahl
           </label>
         </div>
-        <ColorAttributeForm v-model:colors="attributes.colors" class="w-full"/>
+        <ColorAttributeForm v-model:colors="attributes[attributeType.COLOR]" class="w-full"/>
       </div>
     </div>
   </div>
@@ -52,7 +52,15 @@ import VolumeAttributeForm from "./VolumeAttributeForm.vue";
 import ClothingAttributeForm from "./ClothingAttributeForm.vue";
 import CategoryAttribute from "./CategoryAttribute.vue";
 import {PropType} from "vue";
-import {ClothingAttribute, ColorAttribute, DimensionAttribute, ProductCategory, VolumeAttribute} from "../../types/api";
+import {
+  Attributes,
+  ClothingAttribute,
+  ColorAttribute,
+  DimensionAttribute,
+  ProductCategory,
+  VolumeAttribute
+} from "../../types/api";
+import {AttributeType} from "../../types/api-values";
 
 export default defineComponent({
   components: {
@@ -64,14 +72,14 @@ export default defineComponent({
   },
   props: {
     category: Object as PropType<ProductCategory>,
-    attributes: Object as PropType<{
-      dimensions: DimensionAttribute[],
-      volumes: VolumeAttribute[],
-      clothing: ClothingAttribute[],
-      colors: ColorAttribute[],
-    }>,
+    attributes: Object as PropType<Attributes>,
   },
   emit: ['update:category', 'update:attributes'],
+  setup() {
+    return {
+      attributeType: AttributeType,
+    };
+  },
   methods: {
     async validate() {
       return Promise.resolve();

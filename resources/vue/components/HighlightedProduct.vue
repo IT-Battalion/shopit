@@ -60,7 +60,7 @@
               {{ highlightedProduct.name }}
             </h3>
             <p class="self-end w-2/3 text-sm font-medium text-white">
-              {{ highlightedProduct.price }}
+              {{ highlightedProduct.price }}{{ currency }}
             </p>
             <router-link
               :to="{
@@ -135,6 +135,11 @@ export default defineComponent({
     SwiperSlide,
     LoadingImage,
     ButtonField,
+  },
+  setup() {
+    return {
+      currency: window.config.currency,
+    };
   },
   data() {
     return {

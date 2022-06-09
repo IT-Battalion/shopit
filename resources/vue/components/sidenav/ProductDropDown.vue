@@ -32,7 +32,7 @@
             >
           </MenuItem>
         </router-link>
-        <router-link :to="{ name: 'Edit Product' }">
+        <router-link :to="{ name: 'Edit Products' }">
           <MenuItem
             class="flex flex-row items-center justify-start  hover:bg-elevatedColor"
           >
@@ -40,7 +40,7 @@
               ><img
                 src="/img/editBlockAttributes.svg"
                 class="object-scale-down mr-4 h-7"
-              />Bearbeiten</span
+              />Bearbeiten/l&ouml;schen</span
             >
           </MenuItem>
         </router-link>

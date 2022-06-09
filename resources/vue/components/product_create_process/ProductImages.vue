@@ -14,11 +14,12 @@
         force-revert="true"
         drop-on-page="true"
         v-bind:files="myFiles"
-        @initfile="startProgress"
+        @processfilestart="startProgress"
+        @processfile="endProgress"
         @processfilerevert="startProgress"
-        @processfiles="endProgress"
         @removefile="endProgress"
-        @error="error = 'Es gab einen Fehler bei der Verarbeitung eines oder mehrerer Bilder!'"
+        @reorderFiles="$emit('update:files', this.pond.getFiles().map(file=>file.serverId))"
+        @error="error = 'Es gab einen Fehler bei der Verarbeitung eines oder mehrerer Bilder!';endProgress();"
       />
       <p class="text-base text-red-400">{{error}}</p>
     </div>
@@ -41,7 +42,7 @@ export default defineComponent({
   props: {
     'images': {
       type: Array,
-      required: true,
+      default: [],
     }
   },
   emits: ['update:images'],
@@ -59,14 +60,13 @@ export default defineComponent({
     }).catch(()=>{});
 
     return {
-      myFiles: [] as string[],
+      myFiles: this.images,
       server: {
         url: "/api/admin/productImage",
         headers: {
           "X-CSRF-TOKEN": window.document.querySelector("meta[name=\"csrf-token\"]")?.getAttribute("content")
         }
       },
-      pond: {} as FilePond, //import {FilePond} from './filepond'
       error: "",
       promise,
       resolve,
@@ -76,10 +76,10 @@ export default defineComponent({
   components: {
     Pond,
   },
-  async mounted() {
-    this.pond = (this.$refs.uploader as any)._pond as FilePond;
-  },
   methods: {
+    getPond() {
+      return (this.$refs.uploader as any)._pond as FilePond;
+    },
     startProgress() {
       initLoad();
       let resolve, reject;
@@ -92,8 +92,8 @@ export default defineComponent({
     },
     endProgress() {
       endLoad();
-      this.$emit('update:images', this.pond.getFiles().map((file)=>file.serverId));
-      if (this.pond.status === Status.READY && this.resolve) {
+      this.$emit('update:images', this.getPond().getFiles().map((file)=>file.serverId));
+      if (this.getPond().status !== Status.ERROR && this.getPond().status !== Status.BUSY && this.getPond().getFiles().length && this.resolve) {
         this.resolve();
       } else {
         if (this.reject) {
@@ -104,11 +104,11 @@ export default defineComponent({
       }
     },
     async validate() {
-      this.pond.files.push()
-      switch (this.pond.status) {
+      switch (this.getPond().status) {
         case Status.READY:
           return Promise.resolve();
         case Status.EMPTY:
+          if (this.getPond().getFiles().length) return Promise.resolve();
           this.error = "Es wurden noch keine Bilder hochgeladen. Bitte laden Sie Bilder hoch.";
           return Promise.reject();
         case Status.ERROR:

@@ -179,10 +179,10 @@ class ImageUploadController extends Controller
      * @param ImageServiceInterface $imageService
      * @return Application|Response|ResponseFactory
      */
-    public function load(Request $request, ImageServiceInterface $imageService): ResponseFactory|Application|Response
+    public function load(Request $request, ImageServiceInterface $imageService): mixed
     {
-        $id = $request->getContent();
+        $id = $request->get('load');
 
-        return resposne()->stream($imageService->loadImage($id));
+        return $imageService->loadImage($id);
     }
 }

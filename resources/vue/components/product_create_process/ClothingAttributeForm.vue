@@ -33,7 +33,7 @@ export default defineComponent({
   data() {
     return {
       optionsClothing: clothingSizeLabels,
-      localClothingSizes: [] as (typeof clothingSizeLabels[number])[],
+      localClothingSizes: this.clothingSizes as (typeof clothingSizeLabels[number])[],
     };
   },
   watch: {

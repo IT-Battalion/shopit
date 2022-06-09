@@ -23,10 +23,10 @@ interface ImageServiceInterface
 
     /**
      * Restores Permanent saved Images and returns them.
-     * @param string $filePath The filePath to the Image destination
-     * @return string The fileName of the Image.
+     * @param string $filePath The filepond id for the image
+     * @return string the image.
      */
-    public function loadImage(string $filePath): string;
+    public function loadImage(string $filePath): mixed;
 
     /**
      * Restores Temporary saved Images and returns them.

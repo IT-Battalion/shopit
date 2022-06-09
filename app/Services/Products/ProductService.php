@@ -10,12 +10,18 @@ use App\Models\ProductColorAttribute;
 use App\Models\ProductDimensionAttribute;
 use App\Models\ProductImage;
 use App\Models\ProductVolumeAttribute;
+use App\Services\Images\ImageServiceInterface;
 use App\Types\Money;
 use Auth;
+use Crypt;
 use Illuminate\Support\Collection;
 
 class ProductService implements ProductServiceInterface
 {
+    public function __construct(private ImageServiceInterface $imageService)
+    {
+    }
+
     public function createProduct(string $name, string $description, float $price, ProductCategory $category, float $tax = 0.0): Product
     {
         return Product::create([
@@ -118,5 +124,9 @@ class ProductService implements ProductServiceInterface
     public function unHighlightProduct(Product $product): bool
     {
         return HighlightedProduct::whereProductId($product->id)->delete();
+    }
+
+    public function getFilePondImages(Product $product): array {
+        return $product->images->map(fn(ProductImage $image) => ['source' => Crypt::encryptString($image->path)])->toArray();
     }
 }

@@ -73,7 +73,7 @@
         <!-- Options -->
         <div class="mt-4 lg:mt-0 lg:row-span-3">
           <p v-if="!state.isLoading" class="text-3xl text-white">
-            {{ product.price }}
+            {{ product.price }}{{ currency }}
           </p>
           <div v-else class="text-3xl">
             <Skeletor :pill="true"/>
@@ -182,6 +182,11 @@ export default defineComponent({
     const route = useRoute();
     const name = route.params.name as string;
     await this.loadProduct(name);
+  },
+  setup() {
+    return {
+      'currency': window.config.currency,
+    }
   },
   data() {
     return {
