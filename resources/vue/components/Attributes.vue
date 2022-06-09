@@ -7,7 +7,7 @@
       <span>Farbe: {{ attributes[3].name }}</span>
       <div
         class="rounded-xl border border-white h-4 w-4 ml-[.5ch]"
-        :style="'background-color: #' + attributes[3].color"
+        :style="'background-color: ' + attributes[3].color"
       />
     </div>
     <div v-if="attributes['0']">

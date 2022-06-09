@@ -27,7 +27,7 @@ class AddToShoppingCartRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'exists:products'],
             'count' => ['required', 'integer', 'numeric', 'gt:0'],
-            'selectedAttributes' => ['required', 'array'],
+            'selectedAttributes' => ['array'],
             'selectedAttributes.*.id' => ['numeric'],
             'selectedAttributes.*.type' => ['numeric', 'between:0,3'],
         ];

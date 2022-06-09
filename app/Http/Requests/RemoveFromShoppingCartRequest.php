@@ -27,7 +27,7 @@ class RemoveFromShoppingCartRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'exists:products'],
             'count' => ['required', 'numeric', 'gte:-1'],
-            'selectedAttributes' => ['required', 'array'],
+            'selectedAttributes' => ['array'],
             'selectedAttributes.*.id' => ['numeric'],
             'selectedAttributes.*.type' => ['numeric', 'between:0,3'],
         ];

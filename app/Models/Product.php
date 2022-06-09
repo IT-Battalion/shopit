@@ -148,7 +148,7 @@ class Product extends Model implements ConvertableToOrder
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'description' => $this->name,
+            'description' => $this->description,
             'price' => $this->gross_price,
             'highlighted' => $this->highlightedProduct()->exists(),
             'tax' => str_replace('.', ',', bcround(bcmul($this->tax, '100'))),

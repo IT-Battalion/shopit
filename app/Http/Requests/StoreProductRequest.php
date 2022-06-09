@@ -32,7 +32,7 @@ class StoreProductRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'between:2,20', 'unique:products,name'],
-            'price' => ['required', 'numeric', 'min:1'],
+            'price' => ['required', 'min:1'],
             'description' => ['required', 'string', 'min:10'],
             'highlighted' => ['required', 'boolean'],
             'category.id' => ['required', 'integer', 'exists:product_categories,id'],

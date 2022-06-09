@@ -78,6 +78,7 @@ class ProductController extends Controller
             'price' => new Money($data['price']),
             'product_category_id' => $data['category']['id'],
         ])->createWith(Auth::user());
+        $product->save();
 
         $thumbnail = null;
         foreach ($data['images'] as $image) {
@@ -91,6 +92,7 @@ class ProductController extends Controller
                     'type' => 'image/jpg',
                     'product_id' => $product->id,
                 ])->createWith(Auth::user());
+            $product_image->save();
             $thumbnail = $thumbnail ?? $product_image;
         }
         $product->thumbnail_id = $thumbnail->id;
@@ -163,6 +165,18 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, Product $product): JsonResponse
     {
         $data = $request->validated();
+        $values = $data['attributes'];
+        $attributes = [
+            'clothing' => array_map(fn($clothing) => ['size' => ClothingSize::from($clothing['size'])], $values[strval(AttributeType::CLOTHING->value)]),
+            'volumes' => array_map(fn($volume) => ['volume' => new Liter($volume['volume']['value'],$volume['volume']['unit'])], $values[strval(AttributeType::VOLUME->value)]),
+            'dimensions' => array_map(fn($dimension) => [
+                'width' => new Meter($dimension['width']['value'], $dimension['width']['unit']),
+                'height' => new Meter($dimension['height']['value'], $dimension['height']['unit']),
+                'depth' => new Meter($dimension['depth']['value'], $dimension['depth']['unit']),
+            ], $values[strval(AttributeType::DIMENSION->value)]),
+            'colors' => $values[strval(AttributeType::COLOR->value)],
+        ];
+        $data = array_merge($data, ['attributes' => $attributes]);
         $product->update($data);
         return response()->json($product->refresh());
     }

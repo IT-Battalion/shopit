@@ -55,7 +55,7 @@ class ProductColorAttribute extends Model implements ProductAttributeToOrder
             'id' => $this->id,
             'type' => $this->type,
             'name' => $this->name,
-            'color' => $this->color,
+            'color' => '#' . $this->color,
         ];
     }
 }

@@ -20,7 +20,7 @@
                 !active && checked ? 'ring-2' : '',
                 '-m-0.5 relative p-0.5 ring-white rounded-xl flex items-center justify-center cursor-pointer focus:outline-none w-8 h-8',
               ]"
-              :style="'background-color: #' + color.color"
+              :style="'background-color: ' + color.color"
               :title="color.name"
             >
               <RadioGroupLabel as="p" class="sr-only">
