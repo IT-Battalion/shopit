@@ -25,7 +25,7 @@
         "pdfmake": "^0.1.72",
         "popper.js": "^1.12",
         "pusher-js": "^7.0.3",
-        "resolve-url-loader": "^4.0.0",
+        "resolve-url-loader": "^5.0.0",
         "sass": "^1.42.1",
         "sass-loader": "^12.1.0",
         "spinkit": "^2.0.1",
